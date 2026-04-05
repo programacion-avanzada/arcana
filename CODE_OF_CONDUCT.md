@@ -1,90 +1,71 @@
-# Citizen Code of Conduct
+# Código de Conducta — Cátedra de Programación Avanzada (UNLaM)
 
-## 1. Purpose
+## 1. Propósito
 
-A primary goal of the Quartz community is to be inclusive to the largest number of contributors, with the most varied and diverse backgrounds possible. As such, we are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, ability, ethnicity, socioeconomic status, and religion (or lack thereof).
+Este Código de Conducta define las normas de convivencia y colaboración para las actividades vinculadas a la cátedra de Programación Avanzada (UNLaM). Su objetivo es promover un entorno académico seguro, respetuoso y profesional donde docentes, ayudantes y estudiantes puedan aprender, enseñar y contribuir con confianza.
 
-This code of conduct outlines our expectations for all those who participate in our community, as well as the consequences for unacceptable behavior.
+## 2. Ámbito de aplicación
 
-We invite all those who participate in the Quartz community to help us create safe and positive experiences for everyone.
+Se aplica a todas las interacciones relacionadas con la cátedra y sus repositorios: comunicaciones en el repositorio (issues, pull requests, comentarios), plataformas docentes, trabajos presenciales y cualquier actividad académica derivada.
 
-## 2. Open [Source/Culture/Tech] Citizenship
+## 3. Principios generales
 
-A supplemental goal of this Code of Conduct is to increase open [source/culture/tech] citizenship by encouraging participants to recognize and strengthen the relationships between our actions and their effects on our community.
+- Respeto: tratar a todas las personas con cortesía y consideración, independientemente de su posición, experiencia o identidad.
+- Honestidad académica: presentar trabajo propio, y citar o atribuir cuando se incorporen ideas, soluciones o fragmentos de terceros.
+- Profesionalismo: mantener un estándar razonable de prolijidad y calidad técnica en el material compartido.
 
-Communities mirror the societies in which they exist and positive action is essential to counteract the many forms of inequality and abuses of power that exist in society.
+## 4. Uso del lenguaje
 
-If you see someone who is making an extra effort to ensure our community is welcoming, friendly, and encourages all participants to contribute to the fullest extent, we want to know.
+El lenguaje empleado en discusiones, commits y documentación debe ser claro, respetuoso y profesional. Evitar expresiones ofensivas, despectivas, discriminatorias o que fomenten el acoso. Cuando se discuta una propuesta técnica, centrarse en argumentos y evidencia, no en ataques personales.
 
-## 3. Expected Behavior
+## 5. Autenticidad y referencias
 
-The following behaviors are expected and requested of all community members:
+- Las contribuciones deben indicar su autoría real. No se permite presentar como propio trabajo ajeno sin la debida atribución.
+- Al reutilizar código o material de terceros, incluir referencias y respetar la licencia original.
 
-- Participate in an authentic and active way. In doing so, you contribute to the health and longevity of this community.
-- Exercise consideration and respect in your speech and actions.
-- Attempt collaboration before conflict.
-- Refrain from demeaning, discriminatory, or harassing behavior and speech.
-- Be mindful of your surroundings and of your fellow participants. Alert community leaders if you notice a dangerous situation, someone in distress, or violations of this Code of Conduct, even if they seem inconsequential.
-- Remember that community event venues may be shared with members of the public; please be respectful to all patrons of these locations.
+## 6. Prolijidad y calidad de las contribuciones
 
-## 4. Unacceptable Behavior
+Se espera un mínimo de cuidado técnico en los aportes:
 
-The following behaviors are considered harassment and are unacceptable within our community:
+- Código legible y documentado: comentarios cuando sea necesario, ejemplos de uso y dependencias claras.
+- Formato consistente (sangrías, estilo) y respeto por las convenciones del repositorio.
+- En la medida de lo posible, incluir pruebas o casos de ejemplo que demuestren la corrección del aporte.
 
-- Violence, threats of violence or violent language directed against another person.
-- Sexist, racist, homophobic, transphobic, ableist or otherwise discriminatory jokes and language.
-- Posting or displaying sexually explicit or violent material.
-- Posting or threatening to post other people's personally identifying information ("doxing").
-- Personal insults, particularly those related to gender, sexual orientation, race, religion, or disability.
-- Inappropriate photography or recording.
-- Inappropriate physical contact. You should have someone's consent before touching them.
-- Unwelcome sexual attention. This includes, sexualized comments or jokes; inappropriate touching, groping, and unwelcomed sexual advances.
-- Deliberate intimidation, stalking or following (online or in person).
-- Advocating for, or encouraging, any of the above behavior.
-- Sustained disruption of community events, including talks and presentations.
+## 7. Colaboración académica
 
-## 5. Weapons Policy
+Fomentamos la colaboración y la discusión constructiva. Antes de abrir un conflicto público, intenten la comunicación privada o la propuesta de mejoras concretas. Los mantenedores podrán mediar en discusiones técnicas para alcanzar soluciones razonables.
 
-No weapons will be allowed at Quartz community events, community spaces, or in other spaces covered by the scope of this Code of Conduct. Weapons include but are not limited to guns, explosives (including fireworks), and large knives such as those used for hunting or display, as well as any other item used for the purpose of causing injury or harm to others. Anyone seen in possession of one of these items will be asked to leave immediately, and will only be allowed to return without the weapon. Community members are further expected to comply with all state and local laws on this matter.
+## 8. Conducta inaceptable
 
-## 6. Consequences of Unacceptable Behavior
+No se tolerarán, entre otras, las siguientes actitudes:
 
-Unacceptable behavior from any community member, including sponsors and those with decision-making authority, will not be tolerated.
+- Lenguaje abusivo, discriminatorio o que promueva el acoso.
+- Plagio o apropiación indebida de trabajos ajenos sin atribución.
+- Publicación de información personal de terceros sin consentimiento.
+- Sabotaje deliberado de recursos, eliminación maliciosa de contenido o modificaciones con intención dañina.
 
-Anyone asked to stop unacceptable behavior is expected to comply immediately.
+## 9. Consecuencias
 
-If a community member engages in unacceptable behavior, the community organizers may take any action they deem appropriate, up to and including a temporary ban or permanent expulsion from the community without warning (and without refund in the case of a paid event).
+Las infracciones podrán resultar en acciones proporcionales: advertencias, restricción de acceso a recursos de la cátedra, exclusión de actividades o notificación a las instancias disciplinarias de la universidad, según la gravedad y la recurrencia.
 
-## 7. Reporting Guidelines
+## 10. Procedimiento de reporte
 
-If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible. j.zhao2k19@gmail.com.
+Si sos víctima o testigo de una conducta contraria a este Código:
 
-Additionally, community organizers are available to help community members engage with local law enforcement or to otherwise help those experiencing unacceptable behavior feel safe. In the context of in-person events, organizers will also provide escorts as desired by the person experiencing distress.
+1. Reuní evidencia (capturas, enlaces, fechas, participantes) si es posible.
+2. Contactá a los responsables de la cátedra mediante correo electrónico a la coordinación o al docente responsable (ver datos de contacto en la plataforma de la asignatura).
+3. Indicá si querés confidencialidad en el manejo del reporte.
 
-## 8. Addressing Grievances
+Los responsables evaluarán la situación y propondrán medidas. Si el caso lo amerita, podrán involucrar a las autoridades universitarias.
 
-If you feel you have been falsely or unfairly accused of violating this Code of Conduct, you should notify @jackyzha0 with a concise description of your grievance. Your grievance will be handled in accordance with our existing governing policies.
+## 11. Apelaciones
 
-## 9. Scope
+Quien no esté conforme con una resolución puede solicitar revisión o apelación ante la coordinación de la cátedra o los órganos correspondientes de la universidad.
 
-We expect all community participants (contributors, paid or otherwise; sponsors; and other guests) to abide by this Code of Conduct in all community venues--online and in-person--as well as in all one-on-one communications pertaining to community business.
+## 12. Contacto y referencias
 
-This code of conduct and its related procedures also applies to unacceptable behavior occurring outside the scope of community activities when such behavior has the potential to adversely affect the safety and well-being of community members.
+Las direcciones de contacto específicas se encuentran en el repositorio o la plataforma de la asignatura. En caso de dudas sobre la aplicación de este Código, consultá con el equipo docente.
 
-## 10. Contact info
+---
 
-j.zhao2k19@gmail.com
-
-## 11. License and attribution
-
-The Citizen Code of Conduct is distributed by [Stumptown Syndicate](http://stumptownsyndicate.org) under a [Creative Commons Attribution-ShareAlike license](http://creativecommons.org/licenses/by-sa/3.0/).
-
-Portions of text derived from the [Django Code of Conduct](https://www.djangoproject.com/conduct/) and the [Geek Feminism Anti-Harassment Policy](http://geekfeminism.wikia.com/wiki/Conference_anti-harassment/Policy).
-
-_Revision 2.3. Posted 6 March 2017._
-
-_Revision 2.2. Posted 4 February 2016._
-
-_Revision 2.1. Posted 23 June 2014._
-
-_Revision 2.0, adopted by the [Stumptown Syndicate](http://stumptownsyndicate.org) board on 10 January 2013. Posted 17 March 2013._
+Última actualización [en el historial del repositorio](https://github.com/programacion-avanzada/arcana/commits/master/CODE_OF_CONDUCT.md)
