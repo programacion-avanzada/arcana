@@ -6,10 +6,10 @@
   "type": "module",
   "author": "jackyzha0 <j.zhao2k19@gmail.com>",
   "license": "MIT",
-  "homepage": "https://quartz.jzhao.xyz",
+  "homepage": "https://programacion-avanzada.github.io/arcana/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jackyzha0/quartz.git"
+    "url": "https://github.com/programacion-avanzada/arcana.git"
   },
   "scripts": {
     "quartz": "./quartz/bootstrap-cli.mjs",
