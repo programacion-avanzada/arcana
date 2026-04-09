@@ -9,4 +9,6 @@ Cuentan los antiguos que el mundo del cómputo fue caos hasta que alguien descub
 
 Este tomo se divide en dos partes. El [Grimorio](grimorio/index.md) cataloga los conjuros y los artefactos: algoritmos, estructuras, teoremas. Cada entrada tiene sus prerequisitos, sus conexiones con otras entradas, y sus casos de uso. No está pensado para leerse de corrido sino para navegarse: seguí los links, volvé cuando algo no cierre, avanzá cuando tengas el contexto.
 
-El [Bestiario](bestiario/index.md) cataloga las criaturas: los problemas. Cada bestia tiene su naturaleza y los conjuros que la doblegan — y los que fallan al intentarlo. Un conjuro que nunca enfrentó una bestia verdadera no está aprendido: está apenas memorizado.
+El [Bestiario](bestiario/index.md) cataloga las criaturas: los problemas. Cada bestia tiene su naturaleza y los conjuros que la doblegan y los que fallan al intentarlo. Un conjuro que nunca enfrentó una bestia verdadera no está aprendido: está apenas memorizado.
+
+Este texto forma parte de Arcana, un recurso pensado para organizar y explorar algoritmos y estructuras de datos de forma navegable. Si querés entender cómo está construido, podés leer [acerca de Arcana](about.md).
