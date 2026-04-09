@@ -11,4 +11,6 @@ Este tomo se divide en dos partes. El [Grimorio](grimorio/index.md) cataloga los
 
 El [Bestiario](bestiario/index.md) cataloga las criaturas: los problemas. Cada bestia tiene su naturaleza y los conjuros que la doblegan y los que fallan al intentarlo. Un conjuro que nunca enfrentó una bestia verdadera no está aprendido: está apenas memorizado.
 
+Los [Senderos](senderos/index.md) no catalogan conocimiento ni criaturas: trazan recorridos. Cada sendero propone una secuencia deliberada de enfrentamientos, donde cada paso prepara el siguiente. No se trata de resolver problemas, sino de aprender a encadenarlos.
+
 Este texto forma parte de Arcana, un recurso pensado para organizar y explorar algoritmos y estructuras de datos de forma navegable. Si querés entender cómo está construido, podés leer [acerca de Arcana](about.md).
