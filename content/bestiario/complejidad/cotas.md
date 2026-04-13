@@ -1,5 +1,6 @@
 ---
 title: 'Cotas'
+tags: [b/complejidad]
 ---
 
 ¿Cuáles de estas afirmaciones son verdaderas?

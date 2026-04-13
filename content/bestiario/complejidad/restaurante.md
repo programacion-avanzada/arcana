@@ -1,5 +1,6 @@
 ---
 title: 'La mesa más cercana'
+tags: [b/complejidad]
 ---
 
 Imaginá que sos el dueño de un restaurante y tenés que encontrar la mesa libre más cercana a la entrada. Tenés tres estrategias:

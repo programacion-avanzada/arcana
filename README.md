@@ -1,4 +1,4 @@
-# Arcana — Material de Programación Avanzada
+# Arcana - Material de Programación Avanzada
 
 Arcana es un recurso de estudio complementario para la cátedra de **Programación Avanzada de la Universidad Nacional de La Matanza**. Reúne definiciones, técnicas y resultados centrales de la materia en un único lugar pensado tanto para el estudio secuencial como para la consulta puntual.
 

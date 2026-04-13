@@ -1,4 +1,4 @@
-# Código de Conducta — Cátedra de Programación Avanzada (UNLaM)
+# Código de Conducta
 
 ## 1. Propósito
 
