@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="30.150864mm"
+   height="25.785675mm"
+   viewBox="0 0 30.150864 25.785675"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-24.294121,-21.368254)">
+    <path
+       style="fill:none;stroke:#cccccc;stroke-width:0.223065"
+       d="M 34.977387,30.650309 V 47.042395 H 46.05412 V 30.741377"
+       id="path1" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+       x="37.828476"
+       y="23.857092"
+       id="text1"><tspan
+         id="tspan1"
+         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+         x="37.828476"
+         y="23.857092">top</tspan><tspan
+         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+         x="37.828476"
+         y="28.266804"
+         id="tspan5" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+       x="39.72377"
+       y="44.511459"
+       id="text2"><tspan
+         id="tspan2"
+         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+         x="39.72377"
+         y="44.511459">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+       x="39.554436"
+       y="40.356785"
+       id="text3"><tspan
+         id="tspan3"
+         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+         x="39.554436"
+         y="40.356785">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+       x="39.566784"
+       y="36.161549"
+       id="text4"><tspan
+         id="tspan4"
+         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+         x="39.566784"
+         y="36.161549">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+       x="24.21475"
+       y="30.893318"
+       id="text6"><tspan
+         id="tspan6"
+         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+         x="24.21475"
+         y="30.893318">push ↴</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+       x="43.676468"
+       y="30.918016"
+       id="text7"><tspan
+         id="tspan7"
+         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
+         x="43.676468"
+         y="30.918016">↱ pop</tspan></text>
+  </g>
+</svg>
