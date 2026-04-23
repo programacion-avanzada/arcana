@@ -1,5 +1,7 @@
 ---
-title: 'Bestiario'
+title: Bestiario
+tags:
+  - meta-hub
 ---
 
 ![](/attachments/bestiario-cover.png)

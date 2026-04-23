@@ -47,7 +47,7 @@ Con este dato, la constante computacional de la computadora inicial, podemos emp
 Esta situación requiere despejar la ecuación, con el nuevo $T_1 = 3 \cdot T_0$
 
 Sabemos que:
-- $T_1(n)$ es $3 \cdot T_0$
+- $T_1$ es $3 \cdot T_0$
 - $f_1(n)$ es $n^2$ (mismo algoritmo)
 - $c_1$ es $10^{-7}$ (misma computadora)
 - $n_1$ es la incógnita
@@ -59,12 +59,12 @@ Despejemos:
 $$
 \begin{align*}
 T_1(n) &= c_1 \cdot {n_1}^2 \\
-30 &= 10^{-7} \cdot n^2 \\
-30 \cdot 10^7 &= n^2 \\
-3 \cdot 10^8 &= n^2 \\
-\sqrt{3 \cdot 10^8} &= n \\
-\sqrt{3} \cdot 10^4 &= n \\
-17320 &= n \\
+30 &= 10^{-7} \cdot {n_1}^2 \\
+30 \cdot 10^7 &= {n_1}^2 \\
+3 \cdot 10^8 &= {n_1}^2 \\
+\sqrt{3 \cdot 10^8} &= n_1 \\
+\sqrt{3} \cdot 10^4 &= n_1 \\
+17320 &= n_1 \\
 \end{align*}
 $$
 
@@ -79,7 +79,7 @@ Sabemos que:
 - $n_2$ es $3 \cdot n_0$ (dato)
 - $f_2(n)$ es $n^2$ (mismo algoritmo)
 - $c_2$ es $10^{-7}$ (misma computadora)
-- $T_2(n)$ es la incógnita
+- $T_2$ es la incógnita
 
 A priori podemos deducir que, si el mismo algoritmo se ejecuta para más elementos, debe tardar más. Habiendo visto los resultados del punto anterior, parecería que debe tardar 9 veces más (3 al cuadrado). Entonces, seguramente $T_2 > T_0$
 
@@ -113,7 +113,7 @@ Dicho esto, sabemos que:
 - $n_3$ es $3 \cdot 10^4$ (triple de elementos)
 - $f_3(n)$ es $n^2$ (mismo algoritmo)
 - $c_3$ es $\frac{10^{-7}}{3}$ (computadora "tres veces más rápida")
-- $T_3(n)$ es la incógnita
+- $T_3$ es la incógnita
 
 Resolvamos:
 

@@ -1,5 +1,7 @@
 ---
-title: 'Grimorio'
+title: Grimorio
+tags:
+  - meta-hub
 ---
 
 ![](/attachments/grimorio-cover.png)

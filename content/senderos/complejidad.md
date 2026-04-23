@@ -1,5 +1,8 @@
 ---
-title: 'Complejidad Computacional'
+title: Complejidad Computacional
+tags:
+  - hub
+  - sendero
 ---
 
 ## Objetivo
