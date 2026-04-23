@@ -314,6 +314,74 @@ a {
   border-top: 1px solid var(--lightgray);
 }
 
+// When sidebars are hidden (via the F11 toggle), make the center take the full width
+:root[sidebars-hidden="on"], :root[toggle-sidebar="on"] {
+  .page > #quartz-body {
+    grid-template-columns: auto !important;
+    grid-template-rows: auto auto auto !important;
+    grid-template-areas: 
+      "grid-header"
+      "grid-center"
+      "grid-footer" !important;
+    column-gap: 0 !important;
+
+    @media all and ($tablet) {
+      grid-template-columns: auto !important;
+      grid-template-areas: 
+        "grid-header"
+        "grid-center"
+        "grid-footer" !important;
+    }
+
+    @media all and ($mobile) {
+      grid-template-columns: auto !important;
+      grid-template-areas: 
+        "grid-header"
+        "grid-center"
+        "grid-sidebar-right"
+        "grid-footer" !important;
+    }
+  }
+
+  /* ensure center column uses full available width */
+  .page > #quartz-body .center {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* Prevent horizontal overflow when sidebars are hidden (e.g. zoom/fullscreen) */
+:root[sidebars-hidden="on"], :root[toggle-sidebar="on"] {
+  /* clamp overall page width to viewport and prevent horizontal scroll */
+  html,
+  body {
+    overflow-x: hidden !important;
+  }
+
+  .page {
+    /* make sure the page wrapper never exceeds the viewport */
+    max-width: 90vw !important;
+    box-sizing: border-box !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* also clamp the grid container and center article */
+  .page > #quartz-body {
+    max-width: 90vw !important;
+    box-sizing: border-box !important;
+  }
+
+  .page > #quartz-body .center,
+  .page > #quartz-body .center > article {
+    max-width: 90% !important;
+    width: 90% !important;
+    box-sizing: border-box !important;
+  }
+}
+
 input[type="checkbox"] {
   transform: translateY(2px);
   color: var(--secondary);
