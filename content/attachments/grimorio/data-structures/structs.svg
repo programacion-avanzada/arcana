@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500" height="220" viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .mono {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+      fill: #666666;
+      white-space: pre;
+    }
+  </style>
+
+  <text x="20" y="30" class="mono">p</text>
+  <text x="20" y="50" class="mono">│</text>
+  <text x="20" y="70" class="mono">▼</text>
+
+  <text x="20" y="90" class="mono">[ Header del objeto ]</text>
+  <text x="20" y="110" class="mono">│</text>
+
+  <text x="20" y="130" class="mono">├─ [ slot x ] ──► int(1)</text>
+  <text x="20" y="150" class="mono">├─ [ slot y ] ──► int(2)</text>
+  <text x="20" y="170" class="mono">└─ [ slot z ] ──► int(3)</text>
+</svg>
