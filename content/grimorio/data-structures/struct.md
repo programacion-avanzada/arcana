@@ -1,5 +1,5 @@
 ---
-title: 'Record (o Estructura)'
+title: 'Struct (o Record)'
 tags: ['data-structures']
 alias: ['record', 'struct']
 ---
