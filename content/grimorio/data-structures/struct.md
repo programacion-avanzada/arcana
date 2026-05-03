@@ -145,3 +145,4 @@ La serialización de estos objetos para guardarlos en disco o enviarlos por red 
  
 - Documentación oficial de Python - *dataclasses*: <https://docs.python.org/3/library/dataclasses.html>
 - Documentación oficial de Python - *collections.namedtuple*: <https://docs.python.org/3/library/collections.html#collections.namedtuple>
+- Record (en inglés) - <https://en.wikipedia.org/wiki/Record_(computer_science)>
