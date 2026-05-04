@@ -112,7 +112,7 @@ Esta complejidad puede verse afectada en gran parte por la función de Hash, deb
 ### Construyendo una tabla hash propia
 
 ```python
-class DictHash:
+class HashTable:
     def __init__(self, size):
         self.size = size
         self.table = [None] * size
@@ -141,23 +141,6 @@ class DictHash:
                 if k == key:
                     return v
         return None
-
-
-# main
-if __name__ == "__main__":
-    hash_table = DictHash(10)
-
-    print("HASH Marta:", hash_table.hash_function("Marta"))
-    hash_table.insert("Marta", "Anciana")
-    print(hash_table.search("Marta"))  # Anciana
-
-    print("HASH Juan:", hash_table.hash_function("Juan"))
-    hash_table.insert("Juan", "Joven")
-    print(hash_table.search("Juan"))  # Joven
-
-    print("HASH Laura:", hash_table.hash_function("Laura"))  # Colisión con Marta
-    hash_table.insert("Laura", "Niña")
-    print(hash_table.search("Laura"))  # Niña
 ```
 
 ---
