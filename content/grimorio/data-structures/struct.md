@@ -1,29 +1,39 @@
 ---
-title: 'Struct (o Record)'
+title: 'Estructura (Struct / Record)'
 tags: ['data-structures']
 alias: ['record', 'struct']
 ---
 
 ## 1. Qué es y cómo funciona
 ### Intuición
-Al desarrollar a veces uno se da cuenta que varias variables sueltas tiene sentido tenerlas agrupadas en una estructura. Un ejemplo puede ser los datos de un estudiante: Nombre, legajo, promedio.  
 Usar variables sueltas o arreglos paralelos es propenso a errores y muy difícil de mantener a largo plazo. La información está muy dispersa. La idea central de un Record/Struct es agrupar lógicamente datos relacionados que pueden ser de distintos tipos bajo un único nombre, tratándolos como una sola unidad.
-Un Record resuelve la dispersión de datos, permite modelar entidades compuestas del dominio del problema, facilitando su manejo (como por ejemplo al declararlo como parámetro de una función) y dando buenas prácticas al código al acceder a los datos por su nombre en lugar de por índices numéricos.
+
+Un Struct resuelve la dispersión de datos, permite modelar entidades compuestas del dominio del problema, facilitando su manejo (como por ejemplo al declararlo como parámetro de una función) y dando buenas prácticas al código al acceder a los datos por su nombre en lugar de por índices numéricos.
  
  
 ### Definición / propiedades
  
-Un Record / Struct es un tipo de dato compuesto que agrupa un número fijo de campos.
+Un Struct / Record es un tipo de dato compuesto que agrupa un número fijo de campos.
 - Invariantes: La cantidad y nombres de los campos está definido de antemano y representa una entidad cohesiva.
 - Propiedades clave: Sus elementos se acceden mediante un identificador (atributos). Fomenta una alta cohesión de datos y, en su definición más pura, carece de metodos, actuando solo como contenedor de información.
 ### Representación
-En Python, los objetos por defecto usan un diccionario interno dinámico para guardar atributos. Para lograr la representación real de un Struct, se utilizan `slots`. Internamente, la estructura se convierte en un arreglo estricto de referencias (punteros) a los valores en memoria, eliminando el sobrecosto del diccionario.
+
+Esta es la representacion más básica de una estructura:
+```
+struct Punto3d {
+    float x;
+    float y;
+    float z;
+}
+```
+
+En Python, los objetos por defecto usan un diccionario interno dinámico para guardar atributos. Para lograr la representación real de un Struct en Python, se utiliza el campo `slots`. Internamente, la estructura se convierte en un arreglo estricto de referencias (punteros) a los valores en memoria, eliminando el diccionario.
  
 ```
 Instancia 'Punto3D' -> [ Header del Objeto ]
-                       [ Ref al valor 'x'  ] -> Objeto int/float
-                       [ Ref al valor 'y'  ] -> Objeto int/float
-                       [ Ref al valor 'z'  ] -> Objeto int/float
+                       [ Ref al valor 'x'  ] -> Objeto float
+                       [ Ref al valor 'y'  ] -> Objeto float
+                       [ Ref al valor 'z'  ] -> Objeto float
 ```
 
 ---
@@ -91,11 +101,8 @@ color_fondo = ColorRGB(255, 255, 255)
 - Cuando los campos de los datos son desconocidos y pueden cambiar dinámicamente en tiempo de ejecución (ej. procesar el cuerpo de un JSON arbitrario).
 ### Comparaciones
  
-| Estructura | Campos | Acceso | Memoria | Mutabilidad |
-|---|---|---|---|---|
-| Struct (`dataclass` + `slots`) | Fijos | $O(1)$ directo | Baja | Mutable |
-| `namedtuple` | Fijos | $O(1)$ directo | Muy baja | Inmutable |
-| `dict` | Dinámicos | $O(1)$ via hash | Alta (aunque depende de la escala) | Mutable |
+- vs Arreglo: La estructura viene a "ordenar" (no literalmente) los datos que podemos llegar a tener dentro de un Arreglo, en vez de accederlos por un indice, los tenemos definidos en la estructura con referencias y nombres. Además, el Arreglo necesita que los valores sean homogéneos, y la Estructura permite tener agrupados varios tipos de valores.
+- vs Mapa: Se asemejan en el hecho de que ambos trabajan con 'clave: valor', pero un mapa es dinámico y se le pueden agregar mas "clave valor" a como hagan falta, cuando en la estructura se resigna a la mutabilidad en pos de ser más eficiente a la hora de acceder a los datos. Depende el caso de uso puede ser mas útil una u otra. En el caso de un DTO una estructura es mucho mas prolijo que tener muchos mapas para representar cada dato.
  
 ### Ventajas / Desventajas
  
@@ -103,6 +110,7 @@ color_fondo = ColorRGB(255, 255, 255)
 - Acceso a campos extremadamente eficiente ($O(1)$).
 - Menor uso de memoria que un diccionario o una clase estándar (especialmente con `slots`).
 - Hace explícito el esquema de datos, facilitando el mantenimiento.
+
 **Desventajas:**
 - Esquema rígido: no admite campos nuevos en tiempo de ejecución (desperdiciando la alta mutabilidad de los datos en Python)
 - No encapsula lógica de negocio (se combina con clases cuando se necesita comportamiento).
@@ -137,4 +145,4 @@ La serialización de estos objetos para guardarlos en disco o enviarlos por red 
  
 - Documentación oficial de Python - *dataclasses*: <https://docs.python.org/3/library/dataclasses.html>
 - Documentación oficial de Python - *collections.namedtuple*: <https://docs.python.org/3/library/collections.html#collections.namedtuple>
-- Hettinger, R. (2018). *Dataclasses: The code generator to end all code generators*. Presentación en PyCon US 2018.
+- Record (en inglés) - <https://en.wikipedia.org/wiki/Record_(computer_science)>
