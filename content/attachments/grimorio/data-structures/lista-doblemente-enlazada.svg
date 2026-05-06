@@ -15,7 +15,7 @@
        refY="3"
        orient="auto">
       <path d="M 0,0 L 0,6 L 6,3 z"
-            style="fill:#cccccc;stroke:#cccccc;stroke-width:0.3" />
+            style="fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.3" />
     </marker>
   </defs>
 
@@ -23,26 +23,26 @@
   <text
      x="8"
      y="12"
-     style="font-size:4px;font-family:FreeSans;letter-spacing:0.3px;fill:#cccccc;stroke:#cccccc;stroke-width:0.15">
+     style="font-size:4px;font-family:FreeSans;letter-spacing:0.3px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.15">
     head
   </text>
 
   <text
      x="158"
      y="12"
-     style="font-size:4px;font-family:FreeSans;letter-spacing:0.3px;fill:#cccccc;stroke:#cccccc;stroke-width:0.15">
+     style="font-size:4px;font-family:FreeSans;letter-spacing:0.3px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.15">
     tail
   </text>
 
   <!-- Flechas head/tail -->
   <path
      d="M 14,14 V 18"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4"
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4"
      marker-end="url(#arrow)" />
 
   <path
      d="M 164,14 V 18"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4"
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4"
      marker-end="url(#arrow)" />
 
   <!-- Nodo 1 -->
@@ -51,22 +51,22 @@
      y="18"
      width="35"
      height="18"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4" />
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4" />
   <line x1="31.5" y1="18" x2="31.5" y2="36"
-        style="stroke:#cccccc;stroke-width:0.4" />
+        style="stroke:#4F5E6A;stroke-width:0.4" />
   <line x1="43.5" y1="18" x2="43.5" y2="36"
-        style="stroke:#cccccc;stroke-width:0.4" />
+        style="stroke:#4F5E6A;stroke-width:0.4" />
 
   <text x="23" y="29"
-        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     null
   </text>
   <text x="36" y="29"
-        style="font-size:4px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:4px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     12
   </text>
   <text x="46" y="29"
-        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     •
   </text>
 
@@ -76,22 +76,22 @@
      y="18"
      width="35"
      height="18"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4" />
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4" />
   <line x1="83.5" y1="18" x2="83.5" y2="36"
-        style="stroke:#cccccc;stroke-width:0.4" />
+        style="stroke:#4F5E6A;stroke-width:0.4" />
   <line x1="95.5" y1="18" x2="95.5" y2="36"
-        style="stroke:#cccccc;stroke-width:0.4" />
+        style="stroke:#4F5E6A;stroke-width:0.4" />
 
   <text x="76" y="29"
-        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     •
   </text>
   <text x="88" y="29"
-        style="font-size:4px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:4px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     99
   </text>
   <text x="98" y="29"
-        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     •
   </text>
 
@@ -101,56 +101,56 @@
      y="18"
      width="35"
      height="18"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4" />
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4" />
   <line x1="135.5" y1="18" x2="135.5" y2="36"
-        style="stroke:#cccccc;stroke-width:0.4" />
+        style="stroke:#4F5E6A;stroke-width:0.4" />
   <line x1="147.5" y1="18" x2="147.5" y2="36"
-        style="stroke:#cccccc;stroke-width:0.4" />
+        style="stroke:#4F5E6A;stroke-width:0.4" />
 
   <text x="128" y="29"
-        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     •
   </text>
   <text x="140" y="29"
-        style="font-size:4px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:4px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     37
   </text>
   <text x="149" y="29"
-        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#cccccc;stroke:#cccccc;stroke-width:0.12">
+        style="font-size:3.5px;font-family:FreeSans;letter-spacing:0.25px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.12">
     null
   </text>
 
   <!-- Flechas next -->
   <path
      d="M 55,23 H 72"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4"
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4"
      marker-end="url(#arrow)" />
   <path
      d="M 107,23 H 124"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4"
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4"
      marker-end="url(#arrow)" />
 
   <!-- Flechas prev -->
   <path
      d="M 72,31 H 55"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4"
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4"
      marker-end="url(#arrow)" />
   <path
      d="M 124,31 H 107"
-     style="fill:none;stroke:#cccccc;stroke-width:0.4"
+     style="fill:none;stroke:#4F5E6A;stroke-width:0.4"
      marker-end="url(#arrow)" />
 
   <!-- Etiquetas de campos -->
   <text x="24" y="42"
-        style="font-size:3.2px;font-family:FreeSans;letter-spacing:0.2px;fill:#cccccc;stroke:#cccccc;stroke-width:0.1">
+        style="font-size:3.2px;font-family:FreeSans;letter-spacing:0.2px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.1">
     prev
   </text>
   <text x="35.5" y="42"
-        style="font-size:3.2px;font-family:FreeSans;letter-spacing:0.2px;fill:#cccccc;stroke:#cccccc;stroke-width:0.1">
+        style="font-size:3.2px;font-family:FreeSans;letter-spacing:0.2px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.1">
     dato
   </text>
   <text x="45.5" y="42"
-        style="font-size:3.2px;font-family:FreeSans;letter-spacing:0.2px;fill:#cccccc;stroke:#cccccc;stroke-width:0.1">
+        style="font-size:3.2px;font-family:FreeSans;letter-spacing:0.2px;fill:#4F5E6A;stroke:#4F5E6A;stroke-width:0.1">
     next
   </text>
 </svg>
