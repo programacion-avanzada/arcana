@@ -51,7 +51,7 @@ Una **colisión** ocurre cuando dos claves distintas generan el mismo índice en
 
 ### Representación
 
-![Muestra](https://i.postimg.cc/0j4nj4HY/Screenshot-2026-05-04-173816.png)
+![Muestra](/attachments/grimorio/hash_table.svg)
 
 Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez sobre matrices (dependiendo de la cantidad de componentes de la clave). La función hash, a partir de la clave en formato String que le demos, en este caso “abel”, nos dará el índice del vector en el que se guardará el valor. En caso de colisión, se usan listas, árboles o direccionamiento abierto. 
 
@@ -83,7 +83,15 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 
 ### Complejidad Temporal
 
-![Tabla Complejidad](https://i.postimg.cc/3w5VrkPd/Screenshot-2026-05-04-170858.png)
+| Métodos | Promedio | Resolución: Lista Enlazada | Resolución: Árbol binario |
+| :--- | :--- | :--- | :--- |
+| `hash(clave)` | *O(m)*<sup>1</sup> | - | - | siendo *m* la cantidad de caracteres de la clave.
+| `insertar(clave, valor)` | *O(1)* | *O(n)* | *O(log(n))* |
+| `buscar(clave)` | *O(1)* | *O(n)* | *O(log(n))* |
+| `eliminar(clave)` | *O(1)* | *O(n)* | *O(log(n))* |
+
+<sup>1</sup>Siendo *m* la cantidad de caracteres de la clave.
+
 
 ---
 
