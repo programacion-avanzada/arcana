@@ -1,4 +1,4 @@
-# Artículo sobre string
+# String (Cadena)
 
 ## 1. Qué es y cómo funciona
 
@@ -8,22 +8,14 @@ Un String (cadena de caracteres) es, en esencia, una secuencia ordenada de carac
 
 Permite **representar y manipular texto** de forma eficiente, preservando el orden de los caracteres.
 
-Problema que resuelve:
-
-Los strings permiten trabajar con información textual de forma eficiente, facilitando:
+Los strings facilitan:
 
 - Almacenamiento de texto (nombres, mensajes, archivos)
 - Búsqueda de patrones (ej: encontrar una palabra dentro de otra)
 - Transformaciones (concatenar, reemplazar, cortar partes)
 - Procesamiento de datos (parsing, validación, formateo)
 
-Sin esta estructura, manipular texto implicaría manejar manualmente colecciones de caracteres, lo que sería más complejo y propenso a errores.
-
 ### Definición / propiedades
-
-Definición formal: invariantes y reglas que siempre se cumplen.
-
-Propiedades clave: orden, acotamiento, restricciones sobre elementos, estabilidad, etc.
 
 #### Definición formal
 
@@ -135,6 +127,9 @@ Aunque lo más común es un array, también existen otras implementaciones:
 8. **Append (Añadir al final)**
    **Función:** Agrega contenido al final; en strings inmutables implica copia, en buffers evita este costo.
 
+9. **Slice (Subcadena)**
+   **Función:** Extrae una porción del string dado un rango de índices, generando una nueva cadena.
+
 ### Complejidad
 
 | Operación      | Tiempo (peor caso) | Complejidad Espacial |
@@ -146,6 +141,7 @@ Aunque lo más común es un array, también existen otras implementaciones:
 | Find           | O(n*m)             | O(1)                 |
 | Compare        | O(n)               | O(1)                 |
 | Length         | O(1)               | O(1)                 |
+| Slice          | O(k)               | O(k)                 |
 
 ### Detalles operativos
 
@@ -183,28 +179,27 @@ Estructura básica:
 
 ### Invariantes
 
-La implementación debe garantizar las invariantes anteriormente mencionadas, además según el caso:
+Invariantes según el caso:
 
 - En strings inmutables: no modificar el contenido
-- En buffers: tamaño ≤ capacidad (el tamaño del string no debe superar la capacidad máxima del buffer)
-- En C: el string debe terminar con \0 (carácter de fin de string).
-
-Romper estos invariantes puede causar errores de memoria o datos inconsistentes.
+- En buffers: tamaño ≤ capacidad
+- En C: debe terminar con \0
 
 ### Ejemplo de código
 
-**Concatenación (inmutable)**
+**Concatenación: antipatrón vs solución**
 
 ```python
-def concat(a, b):
-    return a + b
+# O(n²): cada += crea un nuevo string
+resultado = ""
+for palabra in ["hola", " ", "mundo"]:
+    resultado += palabra
 
-print(concat("hola", " mundo"))
+# O(n): join construye el string una sola vez
+resultado = " ".join(["hola", "mundo"])
 ```
 
-**Resultado**: "hola mundo".
-
-Se utiliza el operador + para unir dos strings. Esta operación **crea un nuevo string**, copiando ambos contenidos, sin modificar los originales.
+En strings inmutables, cada `+=` genera una copia completa. `join` evita ese costo construyendo el resultado en un único paso.
 
 **Construcción eficiente (buffer)**
 
@@ -218,16 +213,13 @@ for _ in range(5):
 print(buffer.getvalue())
 ```
 
-**Resultado**: "aaaaa".
-Se usa un buffer (StringIO) para agregar caracteres repetidamente. En lugar de crear nuevos strings en cada paso, **se reutiliza el mismo espacio en memoria**, y el resultado final se obtiene al convertir el buffer a string.
+Se usa un buffer para acumular caracteres sin crear nuevos strings en cada paso, reduciendo el costo a O(n)
 
 ---
 
 ## 4. Uso y criterio
 
 ### Casos de uso
-
-Los strings se utilizan para representar y manipular informacion textual.
 
 Casos típicos:
 
@@ -237,13 +229,7 @@ Casos típicos:
 - **Comunicación entre sistemas**: protocolos (JSON, XML, HTTP)
 - **Identificadores y etiquetas**: nombres de usuario, IDs
 
-También son fundamentales en algoritmos de parsing y analisis léxico.
-
 ### Cuándo NO usarlo
-
-No son adecuados cuando predominan **modificaciones frecuentes**, especialmente por su inmutabilidad en muchos lenguajes.
-
-Casos donde conviene evitarlos:
 
 - **Concatenaciones repetidas (ej: en bucles)**
   Generan múltiples copias → costo O(n²)
@@ -275,13 +261,10 @@ Alternativas: buffers mutables (StringBuilder), arrays de caracteres o estructur
 
 ### Señales de reconocimiento
 
-El enunciado menciona búsqueda de subcadenas, validar formatos o extraer partes del texto.
-
-El problema requiere comunicación vía JSON, XML o protocolos HTTP, donde el texto es el estándar universal.
-
-Escenarios donde el volumen de lecturas supera ampliamente al de modificaciones.
-
-Para datos que definen un objeto y no deben cambiar (Nombres, IDs).
+- El enunciado menciona búsqueda de subcadenas, validación de formatos o extracción de partes del texto.
+- El problema requiere comunicación vía JSON, XML o HTTP.
+- El volumen de lecturas supera ampliamente al de modificaciones.
+- Los datos no deben cambiar (nombres, IDs, claves).
 
 ---
 
@@ -289,13 +272,15 @@ Para datos que definen un objeto y no deben cambiar (Nombres, IDs).
 
 ### Variantes
 
-Existen variantes que abordan limitaciones del string estándar, como su inmutabilidad y el costo de ciertas operaciones. Entre ellas se destacan los buffers mutables (StringBuilder) para construcción eficiente, los ropes para textos grandes y los tries para autocompletado.
+- **StringBuilder / buffer mutable:** construcción eficiente de strings, evita copias innecesarias.
+- **Rope:** optimiza concatenaciones e inserciones en textos grandes.
+- **Trie:** estructura de prefijos, facilita autocompletado y búsqueda de patrones.
 
 ### Relación con otras estructuras
 
-Depende de la estructura del array, como mencionamos anteriormente, un String es un array especifico de caracteres.
+El string se apoya conceptualmente en el array: es un array especializado de caracteres.
 
-Una de las relaciones más notables es con los Hash Tables... ya que, un string inmutable, permite que su código sea calculado una sola vez y cacheado, convirtiendo los strings en las llaves más eficientes de todas las estructuras de datos.
+Su inmutabilidad los convierte en claves ideales para hash tables: el hash se calcula una sola vez y se cachea.
 
 ### Notas avanzadas
 
@@ -307,11 +292,7 @@ Una de las relaciones más notables es con los Hash Tables... ya que, un string 
 
 ## 6. Referencias y recursos
 
-Enlaces y libros de referencia, artículos científicos.
-
 - <www.freecodecamp.org>
 - <http://www.harpercollege.edu/bus-ss/cis/166/mmckenzi/contents.htm>
 - <http://bstring.sourceforge.net>
 - <http://www.cs.princeton.edu/courses/archive/spring02/cs217/asgts/ish/ish.html>
-
-Visualizaciones y demostraciones.
