@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="60mm"
+   height="40mm"
+   viewBox="0 0 60 40"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      text { font-size: 3.52777px; font-family: FreeSans, sans-serif; fill: #cccccc; }
+      rect { fill: none; stroke: #cccccc; stroke-width: 0.223065; }
+      line { stroke: #cccccc; stroke-width: 0.223065; }
+    </style>
+  </defs>
+
+  <!-- Header: clave / valor -->
+  <text x="10" y="6" text-anchor="middle">clave</text>
+  <text x="36" y="6" text-anchor="middle">valor</text>
+
+  <!-- Tabla exterior -->
+  <rect x="2" y="8" width="16" height="28" />
+  <rect x="20" y="8" width="20" height="28" />
+
+  <!-- Divisores horizontales -->
+  <line x1="2"  y1="15" x2="18" y2="15" />
+  <line x1="20" y1="15" x2="40" y2="15" />
+  <line x1="2"  y1="22" x2="18" y2="22" />
+  <line x1="20" y1="22" x2="40" y2="22" />
+  <line x1="2"  y1="29" x2="18" y2="29" />
+  <line x1="20" y1="29" x2="40" y2="29" />
+
+  <!-- Fila 1 -->
+  <text x="10" y="13" text-anchor="middle">"nombre"</text>
+  <text x="30" y="13" text-anchor="middle">"Alicia"</text>
+
+  <!-- Fila 2 -->
+  <text x="10" y="20" text-anchor="middle">"edad"</text>
+  <text x="30" y="20" text-anchor="middle">30</text>
+
+  <!-- Fila 3 -->
+  <text x="10" y="27" text-anchor="middle">"ciudad"</text>
+  <text x="30" y="27" text-anchor="middle">"Córdoba"</text>
+
+  <!-- Fila 4 -->
+  <text x="10" y="34" text-anchor="middle">"activo"</text>
+  <text x="30" y="34" text-anchor="middle">true</text>
+
+  <!-- Flecha insert -->
+  <text x="43" y="13" font-size="3.52777px" fill="#cccccc">← insert</text>
+  <!-- Flecha find -->
+  <text x="43" y="20" font-size="3.52777px" fill="#cccccc">← find</text>
+  <!-- Flecha delete -->
+  <text x="43" y="27" font-size="3.52777px" fill="#cccccc">← delete</text>
+</svg>
