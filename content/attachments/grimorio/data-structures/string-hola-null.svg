@@ -1,0 +1,41 @@
+<svg width="600" height="100" viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .cell     { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .cell-null{ fill: #fff4e6; stroke: #c0742a; stroke-width: 1.5; stroke-dasharray: 5,3; }
+    .char     { font-size: 24px; font-weight: 700; fill: #1a1a2e; }
+    .char-null{ font-size: 16px; font-weight: 700; fill: #a0522d; }
+    .idx      { font-size: 12px; fill: #777777; }
+    .idx-null { font-size: 12px; fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .cell      { fill: #1e2330; stroke: #4a6fa5; }
+      .cell-null { fill: #2a1f10; stroke: #d4884a; }
+      .char      { fill: #e2e8f0; }
+      .char-null { fill: #d4884a; }
+      .idx       { fill: #8899aa; }
+      .idx-null  { fill: #d4884a; }
+    }
+  </style>
+
+  <rect x="60"  y="18" width="80" height="56" rx="6" class="cell"/>
+  <text x="100" y="57" text-anchor="middle" class="char">h</text>
+
+  <rect x="148" y="18" width="80" height="56" rx="6" class="cell"/>
+  <text x="188" y="57" text-anchor="middle" class="char">o</text>
+
+  <rect x="236" y="18" width="80" height="56" rx="6" class="cell"/>
+  <text x="276" y="57" text-anchor="middle" class="char">l</text>
+
+  <rect x="324" y="18" width="80" height="56" rx="6" class="cell"/>
+  <text x="364" y="57" text-anchor="middle" class="char">a</text>
+
+  <!-- Terminador nulo -->
+  <rect x="412" y="18" width="80" height="56" rx="6" class="cell-null"/>
+  <text x="452" y="53" text-anchor="middle" class="char-null">\0</text>
+
+  <text x="100" y="90" text-anchor="middle" class="idx">0</text>
+  <text x="188" y="90" text-anchor="middle" class="idx">1</text>
+  <text x="276" y="90" text-anchor="middle" class="idx">2</text>
+  <text x="364" y="90" text-anchor="middle" class="idx">3</text>
+  <text x="452" y="90" text-anchor="middle" class="idx-null">4</text>
+</svg>

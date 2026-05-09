@@ -1,0 +1,38 @@
+<svg width="600" height="120" viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .row-label { font-size: 12px; fill: #888888; }
+    .cell      { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .char      { font-size: 24px; font-weight: 700; fill: #1a1a2e; }
+    .idx-val   { font-size: 14px; font-weight: 600; fill: #4a6fa5; }
+    @media (prefers-color-scheme: dark) {
+      .row-label { fill: #8899aa; }
+      .cell      { fill: #1e2330; stroke: #4a6fa5; }
+      .char      { fill: #e2e8f0; }
+      .idx-val   { fill: #6a9fd8; }
+    }
+  </style>
+
+  <!-- Row labels -->
+  <text x="8" y="36" class="row-label">Índices</text>
+  <text x="8" y="90" class="row-label">Contenido</text>
+
+  <!-- Index row -->
+  <text x="196" y="36" text-anchor="middle" class="idx-val">0</text>
+  <text x="300" y="36" text-anchor="middle" class="idx-val">1</text>
+  <text x="404" y="36" text-anchor="middle" class="idx-val">2</text>
+  <text x="508" y="36" text-anchor="middle" class="idx-val">3</text>
+
+  <!-- Content cells -->
+  <rect x="148" y="48" width="96" height="56" rx="6" class="cell"/>
+  <text x="196" y="87" text-anchor="middle" class="char">c</text>
+
+  <rect x="252" y="48" width="96" height="56" rx="6" class="cell"/>
+  <text x="300" y="87" text-anchor="middle" class="char">h</text>
+
+  <rect x="356" y="48" width="96" height="56" rx="6" class="cell"/>
+  <text x="404" y="87" text-anchor="middle" class="char">a</text>
+
+  <rect x="460" y="48" width="96" height="56" rx="6" class="cell"/>
+  <text x="508" y="87" text-anchor="middle" class="char">t</text>
+</svg>
