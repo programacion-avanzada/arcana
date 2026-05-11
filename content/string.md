@@ -1,3 +1,9 @@
+---
+title: 'String (Cadena)'
+tags: ['data-structures']
+alias: ['string', 'cadena', 'cadena de caracteres']
+---
+
 # String (Cadena)
 
 ## 1. Qué es y cómo funciona
@@ -5,7 +11,6 @@
 ### Intuición
 
 Un String (cadena de caracteres) es, en esencia, una secuencia ordenada de caracteres (letras, números, símbolos) que se tratan como una única unidad.
-
 Permite **representar y manipular texto** de forma eficiente, preservando el orden de los caracteres.
 
 Los strings facilitan:
@@ -71,7 +76,7 @@ En lenguajes como C, además, se utiliza un carácter especial de terminación (
 
 ![Representación en memoria de "hola" con terminador nulo](/attachments/grimorio/data-structures/string-hola-null.svg)
 
-#### Ilustración (ASCII)
+#### Ilustración
 
 String: `"chat"`
 
@@ -120,16 +125,16 @@ Aunque lo más común es un array, también existen otras implementaciones:
 
 ### Complejidad
 
-| Operación      | Tiempo (peor caso) | Complejidad Espacial |
-| -------------- | ------------------ | -------------------- |
-| Access         | O(1)               | O(1)                 |
-| Insert / Delete| O(n)               | O(n)                 |
-| Append         | O(n)               | O(n)                 |
-| Concat         | O(n + m)           | O(n + m)             |
-| Find           | O(n*m)             | O(1)                 |
-| Compare        | O(n)               | O(1)                 |
-| Length         | O(1)               | O(1)                 |
-| Slice          | O(k)               | O(k)                 |
+| Operación       | Tiempo (peor caso)                       | Complejidad Espacial |
+| --------------- | ---------------------------------------- | -------------------- |
+| Access          | O(1)                                     | O(1)                 |
+| Insert / Delete | O(n)                                     | O(n)                 |
+| Append          | O(n) inmutable / O(1) amortizado mutable | O(n)                 |
+| Concat          | O(n + m)                                 | O(n + m)             |
+| Find            | O(n*m) naive / O(n+m) KMP                | O(1)                 |
+| Compare         | O(n)                                     | O(1)                 |
+| Length          | O(1) ASCII / O(n) UTF-8 sin índice       | O(1)                 |
+| Slice           | O(k)                                     | O(k)                 |
 
 ### Detalles operativos
 
@@ -280,7 +285,7 @@ Su inmutabilidad los convierte en claves ideales para hash tables: el hash se ca
 
 ## 6. Referencias y recursos
 
-- <www.freecodecamp.org>
-- <http://www.harpercollege.edu/bus-ss/cis/166/mmckenzi/contents.htm>
-- <http://bstring.sourceforge.net>
-- <http://www.cs.princeton.edu/courses/archive/spring02/cs217/asgts/ish/ish.html>
+- [FreeCodeCamp - Strings](https://www.freecodecamp.org)
+- [Harper College - Data Structures](http://www.harpercollege.edu/bus-ss/cis/166/mmckenzi/contents.htm)
+- [Better String Library](http://bstring.sourceforge.net)
+- [Princeton CS217 - String Assignment](http://www.cs.princeton.edu/courses/archive/spring02/cs217/asgts/ish/ish.html)
