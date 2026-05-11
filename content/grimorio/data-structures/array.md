@@ -32,21 +32,7 @@ Un **array** se representa internamente como un **bloque contiguo de memoria**, 
 
 El acceso a un elemento se realiza calculando su dirección de memoria a partir de una dirección base  y un desplazamiento fijo (stride) multiplicado por el índice. Esta organización es la que permite que el acceso por índice tenga complejidad $O(1)$. 
 
-```text
-
-Índice:      \[0\]          \[1\]          \[2\]          \[3\]
-
-            \+------------+------------+------------+------------+
-
-Dato:       |   0xAF21   |   0xBC10   |   0x0042   |   0x1998   |
-
-            \+------------+------------+------------+------------+
-
-Dirección:   0x1000       0x1004       0x1008       0x100C
-
-Stride:      (Base)      (+4 bytes)   (+4 bytes)   (+4 bytes)
-
-```
+![](/attachments/grimorio/data-structures/array.svg)
 
 Se observa una estructura lineal donde cada elemento es accesible directamente mediante su índice. El cálculo de indexación es $Dirección(A[i]) = base + i × tamaño$.
 
