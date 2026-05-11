@@ -1,4 +1,9 @@
-# Deque (Double-ended Queue)
+---
+title: 'Deque (Double-ended Queue)'
+tags: ['data-structures', 'template']
+alias: ['Deque', 'Double-ended queue']
+---
+
 ## 1. Qué es y cómo funciona
 ### Intuición
 Un deque (pronunciado "deck", acrónimo de Double-Ended Queue) es un tipo especial de estructura de datos que permite añadir y eliminar elementos de ambos extremos de forma eficiente. Resuelve problemas donde se necesita la flexibilidad de una pila y una cola simultáneamente.
@@ -34,14 +39,16 @@ Internamente, se organiza como una secuencia de nodos o bloques. A diferencia de
 | :--- | :--- |
 | `append(x)` / `appendleft(x)` | $O(1)$ |
 | `pop()` / `popleft()` | $O(1)$ |
-| `clear()` | $O(1)$ |
+| `clear()` | $O(1)$ / $O(n)$  |
 | `extend(iterable)` / `extendleft(iterable)` | $O(k)$ |
-| `rotate(n)` | $O(k)$ |
+| `rotate(n)` | $O(n)$ |
 | `remove(x)` | $O(n)$ |
 | `count(x)` | $O(n)$ |
 | `Indexación` | $O(n)$ |
 | `reverse()` | $O(n)$ |
 | `Espacio` | $O(n)$ |
+
+La complejidad del metodo `clear()` sera mayor si no esta presente el **Garbage collector**, como en C.
 
 ### Detalles operativos
 - Flexibilidad: Al permitir push y pop en ambos lados, un deque puede actuar como una pila (usando solo un extremo) o como una cola (insertando en uno y quitando en otro).
@@ -59,8 +66,14 @@ Se usan dos punteros para los extremos. En una lista doblemente enlazada, son lo
 - Si la estructura se considera que está vacía cuando el puntero front y back son nulos simultáneamente.
 ### Ejemplo de código
 ```python
+# El atributo `maxLen` no puede ser cambiado posteriormente.
+# Si se le asignó un valor y el objeto alcanzó el límite establecido, se eliminará automáticamente el elemento de la punta contraria; en caso contrario, se insertará normalmente.
+
+
 class Deque:
     def __init__(self, maxLen=None):
+        if self.maxLen < 0:
+            raise ValueError("maxLen tiene un valor negativo")
         self.maxLen = maxLen
         self.primero = None
         self.ultimo = None
