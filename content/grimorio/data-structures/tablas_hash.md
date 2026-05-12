@@ -1,31 +1,22 @@
-# Trabajo Práctico – Tablas Hash
-
-## Objetivo
-
-Este trabajo práctico se propone revisar estructuras de datos previamente aprendidas y repasar su uso y aplicación. Asimismo, servirá para engrosar el Grimorio, dejando la impronta del grupo en el material evolutivo de la cátedra.
-
+---
+title: 'Tabla Hash (Hash Table)'
+tags: ['data-structures']
+alias: ['hash table', 'tabla hash']
 ---
 
-## ¿Qué es y cómo funciona?
+## 1. ¿Qué es y cómo funciona?
 
 ### Intuición
-
 Una tabla hash funciona como un conjunto de cajones numerados donde, mediante una fórmula (función hash), cada elemento se guarda y se busca directamente en una posición específica sin recorrer toda la estructura.
-
----
 
 ### Definición y propiedades
 
 #### Definición
-
 Una **Tabla Hash** permite almacenar y recuperar elementos de manera eficiente implementando el tipo de dato abstracto **diccionario**, asociando claves (*key*) con valores (*value*).
 
 Permite búsquedas, inserciones y eliminaciones eficientes usando una función hash que transforma la clave en un índice.
 
----
-
 #### Propiedades
-
 - **Unicidad de ubicación relativa**:  
   Para una clave `k`, la función hash `h(k)` determina la posición inicial donde debe almacenarse o buscarse.
 
@@ -41,24 +32,15 @@ Permite búsquedas, inserciones y eliminaciones eficientes usando una función h
 - **Factor de carga controlado**:  
   La relación entre la cantidad de elementos almacenados y el tamaño de la tabla (load factor) debe mantenerse dentro de ciertos límites para preservar la eficiencia. Si se supera, se realiza un *rehashing*
 
----
-
 #### ¿Qué son las *colisiones*?
-
 Una **colisión** ocurre cuando dos claves distintas generan el mismo índice en la tabla hash. Es inevitable y debe resolverse con técnicas específicas.
 
----
-
 ### Representación
-
 ![Muestra](/content/attachments/grimorio/data-structures/hash_table.svg)
 
 Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez sobre matrices (dependiendo de la cantidad de componentes de la clave). La función hash, a partir de la clave en formato String que le demos, en este caso “abel”, nos dará el índice del vector en el que se guardará el valor. En caso de colisión, se usan listas, árboles o direccionamiento abierto. 
 
----
-
-### Componentes
-
+#### Componentes
 - **Vector (Bucket Array)**  
   Un vector de tamaño fijo o dinámico que contiene cuvetas (buckets) o ranuras
 
@@ -68,54 +50,57 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 - **Bucket**  
   Posición donde se guarda el elemento (valor), dependiendo del método de resolución de colisiones, este puede almacenar uno o más elementos
 
----
-
-## Operaciones y complejidad
+## 2. Operaciones y complejidad
 
 ### Operaciones principales
-
 - `hash(clave)` → convierte la clave string en un numero índice del vector  
 - `insertar(clave, valor)` → guarda el valor en la posición del vector dado por la función hash
 - `buscar(clave)` → busca y devuelve el valor en base a la clave dada calculando su hash
 - `eliminar(clave)` → busca y elimina el valor en base a la clave dada calculando su hash
 
----
+### Complejidad
 
-### Complejidad Temporal
-
-| Métodos | Promedio | Resolución: Lista Enlazada | Resolución: Árbol binario |
+#### Complejidad Temporal
+| Métodos | Promedio<sup>1</sup> | Peor caso / Con colisiones<br>Resolución: Lista enlazada | Peor caso / Con colisiones<br>Resolución: Árbol binario |
 | :--- | :--- | :--- | :--- |
-| `hash(clave)` | *O(m)*<sup>1</sup> | - | - | siendo *m* la cantidad de caracteres de la clave.
-| `insertar(clave, valor)` | *O(1)* | *O(n)* | *O(log(n))* |
+| `hash(clave)` | *O(m)*<sup>2</sup> | - | - |
+| `insertar(clave, valor)` | *O(1)* | *O(n)*<sup>3</sup> | *O(log(n))* |
 | `buscar(clave)` | *O(1)* | *O(n)* | *O(log(n))* |
 | `eliminar(clave)` | *O(1)* | *O(n)* | *O(log(n))* |
 
-<sup>1</sup>Siendo *m* la cantidad de caracteres de la clave.
+**Notas:**
 
+<sup>1</sup>El promedio aplica para cada subestructura de resolución.
 
----
+<sup>2</sup>Siendo *m* la cantidad de caracteres de la clave.
 
-### Complejidad Espacial
+<sup>3</sup>Para cada *n* en las celdas, se hace referencia a la cantidad de elementos de la subestructura de resolución.
 
+#### Complejidad Espacial
 Esta complejidad puede verse afectada en gran parte por la función de Hash, debido a que según cómo sea de precisa y manejada podemos evitar **colisiones**, variando así las posibilidades de tener un mayor o menor uso de la complejidad espacial, en normas generales podemos deducir que ganamos “velocidad” en cuánto a complejidad computacional, sin embargo perdemos en complejidad espacial, ya que requerimos más estructuras dinámicas o un mayor uso de la memoria para guardar los elementos en caso de tener colisiones, lo que desencadena en que vamos a tener estructuras auxiliares (listas nodos, etc) o también es común que tengamos ciertos espacios vacíos en el array. 
 
 - Espacio total: `O(n)`
 
----
-
 ### Detalles operativos
+- **Puede haber colisiones**: Distintas claves pueden mapear al mismo índice; deben resolverse con encadenamiento o direccionamiento abierto.
+- **Depende de la función hash**: Una mala función hash degrada el rendimiento hacia O(n).
+- **Factor de carga y redimensionamiento**: Cuando la tabla se llena demasiado, se realiza **rehashing**, lo cual es costoso pero poco frecuente (costo amortizado).
+- **Claves deben ser hashables**: En implementaciones como Python, deben ser inmutables (ej: `str`, `int`, `tuple`). 
+- **No mantiene orden (en general)**: Salvo implementaciones específicas (como `dict` en Python moderno), no se garantiza orden de inserción.
+- **Posible clustering (direccionamiento abierto)**: La acumulación de elementos contiguos puede degradar el rendimiento.
+- **Uso eficiente para búsquedas, no para recorridos ordenados**: Si se necesita orden, otras estructuras (como árboles balanceados) son más adecuadas.
 
-- **Puede haber colisiones**: Distintas claves pueden mapear al mismo índice; deben resolverse con encadenamiento o direccionamiento abierto
-- **Depende de la función hash**: Una mala función hash degrada el rendimiento hacia O(n)
-- **Factor de carga y redimensionamiento**: Cuando la tabla se llena demasiado, se realiza **rehashing**, lo cual es costoso pero poco frecuente (costo amortizado)
-- **Claves deben ser hashables**: En implementaciones como Python, deben ser inmutables (ej: `str`, `int`, `tuple`)  
-- **No mantiene orden (en general)**: La acumulación de elementos contiguos puede degradar el rendimiento
-- **Posible clustering (direccionamiento abierto)**: La acumulación de elementos contiguos puede degradar el rendimiento
-- **Uso eficiente para búsquedas, no para recorridos ordenados**: Si se necesita orden, otras estructuras (como árboles balanceados) son más adecuadas 
+## 3. Implementaciones
 
----
+### Idea de implementación
+Mantener una colección de pares clave-valor distribuida en posiciones calculadas mediante una función hash.
+Cada clave se transforma en un índice del arreglo interno (bucket), permitiendo acceso rápido a los datos.
 
-## Implementaciones
+### Invariantes
+- Toda clave válida debe poder ubicarse mediante la misma función hash.
+- Cada elemento debe encontrarse en el bucket correspondiente a su hash.
+- La estructura debe manejar correctamente las colisiones sin perder información.
+- La cantidad de elementos almacenados nunca supera la capacidad lógica definida.
 
 ### Construyendo una tabla hash propia
 
@@ -149,11 +134,19 @@ class HashTable:
                 if k == key:
                     return v
         return None
+
+    def delete(self, key):
+        index = self.hash_function(key)
+        if self.table[index] is not None:
+            for i, (k, v) in enumerate(self.table[index]):
+                if k == key:
+                    del self.table[index][i]
+                    return
 ```
 
----
 
-### Memoización con tabla hash (Ackermann)
+#### Ejemplo de uso típico
+Memoización con tabla hash (Ackermann)
 
 ```python
 def suma_ackermann(m, n, hashtable):
@@ -184,160 +177,118 @@ def suma_ackermann(m, n, hashtable):
 
 ---
 
-## Uso y Criterio
+## 4. Uso y Criterio
 
 ### Casos de uso
-
 - Diccionarios  
 - Cachés  
 - Conteo de frecuencias  
 - Verificación de pertenencia  
 - Eliminación de duplicados  
 
----
-
 ### Cuándo NO usarlo
-
 - Cuando se necesita orden  
 - Recorridos ordenados  
 - Datasets pequeños  
 - Muchas colisiones  
 
----
-
 ### Comparaciones
-
 - **vs listas** → mejor búsqueda  
 - **vs arrays** → mejor acceso por clave  
 - **vs árboles** → más rápida en promedio, pero sin orden  
 
----
-
 ### Ventajas
-
 - Acceso promedio `O(1)`  
 - Alta eficiencia  
 - Flexibilidad de claves  
 
----
-
 ### Desventajas
-
 - No mantiene orden  
 - Depende de la función hash  
 - Puede degradar a `O(n)`  
 - Mayor uso de memoria  
 
----
-
 ### Señales de reconocimiento
-
 - Búsqueda frecuente por clave
 - Necesidad de rapidez
 - Necesidad de conteo
 - Necesidad de verificación de existencia
 
----
-
 ### ¿Cuándo conviene usarlo?
-
 - Cuando el problema requiere acceso rápido por clave y el orden no es importante
-
----
 
 **Trade off**: Una tabla de hash permite realizar operaciones fundamentales en tiempo constante promedio (O(1)), siendo altamente eficiente para búsquedas y actualizaciones. Sin embargo, su rendimiento depende críticamente de la calidad de la función hash, el manejo de colisiones y el control del factor de carga.
 
----
 
-## Relaciones y Extensiones
+## 5. Relaciones y Extensiones
 
 ### Variantes según manejo de colisiones
 
 #### Open Addressing (direccionamiento abierto)
-
 En lugar de usar listas, todo se guarda en el mismo arreglo.
 - Linear Probing: busca la siguiente posición libre secuencialmente. Simple, pero sufre de clustering
 - Quadratic Probing: salta en intervalos cuadráticos. Reduce clustering, pero puede no cubrir toda la tabla
 - Double Hashing: usa una segunda función hash para el salto. Mucho mejor distribución, menos colisiones
 
----
-
 #### Separate Chaining
-
 Cada índice apunta a una lista (o estructura).
 - Listas enlazadas (clásico)
 - Árboles balanceados (como en Java desde Java 8)
 
 Más flexible, pero usa más memoria
 
----
-
 ### Mejoras modernas optimizadas
 
 #### Cuckoo Hashing
-
 - Usa **dos funciones hash** y permite reubicar elementos  
 - Búsqueda `O(1)` garantizada  
 - Inserciones pueden ser costosas por reubicaciones
 
----
-
 #### Robin Hood Hashing
-
 - Idea: “robar” slots si reduces la desigualdad
 - Minimiza la variación en tiempos de búsqueda
 - Muy eficiente en práctica (usado en sistemas reales)
 
----
-
 ### Versiones Orientadas a Memoria Caché
 
 #### Cache-conscious Hash Table
-
 - Diseñadas para aprovechar mejor la caché del CPU  
 - Menos saltos de memoria → más rápidas en práctica
 
---- 
-
 ### Optimizaciones Comunes
-
 - Resize dinámico (rehashing)
 - Funciones hash universales
 - Load factor tuning
 - Evitar clustering primario/secundario
 
----
-
 ### Relaciones con Otras Estructuras
-
 **Base del tipo abstracto “diccionario” (mapa)**: Generaliza la idea de asociar claves con valores, similar a estructuras como mapas ordenados, pero optimizada para acceso directo en lugar de orden.
+
 **Alternativa a árboles de búsqueda (como BST o árboles balanceados)**: Mientras los árboles mantienen los datos ordenados con complejidad O(log n), la hash table prioriza velocidad O(1) promedio sacrificando el orden.
+
 **Usada en conjuntos (sets)**: Implementa estructuras donde solo interesa la pertenencia de elementos (sin valores asociados), reutilizando el mecanismo de hashing.
+
 **Base de índices y cachés**: Se utiliza para acceso rápido en sistemas como cachés, tablas de símbolos en compiladores y bases de datos (indexación por clave).
+
 **Puede combinarse con otras estructuras**: Por ejemplo:
  - Hash table + lista enlazada (encadenamiento)
  - Hash table + arrays dinámicos (implementaciones modernas como en Python)
 
 **No adecuada para datos ordenados o recorridos secuenciales eficientes**: Si se requiere mantener orden o hacer búsquedas por rango, estructuras como árboles balanceados son más apropiadas.
 
----
-
 ### Notas avanzadas
 
 #### Estructuras inmutables
-
 Una hash table puede implementarse de forma **persistente** (inmutable), donde cada operación (insertar, borrar, actualizar) devuelve una nueva versión sin modificar la anterior. Esto se logra mediante **sharing estructural**: en lugar de copiar toda la tabla, solo se duplican las partes afectadas.
 Un enfoque común en lenguajes funcionales es usar estructuras como **Hash Array Mapped Trie (HAMT)**.
 
-##### Implicancias
-
+##### Implicancias:
 - Las operaciones siguen siendo cercanas a O(1) promedio (a veces O(log n) por la estructura tipo trie).
 - Se comparten grandes porciones de memoria entre versiones → eficiencia espacial.
 - Permite funcionalidades como **undo/redo**, backtracking o concurrencia sin locks.
 - Trade-off: mayor complejidad de implementación y overhead constante mayor que una tabla mutable.
 
 #### Concurrencia (thread-safety)
-
 Una hash table compartida entre múltiples hilos puede sufrir **race conditions** si no se sincroniza correctamente.
 Existen varias estrategias:
 - Bloqueo global (mutex): Toda la tabla se protege con un lock.
@@ -345,15 +296,13 @@ Existen varias estrategias:
 - Implementaciones lock-free / concurrentes: Usan operaciones atómicas (como compare-and-swap) para evitar locks.
 - Tablas thread-local: Cada hilo mantiene su propia tabla para evitar compartir estado.
 
-##### Implicancias
-
+##### Implicancias:
 - Con locks globales: simple pero puede haber contención.
 - Con granularidad fina: mejor paralelismo, más complejidad.
 - Lock-free: alta escalabilidad, pero difícil de implementar correctamente.
 - Rehashing es especialmente delicado en concurrencia (puede requerir detener o coordinar hilos).
 
 #### Aleatoriedad (hashing y seguridad)
-
 El comportamiento de una hash table depende fuertemente de la **calidad de la función hash**.
 - Una buena función hash distribuye uniformemente las claves.
 - Una mala distribución produce muchas colisiones → degradación a O(n).
@@ -364,15 +313,11 @@ Para mitigar problemas:
 - Ejemplo: lenguajes como Python usan hash salteado (hash randomization) para strings.
 
 ##### Implicancias:
-
 - Mejora la distribución promedio y evita clustering.
 - Aumenta la seguridad frente a ataques de denegación de servicio.
 - Puede romper reproducibilidad exacta entre ejecuciones (el orden interno cambia).
 
-## Referencias y recursos
+## 6. Referencias y recursos
+Cormen, Thomas H. (1989) *Introduction to algorithms* - Chapter 11. Hash Tables
 
-https://www.baeldung.com/cs/hash-tables
-https://www.youtube.com/watch?v=LluB6jU-SwY&t=156s
-https://www.youtube.com/watch?v=9tZsDJ3JBUA
-https://www.youtube.com/watch?v=CrXDTPE4DQI
-https://drive.google.com/file/d/0B7SmxKF0ZpC6NzRMUm1uN2NTeVU/view?pli=1&resourcekey=0-1XaeTgLWWiOp5zklVl0xsA
+Drozdek, Adam. (1995) *Data structures and algorithms in C++* - Chapter 10. Hashing
