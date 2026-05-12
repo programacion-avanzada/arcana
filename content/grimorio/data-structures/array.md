@@ -42,12 +42,8 @@ Se observa una estructura lineal donde cada elemento es accesible directamente m
 
 * **Acceso (get)**: Obtener elemento por índice.  
 * **Actualización (set)**: Modificar el elemento.  
-* **Añadir (insert)**:  
-  * `append(x)` para agregar un elemento al final.  
-  * `insert(i, x)` para insertarlo en una posición específica.  
-* **Eliminar (delete)**:  
-  * `remove(x)` para borrar la primera aparición de un valor.  
-  * `pop(i)` para eliminar y devolver el elemento en un índice (por defecto, el último).  
+* **Añadir (insert)**: Inserta un elemento desplazando el resto de elementos hacia la derecha para luego asignar el nuevo valor en la posición deseada. 
+* **Eliminar (delete)**: Elimina un elemento desplazando el resto de elementos hacia la izquierda para cubrir el espacio y mantener la contigüidad.
 * **Buscar (find)**:  
   * `index(x)` para obtener el índice de la primera aparición de un valor.
 
@@ -217,6 +213,6 @@ En arquitecturas modernas, el array se beneficia enormemente del caché de la CP
 
 ## **6\. Referencias y recursos**
 
-* Cormen, T. H., et al. (2022). Introduction to Algorithms (4th ed.). MIT Press.
-* Lafore, R. (2002). Data Structures & Algorithms in Java. Sams.
+* Cormen, T. H., et al. (2022). Introduction to Algorithms (4th ed. Chapter 10: Elementary Data Structures). MIT Press. 
+* Lafore, R. (2002). Data Structures & Algorithms in Java. Sams. (Chapter 2: Arrays)
 
