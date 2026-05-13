@@ -149,7 +149,9 @@ Es necesario recordar que para programar de forma segura, los índices deben de 
 
 ### Comparaciones
 
-**Comparación con Listas Enlazadas (Linked Lists)**: Mientras que el arreglo ofrece acceso instantáneo $O(1)$, la lista enlazada requiere recorrer los nodos uno a uno $O(n)$ para encontrar una posición. Sin embargo, la lista enlazada permite insertar elementos en tiempo constante $O(1)$ una vez localizada la posición, sin necesidad de desplazar otros datos. Además, las listas enlazadas usan la memoria de forma dinámica, expandiéndose según sea necesario
+**Comparación con Listas Enlazadas (Linked Lists)**: Mientras que el array permite acceso directo a los elementos en tiempo $O(1)$, una lista enlazada requiere recorrer los nodos secuencialmente para acceder a una posición determinada.
+Por lo tanto, operar sobre una posición arbitraria dentro de una lista enlazada tiene un costo $O(n)$.
+Además, las listas enlazadas utilizan memoria dinámica, lo que les permite ajustar su tamaño según sea necesario, a diferencia de los arrays que requieren memoria contigua.
 
 ### Ventajas / desventajas
 
