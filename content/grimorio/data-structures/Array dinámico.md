@@ -143,7 +143,7 @@ arr.append(30) # [10, 20, 30]
 arr.insert_at(1, 15) # [10, 15, 20, 30]
 arr.delete_at(2) # [10, 15, 30]
 
-for i in range(arr.tam):
+for i in range(arr.size):
     print(arr.array[i]) # 10, 15, 30
 ```
 
