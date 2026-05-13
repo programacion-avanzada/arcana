@@ -1,19 +1,17 @@
 ---
-title: "Lista doblemente enlazada"
-tags: ["data-structures"]
-alias: ["lista doble", "doubly linked list", "DLL"]
+title: 'Lista doblemente enlazada'
+tags: ['data-structures']
+alias: ['lista doble', 'doubly linked list', 'DLL']
 ---
 
 ## 1. Qué es y cómo funciona
 
 ### Intuición
-
 Una **lista doblemente enlazada** puede pensarse como un tren de pasajeros: si estamos parados en el vagón C, podemos decidir ir hacia el vagón B o hacia el vagón D.
 
 La idea central es que cada elemento conoce tanto al elemento siguiente como al anterior. Esto resuelve una limitación de la lista simplemente enlazada: en una lista simple no se puede volver hacia atrás directamente; para acceder al nodo anterior habría que recorrer la lista desde el inicio hasta la posición anterior, lo cual es ineficiente.
 
 ### Definición / propiedades
-
 Una lista doblemente enlazada está compuesta por **nodos**. Cada nodo contiene tres campos:
 
 - Un **dato**, donde se guarda el valor.
@@ -30,7 +28,6 @@ Propiedades clave:
 - En una variante circular, el primero apunta al último y el último apunta al primero.
 
 ### Representación
-
 Internamente, la estructura mantiene una secuencia de nodos enlazados en ambas direcciones. La lista suele guardar una referencia a la **cabeza** (`head`) y otra a la **cola** (`tail`).
 
 En la representación, el primer nodo apunta hacia `null` por su lado anterior. Cada nodo apunta al siguiente y al anterior, hasta llegar al último nodo, cuyo puntero siguiente apunta a `null`.
@@ -60,31 +57,30 @@ null <- [prev | dato | next] <-> [prev | dato | next] <-> [prev | dato | next] -
 
 ### Complejidad
 
-| Operación             | Peor caso | Mejor caso | Promedio | Espacio adicional | Comentario                                                            |
-| --------------------- | --------: | ---------: | -------: | ----------------: | --------------------------------------------------------------------- |
-| Insertar al principio |    `O(1)` |     `Ω(1)` |   `Θ(1)` |            `O(1)` | Solo se actualizan referencias entre nodos.                           |
-| Insertar al final     |    `O(1)` |     `Ω(1)` |   `Θ(1)` |            `O(1)` | Se usa el puntero `tail`.                                             |
-| Insertar en orden     |    `O(n)` |     `Ω(1)` |   `Θ(n)` |            `O(1)` | Hay que recorrer la lista para ubicar la posición.                    |
-| Eliminar primero      |    `O(1)` |     `Ω(1)` |   `Θ(1)` |            `O(1)` | Se actualiza la cabeza y los punteros correspondientes.               |
-| Eliminar último       |    `O(1)` |     `Ω(1)` |   `Θ(1)` |            `O(1)` | Se actualiza la cola y los punteros correspondientes.                 |
-| Eliminar por valor    |    `O(n)` |     `Ω(1)` |   `Θ(n)` |            `O(1)` | Primero hay que buscar el nodo.                                       |
-| Buscar                |    `O(n)` |     `Ω(1)` |   `Θ(n)` |            `O(1)` | La búsqueda es secuencial.                                            |
-| Concatenar            |    `O(1)` |     `Ω(1)` |   `Θ(1)` |            `O(1)` | Si ambas listas tienen `head` y `tail`, alcanza con cambiar punteros. |
-| Size                  |    `O(1)` |     `Ω(1)` |   `Θ(1)` |            `O(1)` | Requiere mantener un contador actualizado.                            |
+| Operación | Peor caso | Mejor caso | Promedio | Espacio adicional | Comentario |
+|---|---:|---:|---:|---:|---|
+| Insertar al principio | $O(1)$ | $Ω(1)$ | $Θ(1)$ | $O(1)$ | Solo se actualizan referencias entre nodos. |
+| Insertar al final | $O(1)$ | $Ω(1)$ | $Θ(1)$ | $O(1)$ | Se usa el puntero `tail`. |
+| Insertar en orden | $O(n)$ | $Ω(1)$ | $Θ(n)$ | $O(1)$ | Hay que recorrer la lista para ubicar la posición. |
+| Eliminar primero | $O(1)$ | $Ω(1)$ | $Θ(1)$ | $O(1)$ | Se actualiza la cabeza y los punteros correspondientes. |
+| Eliminar último | $O(1)$ | $Ω(1)$ | $Θ(1)$ | $O(1)$ | Se actualiza la cola y los punteros correspondientes. |
+| Eliminar por valor | $O(n)$ | $Ω(1)$ | $Θ(n)$ | $O(1)$ | Primero hay que buscar el nodo. |
+| Buscar | $O(n)$ | $Ω(1)$ | $Θ(n)$ | $O(1)$ | La búsqueda es secuencial desde el primer nodo.<br>Si la lista está ordenada podríamos buscar también de atrás hacia adelante.<br>Aunque la complejidad temporal seguiría siendo $O(n)$. |
+| Concatenar | $O(1)$ | $Ω(1)$ | $Θ(1)$ | $O(1)$ | Si ambas listas tienen `head` y `tail`, alcanza con cambiar punteros. |
+| Size | $O(1)$ | $Ω(1)$ | $Θ(1)$ | $O(1)$ | Requiere mantener un contador actualizado. |
 
 ### Detalles operativos
 
 - En una lista vacía, tanto `head` como `tail` son `None`.
 - Al insertar el primer elemento, ese nodo pasa a ser simultáneamente `head` y `tail`.
 - Al eliminar el único elemento, la lista vuelve al estado vacío.
-- Si ya se tiene una referencia directa al nodo, insertar o eliminar cerca de ese nodo puede hacerse en `O(1)`.
+- Si ya se tiene una referencia directa al nodo, insertar o eliminar cerca de ese nodo puede hacerse en $O(1)$.
 - El costo oculto principal está en los recorridos: acceder a una posición intermedia requiere avanzar nodo por nodo.
 - Cada modificación debe actualizar correctamente los punteros `prev` y `next`; si se actualizan mal, pueden quedar nodos desconectados o referencias inconsistentes.
 
 ## 3. Implementación
 
 ### Idea de implementación
-
 La implementación típica mantiene nodos distribuidos en memoria. Cada nodo se conecta de forma bidireccional con sus vecinos.
 
 La lista conserva dos punteros principales:
@@ -224,8 +220,8 @@ En esos casos, una lista simple o un array puede ser más conveniente.
 
 Ventajas:
 
-- Inserción y eliminación en extremos en `O(1)`.
-- Inserción o eliminación en `O(1)` si ya se tiene la referencia al nodo.
+- Inserción y eliminación en extremos en $O(1)$.
+- Inserción o eliminación en $O(1)$ si ya se tiene la referencia al nodo.
 - Permite recorrido bidireccional.
 - Crecimiento dinámico sin necesidad de realocar un bloque contiguo de memoria.
 
@@ -252,7 +248,7 @@ Una lista doblemente enlazada suele ser adecuada cuando el problema menciona:
 
 - **Lista doblemente enlazada circular**: el último nodo apunta al primero y el primero apunta al último. Se usa cuando se requiere recorrido continuo, como turnos rotativos o listas cíclicas.
 - **Lista doblemente enlazada con nodo centinela**: agrega un nodo especial que no almacena datos reales. Sirve para simplificar casos borde como listas vacías o inserciones en extremos.
-- **Lista doblemente enlazada ordenada**: mantiene los elementos ordenados según una clave. Facilita recorridos ordenados, pero las inserciones suelen ser `O(n)`.
+- **Lista doblemente enlazada ordenada**: mantiene los elementos ordenados según una clave. Facilita recorridos ordenados, pero las inserciones suelen ser $O(n)$.
 
 ### Relación con otras estructuras
 
@@ -286,7 +282,8 @@ Una lista doblemente enlazada suele ser adecuada cuando el problema menciona:
   Estas operaciones son fundamentales en políticas de reemplazo como LRU, donde los elementos más recientemente utilizados deben desplazarse rápidamente dentro de la estructura.
   A diferencia de los arreglos, las listas dobles evitan desplazamientos masivos de elementos, y frente a estructuras más complejas como árboles, ofrecen una solución más simple cuando no se requiere ordenamiento ni búsquedas jerárquicas.
 
+
 ## 6. Referencias y recursos
 
-- Cormen, Leiserson, Rivest y Stein. _Introduction to Algorithms_, capítulo 10, sección 10.2, página 257.
-- Goodrich y Tamassia. _Data Structures and Algorithms in Java_, cuarta edición, capítulo 3, sección 3.3, página 170.
+- Cormen, Leiserson, Rivest y Stein. *Introduction to Algorithms*, capítulo 10, sección 10.2, página 257.
+- Goodrich y Tamassia. *Data Structures and Algorithms in Java*, cuarta edición, capítulo 3, sección 3.3, página 170.
