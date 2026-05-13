@@ -39,20 +39,19 @@ Se observa una estructura lineal donde cada elemento es accesible directamente m
 ## 2. Operaciones y complejidad
 
 ### Operaciones principales
-- `get(i)`: accede al elemento en la posición `i`
-- `set(i, x)`: sobrescribe el valor en la posición `i`
-- `search(x)`: recorre el arreglo para encontrar un valor
+- Acceder al elemento en la posición `i`: `algunValor = numeros[i]`
+- Sobrescriber/Actualizar el valor en la posición `i`: `numeros[i] = 100;`
 
 ### Complejidad
-- `get`: $O(1)$
-- `set`: $O(1)$
-- `search`: $O(n)$
+- Acceso y actualización por índice: $O(1)$ (tiempo constante)
+- Búsqueda por valor: $O(n)$ en el peor caso (debe recorrer el array).
+- Búsqueda en arrays ordenados: la búsqueda desciende a $O(log\,n)$ si se utilizan algoritmos como **búsqueda binaria**.
 
 Es requerido que el array respete estas complejidades debido a su representación contigua en memoria.
 
 ### Detalles operativos
 
-Como se detalló anteriormente, modificar la estructura interna es costoso debido a la naturaleza contigua de elementos en memoria. Operaciones como insertar o eliminar en el medio requiere **desplazar elementos**. 
+Como se detalló anteriormente, modificar la estructura interna es costoso debido a la naturaleza contigua de elementos en memoria. 
 
 En implementaciones estáticas de arrays, hay que cuidar el acceso fuera de rango, porque puede producir errores o dar lugar a vulnerabilidades como suele suceder con los arrays en lenguaje de programación C (out of range).
 
@@ -71,11 +70,9 @@ Por otra parte, si la implementación es dinámica, el cambio es notorio ya que 
 - Contigüidad de memoria (los elementos permanecen contiguos)  
 - Homogeneidad de tipo de dato   
 - Tamaño consistente  
-- Los índices deben mantenerse válidos (0 <= i < n)
+- Los índices deben mantenerse válidos (0 <= i < logitud-array)
 
 ### Ejemplo de código
-
-Debe responder a: “¿cómo lo programo sin romperlo?“
 
 ```python
 # Crear un arreglo en Python usando lista
