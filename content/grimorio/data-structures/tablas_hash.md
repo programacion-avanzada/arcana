@@ -149,7 +149,7 @@ class HashTable:
 Memoización con tabla hash (Ackermann)
 
 ```python
-def suma_ackermann(m, n, hashtable):
+def ackermann(m, n, hashtable):
     if m < 0 or n < 0:
         return -1
 
@@ -157,7 +157,7 @@ def suma_ackermann(m, n, hashtable):
         return n + 1
 
     if n == 0:
-        return suma_ackermann(m - 1, 1, hashtable)
+        return ackermann(m - 1, 1, hashtable)
 
     clave = (m, n)
     print(f"Proceso la clave -> {clave}")
@@ -166,9 +166,9 @@ def suma_ackermann(m, n, hashtable):
         print(f"Reutilizo el resultado de la clave -> {clave}")
         return hashtable.get(clave)
     else:
-        valor = suma_ackermann(
+        valor = ackermann(
             m - 1,
-            suma_ackermann(m, n - 1, hashtable),
+            ackermann(m, n - 1, hashtable),
             hashtable
         )
         hashtable[clave] = valor
