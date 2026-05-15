@@ -58,9 +58,9 @@ la de gestionar asociaciones **clave→valor**.
 ### Operaciones principales
 
 - **`insert(key, value)`:** Agrega un nuevo par clave→valor. Si la clave ya existe, reemplaza el valor anterior.
-- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, lanza un error.
+- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, retorna un valor nulo o centinela según la implementación (no necesariamente lanza una excepción).
 - **`delete(key)`:** Elimina un par clave→valor. Si la clave no existe, no tiene efecto.
-- **`update(key, value)`:** Reemplaza el valor asociado a una clave existente.
+- **`update(key, value)`:** Reemplaza el valor asociado a una clave existente. En muchas implementaciones es equivalente a `insert`: si la clave no existe, el comportamiento depende del contrato definido (puede insertar, ignorar o lanzar error).
 
 ### Complejidad
 
@@ -71,6 +71,8 @@ La complejidad de un Map depende de su implementación concreta.
 | HashMap        | O(1) promedio / O(n) peor caso | O(1) promedio / O(n) peor caso | O(1) promedio / O(n) peor caso |
 | TreeMap        | O(log n)                       | O(log n)                       | O(log n)                       |
 | Lista / Array  | O(1) / O(n) según estrategia   | O(n)                           | O(n)                           |
+
+> **Nota sobre Lista/Array:** la inserción es O(1) si siempre se agrega al final sin verificar duplicados; es O(n) si primero se busca la clave para evitarlos. La elección depende del contrato: un Map que garantiza unicidad de claves debe hacer la búsqueda previa.
 
 > No existe una única complejidad para los Maps. El rendimiento depende de cómo se implemente internamente.
 
@@ -96,7 +98,7 @@ Independientemente de la implementación elegida, el flujo conceptual de las ope
 - **find(key):**
   1. Buscar la clave.
   2. Si existe → retornar valor asociado.
-  3. Si no → error o valor nulo.
+  3. Si no → retornar valor nulo o centinela (el contrato exacto depende de la implementación).
 
 - **delete(key):**
   1. Buscar la clave.
@@ -106,7 +108,7 @@ Independientemente de la implementación elegida, el flujo conceptual de las ope
 - **update(key, value):**
   1. Buscar la clave.
   2. Si existe → reemplazar valor.
-  3. Si no → error o inserción según implementación.
+  3. Si no → el comportamiento depende del contrato: insertar el par nuevo, ignorar la operación, o señalar el error. En muchas implementaciones `update` e `insert` convergen en una única operación _upsert_.
      
 ---
 
@@ -273,8 +275,8 @@ Esto los convierte en una especie de “estructura compuesta”, que reutiliza i
 
 ### Libros
 
-- Cormen et al. — _Introduction to Algorithms_ (CLRS), Cap. 11: Hash Tables _(referencia de una implementación concreta)_.
-- Sedgewick & Wayne — _Algorithms_, Cap. 3: Searching _(cubre Maps con distintas implementaciones: hash y árboles)_.
+- [[COR2011]] — Cap. 11: Hash Tables _(implementación concreta del Map mediante hashing)_.
+- Sedgewick & Wayne — _Algorithms_ (4ª ed.), Cap. 3: Searching _(Maps con hashing y árboles balanceados; independiente del lenguaje)_.
 
 ### Visualizaciones
 
