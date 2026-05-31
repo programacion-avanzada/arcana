@@ -17,9 +17,9 @@ jobs:
     name: markdownlint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Use Node.js 20
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
       - name: Install dependencies
@@ -41,7 +41,7 @@ jobs:
 
       - name: Post or update PR comment when lint errors exist
         if: ${{ github.event_name == 'pull_request' && steps.lint.outputs.had_errors == 'true' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
