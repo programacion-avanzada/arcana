@@ -18,8 +18,8 @@ Retorna el **costo total** para insertar todos los elementos de `instructions` e
 
 **Restricciones:**
 
-- `1 <= instructions.length <= 105`
-- `1 <= instructions[i] <= 105`
+- `1 <= instructions.length <= 10^5`
+- `1 <= instructions[i] <= 10^5`
 
 [Problema original](https://leetcode.com/problems/create-sorted-array-through-instructions/)
 
@@ -29,9 +29,11 @@ Retorna el **costo total** para insertar todos los elementos de `instructions` e
 
 <!-- por qué el problema es interesante o no trivial. -->
 
-El problema es interesante porque requiere mantener un conteo eficiente de elementos menores y mayores a medida que se insertan en un arreglo ordenado. La solución ingenua de insertar cada elemento y contar los menores y mayores para cada inserción sería ineficiente, especialmente para grandes entradas. Por lo tanto, se necesitan estructuras de datos avanzadas o técnicas como la programación dinámica para resolverlo de manera eficiente.
+A primera vista parece un problema de simulación directa: insertar cada elemento y contar cuántos son menores y mayores. El problema es que con hasta 10⁵ elementos, una simulación no inteligente requiere recorrer el arreglo completo en cada inserción, dando ``O(n²)`` operaciones en total, lo cual no es eficiente.
 
-Una solución eficiente podría involucrar el uso de un árbol de Fenwick (Binary Indexed Tree) o un árbol segmentado para mantener un conteo acumulativo de los elementos insertados, lo que permitiría calcular el costo de cada inserción en tiempo logarítmico. Esto hace que el problema sea un buen ejercicio para aprender sobre estas estructuras de datos y su aplicación en problemas de conteo y ordenamiento.
+Lo interesante es que el costo no depende de dónde se inserta el elemento, sino de cuántos elementos ya insertados caen a cada lado de él en el orden numérico. Esto convierte el problema en uno de consultas de rango sobre un conjunto dinámico: para cada nuevo valor ``v``, necesitamos saber cuántos valores previos son ``< v`` y cuántos son ``> v``, de forma eficiente.
+
+El problema, entonces, no es de simulación sino de estructura de datos: ¿cómo mantener un multiconjunto de enteros y responder consultas de prefijo en O(log n)?
 
 ---
 
@@ -47,12 +49,24 @@ Una solución eficiente podría involucrar el uso de un árbol de Fenwick (Binar
 
 **Condición matemática explícita:** 
 
-
 ---
 
 ## Ejemplo concreto
 
-<!-- una instancia pequeña resuelta a mano. -->
+<!-- un ejemplo de entrada y salida, con explicación paso a paso. -->
+
+Tomemos `instructions = [1, 5, 6, 2]`.
+
+| Paso | Valor | nums antes       | Menores | Mayores | Costo |
+|------|-------|------------------|---------|---------|-------|
+| 1    | 1     | []               | 0       | 0       | 0     |
+| 2    | 5     | [1]              | 1       | 0       | 0     |
+| 3    | 6     | [1, 5]           | 2       | 0       | 0     |
+| 4    | 2     | [1, 5, 6]        | 1       | 2       | 1     |
+
+Costo total = `0 + 0 + 0 + 1 = 1`.
+
+Al insertar el 2, hay 1 elemento menor (el 1) y 2 mayores (el 5 y el 6). `min(1, 2) = 1`.
 
 ---
 
@@ -60,19 +74,17 @@ Una solución eficiente podría involucrar el uso de un árbol de Fenwick (Binar
 
 <!-- cómo abordar el problema. -->
 
+Una primera aproximación razonable es **fuerza bruta**: mantener `nums` como lista ordenada y, por cada elemento nuevo, recorrerla para contar menores y mayores. Eso es `O(n²)` pero permite entender el problema y verificar resultados.
+
+El siguiente paso es notar que solo necesitamos saber, para cada nuevo valor `v`, cuántos de los valores anteriores caen en `[1, v-1]`. Esto es una **suma de prefijo sobre frecuencias**, lo que sugiere usar un árbol de Fenwick (Binary Indexed Tree) o un árbol de segmentos. Con cualquiera de estas estructuras, cada consulta e inserción cuesta `O(log(max_val))`.
+
+Una alternativa que no requiere estructuras de datos adicionales es usar **Merge Sort**: al ordenar los índices por valor, el proceso de fusión permite contar elementos menores de forma implícita, en el espíritu del conteo de inversiones.
 
 ---
 
 ## Soluciones disponibles
 
-| Técnica | Aplica  | Por qué |
-| ------- | ------- | ------- |
-| Recursividad | ⚠️ | Solo como herramienta, no paradigma principal |
-| División y Conquista | ✔️ | Se puede resolver con merge sort modificado |
-| Greedy | ❌ | No hay elección local |
-| Fuerza Bruta | ❌ | Ineficiente |
-| Backtracking | ❌ | No hay búsqueda de soluciones |
-| Branch & Bound | ❌ | No hay poda de estados |
-| Programación Dinámica | ✔️ | Reutiliza resultados con estructuras acumulativas |
-
 <!-- lista con enlaces a los archivos de solución del grupo. -->
+
+- [Fuerza Bruta](./1649_create_sorted_array-fuerza-bruta.md)
+- [División y Conquista (Merge Sort)](./1649_create_sorted_array-division-y-conquista.md)
