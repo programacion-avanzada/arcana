@@ -1,5 +1,5 @@
 ---
-title: '1649 - Create Sorted Array through Instructions - Programación Dinámica'
+title: '1649 - Create Sorted Array through Instructions - Fuerza Bruta'
 tags: ['']
 ---
 
