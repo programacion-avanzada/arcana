@@ -13,7 +13,7 @@ Fuerza bruta con recursividad: se generan todos los caminos posibles desde `(0,0
 
 En una matriz `m×n`, cualquier camino válido tiene exactamente `m+n-2` pasos (solo se puede ir a la derecha o hacia abajo), lo que genera `C(m+n-2, m-1)` caminos posibles.
 
-Para cada camino se simula la evolución de la vida del caballero celda por celda: si la vida cae a 0 o menos, se incrementa la vida inicial requerida para mantenerla en exactamente 1. Al terminar el recorrido se registra la vida inicial mínima necesaria para ese camino. El resultado final es el mínimo entre todos.
+Cada camino se representa como una [[dynamic array|lista]] de valores. Para cada uno se simula la evolución de la vida del caballero celda por celda: si la vida cae a 0 o menos, se incrementa la vida inicial requerida para mantenerla en exactamente 1. Al terminar el recorrido se registra la vida inicial mínima necesaria para ese camino. El resultado final es el mínimo entre todos.
 
 ## Código
 

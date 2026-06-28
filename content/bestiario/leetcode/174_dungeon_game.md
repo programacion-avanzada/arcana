@@ -5,7 +5,7 @@ tags: ['b/leetcode']
 
 ## Nombre y enunciado
 
-Los demonios han capturado a la princesa y la han encerrado en la esquina inferior derecha de una mazmorra representada por una matriz bidimensional `dungeon[m][n]`.
+Los demonios han capturado a la princesa y la han encerrado en la esquina inferior derecha de una mazmorra representada por una [[array|matriz]] bidimensional `dungeon[m][n]`.
 
 Un caballero comienza en la celda superior izquierda `(0,0)` y debe rescatarla. Solo puede moverse **hacia la derecha** o **hacia abajo**. Cada celda tiene un valor entero: negativo si le quita vida, cero si no tiene efecto, positivo si le otorga vida. El caballero muere si su vida llega a **0 o menos** en cualquier momento.
 

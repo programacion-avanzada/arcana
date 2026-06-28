@@ -29,7 +29,7 @@ Los casos base son:
 - **Última fila** (solo se puede ir a la derecha): `max(need_derecha - matrix[fil][col], 1)`
 - **Última columna** (solo se puede ir hacia abajo): `max(need_abajo - matrix[fil][col], 1)`
 
-Cada celda se calcula una sola vez gracias al diccionario `memo`. Las llamadas siguientes a la misma celda retornan directamente el valor almacenado.
+Cada celda se calcula una sola vez gracias al [[hash table]] `memo`. Las llamadas siguientes a la misma celda retornan directamente el valor almacenado.
 
 ## Código
 
