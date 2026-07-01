@@ -93,7 +93,7 @@ def calculateMinimumHP(dungeon):
 
 ---
 
-Estado final del memo como matriz:
+Asi quedaria la matriz de vida minima requerida en cada celda para llegar al destino:
 
 ```text
 [ 7,  5,  2]
@@ -151,6 +151,11 @@ sin modificar la complejidad temporal.
 | Uso de memoria caché      | Bajo                      | Alto                  |
 | Facilidad para depuración | Media                     | Alta                  |
 | Escalabilidad             | Limitada por la recursión | Excelente             |
+
+---
+
+# Aspectos negativos
+Si necesitaramos saber el camino exacto que debe hacer el caballero para llegar al destino no podriamos, porque el memo tendria solo la primer fila... para lograr eso podemos sacrificar un poco de memoria y dejar el memo completo para la matriz.
 
 ---
 
