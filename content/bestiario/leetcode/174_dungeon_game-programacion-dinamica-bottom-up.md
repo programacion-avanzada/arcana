@@ -79,10 +79,10 @@ def calculateMinimumHP(dungeon):
     # Procesar el resto de la matriz desde abajo hacia arriba
     for i in range(m - 2, -1, -1):
 
-        # Última columna
+        # Última celda de la fila
         dp[n - 1] = max(1, dp[n - 1] - dungeon[i][n - 1])
 
-        # Resto de columnas
+        # Resto de celdas
         for j in range(n - 2, -1, -1):
             min_next = min(dp[j], dp[j + 1])
             dp[j] = max(1, min_next - dungeon[i][j])
