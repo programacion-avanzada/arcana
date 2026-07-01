@@ -1,6 +1,6 @@
 # LeetCode #174 - Dungeon Game - Programación Dinámica (Bottom-Up)
 
-## Solución optimizada mediante Programación Dinámica Bottom-Up (iterativa)
+## Solución optimizada mediante Programación Dinámica Bottom-Up (iterativa) para [[174_dungeon_game]].
 
 Esta solución resuelve el problema **LeetCode #174 - Dungeon Game** utilizando **Programación Dinámica Bottom-Up**, evitando la recursión y optimizando el uso de memoria.
 

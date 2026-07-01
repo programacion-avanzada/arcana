@@ -82,3 +82,4 @@ La solución más eficiente es Programación Dinámica: recorriendo la matriz de
 - [[174_dungeon_game-fuerza-bruta]]
 - [[174_dungeon_game-branch-and-bound]]
 - [[174_dungeon_game-programacion-dinamica]]
+- [[174_dungeon_game-programacion-dinamica-bottom-up]]
