@@ -3,10 +3,12 @@ title: 'Leetcode 0761 - Special Binary String - Fuerza Bruta (Backtracking)'
 tags: ['b/sbs']
 ---
 
+← Volver a la [[index|descripción del problema]]
+
 ## Técnicas utilizadas
 
-- **Fuerza Bruta / Backtracking:** Modelamos el problema como la búsqueda de un camino en un grafo de estados. Cada estado es una cadena binaria especial válida. Desde cada estado, generamos todas las posibles transiciones válidas (intercambios de subcadenas especiales consecutivas) y exploramos recursivamente cada una de ellas empleando una búsqueda en profundidad (DFS).
-- **Control de Ciclos (Visitados):** Dado que la operación de intercambio es simétrica (si podemos pasar de la cadena $X$ a la cadena $Y$, también podemos regresar de $Y$ a $X$), la estructura del espacio de búsqueda es un grafo no dirigido con ciclos. Para evitar bucles infinitos de recursión, utilizamos un conjunto de estados visitados.
+- **Fuerza Bruta / Backtracking:** Modelamos el problema como la búsqueda de un camino en un grafo de estados. Cada estado es una [[string|cadena]] binaria especial válida. Desde cada estado, generamos todas las posibles transiciones válidas (intercambios de subcadenas especiales consecutivas) y exploramos recursivamente cada una de ellas empleando una búsqueda en profundidad (DFS).
+- **Control de Ciclos (Visitados):** Dado que la operación de intercambio es simétrica (si podemos pasar de la [[string|cadena]] $X$ a la [[string|cadena]] $Y$, también podemos regresar de $Y$ a $X$), la estructura del espacio de búsqueda es un grafo no dirigido con ciclos. Para evitar bucles infinitos de recursión, utilizamos un [[set|conjunto]] de estados visitados.
 
 ---
 
@@ -14,20 +16,20 @@ tags: ['b/sbs']
 
 El enfoque de fuerza bruta consiste en simular directamente las reglas del enunciado paso a paso sin asumir ninguna propiedad jerárquica u optimalidad local:
 
-1. **Definir el objetivo:** Encontrar la cadena binaria especial lexicográficamente más grande reachable desde la cadena original.
-2. **Generar transiciones válidas:** Para una cadena dada $S$:
+1. **Definir el objetivo:** Encontrar la [[string|cadena]] binaria especial lexicográficamente más grande reachable desde la [[string|cadena]] original.
+2. **Generar transiciones válidas:** Para una [[string|cadena]] dada $S$:
    - Buscamos todas las posibles posiciones de inicio $i$.
    - Encontramos cualquier subcadena especial $A = S[i : j+1]$.
    - Si $A$ es especial, buscamos inmediatamente después (en $j+1$) otra subcadena especial $B = S[j+1 : k+1]$.
-   - Si encontramos un par de subcadenas especiales consecutivas $A$ y $B$, formamos una nueva cadena intercambiándolas: $S_{nueva} = S[:i] + B + A + S[k+1:]$.
+   - Si encontramos un par de subcadenas especiales consecutivas $A$ y $B$, formamos una nueva [[string|cadena]] intercambiándolas: $S_{nueva} = S[:i] + B + A + S[k+1:]$.
 3. **Exploración:** Llamamos recursivamente al algoritmo con $S_{nueva}$.
-4. **Evitar ciclos y optimizar:** Llevamos un registro global del string máximo visto hasta ahora y un conjunto `visited` para no procesar el mismo estado más de una vez.
+4. **Evitar ciclos y optimizar:** Llevamos un registro global del string máximo visto hasta ahora y un [[set|conjunto]] `visited` para no procesar el mismo estado más de una vez.
 
 ---
 
 ## Código
 
-A continuación se muestra la implementación completa del enfoque por Backtracking en Python:
+A continuación se muestra la implementación corregida y completa del enfoque por Backtracking en Python:
 
 ```python
 def makeLargestSpecialBacktracking(s: str) -> str:
@@ -69,8 +71,8 @@ def makeLargestSpecialBacktracking(s: str) -> str:
             for j in range(i + 1, n, 2):
                 sub_A = estado_actual[i : j + 1]
                 if es_especial(sub_A):
-                    # Buscar subcadena B inmediatamente consecutiva
-                    for k in range(j + 1, n, 2):
+                    # Buscar subcadena B inmediatamente consecutiva (longitud par)
+                    for k in range(j + 2, n, 2):
                         sub_B = estado_actual[j + 1 : k + 1]
                         if es_especial(sub_B):
                             # Generar nuevo estado realizando el swap (A, B) -> (B, A)
@@ -86,6 +88,9 @@ def makeLargestSpecialBacktracking(s: str) -> str:
     return max_string
 ```
 
+> [!IMPORTANT]
+> En la línea `for k in range(j + 2, n, 2):`, el índice inicial debe ser `j + 2` y no `j + 1`. Esto asegura que la longitud de la subcadena consecutiva `sub_B` sea par, de modo que pueda calificar como una subcadena binaria especial. Usar `j + 1` haría que la subcadena siempre tenga longitud impar, impidiendo la realización de cualquier intercambio.
+
 ---
 
 ## Traza de ejemplo
@@ -97,12 +102,12 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
 - `visited = {"11011000"}`.
 - Se buscan subcadenas especiales consecutivas en $S_0$:
   - A partir de la posición $i=0$:
-    - Se encuentra la subcadena especial en `s[0:8]` (toda la cadena), pero no queda espacio para una subcadena consecutiva $B$.
+    - Se encuentra la subcadena especial en `s[0:8]` (toda la [[string|cadena]]), pero no queda espacio para una subcadena consecutiva $B$.
   - A partir de la posición $i=1$:
     - Se evalúa `s[1:3] = "10"`. Es especial $\to$ **$sub_A = \text{"10"}$**.
-    - Buscamos $sub_B$ inmediatamente después (inicio en index 3):
-      - Se evalúa `s[3:5] = "11"` $\to$ No es especial.
-      - Se evalúa `s[3:7] = "1100"`. Es especial $\to$ **$sub_B = \text{"1100"}$**.
+    - Buscamos $sub_B$ inmediatamente después (inicio en index 3, `k` empezando en `j + 2 = 4`):
+      - `k = 4` $\to$ `s[3:5] = "11"` $\to$ No es especial.
+      - `k = 6` $\to$ `s[3:7] = "1100"`. Es especial $\to$ **$sub_B = \text{"1100"}$**.
     - Intercambiamos $sub_A$ y $sub_B$:
       - `nuevo_estado = s[:1] + sub_B + sub_A + s[7:] = "1" + "1100" + "10" + "0" = "11100100"`.
     - Llamada recursiva a `backtrack("11100100")`.
@@ -115,8 +120,8 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
 - Se buscan subcadenas especiales consecutivas en $S_1$:
   - A partir de la posición $i=1$:
     - Se evalúa `s[1:5] = "1100"`. Es especial $\to$ **$sub_A = \text{"1100"}$**.
-    - Buscamos $sub_B$ inmediatamente después (inicio en index 5):
-      - Se evalúa `s[5:7] = "10"`. Es especial $\to$ **$sub_B = \text{"10"}$**.
+    - Buscamos $sub_B$ inmediatamente después (inicio en index 5, `k` empezando en `j + 2 = 6`):
+      - `k = 6` $\to$ `s[5:7] = "10"`. Es especial $\to$ **$sub_B = \text{"10"}$**.
     - Intercambiamos $sub_A$ y $sub_B$:
       - `nuevo_estado = s[:1] + "10" + "1100" + s[7:] = "11011000"`.
     - Llamada recursiva a `backtrack("11011000")`.
@@ -145,10 +150,10 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
   $$O(C_{N/2} \cdot N^3) \approx O\left(\frac{4^{N/2}}{(N/2)^{3/2}} \cdot N^3\right) = O(2^N \cdot N^{1.5})$$
 
 ### Espacial
-- **Análisis:** La memoria consumida depende principalmente de la pila de recursión y del conjunto `visited` que almacena las cadenas exploradas.
+- **Análisis:** La memoria consumida depende principalmente de la [[stack|pila de recursión]] y del [[set|conjunto]] `visited` que almacena las cadenas exploradas.
 - **Justificación:**
-  1. En el peor caso, el conjunto de estados `visited` puede almacenar hasta $O(C_{N/2})$ cadenas.
-  2. Cada cadena ocupa $O(N)$ memoria.
+  1. En el peor caso, el [[set|conjunto]] de estados `visited` puede almacenar hasta $O(C_{N/2})$ cadenas.
+  2. Cada [[string|cadena]] ocupa $O(N)$ memoria.
 - Por lo tanto, la complejidad espacial es exponencial en el peor de los casos:
   
   $$O(C_{N/2} \cdot N)$$
@@ -175,3 +180,6 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
 
 - *Introduction to Algorithms* (Cormen et al.) - Sección de Backtracking y Búsqueda en Espacios de Estados.
 - *Números de Catalan y sus aplicaciones combinatorias*.
+- [[set|Definición y propiedades del Conjunto (Set)]]
+- [[string|Operaciones elementales sobre Cadenas (Strings)]]
+- [[stack|Uso de la Pila (Stack) en procesos recursivos]]
