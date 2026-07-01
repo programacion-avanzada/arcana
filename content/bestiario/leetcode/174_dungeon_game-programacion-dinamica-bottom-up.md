@@ -7,22 +7,20 @@ tags: ["b/leetcode"]
 
 ## Solución optimizada mediante Programación Dinámica Bottom-Up (iterativa) para [[174_dungeon_game]].
 
-Esta solución resuelve el problema **LeetCode #174 - Dungeon Game** utilizando **Programación Dinámica Bottom-Up**, evitando la recursión y optimizando el uso de memoria.
+Esta solución resuelve el problema **LeetCode #174 - Dungeon Game** utilizando **Programación Dinámica con enfoque Bottom-Up**, evitando la recursión y optimizando el uso de memoria.
 
 ---
 
 # ¿Por qué el enfoque Bottom-Up es superior?
 
-A diferencia del enfoque recursivo (**Top-Down**), esta solución es la recomendada para sistemas en producción y entornos académicos rigurosos por las siguientes razones:
-
 - **No hay riesgo de stack overflow:**  
-  Al no usar recursividad, no consumimos el stack con m\*n llamadas recursivas, mientras mas grande es la matriz, mayor riesgo existe de que ocurra este error en el enfoque recursivo, en este enfoque iterativo, no existe dicha posibilidad.
+  Al no usar recursividad, no consumimos el stack con m\*n llamadas recursivas, mientras más grande es la matriz, mayor riesgo existe de que ocurra este error en el enfoque recursivo, en este enfoque iterativo, no existe dicha posibilidad.
 
 - **Eficiencia Espacial:**  
   Reducimos la complejidad espacial de **O(m × n)** a **O(n)** utilizando únicamente una fila auxiliar (memo).
 
 - **Localidad de Datos:**  
-  Al recorrer la matriz de forma iterativa, el algoritmo aprovecha mejor la memoria caché del procesador, no hace falta pasar el mapa cache desde una funcion recursiva a otra, cosa que en algunos lenguajes generaría muchas copias.
+  Al recorrer la matriz de forma iterativa, no hace falta pasar el mapa cache entre llamadas como haria la forma recursiva, cosa que en algunos lenguajes generaría muchas copias.
 
 - **Otros aspectos:**  
   Es mucho más facil de debugear, cosa que se aprecia en entornos laborales.
@@ -35,7 +33,7 @@ En lugar de intentar calcular la vida mínima desde la celda inicial, llegar al 
 
 Comenzamos desde la **celda destino** efectivamente y recorremos la matriz hacia el origen.
 
-La razón es que la vida mínima necesaria en una posición depende de la vida requerida en las posiciones a las que podremos movernos (derecha o abajo), es decir, del "futuro".
+La razón es que la vida mínima necesaria en una posición depende de la vida requerida en las posiciones a las que podremos movernos (derecha o abajo), es decir, del "futuro", y ahí es cuando entra la memoización, donde mantendremos un vector de tamaño n, que almacenará la vida minima requerida para avanzar por la derecha o hacia abajo, se ejemplificará mejor más adelante en este documento.
 
 ---
 
@@ -93,15 +91,188 @@ def calculateMinimumHP(dungeon):
 
 ---
 
-Asi quedaria la matriz de vida minima requerida en cada celda para llegar al destino:
+# Ejemplo paso por paso
+
+**Entrada:**
 
 ```text
-[ 7,  5,  2]
-[ 6, 11,  5]
-[ 1,  1,  6]
+[-2, -3,  3]
+[-5,-10,  1]
+[10, 30, -5]
 ```
 
-**Resultado: 7**
+# 1. Inicialización del destino
+
+Comenzamos calculando la celda destino `(2,2)`.
+
+```text
+dp[2] = max(1, 1 - (-5)) = 6
+```
+
+Estado del vector:
+
+```text
+[0, 0, 6]
+```
+
+---
+
+# 2. Llenado de la última fila (Fila 2)
+
+Recorremos la última fila de **derecha a izquierda**.
+
+### Celda (2,1)
+
+```text
+max(1, dp[2] - 30)
+= max(1, 6 - 30)
+= 1
+```
+
+### Celda (2,0)
+
+```text
+max(1, dp[1] - 10)
+= max(1, 1 - 10)
+= 1
+```
+
+Estado del vector:
+
+```text
+[1, 1, 6]
+```
+
+En este momento, `dp` representa la salud mínima necesaria para toda la **fila 2**.
+
+---
+
+# 3. Procesamiento de la fila 1
+
+Ahora utilizamos la fila inferior ya calculada para actualizar la fila 1.
+
+### Celda (1,2)
+
+```text
+max(1, dp[2] - 1)
+= max(1, 6 - 1)
+= 5
+```
+
+Estado:
+
+```text
+[1, 1, 5]
+```
+
+---
+
+### Celda (1,1)
+
+```text
+min(dp[1], dp[2]) - (-10)
+= min(1, 5) + 10
+= 11
+```
+
+Estado:
+
+```text
+[1, 11, 5]
+```
+
+---
+
+### Celda (1,0)
+
+```text
+min(dp[0], dp[1]) - (-5)
+= min(1, 11) + 5
+= 6
+```
+
+Estado final de la fila:
+
+```text
+[6, 11, 5]
+```
+
+Ahora `dp` representa completamente la **fila 1**.
+
+---
+
+# 4. Procesamiento de la fila 0
+
+Finalmente calculamos la fila inicial.
+
+### Celda (0,2)
+
+```text
+max(1, dp[2] - 3)
+= max(1, 5 - 3)
+= 2
+```
+
+Estado:
+
+```text
+[6, 11, 2]
+```
+
+---
+
+### Celda (0,1)
+
+```text
+min(dp[1], dp[2]) - (-3)
+= min(11, 2) + 3
+= 5
+```
+
+Estado:
+
+```text
+[6, 5, 2]
+```
+
+---
+
+### Celda (0,0)
+
+```text
+min(dp[0], dp[1]) - (-2)
+= min(6, 5) + 2
+= 7
+```
+
+Estado final:
+
+```text
+[7, 5, 2]
+```
+
+---
+
+# Evolución del vector `dp`
+
+| Paso | Fila procesada | Estado del vector `dp` |
+|------|----------------|------------------------|
+| Inicialización | Destino | `[0, 0, 6]` |
+| Fin de la Fila 2 | Fila inferior | `[1, 1, 6]` |
+| Fin de la Fila 1 | Fila intermedia | `[6, 11, 5]` |
+| Fin de la Fila 0 | Fila superior | `[7, 5, 2]` |
+
+---
+
+# Resultado
+
+Al finalizar el algoritmo obtenemos:
+
+```text
+dp[0] = 7
+```
+
+Por lo tanto, el caballero necesita comenzar con **7 puntos de vida** para garantizar que nunca su salud caiga por debajo de **1** y pueda rescatar a la princesa.
 
 ---
 
@@ -148,9 +319,7 @@ sin modificar la complejidad temporal.
 | Stack Overflow            | Riesgo alto               | Nulo                  |
 | Complejidad temporal      | O(m × n)                  | O(m × n)              |
 | Complejidad espacial      | O(m × n) + Stack          | O(n)                  |
-| Uso de memoria caché      | Bajo                      | Alto                  |
 | Facilidad para depuración | Media                     | Alta                  |
-| Escalabilidad             | Limitada por la recursión | Excelente             |
 
 ---
 
