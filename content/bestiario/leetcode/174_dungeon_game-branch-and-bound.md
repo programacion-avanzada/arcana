@@ -92,7 +92,7 @@ El algoritmo explora primero hacia abajo y luego hacia la derecha. Se muestran l
 
 | Celda  | Valor | vida_actual        | vida_min_necesaria |
 |--------|-------|--------------------|-------------------|
-| (1, 1) | −10   | 1+(−10)=−9 → ajuste| 18 ≥ 8 → **PODA** ✂️ |
+| (1, 1) | −10   | 1+(−10)=−9 → ajuste| 18 ≥ 8 → **PODA**  |
 
 Esto descarta todos los caminos que pasan por (1,0)→(1,1).
 
@@ -101,7 +101,7 @@ Esto descarta todos los caminos que pasan por (1,0)→(1,1).
 | Celda  | Valor | vida_actual        | vida_min_necesaria |
 |--------|-------|--------------------|-------------------|
 | (0, 1) |  −3   | 1+(−3)=−2 → ajuste | 6                 |
-| (1, 1) | −10   | 1+(−10)=−9 → ajuste| 16 ≥ 8 → **PODA** ✂️ |
+| (1, 1) | −10   | 1+(−10)=−9 → ajuste| 16 ≥ 8 → **PODA**  |
 
 Esto descarta todos los caminos que pasan por (0,1)→(1,1).
 
