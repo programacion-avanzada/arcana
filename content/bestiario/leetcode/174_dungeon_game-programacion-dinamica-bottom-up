@@ -1,0 +1,145 @@
+# LeetCode #174 - Dungeon Game - Programación Dinámica (Bottom-Up)
+
+## Solución optimizada mediante Programación Dinámica Bottom-Up (iterativa)
+
+Esta solución resuelve el problema **LeetCode #174 - Dungeon Game** utilizando **Programación Dinámica Bottom-Up**, evitando la recursión y optimizando el uso de memoria.
+
+---
+
+# ¿Por qué el enfoque Bottom-Up es superior?
+
+A diferencia del enfoque recursivo (**Top-Down**), esta solución es la recomendada para sistemas en producción y entornos académicos rigurosos por las siguientes razones:
+
+- **No hay riesgo de stack overflow:**  
+  Al no usar recursividad, no consumimos el stack con m\*n llamadas recursivas, mientras mas grande es la matriz, mayor riesgo existe de que ocurra este error en el enfoque recursivo, en este enfoque iterativo, no existe dicha posibilidad.
+
+- **Eficiencia Espacial:**  
+  Reducimos la complejidad espacial de **O(m × n)** a **O(n)** utilizando únicamente una fila auxiliar (memo).
+
+- **Localidad de Datos:**  
+  Al recorrer la matriz de forma iterativa, el algoritmo aprovecha mejor la memoria caché del procesador, no hace falta pasar el mapa cache desde una funcion recursiva a otra, cosa que en algunos lenguajes generaría muchas copias.
+
+- **Otros aspectos:**  
+  Es mucho más facil de debugear, cosa que se aprecia en entornos laborales.
+
+---
+
+# Idea de la solución
+
+En lugar de intentar calcular la vida mínima desde la celda inicial, llegar al final y comenzar el camino inverso usando la memoización, hacemos exactamente lo contrario:
+
+Comenzamos desde la **celda destino** efectivamente y recorremos la matriz hacia el origen.
+
+La razón es que la vida mínima necesaria en una posición depende de la vida requerida en las posiciones a las que podremos movernos (derecha o abajo), es decir, del "futuro".
+
+---
+
+# Recurrencia
+
+Sea `dp[i][j]` la cantidad mínima de vida necesaria para entrar a la celda `(i,j)`.
+
+La relación de recurrencia es:
+
+$$
+dp[i][j]=\max\left(1,\min(dp[i+1][j],dp[i][j+1])-dungeon[i][j]\right)
+$$
+
+donde:
+
+- `min(...)` elige el camino que requiere menos vida futura.
+- `max(1, ...)` garantiza que la vida nunca sea menor que **1**.
+
+---
+
+# Implementación (Python)
+
+```python
+def calculateMinimumHP(dungeon):
+    if not dungeon or not dungeon[0]:
+        return 1
+
+    m = len(dungeon)
+    n = len(dungeon[0])
+
+    # dp[j] almacenará la salud mínima necesaria para la fila actual
+    dp = [0] * n
+
+    # Caso base: destino (m-1, n-1)
+    dp[n - 1] = max(1, 1 - dungeon[m - 1][n - 1])
+
+    # Completar la última fila (solo podemos movernos hacia la derecha)
+    for j in range(n - 2, -1, -1):
+        dp[j] = max(1, dp[j + 1] - dungeon[m - 1][j])
+
+    # Procesar el resto de la matriz desde abajo hacia arriba
+    for i in range(m - 2, -1, -1):
+
+        # Última columna
+        dp[n - 1] = max(1, dp[n - 1] - dungeon[i][n - 1])
+
+        # Resto de columnas
+        for j in range(n - 2, -1, -1):
+            min_next = min(dp[j], dp[j + 1])
+            dp[j] = max(1, min_next - dungeon[i][j])
+
+    return dp[0]
+```
+
+---
+
+# Complejidad
+
+- **Tiempo:** `O(m × n)`, crece linealmente con el tamaño de la entrada.
+- **Espacio:** `O(n)`
+
+---
+
+# ¿Cómo funciona la optimización de memoria?
+
+Una implementación clásica utiliza una matriz `dp[m][n]`.
+
+Sin embargo, al recorrer la matriz desde la esquina inferior derecha hacia la superior izquierda, cada celda únicamente necesita conocer:
+
+- el valor inmediatamente debajo;
+- el valor inmediatamente a la derecha.
+
+No es necesario conservar todas las filas calculadas.
+
+Por ello podemos reutilizar un único arreglo de longitud `n`, actualizándolo fila por fila.
+
+Esto reduce la complejidad espacial de:
+
+$$
+O(m \times n)
+$$
+
+a
+
+$$
+O(n)
+$$
+
+sin modificar la complejidad temporal.
+
+---
+
+# Comparación entre Top-Down y Bottom-Up
+
+| Característica            | Top-Down (Recursivo)      | Bottom-Up (Iterativo) |
+| ------------------------- | ------------------------- | --------------------- |
+| Stack Overflow            | Riesgo alto               | Nulo                  |
+| Complejidad temporal      | O(m × n)                  | O(m × n)              |
+| Complejidad espacial      | O(m × n) + Stack          | O(n)                  |
+| Uso de memoria caché      | Bajo                      | Alto                  |
+| Facilidad para depuración | Media                     | Alta                  |
+| Escalabilidad             | Limitada por la recursión | Excelente             |
+
+---
+
+# Conclusión
+
+El enfoque **Bottom-Up** representa la solución más eficiente para este problema.
+
+Además de mantener la misma complejidad temporal que la versión recursiva con memoización, elimina completamente el riesgo de **Stack Overflow**, reduce significativamente el consumo de memoria y mejora el rendimiento gracias a un acceso más eficiente a la memoria caché.
+
+Por estas razones, es el enfoque más adecuado.
