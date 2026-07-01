@@ -171,7 +171,7 @@ Estado:
 
 ### Celda (1,1)
 
-Aca en el vector tenemos que dp[1] es el valor de vida requerida si me voy hacia abajo, dp[2] si me voy a la derecha, por eso hacemos el mínimo
+Acá en el vector tenemos que dp[1] es el valor de vida requerida si me voy hacia abajo, dp[2] si me voy a la derecha, por eso hacemos el mínimo
 
 ```text
 min(dp[1], dp[2]) - (-10)
