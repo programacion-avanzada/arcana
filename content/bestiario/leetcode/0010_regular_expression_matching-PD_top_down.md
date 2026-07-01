@@ -110,6 +110,7 @@ El diccionario `memo` almacena como máximo **(m + 1) × (n + 1)** entradas. A e
 
 Dado **O(m + n) + O(m × n)** con **n, m ≥ 1**, se cumple que **m + n ≤ 2mn**, lo que lleva a que **O(m + n) ⊆ O(m × n)**. Entonces, podemos concluir que la complejidad espacial dominante es **O(m × n)**.
 
+
 ## Cuándo usar esta técnica
 ### Favorable cuando
 

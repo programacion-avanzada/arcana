@@ -29,7 +29,6 @@ MAX_LENGTH_STRING = 20
 MIN_LENGTH_PATRON = 1
 MAX_LENGTH_PATRON = 20
 
-
 def is_match(s: str, p: str) -> bool:
    if not (MIN_LENGTH_STRING <= len(s) <= MAX_LENGTH_STRING):
        raise ValueError("La cadena está fuera de rango")
@@ -77,6 +76,7 @@ Buscamos la solución para
 | 9 | ad\*ba\*.c | addbzc | 6 | 4 | `p[index_p] = .` coincide con `s[index_s] = z` y el siguiente no es `*` → se consume **z**|
 | 10 | ad\*ba\*.c | addbzc | 7 | 5 | `p[index_p] = c` coincide con `s[index_s] = c` y `index_p + 1 == len(p)` → se consume **c**|
 | 11 | ad\*ba\*.c | addbzc | 8 | 6 | `index_p == len(p)` y `index_s == len(s)` → se retorna `true`|
+
 
 ### Gráfico
 ![Gráfico de traza en excalidraw](../../attachments/bestiario/leetcode/árbol_de_llamadas-backtracking.svg)
