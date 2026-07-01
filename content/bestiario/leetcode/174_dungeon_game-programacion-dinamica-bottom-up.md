@@ -93,6 +93,18 @@ def calculateMinimumHP(dungeon):
 
 ---
 
+Estado final del memo como matriz:
+
+```text
+[ 7,  5,  2]
+[ 6, 11,  5]
+[ 1,  1,  6]
+```
+
+**Resultado: 7**
+
+---
+
 # Complejidad
 
 - **Tiempo:** `O(m × n)`, crece linealmente con el tamaño de la entrada.
