@@ -110,6 +110,9 @@ Estado final del memo como matriz:
 
 **Resultado: 7**
 
+## Como reconstruir el camino
+Sabemos que solo se puede ir hacia la derecha o hacia abajo, entonces podemos preguntarnos ¿ Cuál de las dos opciones que tengo requiere menos vida inicial? y nos vamos por esa celda. 
+
 ## Complejidad
 
 **Temporal:** `O(m × n)` — cada celda se computa exactamente una vez y se guarda en `memo`.
