@@ -73,7 +73,7 @@ Una primera aproximación es fuerza bruta: explorar todos los caminos posibles d
 
 Una mejora directa es Branch & Bound: se mantiene la exploración pero se podan ramas que no pueden superar la mejor solución encontrada hasta el momento.
 
-La solución más eficiente es Programación Dinámica: recorriendo la matriz de atrás hacia adelante, cada celda se resuelve una sola vez en tiempo constante.
+La solución más eficiente es Programación Dinámica: recorriendo la matriz de atrás (destino) hacia adelante (inicio), cada celda se resuelve una sola vez en tiempo constante.
 
 ---
 
