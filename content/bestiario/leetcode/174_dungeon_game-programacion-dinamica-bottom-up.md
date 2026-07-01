@@ -84,6 +84,7 @@ def calculateMinimumHP(dungeon):
 
         # Resto de celdas
         for j in range(n - 2, -1, -1):
+            # Elijo el camino con menor vida requerida
             min_next = min(dp[j], dp[j + 1])
             dp[j] = max(1, min_next - dungeon[i][j])
 
