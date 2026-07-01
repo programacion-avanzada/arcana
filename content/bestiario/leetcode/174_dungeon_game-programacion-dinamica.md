@@ -129,7 +129,7 @@ Estado final del memo como matriz:
 
 ## Comparación con Fuerza Bruta y Branch & Bound
 
-Sobre una matriz 5×5, la recursión sin memoización realiza **251 llamadas** mientras que la versión con memoización realiza **41**, obteniendo el mismo resultado (**6**). La diferencia crece exponencialmente con el tamaño de la entrada, ya que sin memo cada celda se recalcula múltiples veces.
+Sobre una matriz 5×5, la recursión sin memoización realiza **251 llamadas** mientras que la versión con memoización realiza **41** (medido empíricamente con un contador de llamadas), obteniendo el mismo resultado (**6**). La diferencia crece exponencialmente con el tamaño de la entrada, ya que sin memo cada celda se recalcula múltiples veces.
 
 Branch & Bound reduce las llamadas mediante podas, pero en el peor caso sigue siendo exponencial. La Programación Dinámica garantiza `O(m×n)` independientemente de la instancia, lo que la convierte en la técnica más eficiente para este problema.
 

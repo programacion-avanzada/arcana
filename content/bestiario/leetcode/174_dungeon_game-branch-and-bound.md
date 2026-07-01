@@ -129,7 +129,8 @@ Resultado: **7**. El algoritmo exploró solo 2 caminos completos y podó 2 ramas
 
 ### Limitaciones
 - En el peor caso (sin podas efectivas) tiene la misma complejidad que la fuerza bruta.
-- La calidad de las podas depende del orden de exploración: si las mejores soluciones se encuentran tarde, se podan pocas ramas.
+- La calidad de las podas depende del orden de exploración: si las mejores soluciones se encuentran tarde, se podan pocas ramas. En el ejemplo, el algoritmo explora primero hacia abajo y encuentra el camino D→D→R→R con `best = 8` antes de llegar al óptimo R→R→D→D con `best = 7`. Si se explorara primero el camino óptimo, `best` caería a 7 antes y las podas serían más agresivas desde el principio.
+- Este problema no admite cortes por restricción ya que todo camino de `(0,0)` a `(m-1,n-1)` es factible. La única poda disponible es por cota, lo que limita la agresividad de la exploración en comparación con problemas donde ramas enteras pueden declararse inviables.
 
 ## Comparación con Fuerza Bruta y Programación Dinámica
 

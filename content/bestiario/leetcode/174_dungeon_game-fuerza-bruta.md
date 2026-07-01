@@ -92,7 +92,7 @@ Detalle de `vida_requerida` para el camino óptimo:
 
 **Temporal:** `O(C(m+n-2, m-1) × (m+n))` — se exploran todos los caminos posibles y cada uno tiene longitud `m+n-1`. Para matrices cuadradas de lado `n` esto crece como `O(4^n / √n)`.
 
-**Espacial:** `O(m+n)` — profundidad máxima de la recursión y longitud del camino en curso.
+**Espacial:** `O(C(m+n-2, m-1) × (m+n))` — la función acumula todos los caminos en memoria antes de calcular el mínimo. Cada camino tiene longitud `m+n-1` y hay `C(m+n-2, m-1)` caminos posibles. La pila de recursión y el camino en curso ocupan `O(m+n)`, pero el almacenamiento de resultados domina y crece exponencialmente.
 
 ## Cuándo usar esta técnica
 
