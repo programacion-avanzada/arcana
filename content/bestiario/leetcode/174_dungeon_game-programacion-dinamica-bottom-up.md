@@ -153,6 +153,8 @@ Ahora utilizamos la fila inferior ya calculada para actualizar la fila 1.
 
 ### Celda (1,2)
 
+Solo puedo ir hacia abajo
+
 ```text
 max(1, dp[2] - 1)
 = max(1, 6 - 1)
@@ -168,6 +170,8 @@ Estado:
 ---
 
 ### Celda (1,1)
+
+Aca en el vector tenemos que dp[1] es el valor de vida requerida si me voy hacia abajo, dp[2] si me voy a la derecha, por eso hacemos el mínimo
 
 ```text
 min(dp[1], dp[2]) - (-10)
@@ -255,12 +259,12 @@ Estado final:
 
 # Evolución del vector `dp`
 
-| Paso | Fila procesada | Estado del vector `dp` |
-|------|----------------|------------------------|
-| Inicialización | Destino | `[0, 0, 6]` |
-| Fin de la Fila 2 | Fila inferior | `[1, 1, 6]` |
-| Fin de la Fila 1 | Fila intermedia | `[6, 11, 5]` |
-| Fin de la Fila 0 | Fila superior | `[7, 5, 2]` |
+| Paso             | Fila procesada  | Estado del vector `dp` |
+| ---------------- | --------------- | ---------------------- |
+| Inicialización   | Destino         | `[0, 0, 6]`            |
+| Fin de la Fila 2 | Fila inferior   | `[1, 1, 6]`            |
+| Fin de la Fila 1 | Fila intermedia | `[6, 11, 5]`           |
+| Fin de la Fila 0 | Fila superior   | `[7, 5, 2]`            |
 
 ---
 
@@ -314,16 +318,17 @@ sin modificar la complejidad temporal.
 
 # Comparación entre Top-Down y Bottom-Up
 
-| Característica            | Top-Down (Recursivo)      | Bottom-Up (Iterativo) |
-| ------------------------- | ------------------------- | --------------------- |
-| Stack Overflow            | Riesgo alto               | Nulo                  |
-| Complejidad temporal      | O(m × n)                  | O(m × n)              |
-| Complejidad espacial      | O(m × n) + Stack          | O(n)                  |
-| Facilidad para depuración | Media                     | Alta                  |
+| Característica            | Top-Down (Recursivo) | Bottom-Up (Iterativo) |
+| ------------------------- | -------------------- | --------------------- |
+| Stack Overflow            | Riesgo alto          | Nulo                  |
+| Complejidad temporal      | O(m × n)             | O(m × n)              |
+| Complejidad espacial      | O(m × n) + Stack     | O(n)                  |
+| Facilidad para depuración | Media                | Alta                  |
 
 ---
 
 # Aspectos negativos
+
 Si necesitaramos saber el camino exacto que debe hacer el caballero para llegar al destino no podriamos, porque el memo tendria solo la primer fila... para lograr eso podemos sacrificar un poco de memoria y dejar el memo completo para la matriz.
 
 ---
