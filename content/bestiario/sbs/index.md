@@ -1,5 +1,5 @@
 ---
-title: 'Leetcode 0761 - Special Binary String'
+title: 'Special Binary String'
 tags: ['b/sbs']
 ---
 

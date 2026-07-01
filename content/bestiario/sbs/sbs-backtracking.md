@@ -1,5 +1,5 @@
 ---
-title: 'Leetcode 0761 - Special Binary String - Fuerza Bruta (Backtracking)'
+title: 'Fuerza Bruta (Backtracking)'
 tags: ['b/sbs']
 ---
 
@@ -87,11 +87,6 @@ def makeLargestSpecialBacktracking(s: str) -> str:
     backtrack(s)
     return max_string
 ```
-
-> [!IMPORTANT]
-> En la línea `for k in range(j + 2, n, 2):`, el índice inicial debe ser `j + 2` y no `j + 1`. Esto asegura que la longitud de la subcadena consecutiva `sub_B` sea par, de modo que pueda calificar como una subcadena binaria especial. Usar `j + 1` haría que la subcadena siempre tenga longitud impar, impidiendo la realización de cualquier intercambio.
-
----
 
 ## Traza de ejemplo
 

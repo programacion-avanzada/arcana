@@ -1,5 +1,5 @@
 ---
-title: 'Leetcode 0761 - Special Binary String - División y Conquista + Greedy'
+title: 'División y Conquista + Greedy'
 tags: ['b/sbs']
 ---
 
