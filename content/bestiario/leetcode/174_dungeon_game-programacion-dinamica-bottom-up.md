@@ -1,3 +1,8 @@
+---
+title: "LeetCode#174 - Dungeon Game - Programación Dinámica - Bottom-up"
+tags: ["b/leetcode"]
+---
+
 # LeetCode #174 - Dungeon Game - Programación Dinámica (Bottom-Up)
 
 ## Solución optimizada mediante Programación Dinámica Bottom-Up (iterativa) para [[174_dungeon_game]].
