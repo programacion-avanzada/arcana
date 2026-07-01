@@ -75,6 +75,8 @@ def mazmorra_bb(mazmorra):
 ```
 
 El algoritmo explora primero hacia abajo y luego hacia la derecha. Se muestran los eventos relevantes:
+*R = right*
+*D = down*
 
 **Paso 1 — Camino D→D→R→R** (`best = ∞`):
 

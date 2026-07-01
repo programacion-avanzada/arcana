@@ -66,6 +66,8 @@ def vida_minima_inicial(mazmorra):
 ```
 
 Los 6 caminos posibles y la vida inicial mínima necesaria para cada uno:
+*R = right*
+*D = down*
 
 | Camino    | Celdas visitadas      | Vida requerida |
 |-----------|-----------------------|----------------|
