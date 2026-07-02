@@ -27,25 +27,27 @@ Además, una decisión que parece correcta al principio puede provocar intercamb
 
 ---
 
+
 ## Definición formal
 
 **Entrada:**
 
-- Un array row de longitud $2n$, donde row[i] representa la persona sentada en el asiento $i$.
-- Las personas están numeradas de $0$ a $2n-1$.
-- Cada pareja está formada por las personas $(0,1), (2,3), (4,5), \dots, (2n-2, 2n-1)$.
+- Un array *row* de longitud $m = 2n$, donde *row[i]* representa la persona sentada en el asiento $i$.
+- $n$ representa la cantidad de parejas.
+- $m$ representa la cantidad total de personas.
+- Las personas están numeradas de $0$ a $m - 1$.
+- Cada pareja está formada por las personas $(0,1)$, $(2,3)$, $(4,5)$, ..., $(m-2, m-1)$.
 
-**Salida:** un número entero que representa la mínima cantidad de intercambios necesarios para que todas las parejas queden sentadas en los asientos consecutivos correspondientes.
+**Salida:** un número entero que representa la mínima cantidad de intercambios necesarios para que todas las parejas queden sentadas en posiciones consecutivas.
 
 **Restricciones:**
 
 - $2 \leq n \leq 30$
-- $0 \leq row[i] < 2n$
-- $2n == row.length$
+- $m = 2n$
+- $0 \leq row[i] < m$
+- $m == row.length$
 - Cada persona aparece exactamente una vez en el arreglo.
 - En un intercambio pueden permutarse las personas ubicadas en cualquier par de asientos.
-
-> Nota: se usa $n$ para la cantidad de parejas y $m = 2n$ para la cantidad total de personas (longitud del arreglo).
 
 ---
 
