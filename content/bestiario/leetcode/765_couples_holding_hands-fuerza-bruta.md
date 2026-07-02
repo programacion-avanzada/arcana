@@ -88,7 +88,7 @@ Por lo tanto, una cota superior para la complejidad temporal es $O(m!\cdot m^2)$
 
 ### Espacial
 
-El conjunto de estados visitados puede llegar a almacenar hasta $m!$ configuraciones distintas, cada una de longitud $m$. Este costo domina al de la pila de recursión.
+El conjunto de estados visitados puede llegar a almacenar hasta $m!$ configuraciones distintas, cada una de longitud $m$ (todas las configuraciones pendientes de explorar).
 
 Por lo tanto, una cota superior para la complejidad espacial es $O(m!\cdot m)$.
 
