@@ -9,7 +9,7 @@ El skyline de una ciudad es el contorno exterior de la silueta que forman todos 
 
 Cada edificio está descripto por su borde izquierdo, su borde derecho y su altura. El resultado es la línea que sube y baja marcando, en cada posición del eje x, la altura del edificio más alto que la cubre.
 
-**Problema:** dado un conjunto de edificios rectangulares, devolver la lista([[array]]) de puntos clave que describen el contorno superior de la silueta colectiva, sin segmentos horizontales redundantes.
+**Problema:** dado un conjunto de edificios rectangulares, devolver la lista ([array](../../grimorio/data-structures/array.md)) de puntos clave que describen el contorno superior de la silueta colectiva, sin segmentos horizontales redundantes.
 
 [Problema original](https://leetcode.com/problems/the-skyline-problem/description/)
 
