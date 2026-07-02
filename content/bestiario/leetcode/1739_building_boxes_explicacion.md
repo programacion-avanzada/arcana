@@ -18,22 +18,26 @@ Dado `n`, hay que devolver la **mínima cantidad de cajas que tocan el piso**.
 
 ## Intuición
 
-Lo interesante del problema es que la respuesta no depende de *dónde* ponemos cada caja, sino de
-qué **forma** global adopta el conjunto. La regla de soporte es más exigente de lo que aparenta:
-para poder apilar una caja encima de otra, la de abajo tiene que estar rodeada por sus cuatro
-lados, ya sea con paredes o con otras cajas. No se puede apilar "en el aire" ni sobre una torre
-aislada.
+Para que la cantidad de cajas que tocan el piso sea la `mínima`, necesitamos apilar las cajas lo más alto posible. Cómo podemos hacerlo? De la siguiente manera
 
-Eso genera una tensión: cada caja que subimos a un nivel más alto nos ahorra piso, pero para
-sostenerla necesitamos que abajo haya suficiente estructura. Apilar de más sin respaldo es
-inválido; apilar de menos desperdicia altura y gasta piso. El corazón del problema es encontrar
-el equilibrio entre "cuánto apilo hacia arriba" y "cuánta base necesito para que eso se sostenga".
+1. Aprovechando las paredes
+Para poner una caja arriba de otra, la caja de abajo tiene que tener sus 4 caras verticales adyacentes a otra caja o a una pared. Si armamos nuestra torre en el medio de la habitación, necesitamos rodear la caja base con 4 cajas. Pero si nos vamos a una esquina, las dos paredes de la habitación ya nos cubren 2 caras. Solo necesitamos poner 2 cajas adicionales para cubrir las caras restantes. 
 
-Además, el rango de `n` es grande, así que no alcanza con ir probando configuraciones o ubicando
-cajas de a una: hay que entender la estructura del óptimo para poder calcularlo, no construirlo
-paso a paso.
+2. Base
+Para tener 1 caja en el nivel 2, la caja base (nivel 1, la que está justo en el vértice de la esquina) necesita estar rodeada por 2 cajas adyacentes. Esto forma un pequeño triángulo en el piso de 3 cajas.
+Para tener 1 caja en el nivel 3, necesitás un triángulo de 3 cajas en el nivel 2. Y para sostener esas 3 cajas del nivel 2, necesitás un triángulo más grande en el piso (nivel 1) compuesto por 6 cajas.
+Las bases de cada nivel, terminan siendo números triangulares (Los números sucesión matemática de cantidades que pueden representarse geométricamente como puntos o elementos ordenados en forma de triángulo equilátero)
 
 ![Piso triangular](piso_triangular.svg)
+
+3. Total de cajas
+Si logramos armar una "pirámide de esquina" perfecta de altura k, la cantidad total de cajas que usamos es simplemente la suma de las cajas de todos esos niveles triangulares. 
+La suma acumulada de los números triangulares genera otra secuencia Números Tetraédricos (número figurado que representa la cantidad de objetos o esferas necesarios para formar una pirámide de base triangular)
+
+El problema es muy interesante porque plantea un escenario físico de equilibrio y soporte 3D que, al ser analizado a fondo, se traduce directamente en un patrón de series matemáticas puras (números triangulares para el área). Obliga a pensar cómo maximizar el crecimiento vertical sacrificando la menor cantidad posible de crecimiento horizontal.
+
+
+
 
 ## Definición formal
 
@@ -54,33 +58,17 @@ enumerarla.
 
 ## Ejemplos
 
-Example 1:
+Tomemos una instancia resuelta a mano: n = 10.
+Para apilar la mayor cantidad de cajas con la menor base, empezamos encajándolas en el rincón.
 
-Input: n = 3
+Nivel 1 (Piso): Colocamos 6 cajas formando un triángulo rectángulo pegado a las paredes (poniendo 1 en la esquina de las paredes, 2 cajas mas, para cubrir la caja anterior y luego, 3 cajas mas para cubribr las 2 cajas anteriores)
 
-Output: 3
+Nivel 2: Sobre esas 6 cajas del piso, hay soporte exacto en el interior para colocar 3 cajas (formando un triángulo de 2 y 1).
 
-Explanation: La figura representa el posicionamiento de tres cajas
+Nivel 3: Sobre esas 3 cajas, hay soporte central para colocar exactamente 1 caja en la punta superior.
+Suma de cajas apiladas = 6 (piso) + 3 + 1 = 10 cajas.
+Respuesta final: 6 cajas tocan el suelo.
 
-![Representación de n3](boxes_n3.svg)
-
-Example 2:
-
-Input: n = 4
-
-Output: 3
-
-Explanation: La figura representa el posicionamiento de cuatro cajas
-
-![Representación de n4](boxes_n4.svg)
-
-Example 3:
-
-Input: n = 10
-
-Output: 6
-
-Explanation: La figura representa el posicionamiento de diez cajas
 
 ![Representación de n10](boxes_n10.svg)
 
