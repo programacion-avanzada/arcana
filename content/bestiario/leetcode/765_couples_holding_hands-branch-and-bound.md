@@ -124,13 +124,13 @@ Por lo tanto, una cota superior para la complejidad espacial es $O(m!\cdot m)$.
 
 - Su peor caso sigue siendo exponencial.
 - La mejora depende de qué tan efectiva sea la poda; si se encuentra una buena solución tarde, el beneficio puede ser pequeño.
-- Para este problema concreto, sigue siendo mejor utilizar [[765_couples_holding_hands-greedy|greedy]], que evita explorar combinaciones y resuelve el problema en tiempo lineal.
+- Para este problema concreto, sigue siendo mejor utilizar [greedy](765_couples_holding_hands-greedy.md), que evita explorar combinaciones y resuelve el problema en tiempo lineal.
 
 ## Comparación con las otras soluciones
 
-Frente a [[765_couples_holding_hands-fuerza-bruta|fuerza bruta]], branch and bound explora el mismo espacio de búsqueda pero incorpora una poda por optimalidad: cuando una rama ya no puede superar la mejor solución conocida, se descarta sin seguir profundizando. Esto reduce trabajo redundante, aunque ambas técnicas conservan el mismo peor caso exponencial.
+Frente a [fuerza bruta](765_couples_holding_hands-fuerza-bruta.md), branch and bound explora el mismo espacio de búsqueda pero incorpora una poda por optimalidad: cuando una rama ya no puede superar la mejor solución conocida, se descarta sin seguir profundizando. Esto reduce trabajo redundante, aunque ambas técnicas conservan el mismo peor caso exponencial.
 
-Frente a [[765_couples_holding_hands-greedy|greedy]], la diferencia es más fuerte: greedy no necesita explorar ramas alternativas ni mantener una mejor solución parcial, porque corrige cada banco con una decisión local segura y obtiene el óptimo en una sola pasada.
+Frente a [greedy](765_couples_holding_hands-greedy.md), la diferencia es más fuerte: greedy no necesita explorar ramas alternativas ni mantener una mejor solución parcial, porque corrige cada banco con una decisión local segura y obtiene el óptimo en una sola pasada.
 
 ## Referencias
 N/A
