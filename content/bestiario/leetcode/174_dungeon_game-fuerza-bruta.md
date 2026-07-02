@@ -106,10 +106,9 @@ Detalle de `vida_requerida` para el camino óptimo:
 - Escala exponencialmente: para una matriz 10×10 hay más de 48.000 caminos posibles.
 - Recalcula prefijos compartidos entre caminos sin reutilizar ningún resultado intermedio.
 
-## Comparación con Branch & Bound y Programación Dinámica
+## Comparación con Programación Dinámica
 
-La fuerza bruta evalúa todos los caminos sin ninguna poda ni reutilización. Branch & Bound mejora esto descartando ramas que no pueden superar la mejor solución encontrada, reduciendo los caminos explorados en la práctica. Programación Dinámica resuelve cada celda exactamente una vez en `O(m×n)`, haciendo obsoletas las otras dos técnicas para instancias de tamaño real.
+La fuerza bruta evalúa todos los caminos sin ninguna poda ni reutilización de resultados intermedios. Programación Dinámica resuelve cada celda exactamente una vez en `O(m×n)`, aprovechando que muchos caminos comparten subproblemas — algo que la fuerza bruta ignora por completo. Para instancias de tamaño real, esto la vuelve la técnica claramente preferible.
 
 ## Referencias
-
-- [LeetCode #174 - Dungeon Game](https://leetcode.com/problems/dungeon-game/)
+N/A

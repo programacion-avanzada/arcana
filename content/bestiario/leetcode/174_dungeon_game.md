@@ -71,15 +71,12 @@ La vida nunca cae a 0 o menos. Con vida inicial 6, en `(0,1)` quedaría con 1 y 
 
 Una primera aproximación es fuerza bruta: explorar todos los caminos posibles de `(0,0)` a `(m-1, n-1)`, calcular la vida mínima necesaria para sobrevivir cada uno y quedarse con el menor. Esto permite verificar resultados pero escala exponencialmente.
 
-Una mejora directa es Branch & Bound: se mantiene la exploración pero se podan ramas que no pueden superar la mejor solución encontrada hasta el momento.
-
-La solución más eficiente es Programación Dinámica: recorriendo la matriz de atrás (destino) hacia adelante (inicio), cada celda se resuelve una sola vez en tiempo constante.
+La solución más eficiente es Programación Dinámica: recorriendo la matriz de atrás (destino) hacia adelante (inicio), cada celda se resuelve una sola vez en tiempo constante. Puede implementarse de forma recursiva con memoización (top-down) o iterativa (bottom-up).
 
 ---
 
 ## Soluciones disponibles
 
 - [[174_dungeon_game-fuerza-bruta]]
-- [[174_dungeon_game-branch-and-bound]]
-- [[174_dungeon_game-programacion-dinamica]]
-- [[174_dungeon_game-programacion-dinamica-bottom-up]]
+- [[174_dungeon_game-pd-top-down]]
+- [[174_dungeon_game-pd-bottom-up]]

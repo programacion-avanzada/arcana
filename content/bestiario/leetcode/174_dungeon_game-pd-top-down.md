@@ -1,9 +1,9 @@
 ---
-title: 'LeetCode#174 - Dungeon Game - Programación Dinámica'
+title: 'LeetCode#174 - Dungeon Game - Programación Dinámica - Top-down'
 tags: ['b/leetcode']
 ---
 
-Solución por Programación Dinámica para [[174_dungeon_game]].
+Solución por Programación Dinámica Top-Down para [[174_dungeon_game]].
 
 ## Técnicas utilizadas
 
@@ -130,12 +130,11 @@ Sabemos que solo se puede ir hacia la derecha o hacia abajo, entonces podemos pr
 - Requiere memoria adicional proporcional a la cantidad de subproblemas (`O(m×n)`).
 - La recursión profunda puede causar stack overflow en matrices muy grandes; en ese caso conviene una versión iterativa (bottom-up).
 
-## Comparación con Fuerza Bruta y Branch & Bound
+## Comparación con Fuerza Bruta
 
 Sobre una matriz 5×5, la recursión sin memoización realiza **251 llamadas** mientras que la versión con memoización realiza **41** (medido empíricamente con un contador de llamadas), obteniendo el mismo resultado (**6**). La diferencia crece exponencialmente con el tamaño de la entrada, ya que sin memo cada celda se recalcula múltiples veces.
 
-Branch & Bound reduce las llamadas mediante podas, pero en el peor caso sigue siendo exponencial. La Programación Dinámica garantiza `O(m×n)` independientemente de la instancia, lo que la convierte en la técnica más eficiente para este problema.
+La Programación Dinámica garantiza `O(m×n)` independientemente de la instancia, lo que la convierte en la técnica más eficiente para este problema.
 
 ## Referencias
-
-- [LeetCode #174 - Dungeon Game](https://leetcode.com/problems/dungeon-game/)
+N/A
