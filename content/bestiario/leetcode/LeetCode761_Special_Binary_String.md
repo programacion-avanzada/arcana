@@ -1,6 +1,6 @@
 ---
 title: 'Special Binary String'
-tags: ['b/sbs']
+tags: ['b/leetcode']
 ---
 
 ## Nombre y enunciado
@@ -110,5 +110,5 @@ Para abordar este problema, es fundamental:
 
 ## Soluciones disponibles
 
-- [[sbs-recursivo-greedy]]
-- [[sbs-backtracking]]
+- [[LeetCode761_Special_Binary_String-RecursivoGreedy|División y Conquista + Greedy]]
+- [[LeetCode761_Special_Binary_String-Backtracking|Fuerza Bruta (Backtracking)]]

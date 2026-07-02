@@ -1,9 +1,9 @@
 ---
 title: 'Fuerza Bruta (Backtracking)'
-tags: ['b/sbs']
+tags: ['b/leetcode']
 ---
 
-← Volver a la [[index|descripción del problema]]
+← Volver a la [[LeetCode761_Special_Binary_String|descripción del problema]]
 
 ## Técnicas utilizadas
 
