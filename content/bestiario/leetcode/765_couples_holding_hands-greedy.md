@@ -15,6 +15,8 @@ La fila se procesa banco por banco. Para cada posición par *i*, se observa qui�
 
 La idea greedy es que, una vez fijado un banco correctamente, no hace falta volver a tocarlo. Cada decisión local resuelve de manera óptima ese banco actual y reduce el problema restante al mismo subproblema sobre el sufijo de la fila.
 
+> Para conocer rápidamente la posición actual de cada persona, se mantiene un [map](../../grimorio/data-structures/map) donde la clave es la persona y el valor es su posición en la fila.
+
 ## Código
 
 ```python
@@ -93,4 +95,5 @@ Frente a [fuerza bruta](765_couples_holding_hands-fuerza-bruta.md), greedy evita
 Frente a [branch and bound](765_couples_holding_hands-branch-and-bound.md), la ventaja también es clara: branch and bound todavía necesita explorar un árbol de búsqueda y mantener una mejor solución parcial, mientras que greedy no explora ramas ni requiere podas, porque cada intercambio local ya forma parte de una solución óptima.
 
 ## Referencias
-N/A
+
+- Estructura de datos: [Map](../../grimorio/data-structures/map)
