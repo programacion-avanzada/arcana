@@ -5,7 +5,7 @@ tags: ['divide & conquer', 'merge sort', 'leetcode', 'python', 'división y conq
 
 ## Técnicas utilizadas
 
-**División y Conquista (Merge Sort modificado):** se adapta Merge Sort para que, durante cada fusión, además de ordenar cuente cuántos elementos anteriores son estrictamente mayores que cada elemento. Es la misma idea que el clásico conteo de inversiones.
+**División y Conquista (Merge Sort modificado):** se adapta Merge Sort para que, durante cada fusión, además de ordenar, cuente cuántos elementos anteriores son estrictamente mayores que cada elemento. Es la misma idea que el clásico conteo de inversiones.
 
 ## Idea de la solución
 
@@ -19,7 +19,7 @@ greater_count[right[j]] += len(left) - i
 
 en vez de comparar elemento por elemento. Como cada par de posiciones queda en mitades distintas exactamente una vez durante toda la recursión, cada relación "mayor que" se cuenta una única vez.
 
-Con `greater_count[i]` calculado, se recorre el arreglo una vez más:
+Se elige acumular `greater_count[i]` (mayores) y derivar `less(i)` algebraicamente. Con `greater_count[i]` calculado, se recorre el arreglo una vez más:
 
 ```
 equal(i)   = elementos iguales anteriores (diccionario de frecuencias)
@@ -75,23 +75,23 @@ def createSortedArray(instructions):
 **Mitad izquierda** (`[1] [2] [3]`): todas las fusiones cumplen `<=`, se copian sin generar conteos.
 
 **Mitad derecha** (`[6] [5] [4]`):
-- fusión `[5]` con `[4]`: `5 > 4` → `greater_count[4] += 1`
-- fusión `[6]` con `[4,5]`: `6 > 4` → `greater_count[4] += 1` → `greater_count[4] = 2`; luego `6 > 5` → `greater_count[5] += 1`
+- Fusión `[5]` con `[4]`: `5 > 4` → `greater_count[4] += 1`
+- Fusión `[6]` con `[4,5]`: `6 > 4` → `greater_count[4] += 1` → `greater_count[4] = 2`; luego `6 > 5` → `greater_count[5] += 1`
 
 **Fusión final** `[1,2,3]` con `[4,5,6]`: todas cumplen `<=`, sin nuevos conteos.
 
-Resultado: `greater_count = [0, 0, 0, 0, 1, 2]` para `[1,2,3,6,5,4]` — antes del 5 solo hay un mayor (6); antes del 4 hay dos (6 y 5).
+Resultado: `greater_count = [0, 0, 0, 0, 2, 1]` para índices `[0,1,2,3,4,5]` — antes del valor 5 (índice 4) hay un mayor (6); antes del valor 4 (índice 5) hay dos (6 y 5).
 
 **Cálculo del costo:**
 
-| i | valor | equal | greater | less = i−equal−greater | costo = min(less, greater) |
-|---|-------|-------|---------|--------------------------|------------------------------|
-| 0 | 1 | 0 | 0 | 0 | 0 |
-| 1 | 2 | 0 | 0 | 1 | 0 |
-| 2 | 3 | 0 | 0 | 2 | 0 |
-| 3 | 6 | 0 | 0 | 3 | 0 |
-| 4 | 5 | 0 | 1 | 3 | 1 |
-| 5 | 4 | 0 | 2 | 3 | 2 |
+| i | valor | equal | greater | less = i − equal − greater | costo = min(less, greater) |
+|---|-------|-------|---------|----------------------------|----------------------------|
+| 0 | 1     | 0     | 0       | 0                          | 0                          |
+| 1 | 2     | 0     | 0       | 1                          | 0                          |
+| 2 | 3     | 0     | 0       | 2                          | 0                          |
+| 3 | 6     | 0     | 0       | 3                          | 0                          |
+| 4 | 5     | 0     | 1       | 3                          | 1                          |
+| 5 | 4     | 0     | 2       | 3                          | 2                          |
 
 Costo total: `0+0+0+0+1+2 = 3` ✓
 
@@ -113,9 +113,9 @@ El cálculo del costo final es `O(n)`, que no domina.
 
 Con `n = 10⁵`, esto equivale a ~`1.7 × 10⁶` operaciones → viable dentro de los límites de LeetCode.
 
-### Espacial 
+### Espacial
 
-`O(n)`.** Por `greater_count` y los arreglos temporales de cada fusión, más `O(log n)` de pila de recursión.
+`O(n)`. Por `greater_count` y los arreglos temporales de cada fusión, más `O(log n)` de pila de recursión.
 
 ## Cuándo usar esta técnica
 
@@ -134,10 +134,10 @@ Con `n = 10⁵`, esto equivale a ~`1.7 × 10⁶` operaciones → viable dentro d
 
 ### Comparación con Fuerza Bruta
 
-La fuerza bruta mantiene `nums` explícitamente e inserta cada elemento contando menores/mayores entre los ya insertados, con costo `O(n²)` — inviable para `n = 10⁵`. Esta solución logra el mismo resultado en `O(n log n)` al obtener esos conteos como subproducto del propio ordenamiento.El trade-off es complejidad de implementación a cambio de eficiencia.
+La fuerza bruta mantiene `nums` explícitamente e inserta cada elemento contando menores/mayores entre los ya insertados, con costo `O(n²)` — inviable para `n = 10⁵`. Esta solución logra el mismo resultado en `O(n log n)` al obtener esos conteos como subproducto del propio ordenamiento. El trade-off es complejidad de implementación a cambio de eficiencia.
 
 ## Referencias
 
-- Cormen et al., *Introduction to Algorithms* (CLRS) — Cap. 2: Merge Sort y conteo de inversiones.
+- Cormen et al., *Introduction to Algorithms* (CLRS) — Sección 2.3 (Merge Sort) y Problema 2-4 (conteo de inversiones).
 - [LeetCode #1649](https://leetcode.com/problems/create-sorted-array-through-instructions/)
 - [LeetCode #315 - Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
