@@ -88,9 +88,9 @@ $O(m)$ porque se almacena un diccionario con la posición actual de cada persona
 
 ## Comparación con las otras soluciones
 
-Frente a [[765_couples_holding_hands-fuerza-bruta|fuerza bruta]], greedy evita por completo la exploración de combinaciones posibles de swaps: en lugar de probar alternativas, corrige cada banco en el momento y avanza. Esto reduce la complejidad de exponencial a lineal.
+Frente a [fuerza bruta](765_couples_holding_hands-fuerza-bruta.md), greedy evita por completo la exploración de combinaciones posibles de swaps: en lugar de probar alternativas, corrige cada banco en el momento y avanza. Esto reduce la complejidad de exponencial a lineal.
 
-Frente a [[765_couples_holding_hands-branch-and-bound|branch and bound]], la ventaja también es clara: branch and bound todavía necesita explorar un árbol de búsqueda y mantener una mejor solución parcial, mientras que greedy no explora ramas ni requiere podas, porque cada intercambio local ya forma parte de una solución óptima.
+Frente a [branch and bound](765_couples_holding_hands-branch-and-bound.md), la ventaja también es clara: branch and bound todavía necesita explorar un árbol de búsqueda y mantener una mejor solución parcial, mientras que greedy no explora ramas ni requiere podas, porque cada intercambio local ya forma parte de una solución óptima.
 
 ## Referencias
 N/A
