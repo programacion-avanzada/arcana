@@ -80,7 +80,7 @@ Resultado: 1
 
 ### Temporal
 
-Sea $m = 2n$ la longitud del arreglo, donde $n$ es la cantidad de parejas. El algoritmo explora por niveles las distintas configuraciones posibles de la fila. Para evitar recorrer indefinidamente los mismos estados, cada configuración visitada se almacena en un conjunto y no vuelve a explorarse.
+Sea $m = 2n$ la longitud del arreglo, donde $n$ es la cantidad de parejas. El algoritmo explora por niveles las distintas configuraciones posibles de la fila. Para evitar recorrer indefinidamente los mismos estados, cada configuración visitada se almacena en un [conjunto](../../grimorio/data-structures/set) y no vuelve a explorarse.
 
 En el peor caso pueden visitarse hasta $m!$ configuraciones distintas, ya que cada una corresponde a una permutación de las personas en la fila. Desde cada estado pueden intentarse hasta $\binom{m}{2}=O(m^2)$ intercambios posibles.
 
@@ -111,4 +111,5 @@ Frente a [[765_couples_holding_hands-branch-and-bound|branch and bound]], la fue
 Frente a [[765_couples_holding_hands-greedy|greedy]], la diferencia es aún mayor: greedy identifica que alcanza con corregir cada banco de asientos de forma local, evitando por completo la necesidad de explorar combinaciones, y resuelve el problema en tiempo lineal.
 
 ## Referencias
-N/A
+
+- Estructura de datos: [Conjunto / Set](../../grimorio/data-structures/set)
