@@ -100,7 +100,7 @@ Resultado: 1
 
 Sea $m = 2n$ la longitud del arreglo, donde $n$ es la cantidad de parejas. Al igual que en la fuerza bruta, desde cada estado pueden intentarse hasta $\binom{m}{2}=O(m^2)$ intercambios posibles.
 
-Para evitar recorrer repetidamente una misma configuración, los estados ya explorados se almacenan en un conjunto. Además, el algoritmo incorpora una poda: cuando la cantidad de intercambios realizados ya no puede mejorar la mejor solución encontrada hasta el momento, la rama se descarta sin seguir explorándola.
+Para evitar recorrer repetidamente una misma configuración, los estados ya explorados se almacenan en un [conjunto](../../grimorio/data-structures/set). Además, el algoritmo incorpora una poda: cuando la cantidad de intercambios realizados ya no puede mejorar la mejor solución encontrada hasta el momento, la rama se descarta sin seguir explorándola.
 
 Esta poda reduce significativamente la cantidad de estados visitados en muchos casos prácticos. Sin embargo, en el peor caso la mejor solución puede encontrarse recién al final de la exploración, por lo que el algoritmo puede recorrer una cantidad de estados del mismo orden que la fuerza bruta.
 
@@ -133,4 +133,5 @@ Frente a [fuerza bruta](765_couples_holding_hands-fuerza-bruta.md), branch and b
 Frente a [greedy](765_couples_holding_hands-greedy.md), la diferencia es más fuerte: greedy no necesita explorar ramas alternativas ni mantener una mejor solución parcial, porque corrige cada banco con una decisión local segura y obtiene el óptimo en una sola pasada.
 
 ## Referencias
-N/A
+
+- Estructura de datos: [Conjunto / Set](../../grimorio/data-structures/set)
