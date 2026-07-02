@@ -92,6 +92,8 @@ apilar la mayor cantidad de cajas por cada caja de piso. Conviene analizar cómo
 estructura cuando la construimos por niveles apoyada en el rincón, y qué relación hay entre el
 tamaño de la base y la cantidad total de cajas que puede sostener.
 
+![Regla Esquina](regla_esquina.svg)
+
 A partir de ahí aparece una decisión natural: dado `n`, ¿cuál es la base más chica que alcanza?
 Las soluciones del grupo atacan esa pregunta desde ángulos distintos —una **construye** la
 respuesta directamente y la otra la **busca** aprovechando una propiedad de monotonía—, pero

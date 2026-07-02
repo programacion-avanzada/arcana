@@ -107,12 +107,6 @@ Como `cajas_totales == 10 == n`, no hay Fase 2. **Respuesta: 6.**
   claridad y robustez; forma cerrada para rendimiento máximo** cuando la fórmula existe y está
   validada.
 
-**Referencias.**
-
-- [LeetCode 1739 — Building Boxes](https://leetcode.com/problems/building-boxes/)
-- [Número triangular](https://en.wikipedia.org/wiki/Triangular_number)
-- [Número tetraédrico](https://en.wikipedia.org/wiki/Tetrahedral_number)
-
 ---
 
 ## Solución 2: Greedy en forma cerrada O(1)
