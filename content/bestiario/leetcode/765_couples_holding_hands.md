@@ -79,6 +79,6 @@ El paso final es notar que no hace falta explorar combinaciones: alcanza con rec
 
 ## Soluciones disponibles
 
-- [[765_couples_holding_hands-fuerza-bruta]]
-- [[765_couples_holding_hands-branch-and-bound]]
-- [[765_couples_holding_hands-greedy]]
+- [fuerza bruta](765_couples_holding_hands-fuerza-bruta.md)
+- [branch and bound](765_couples_holding_hands-branch-and-bound.md)
+- [greedy](765_couples_holding_hands-greedy.md)
