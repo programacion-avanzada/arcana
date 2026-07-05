@@ -1,6 +1,7 @@
 ---
-title: 'Regular Expression Matching - Backtracking'
-tags: ['b/leetcode']
+title: Leetcode0010 - Regular Expression Matching - Backtracking
+tags:
+  - b/leetcode
 ---
 
 ## Técnicas utilizadas
