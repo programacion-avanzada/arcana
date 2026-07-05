@@ -1,6 +1,7 @@
 ---
-title: 'Regular Expression Matching - PD Buttom-Up'
-tags: ['b/leetcode']
+title: Leetcode0010 - Regular Expression Matching - PD Buttom-Up
+tags:
+  - b/leetcode
 ---
 
 ## Técnicas utilizadas
@@ -10,7 +11,7 @@ Programación dinámica con enfoque **Bottom-Up (tabulación)**. Se construye un
 ## Idea de la solución
 El problema pide verificar si una cadena `s` matchea un patrón `p` que puede contener `.` (cualquier carácter) y `*` (cero o más repeticiones del carácter anterior).
 
-La solución construye una matriz llamada 'dp' de tamaño **(m+1) × (n+1)**, donde:
+La solución construye una matriz llamada 'dp' de tamaño $(m+1) \times (n+1)$, donde:
 `dp[i][j] = True` si el sufijo `s[i:]` coincide con el sufijo `p[j:]`. 
 
 La matriz se completa desde la esquina inferior derecha hacia la superior izquierda, ya que cada estado depende únicamente de estados "más adelante" en la cadena y el patrón. 
@@ -33,18 +34,14 @@ first_match = (
 
 Luego existen dos posibles caminos a tomar:
 - **Caso 1**: el siguiente carácter del patrón es `*`. Esto ramifica en 2 posibles opciones:
-    - **Opción 1:** El `*` consume cero ocurrencias (representa cero apariciones).
-Se ignora el par x* y se consulta `dp[i][j+2]`.
-    - **Opción 2:** El `*` consume una ocurrencia (carácter). Si existe coincidencia entre los caracteres actuales, se consume un carácter de la cadena permaneciendo sobre el mismo lugar del patrón para poder consumir más repeticiones, consultando `dp[i+1][j]`. Entonces, resulta: `first_match and dp[i + 1][j]` 
-
+	- **Opción 1:** El `*` consume cero ocurrencias (representa cero apariciones). Se ignora el par x* y se consulta `dp[i][j+2]`.
+    - **Opción 2:** El `*` consume una ocurrencia (carácter). Si existe coincidencia entre los caracteres actuales, se consume un carácter de la cadena permaneciendo sobre el mismo lugar del patrón para poder consumir más repeticiones, consultando `dp[i+1][j]`. Entonces, resulta: `first_match and dp[i + 1][j]`  
     Basta con que una de ambas opciones sea verdadera. 
 
-- **Caso 2:** no hay `*` 
-
+- **Caso 2:** no hay `*`  
     Debe existir coincidencia entre los caracteres actuales y luego avanzar simultáneamente una posición tanto en la cadena como en el patrón, donde el resto de la cadena debe coincidir con el resto del patrón, utilizando `dp[i+1][j+1]`. Por lo tanto, resulta: `first_match and dp[i + 1][j + 1]` 
 
-
-Una vez completada toda la matriz, la respuesta buscada queda almacenada en dp[0][0]. 
+Una vez completada toda la matriz, la respuesta buscada queda almacenada en `dp[0][0]`.
 
 ## Código
 ```python

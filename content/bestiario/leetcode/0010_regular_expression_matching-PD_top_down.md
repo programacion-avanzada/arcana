@@ -1,6 +1,7 @@
 ---
-title: 'Regular Expression Matching - PD Top-Down'
-tags: ['b/leetcode']
+title: Leetcode0010 - Regular Expression Matching - PD Top-Down
+tags:
+  - b/leetcode
 ---
 
 ## Técnicas utilizadas
