@@ -1,6 +1,7 @@
 ---
-title: 'Special Binary String'
-tags: ['b/leetcode']
+title: LeetCode0761 - Special Binary String
+tags:
+  - b/leetcode
 ---
 
 ## Nombre y enunciado
@@ -110,5 +111,5 @@ Para abordar este problema, es fundamental:
 
 ## Soluciones disponibles
 
-- [[LeetCode761_Special_Binary_String-RecursivoGreedy|División y Conquista + Greedy]]
-- [[LeetCode761_Special_Binary_String-Backtracking|Fuerza Bruta (Backtracking)]]
+- [[LeetCode761_Special_Binary_String-Backtracking]]
+- [[LeetCode761_Special_Binary_String-RecursivoGreedy]]

@@ -1,6 +1,7 @@
 ---
-title: 'División y Conquista + Greedy'
-tags: ['b/leetcode']
+title: LeetCode0761 - Special Binary String - División y Conquista + Greedy
+tags:
+  - b/leetcode
 ---
 
 ← Volver a la [[LeetCode761_Special_Binary_String|descripción del problema]]
