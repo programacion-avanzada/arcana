@@ -1,10 +1,9 @@
 ---
-title: 'Cherry Pickup — Programación Dinámica'
-tags: ['b/leetcode']
-alias: ['cherry-pickup-programacion-dinamica', 'cherry-pickup-dp']
+title: Leetcode0741 - Cherry Pickup - Programación Dinámica
+tags:
+  - b/leetcode
+alias:
 ---
-
-## Cherry Pickup — Programación Dinámica
 
 > Solución para el problema [Cherry Pickup (LeetCode #741)](0741_cherry_pickup.md).
 
@@ -73,14 +72,14 @@ Las dos últimas filas muestran el ahorro: estados que la fuerza bruta volvería
 
 ### Complejidad
 
-- **Temporal: `O(N^3)`.** Hay `N × N × N = O(N^3)` estados distintos `(r1, c1, r2)`, y cada uno se computa **una sola vez** (gracias al cache) realizando trabajo `O(1)` (cuatro consultas y un `max`). Para `N = 50` son a lo sumo `125 000` estados, perfectamente factible —frente a las `~10^21` llamadas de la fuerza bruta.
-- **Espacial: `O(N^3)`.** Domina la tabla de memoización, que puede almacenar hasta un valor por estado. La pila de recursión aporta `O(N)`, despreciable frente a lo anterior.
+- **Temporal:** $O(N^3)$ Hay `N × N × N = O(N^3)` estados distintos `(r1, c1, r2)`, y cada uno se computa **una sola vez** (gracias al cache) realizando trabajo `O(1)` (cuatro consultas y un `max`). Para `N = 50` son a lo sumo `125 000` estados, perfectamente factible —frente a las `~10^21` llamadas de la fuerza bruta.
+- **Espacial:** $O(N^3)$ Domina la tabla de memoización, que puede almacenar hasta un valor por estado. La pila de recursión aporta $O(N)$, despreciable frente a lo anterior.
 
 ### Cuándo usar esta técnica
 
 La PD es la elección indicada cuando se reconocen las **dos señales** que aquí están presentes: **subestructura óptima** y **subproblemas superpuestos**. La pista práctica es directa: si una solución recursiva natural recalcula los mismos estados una y otra vez, memoizar suele bajar el costo de exponencial a polinómico.
 
-Sus **limitaciones**: paga memoria por velocidad (aquí `O(N^3)`, que para `N` muy grande podría ser un problema), y requiere que el estado sea **acotado y bien identificado** —si los estados casi no se repiten, la memoización no ayuda y sólo agrega overhead.
+Sus **limitaciones**: paga memoria por velocidad (aquí $O(N^3)$, que para `N` muy grande podría ser un problema), y requiere que el estado sea **acotado y bien identificado** —si los estados casi no se repiten, la memoización no ayuda y sólo agrega overhead.
 
 Comparada con la [Fuerza Bruta](0741_cherry_pickup-fuerza-bruta.md), es **estrictamente superior para este problema**: produce el mismo resultado con idéntica lógica, pero pasa de `O(4^(2N))` a `O(N^3)` en tiempo, a cambio de `O(N^3)` de memoria (frente a `O(N)` de la fuerza bruta). La fuerza bruta sólo conviene como referencia conceptual o como oráculo de testing en instancias diminutas; **para resolver el problema de verdad, se usa la PD**.
 
@@ -88,6 +87,5 @@ Comparada con la [Fuerza Bruta](0741_cherry_pickup-fuerza-bruta.md), es **estric
 
 ### Referencias
 
-- LeetCode 741 — *Cherry Pickup*: https://leetcode.com/problems/cherry-pickup/
 - Cormen, Leiserson, Rivest, Stein — *Introduction to Algorithms* (3ª ed.), Cap. 15: Dynamic Programming.
 - Documentación de Python — `functools.lru_cache`: https://docs.python.org/3/library/functools.html#functools.lru_cache

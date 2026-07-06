@@ -1,11 +1,9 @@
 ---
-title: 'Cherry Pickup'
-tags: ['b/leetcode']
-alias: ['cherry-pickup', '741', 'recoleccion-de-cerezas']
+title: Leetcode0741 - Cherry Pickup
+tags:
+  - b/leetcode
+alias:
 ---
-
-## Cherry Pickup (LeetCode #741)
-
 ### Enunciado
 
 Tenemos una grilla cuadrada `grid` de tamaño `N × N` donde cada celda contiene uno de tres valores:
@@ -70,5 +68,5 @@ Total: `5` cerezas. Es el máximo posible, ya que entre ambos recogen **todas** 
 
 ### Soluciones disponibles
 
-- [Fuerza Bruta (recursión de dos recolectores)](0741_cherry_pickup-fuerza-bruta.md) — enumera exhaustivamente todas las combinaciones de movimientos.
-- [Programación Dinámica (memoización)](0741_cherry_pickup-programacion-dinamica.md) — misma recursión, evitando recomputar estados repetidos.
+- [[0741_cherry_pickup-fuerza-bruta]]
+- [[0741_cherry_pickup-programacion-dinamica]]

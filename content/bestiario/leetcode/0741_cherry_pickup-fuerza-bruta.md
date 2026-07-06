@@ -1,10 +1,9 @@
 ---
-title: 'Cherry Pickup — Fuerza Bruta'
-tags: ['b/leetcode']
-alias: ['cherry-pickup-fuerza-bruta']
+title: Leetcode0741 - Cherry Pickup - Fuerza Bruta
+tags:
+  - b/leetcode
+alias:
 ---
-
-## Cherry Pickup — Fuerza Bruta
 
 > Solución para el problema [Cherry Pickup (LeetCode #741)](0741_cherry_pickup.md).
 
@@ -75,18 +74,17 @@ Nótese que estados como `(2,1 | 2,1)` se alcanzan por **muchas** ramas distinta
 
 ### Complejidad
 
-- **Temporal: `O(4^(2N))`.** El árbol de recursión tiene profundidad `2(N-1)` pasos (lo que tarda un recolector en cruzar la grilla) y un **factor de ramificación de 4** en cada nivel. Sin memoización, no se reaprovecha ningún subproblema repetido, de modo que el número de llamadas es exponencial. Para `N = 50` esto es astronómico.
-- **Espacial: `O(N)`.** No se almacenan resultados; sólo se consume la pila de recursión, cuya profundidad es proporcional a la longitud de un camino, `2(N-1) = O(N)`.
+- **Temporal:** $O(4^{2N})$ El árbol de recursión tiene profundidad `2(N-1)` pasos (lo que tarda un recolector en cruzar la grilla) y un **factor de ramificación de 4** en cada nivel. Sin memoización, no se reaprovecha ningún subproblema repetido, de modo que el número de llamadas es exponencial. Para `N = 50` esto es astronómico.
+- **Espacial:** $O(N)$ No se almacenan resultados; sólo se consume la pila de recursión, cuya profundidad es proporcional a la longitud de un camino, `2(N-1) = O(N)`.
 
 ### Cuándo usar esta técnica
 
 La fuerza bruta es la herramienta correcta cuando el espacio de soluciones es **pequeño**, cuando se necesita un **prototipo de referencia obviamente correcto** contra el cual validar versiones optimizadas, o cuando el problema se resuelve una única vez sobre instancias diminutas.
 
-Su **limitación** es fatal aquí: el costo `O(4^(2N))` la vuelve inviable incluso para grillas modestas (`N = 10` ya implica del orden de `4^18 ≈ 6.8 × 10^10` llamadas). El problema **exige** un enfoque que evite recomputar subproblemas.
+Su **limitación** es fatal aquí: el costo $O(4^{2N})$ la vuelve inviable incluso para grillas modestas (`N = 10` ya implica del orden de `4^18 ≈ 6.8 × 10^10` llamadas). El problema **exige** un enfoque que evite recomputar subproblemas.
 
-Comparada con la [Programación Dinámica](0741_cherry_pickup-programacion-dinamica.md), comparte **exactamente la misma recursión y el mismo resultado**; la diferencia es puramente de eficiencia. La PD es estrictamente superior para este problema: añade una tabla de memoización que colapsa el costo de exponencial a polinómico `O(N^3)`, a cambio de `O(N^3)` de memoria. La fuerza bruta sólo conserva valor **didáctico** (deja ver la idea central sin la maquinaria del cache) y como **oráculo de testing** para instancias chicas.
+Comparada con la [[0741_cherry_pickup-programacion-dinamica|otra solución]], comparte **exactamente la misma recursión y el mismo resultado**; la diferencia es puramente de eficiencia. La PD es estrictamente superior para este problema: añade una tabla de memoización que colapsa el costo de exponencial a polinómico $O(N^3)$, a cambio de $O(N^3)$ de memoria. La fuerza bruta sólo conserva valor **didáctico** (deja ver la idea central sin la maquinaria del cache) y como **oráculo de testing** para instancias chicas.
 
 ### Referencias
 
-- LeetCode 741 — *Cherry Pickup*: https://leetcode.com/problems/cherry-pickup/
 - Cormen, Leiserson, Rivest, Stein — *Introduction to Algorithms* (3ª ed.), Cap. 15 (motivación de PD a partir de recursión exhaustiva).
