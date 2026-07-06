@@ -1,11 +1,9 @@
 ---
-title: "Building Boxes — Descripción del problema"
-problema: "LeetCode 1739 - Building Boxes"
+title: Leetcode1739 - Building Boxes
 ---
-
 ## Nombre y enunciado
 
-**[LeetCode 1739 — Building Boxes](https://leetcode.com/problems/building-boxes/)**
+[LeetCode 1739 - Building Boxes](https://leetcode.com/problems/building-boxes/)
 
 Tenemos una habitación cúbica cuyo ancho, largo y alto valen `n` unidades. Hay que ubicar `n`
 cajas, donde cada caja es un cubo de lado unitario. Las reglas para apoyarlas son:
@@ -35,9 +33,6 @@ Si logramos armar una "pirámide de esquina" perfecta de altura k, la cantidad t
 La suma acumulada de los números triangulares genera otra secuencia Números Tetraédricos (número figurado que representa la cantidad de objetos o esferas necesarios para formar una pirámide de base triangular)
 
 El problema es muy interesante porque plantea un escenario físico de equilibrio y soporte 3D que, al ser analizado a fondo, se traduce directamente en un patrón de series matemáticas puras (números triangulares para el área). Obliga a pensar cómo maximizar el crecimiento vertical sacrificando la menor cantidad posible de crecimiento horizontal.
-
-
-
 
 ## Definición formal
 
@@ -89,11 +84,11 @@ ambas parten de entender primero esa relación entre base y capacidad total.
 
 ## Soluciones disponibles
 
-- [**Greedy**](./1739_building_boxes_greedy.md)
-- [**División y conquista**](./1739_building_boxes-division_y_conquista.md)
+- [[1739_building_boxes-greedy]]
+- [[1739_building_boxes-division_y_conquista]]
 
 ## Referencias
 
 - [LeetCode 1739 — Building Boxes](https://leetcode.com/problems/building-boxes/)
-- [Diagrama de Young](https://en.wikipedia.org/wiki/Young_diagram) — el layout de alturas no
+- [Diagrama de Young](https://en.wikipedia.org/wiki/Young_diagram) - el layout de alturas no
   crecientes que induce la regla de soporte

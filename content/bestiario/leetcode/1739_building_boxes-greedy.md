@@ -4,7 +4,6 @@ problema: "LeetCode 1739 - Building Boxes"
 tecnica: "Greedy (iterativo y forma cerrada O(1))"
 grupo: "delta"
 ---
-
 ## Solución 1: Greedy iterativo
 
 **Técnicas utilizadas.** *Greedy (voraz).* Construir la pirámide perfecta nivel por nivel,
@@ -348,9 +347,8 @@ $r=3$, $c_{\text{suelo}}=6$, $s=3$, y $p = \left\lceil \frac{-1+\sqrt{25}}{2} \r
 
 **Referencias.**
 
-- [LeetCode 1739 — Building Boxes](https://leetcode.com/problems/building-boxes/)
 - [Número triangular](https://en.wikipedia.org/wiki/Triangular_number) — $T(K)=\dfrac{K(K+1)}{2}$
 - [Número tetraédrico](https://en.wikipedia.org/wiki/Tetrahedral_number) — $\operatorname{Tet}(K)=\dfrac{K(K+1)(K+2)}{6}$
-- [Ecuación cuadrática — fórmula resolvente](https://en.wikipedia.org/wiki/Quadratic_formula)
-- [Ecuación cúbica — solución trigonométrica (Cardano)](https://en.wikipedia.org/wiki/Cubic_equation#Trigonometric_and_hyperbolic_solutions)
+- [Ecuación cuadrática - fórmula resolvente](https://en.wikipedia.org/wiki/Quadratic_formula)
+- [Ecuación cúbica - solución trigonométrica (Cardano)](https://en.wikipedia.org/wiki/Cubic_equation#Trigonometric_and_hyperbolic_solutions)
 
