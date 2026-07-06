@@ -110,9 +110,8 @@ Con `n = 10⁵`, esto implica del orden de `10¹⁰` operaciones en el peor caso
 
 ### Comparación con División y Conquista
 
-La solución de Merge Sort obtiene el mismo resultado en `O(n log n)` reformulando el problema como conteo durante una fusión ordenada. No mantiene `nums` explícitamente ni requiere inserciones en listas ya que opera sobre índices. Es más difícil de entender, pero escala correctamente con las restricciones del problema.
+La solución de Merge Sort obtiene el mismo resultado en $O(n \times \log{n})$ reformulando el problema como conteo durante una fusión ordenada. No mantiene `nums` explícitamente ni requiere inserciones en listas ya que opera sobre índices. Es más difícil de entender, pero escala correctamente con las restricciones del problema.
 
 ## Referencias
 
 - Documentación de Python: [`bisect`](https://docs.python.org/3/library/bisect.html)
-- [LeetCode #1649](https://leetcode.com/problems/create-sorted-array-through-instructions/)

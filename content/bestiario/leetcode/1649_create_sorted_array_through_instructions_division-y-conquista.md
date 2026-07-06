@@ -139,5 +139,4 @@ La fuerza bruta mantiene `nums` explícitamente e inserta cada elemento contando
 ## Referencias
 
 - Cormen et al., *Introduction to Algorithms* (CLRS) — Sección 2.3 (Merge Sort) y Problema 2-4 (conteo de inversiones).
-- [LeetCode #1649](https://leetcode.com/problems/create-sorted-array-through-instructions/)
 - [LeetCode #315 - Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
