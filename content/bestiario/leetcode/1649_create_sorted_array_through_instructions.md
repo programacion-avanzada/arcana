@@ -1,6 +1,12 @@
 ---
-title: '1469 - Create Sorted Array through Instructions'
-tags: ['leetcode', 'python', 'fenwick tree', 'binary indexed tree', 'merge sort', 'divide and conquer']
+title: 1649 - Create Sorted Array through Instructions
+tags:
+  - leetcode
+  - python
+  - fenwick tree
+  - binary indexed tree
+  - merge sort
+  - divide and conquer
 ---
 ## Nombre y enunciado
 
