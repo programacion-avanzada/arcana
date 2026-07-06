@@ -1,6 +1,7 @@
 ---
-title: 'Leetcode#218 - The Skyline Problem - Fuerza Bruta'
-tags: ['b/leetcode']
+title: Leetcode0218 - The Skyline Problem - Fuerza Bruta
+tags:
+  - b/leetcode
 ---
 
 ## Técnicas utilizadas
@@ -128,8 +129,3 @@ En resumen: la fuerza bruta gana en **simplicidad y facilidad de verificación**
 
 ## Referencias
 N/A
-
-## Soluciones disponibles y problema
-
-- [[LeetCode218_The_Skyline_Problem]]
-- [[LeetCode218_The_Skyline_Problem-DyC]]

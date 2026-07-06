@@ -1,8 +1,8 @@
 ---
-title: 'Leetcode#218 - The Skyline Problem'
-tags: ['b/leetcode']
+title: Leetcode0218 - The Skyline Problem
+tags:
+  - b/leetcode
 ---
-
 ## Nombre y enunciado
 
 El skyline de una ciudad es el contorno exterior de la silueta que forman todos sus edificios vistos desde lejos, como si se mirara la ciudad recortada contra el horizonte. Dados los edificios (cada uno un rectángulo apoyado sobre el suelo a altura 0), se quiere reconstruir ese contorno.
@@ -30,11 +30,13 @@ Por último, hay un detalle de la representación: si un tramo del contorno se m
 - $h_i$: altura del edificio
 
 Restricciones:
-
-$$1 \leq \text{buildings.length} \leq 10^4$$
-$$0 \leq l_i < r_i \leq 2^{31} - 1$$
-$$1 \leq h_i \leq 2^{31} - 1$$
-
+$$
+\begin{aligned}
+&1 \leq \text{buildings.length} \leq 10^4 \\
+&0 \leq l_i < r_i \leq 2^{31} - 1 \\
+&1 \leq h_i \leq 2^{31} - 1
+\end{aligned}
+$$
 Además, `buildings` viene ordenado por $l_i$ en orden no decreciente.
 
 **Función de altura del contorno.** Para cada posición $x$, definimos la altura del skyline como la mayor altura entre los edificios que cubren ese punto:
@@ -75,8 +77,8 @@ Verificación leyendo la función $H$ tramo por tramo:
 En x=5, por ejemplo, hay tres edificios activos simultáneamente (alturas 10, 15 y 12), pero como el de 15 ya dominaba desde x=3, el contorno no cambia y no se agrega ningún punto.
 
 ## Representación visual del ejemplo
-![](content/attachments/skyline_problem_ejemplo.svg)
 
+![[skyline_problem_ejemplo.svg]]
 ## Por dónde empezar
 
 Una primera aproximación razonable es **fuerza bruta**: reunir todas las coordenadas x relevantes (los bordes de todos los edificios) y, para cada una, recorrer todos los edificios calculando $H(x)$ directamente. Emitir un punto solo cuando la altura cambia. Esto encuentra el contorno correcto pero a costa cuadrático, $O(n^2)$.
@@ -87,5 +89,6 @@ En ambos enfoques, la regla de no repetir alturas se maneja igual: recordando la
 
 ## Soluciones disponibles
 
-- [[LeetCode218_The_Skyline_Problem-DyC]]
 - [[LeetCode218_The_Skyline_Problem-Fuerza-Bruta]]
+- [[LeetCode218_The_Skyline_Problem-DyC]]
+
