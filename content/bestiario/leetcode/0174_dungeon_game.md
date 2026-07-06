@@ -1,8 +1,8 @@
 ---
-title: 'LeetCode#174 - Dungeon Game'
-tags: ['b/leetcode']
+title: LeetCode#0174 - Dungeon Game
+tags:
+  - b/leetcode
 ---
-
 ## Nombre y enunciado
 
 Los demonios han capturado a la princesa y la han encerrado en la esquina inferior derecha de una mazmorra representada por una [[array|matriz]] bidimensional `dungeon[m][n]`.
@@ -77,6 +77,6 @@ La solución más eficiente es Programación Dinámica: recorriendo la matriz de
 
 ## Soluciones disponibles
 
-- [[174_dungeon_game-fuerza-bruta]]
-- [[174_dungeon_game-pd-top-down]]
-- [[174_dungeon_game-pd-bottom-up]]
+- [[0174_dungeon_game-fuerza-bruta]]
+- [[0174_dungeon_game-pd-top-down]]
+- [[0174_dungeon_game-pd-bottom-up]]

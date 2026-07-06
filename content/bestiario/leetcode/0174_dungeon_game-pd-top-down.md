@@ -1,10 +1,10 @@
 ---
-title: 'LeetCode#174 - Dungeon Game - Programación Dinámica - Top-down'
-tags: ['b/leetcode']
+title: LeetCode#0174 - Dungeon Game - Programación Dinámica - Top-down
+tags:
+  - b/leetcode
 ---
 
-Solución por Programación Dinámica Top-Down para [[174_dungeon_game]].
-
+Solución por Programación Dinámica Top-Down para [[0174_dungeon_game]].
 ## Técnicas utilizadas
 
 Programación Dinámica top-down con memoización: se resuelve el problema de forma recursiva y se almacena el resultado de cada subproblema para no repetir cálculos.

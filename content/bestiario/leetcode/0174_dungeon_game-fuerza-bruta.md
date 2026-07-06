@@ -1,9 +1,10 @@
 ---
-title: 'LeetCode#174 - Dungeon Game - Fuerza Bruta'
-tags: ['b/leetcode']
+title: LeetCode#0174 - Dungeon Game - Fuerza Bruta
+tags:
+  - b/leetcode
 ---
 
-Solución por fuerza bruta para [[174_dungeon_game]].
+Solución por fuerza bruta para [[0174_dungeon_game]].
 
 ## Técnicas utilizadas
 
@@ -11,7 +12,7 @@ Fuerza bruta con recursividad: se generan todos los caminos posibles desde `(0,0
 
 ## Idea de la solución
 
-En una matriz `m×n`, cualquier camino válido tiene exactamente `m+n-2` pasos (solo se puede ir a la derecha o hacia abajo), lo que genera `C(m+n-2, m-1)` caminos posibles.
+En una matriz `m×n`, cualquier camino válido tiene exactamente `m+n-2` pasos (solo se puede ir a la derecha o hacia abajo), lo que genera $C(m+n-2, m-1)$ caminos posibles.
 
 Cada camino se representa como una [[dynamic array|lista]] de valores. Para cada uno se simula la evolución de la vida del caballero celda por celda: si la vida cae a 0 o menos, se incrementa la vida inicial requerida para mantenerla en exactamente 1. Al terminar el recorrido se registra la vida inicial mínima necesaria para ese camino. El resultado final es el mínimo entre todos.
 
@@ -92,9 +93,9 @@ Detalle de `vida_requerida` para el camino óptimo:
 
 ## Complejidad
 
-**Temporal:** `O(C(m+n-2, m-1) × (m+n))` — se exploran todos los caminos posibles y cada uno tiene longitud `m+n-1`. Para matrices cuadradas de lado `n` esto crece como `O(4^n / √n)`.
+**Temporal:** $O(C(m+n-2, m-1) × (m+n))$ — se exploran todos los caminos posibles y cada uno tiene longitud `m+n-1`. Para matrices cuadradas de lado `n` esto crece como $O(4^n / \sqrt{n})$.
 
-**Espacial:** `O(C(m+n-2, m-1) × (m+n))` — la función acumula todos los caminos en memoria antes de calcular el mínimo. Cada camino tiene longitud `m+n-1` y hay `C(m+n-2, m-1)` caminos posibles. La pila de recursión y el camino en curso ocupan `O(m+n)`, pero el almacenamiento de resultados domina y crece exponencialmente.
+**Espacial:** $O(C(m+n-2, m-1) × (m+n))$ — la función acumula todos los caminos en memoria antes de calcular el mínimo. Cada camino tiene longitud `m+n-1` y hay $C(m+n-2, m-1)$ caminos posibles. La [[stack#Call stack en ejecución de programas|pila de recursión]] y el camino en curso ocupan $O(m+n)$, pero el almacenamiento de resultados domina y crece exponencialmente.
 
 ## Cuándo usar esta técnica
 
@@ -108,7 +109,7 @@ Detalle de `vida_requerida` para el camino óptimo:
 
 ## Comparación con Programación Dinámica
 
-La fuerza bruta evalúa todos los caminos sin ninguna poda ni reutilización de resultados intermedios. Programación Dinámica resuelve cada celda exactamente una vez en `O(m×n)`, aprovechando que muchos caminos comparten subproblemas — algo que la fuerza bruta ignora por completo. Para instancias de tamaño real, esto la vuelve la técnica claramente preferible.
+La fuerza bruta evalúa todos los caminos sin ninguna poda ni reutilización de resultados intermedios. Programación Dinámica resuelve cada celda exactamente una vez en $O(m×n)$, aprovechando que muchos caminos comparten subproblemas — algo que la fuerza bruta ignora por completo. Para instancias de tamaño real, esto la vuelve la técnica claramente preferible.
 
 ## Referencias
 N/A
