@@ -1,8 +1,8 @@
 ---
-title: 'Leetcode765 - Couples Holding Hands - Fuerza Bruta'
-tags: ['b/leetcode']
+title: Leetcode0765 - Couples Holding Hands - Fuerza Bruta
+tags:
+  - b/leetcode
 ---
-
 ## Técnicas utilizadas
 
 Búsqueda por fuerza bruta sobre el espacio de intercambios: se prueban todas las combinaciones posibles de swaps entre pares de posiciones, generando distintas configuraciones de la fila hasta encontrar alguna en la que todas las parejas queden correctamente formadas.
@@ -106,10 +106,10 @@ Por lo tanto, una cota superior para la complejidad espacial es $O(m!\cdot m)$.
 
 ## Comparación con las otras soluciones
 
-Frente a [branch and bound](765_couples_holding_hands-branch-and-bound.md), la fuerza bruta no aprovecha ninguna poda: branch and bound explora el mismo espacio de búsqueda pero descarta ramas que ya no pueden mejorar la mejor solución encontrada, reduciendo el trabajo redundante sin perder la garantía de optimalidad.
+Frente a [branch and bound](0765_couples_holding_hands-branch-and-bound.md), la fuerza bruta no aprovecha ninguna poda: branch and bound explora el mismo espacio de búsqueda pero descarta ramas que ya no pueden mejorar la mejor solución encontrada, reduciendo el trabajo redundante sin perder la garantía de optimalidad.
 
-Frente a [greedy](765_couples_holding_hands-greedy.md), la diferencia es aún mayor: greedy identifica que alcanza con corregir cada banco de asientos de forma local, evitando por completo la necesidad de explorar combinaciones, y resuelve el problema en tiempo lineal.
+Frente a [greedy](0765_couples_holding_hands-greedy.md), la diferencia es aún mayor: greedy identifica que alcanza con corregir cada banco de asientos de forma local, evitando por completo la necesidad de explorar combinaciones, y resuelve el problema en tiempo lineal.
 
 ## Referencias
 
-- Estructura de datos: [Conjunto / Set](../../grimorio/data-structures/set)
+- Estructura de datos: [[set]]

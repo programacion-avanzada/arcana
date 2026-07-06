@@ -1,8 +1,8 @@
 ---
-title: 'Leetcode765 - Couples Holding Hands'
-tags: ['b/leetcode']
+title: Leetcode0765 - Couples Holding Hands
+tags:
+  - b/leetcode
 ---
-
 ## Nombre y enunciado
 
 En la ceremonia de graduación de estudiantes de la UNLaM, un grupo de amigos decide sacarse una foto para recordar el momento. Como todos tienen pareja, quieren aparecer en la fotografía junto a su par.
@@ -13,7 +13,7 @@ Antes de tomar la fotografía, el fotógrafo puede pedir que dos personas interc
 
 > Visualización del problema:
 
-![Visualización del problema](../../attachments/765_couples_holding_hands-ejemplo.svg)
+![Visualización del problema](765_couples_holding_hands-ejemplo.svg)
 
 [Problema original](https://leetcode.com/problems/couples-holding-hands/description/)
 
@@ -32,7 +32,7 @@ Además, una decisión que parece correcta al principio puede provocar intercamb
 
 **Entrada:**
 
-- Un array *row* de longitud $m = 2n$, donde *row[i]* representa la persona sentada en el asiento $i$.
+- Un array `row` de longitud $m = 2n$, donde `row[i]` representa la persona sentada en el asiento $i$.
 - $n$ representa la cantidad de parejas.
 - $m$ representa la cantidad total de personas.
 - Las personas están numeradas de $0$ a $m - 1$.
@@ -79,6 +79,6 @@ El paso final es notar que no hace falta explorar combinaciones: alcanza con rec
 
 ## Soluciones disponibles
 
-- [fuerza bruta](765_couples_holding_hands-fuerza-bruta.md)
-- [branch and bound](765_couples_holding_hands-branch-and-bound.md)
-- [greedy](765_couples_holding_hands-greedy.md)
+- [[0765_couples_holding_hands-fuerza-bruta]]
+- [[0765_couples_holding_hands-branch-and-bound]]
+- [[0765_couples_holding_hands-greedy]]
