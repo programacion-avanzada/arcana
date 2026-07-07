@@ -13,7 +13,7 @@ Cada edificio puede llegar a aportar un punto en su esquina superior izquierda `
 Se utilizan dos flags para decidir, al final del proceso, si cada punto posible se agrega o no.
 
 **punto1** (la esquina superior izquierda) no es posible cuando otro edificio tapa ese arranque. Eso pasa si:
-- otro edificio empieza en el mismo lugar y es más alto o igual.
+- otro edificio empieza en el mismo lugar y es más alto.
 - el edificio actual está contenido dentro de otro más alto.
 - otro edificio termina justo donde empieza el actual y tienen la misma altura.
 
@@ -21,6 +21,8 @@ Se utilizan dos flags para decidir, al final del proceso, si cada punto posible 
 
 - **¿Se pone?** No, si otro edificio más alto sigue activo después de que el actual termina (termina más tarde y es más alto o igual). En ese caso la caída queda oculta detrás de ese edificio, así que no hay punto.
 - **¿A qué altura?** Si se pone, la altura no es 0 necesariamente: es la del edificio más alto, entre los más bajos que el actual, que todavía sigue activo después de su fin. Si no queda ninguno, cae a 0.
+
+Al final como hay condiciones donde un mismo punto se agrega a la solución 2 veces (edificios que inician en el mismo punto y con misma altura), se eliminan duplicados.
 
 ## Código (Python)
 
@@ -64,10 +66,6 @@ def skyline_fuerza_bruta(edificios):
             if fin_i < fin_j and alt_j >= alt_i:
                 flag2 = False
 
-            # Si otro edificio empieza exactamente donde termina i y tiene altura >= alt_i
-            if fin_i == ini_j and alt_j >= alt_i:
-                flag2 = False
-
             # Si otro edificio termina más tarde y es más bajo, considerar su altura como referencia
             if fin_i < fin_j and alt_i > alt_j:
                 alt_ref = max(alt_ref, alt_j)
@@ -80,8 +78,9 @@ def skyline_fuerza_bruta(edificios):
         if flag2:
             solucion.append((fin_i, alt_ref))
 
-    solucion = eliminar_duplicados(solucion) #damos por entendida función para reducir excedente de código
-                                             #elimina todo punto cuya altura repita la del anterior, aunque la x sea distinta.
+    solucion = ordenar(solucion)		        #damos por entendida las funciones para reducir excedente de código
+    solucion = eliminar_duplicados(solucion) 	#elimina puntos repetidos
+                                             
     return solucion
 ```
 
@@ -94,9 +93,8 @@ Vemos las comparaciones del primer edificio `[2,9,10]` contra el resto (`i` es e
 |---------|--------|-------|-------|--------|-------|-------|-------|
 |2	|9	|10	|3	|7	|15	|True	|True   |
 |2	|9	|10	|5	|12	|12	|True	|False  |
-|2	|9	|10	|15	|20	|10	|True	|False  |
-|2	|9	|10	|19	|24	|8	|True	|False  |
 
+Los edificios `[15,20,10]` y `[19,24,8]` no llegan a compararse porque su inicio es mayor al final del edificio analizado.
 Al terminar, flag1 quedó en True, así que se agrega a la solución el punto `(ini_i, alt_i)` = `(2, 10)`. flag2 quedó en False (el edificio `[5,12,12]` termina más tarde y es más alto que `[2,9,10]`), por lo que punto2 no se emite.
 
 ## Complejidad
@@ -128,4 +126,7 @@ Para entradas chicas o con pocos solapamientos, la fuerza bruta puede ser compet
 En resumen: la fuerza bruta gana en **simplicidad y facilidad de verificación**, mientras que división y conquista gana en **escalabilidad**, a costa de una implementación más delicada (el merge tiene varios casos borde) y un mayor uso de memoria por los contornos intermedios.
 
 ## Referencias
-N/A
+
+### Sobre la técnica (fuerza bruta / búsqueda exhaustiva)
+- GeeksforGeeks — [Algoritmo de fuerza bruta, ventajas y desventajas](https://www.geeksforgeeks.org/brute-force-approach-and-its-pros-and-cons/):
+Articulo cuándo conviene utilizar fuerza bruta.

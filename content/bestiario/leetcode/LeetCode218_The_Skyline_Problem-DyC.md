@@ -161,4 +161,6 @@ Para entradas chicas o con pocos solapamientos, la fuerza bruta puede ser compet
 En resumen: la fuerza bruta gana en **simplicidad y facilidad de verificación**, mientras que división y conquista gana en **escalabilidad**, a costa de una implementación más delicada (el merge tiene varios casos borde) y un mayor uso de memoria por los contornos intermedios.
 
 ## Referencias
-N/A
+- GeeksforGeeks — [Introducción al algoritmo División y Conquista](https://www.geeksforgeeks.org/dsa/introduction-to-divide-and-conquer-algorithm/):
+Articulo introductorio al algoritmo de división y conquista.
+
