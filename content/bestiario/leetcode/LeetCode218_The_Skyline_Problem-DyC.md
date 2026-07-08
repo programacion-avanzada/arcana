@@ -156,7 +156,7 @@ $O(n)$ para almacenar los skylines intermedios y el resultado, más $O(\log n)$ 
 ## Comparación con la solución de fuerza bruta
 La fuerza bruta decide punto por punto comparando cada edificio contra todos los demás, con un costo $O(n^2)$. División y conquista, en cambio, calcula los contornos de dos mitades y los **fusiona** en tiempo lineal, evitando comparaciones redundantes y bajando el costo total a $O(n \log n)$.
 
-Para entradas chicas o con pocos solapamientos, la fuerza bruta puede ser competitiva —o incluso más rápida en la práctica— gracias a su factor constante bajo y a que no usa recursión ni estructuras intermedias. A medida que crece $n$ y aumentan los solapamientos, la ventaja de división y conquista toma más peso.
+Para entradas chicas o con pocos solapamientos, la fuerza bruta puede ser competitiva, o incluso más rápida en la práctica, gracias a su factor constante bajo y a que no usa recursión ni estructuras intermedias. A medida que crece $n$ y aumentan los solapamientos, la ventaja de división y conquista toma más peso.
 
 En resumen: la fuerza bruta gana en **simplicidad y facilidad de verificación**, mientras que división y conquista gana en **escalabilidad**, a costa de una implementación más delicada (el merge tiene varios casos borde) y un mayor uso de memoria por los contornos intermedios.
 
