@@ -66,7 +66,7 @@ def vida_minima_inicial(mazmorra):
 [10, 30, -5]
 ```
 
-Los 6 caminos posibles y la vida inicial mínima necesaria para cada uno:
+Existen $C(4,2)=6$ caminos posibles (dos movimientos a la derecha y dos hacia abajo). A continuación, cada uno con la vida inicial mínima necesaria:
 *R = right*
 *D = down*
 
@@ -95,7 +95,7 @@ Detalle de `vida_requerida` para el camino óptimo:
 
 **Temporal:** $O(C(m+n-2, m-1) × (m+n))$ — se exploran todos los caminos posibles y cada uno tiene longitud `m+n-1`. Para matrices cuadradas de lado `n` esto crece como $O(4^n / \sqrt{n})$.
 
-**Espacial:** $O(C(m+n-2, m-1) × (m+n))$ — la función acumula todos los caminos en memoria antes de calcular el mínimo. Cada camino tiene longitud `m+n-1` y hay $C(m+n-2, m-1)$ caminos posibles. La [[stack#Call stack en ejecución de programas|pila de recursión]] y el camino en curso ocupan $O(m+n)$, pero el almacenamiento de resultados domina y crece exponencialmente.
+**Espacial:** Depende de la implementación concreta. En esta en particular, `dfs` acumula todos los caminos en memoria antes de calcular el mínimo: cada camino tiene longitud `m+n-1` y hay $C(m+n-2, m-1)$ caminos posibles, lo que da $O(C(m+n-2, m-1) \times (m+n))$. La [[stack#Call stack en ejecución de programas|pila de recursión]] y el camino en curso ocupan $O(m+n)$, pero el almacenamiento de resultados domina y crece exponencialmente.
 
 ## Cuándo usar esta técnica
 

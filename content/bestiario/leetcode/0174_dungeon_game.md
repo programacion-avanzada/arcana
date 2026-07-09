@@ -71,7 +71,9 @@ La vida nunca cae a 0 o menos. Con vida inicial 6, en `(0,1)` quedaría con 1 y 
 
 Una primera aproximación es fuerza bruta: explorar todos los caminos posibles de `(0,0)` a `(m-1, n-1)`, calcular la vida mínima necesaria para sobrevivir cada uno y quedarse con el menor. Esto permite verificar resultados pero escala exponencialmente.
 
-La solución más eficiente es Programación Dinámica: recorriendo la matriz de atrás (destino) hacia adelante (inicio), cada celda se resuelve una sola vez en tiempo constante. Puede implementarse de forma recursiva con memoización (top-down) o iterativa (bottom-up).
+La solución más eficiente es Programación Dinámica: cada celda depende del resultado de la celda de abajo y de la celda de la derecha, por lo que conviene resolver primero el destino y propagar los resultados hacia el origen. Cada celda se resuelve una sola vez en tiempo constante. Hay dos formas de implementar esta idea:
+- **Top-down**: recursión con memoización, empezando en `(0,0)` y resolviendo cada subproblema la primera vez que se necesita.
+- **Bottom-up**: iteración explícita desde el destino hacia el origen, resolviendo cada celda en el orden correcto sin recursión.
 
 ---
 
