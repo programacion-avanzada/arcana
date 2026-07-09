@@ -13,10 +13,10 @@ Programación Dinámica top-down con memoización: se resuelve el problema de fo
 
 La función `vida_minima_necesaria(mazmorra, fil, col)` responde: ¿cuánta vida mínima necesito en la celda `(fil, col)` para llegar al destino con vida?
 
-La recurrencia es:
+La recurrencia es (donde $V(fil, col) = \text{vida\_minima\_necesaria}(fil, col)$):
 
 $$
-\text{vida\_minima\_necesaria}(fil, col) = \max\left(1,\ \min\big(\text{vida\_minima\_necesaria}(fil{+}1, col),\ \text{vida\_minima\_necesaria}(fil, col{+}1)\big) - mazmorra[fil][col]\right)
+V(fil, col) = \max\big(1,\ \min(V(fil{+}1, col),\ V(fil, col{+}1)) - \text{mazmorra}[fil][col]\big)
 $$
 
 Se elige el camino que exige menos vida, y se descuenta el efecto de la celda actual. El `max(1, ...)` garantiza que la vida nunca baje de 1.
