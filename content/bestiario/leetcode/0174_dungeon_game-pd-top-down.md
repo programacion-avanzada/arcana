@@ -28,6 +28,8 @@ Los casos base son:
 
 Cada celda se calcula una sola vez gracias al [[hash table#Idea de implementación|hash table]] `memo`. Las llamadas siguientes a la misma celda retornan directamente el valor almacenado.
 
+![](/attachments/bestiario/leetcode/0174-grafo-dependencias.svg)
+
 ## Código
 
 ```python
@@ -96,6 +98,8 @@ Las celdas se calculan en el orden en que las requiere la recursión desde `(0,0
   memo[(0,1)] = min(max(11+3, 1), max(2+3, 1))   = min(14, 5)  = 5
 memo[(0,0)] = min(max(6+2, 1),  max(5+2, 1))     = min(8, 7)   = 7
 ```
+
+![](/attachments/bestiario/leetcode/0174-top-down-primera-vs-cache.svg)
 
 Estado final del memo como matriz:
 

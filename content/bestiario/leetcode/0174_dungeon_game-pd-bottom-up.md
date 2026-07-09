@@ -18,6 +18,8 @@ La vida mínima necesaria en una celda depende de la vida requerida en las celda
 
 Como cada fila solo depende de la fila inmediatamente inferior, alcanza con mantener un único vector `dp` de tamaño `n` que se va sobrescribiendo fila por fila, en lugar de guardar la matriz completa.
 
+![](/attachments/bestiario/leetcode/0174-grafo-dependencias.svg)
+
 ## Recurrencia
 
 Sea `dp[i][j]` la cantidad mínima de vida necesaria para entrar a la celda `(i,j)`.
@@ -95,6 +97,8 @@ Fila 0:
   dp[1] = max(1, min(dp[1],dp[2])-(-3))  = max(1, 2+3) = 5
   dp[0] = max(1, min(dp[0],dp[1])-(-2))  = max(1, 5+2) = 7          → dp = [7, 5, 2]
 ```
+
+![](/attachments/bestiario/leetcode/0174-bottom-up-celda-cualquiera.svg)
 
 Evolución del vector `dp`:
 

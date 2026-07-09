@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" style="background: transparent;" viewBox="0 0 900 520" width="900" height="520">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M0,0 L10,5 L0,10 z" fill="#757575"/>
+</marker>
+<style>
+  text { font-family: ui-monospace, SFMono-Regular, "Courier New", Consolas, monospace; }
+  .frame-fill { fill: none; }
+  .fill-base { fill: rgba(180,83,9,0.14); }
+  .stroke-normal { stroke: #757575; stroke-width: 1.5; }
+  .stroke-base { stroke: #b45309; stroke-width: 3.5; }
+  .frame-dashed { stroke-dasharray: 4,3; }
+  .frame-main { font-size: 17px; font-weight: 700; fill: #757575; text-anchor: middle; }
+  .frame-main-base { font-size: 15px; font-weight: 700; fill: #b45309; text-anchor: middle; }
+  .frame-sub { font-size: 11px; font-weight: 600; fill: #757575; text-anchor: middle; }
+  .frame-sub-base { font-size: 11px; font-weight: 600; fill: #b45309; text-anchor: middle; }
+  .edge-line { stroke: #757575; stroke-width: 1.5; fill: none; }
+  .edge-dashed { stroke-dasharray: 6,4; }
+  .edge-label { font-size: 11px; font-weight: 600; fill: #757575; text-anchor: middle; }
+  .panel-label { font-size: 13px; font-weight: bold; fill: #757575; text-anchor: middle; }
+  .divider { stroke: #757575; stroke-width: 1; stroke-dasharray: 3,4; opacity: 0.5; }
+  .title-text { font-size: 15px; font-weight: bold; fill: #757575; text-anchor: middle; }
+  .subtitle-text { font-size: 12px; fill: #757575; text-anchor: middle; }
+  .note-text { font-size: 12px; fill: #757575; text-anchor: middle; }
+  .legend-text { font-size: 11px; fill: #757575; }
+</style>
+</defs>
+
+<text x="450" y="28" class="title-text">top-down -- la misma celda, dos maneras de resolverse</text>
+<text x="450" y="48" class="subtitle-text">no todas las llamadas bajan hasta el caso base</text>
+
+<line x1="450" y1="68" x2="450" y2="335" class="divider"/>
+
+<!-- PANEL IZQUIERDO: primera vez -->
+<text x="230" y="75" class="panel-label">PRIMERA VEZ (sin memo)</text>
+
+<rect x="130" y="90" width="200" height="50" rx="6" class="frame-fill stroke-normal"/>
+<text x="230" y="112" class="frame-main">(1,0)</text>
+<text x="230" y="130" class="frame-sub">necesita (1,1)</text>
+
+<line x1="230" y1="140" x2="230" y2="175" class="edge-line" marker-end="url(#arrow)"/>
+<text x="290" y="160" class="edge-label">llama a</text>
+
+<rect x="130" y="175" width="200" height="50" rx="6" class="frame-fill stroke-normal"/>
+<text x="230" y="197" class="frame-main">(1,1)</text>
+<text x="230" y="215" class="frame-sub">no esta en memo</text>
+
+<line x1="230" y1="225" x2="230" y2="260" class="edge-line" marker-end="url(#arrow)"/>
+<text x="290" y="245" class="edge-label">llama a</text>
+
+<rect x="130" y="260" width="200" height="50" rx="6" class="frame-fill stroke-normal frame-dashed"/>
+<text x="230" y="282" class="frame-main" style="font-size:11px">resuelve (2,1) y (1,2)</text>
+<text x="230" y="298" class="frame-sub">(la recursion continua)</text>
+
+<path d="M 330,270 C 390,270 390,110 330,110" class="edge-line edge-dashed" marker-end="url(#arrow)"/>
+<text x="415" y="193" class="edge-label">retorna 11</text>
+
+<!-- PANEL DERECHO: con cache -->
+<text x="670" y="75" class="panel-label">SEGUNDA VEZ (con memo)</text>
+
+<rect x="570" y="90" width="200" height="50" rx="6" class="frame-fill stroke-normal"/>
+<text x="670" y="112" class="frame-main">(0,1)</text>
+<text x="670" y="130" class="frame-sub">necesita (1,1)</text>
+
+<line x1="650" y1="140" x2="650" y2="175" class="edge-line" marker-end="url(#arrow)"/>
+<text x="605" y="160" class="edge-label">llama a</text>
+
+<line x1="690" y1="175" x2="690" y2="140" class="edge-line edge-dashed" marker-end="url(#arrow)"/>
+<text x="760" y="160" class="edge-label">retorna 11</text>
+
+<rect x="570" y="175" width="200" height="50" rx="6" class="fill-base stroke-base"/>
+<text x="670" y="197" class="frame-main-base">(1,1)</text>
+<text x="670" y="215" class="frame-sub-base">ya esta en memo = 11</text>
+
+<text x="670" y="280" class="note-text">acceso directo al diccionario</text>
+<text x="670" y="298" class="note-text">memo -- O(1), sin nueva recursion</text>
+
+<!-- Sentido de la busqueda -->
+<line x1="340" y1="350" x2="560" y2="350" class="edge-line" marker-end="url(#arrow)"/>
+<text x="335" y="354" class="legend-text" text-anchor="end">origen</text>
+<text x="565" y="354" class="legend-text" text-anchor="start">destino</text>
+
+<text x="450" y="378" class="note-text">Las dos llamadas piden memo de (1,1). La primera vez cuesta toda la recursion que sigue (2,1) y (1,2);</text>
+<text x="450" y="396" class="note-text">la segunda es instantanea porque el valor ya esta guardado.</text>
+
+<!-- Leyenda -->
+<text x="20" y="430" class="legend-text" font-weight="bold">leyenda:</text>
+
+<line x1="20" y1="447" x2="60" y2="447" class="edge-line" marker-end="url(#arrow)"/>
+<text x="68" y="451" class="legend-text">llama a (todavia no hay valor)</text>
+
+<line x1="20" y1="465" x2="60" y2="465" class="edge-line edge-dashed" marker-end="url(#arrow)"/>
+<text x="68" y="469" class="legend-text">retorna (ya hay un valor resuelto)</text>
+
+<rect x="20" y="478" width="20" height="16" class="fill-base stroke-base"/>
+<text x="48" y="490" class="legend-text">celda que ya estaba en memo (cache hit)</text>
+
+</svg>
