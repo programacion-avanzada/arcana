@@ -81,6 +81,10 @@ Existen $C(4,2)=6$ caminos posibles (dos movimientos a la derecha y dos hacia ab
 
 Mínimo: **7** (camino R→R→D→D).
 
+![](/attachments/bestiario/leetcode/0174-fuerza-bruta-arbol.svg)
+
+El árbol de exploración completo para este ejemplo: cada hoja es uno de los 6 caminos, con la vida final requerida. Las celdas con borde grueso (`(1,1)`, `(1,2)`, `(2,1)`) se recalculan varias veces por distintos caminos, sin reutilizar ningún resultado — la raíz del problema que resuelve Programación Dinámica.
+
 Detalle de `vida_requerida` para el camino óptimo:
 
 | Celda  | Valor | vida_actual        | vida_inicial |

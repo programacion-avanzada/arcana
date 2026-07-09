@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" style="background: transparent;" viewBox="0 0 900 600" width="900" height="600">
+<defs>
+<style>
+  text { font-family: ui-monospace, SFMono-Regular, "Courier New", Consolas, monospace; }
+  .node-fill { fill: none; }
+  .fill-recalculada { fill: rgba(180,83,9,0.14); }
+  .fill-optima { fill: rgba(185,28,28,0.12); }
+  .stroke-normal { stroke: #757575; stroke-width: 1.5; }
+  .stroke-bold { stroke: #b45309; stroke-width: 3.5; }
+  .stroke-accent { stroke: #b91c1c; stroke-width: 3.5; }
+  .ink-text { font-size: 13px; font-weight: 600; fill: #757575; text-anchor: middle; }
+  .ink-subtext { font-size: 11px; font-weight: 600; fill: #757575; text-anchor: middle; }
+  .edge-line { stroke: #757575; stroke-width: 1.5; fill: none; }
+  .edge-dashed { stroke-dasharray: 6,4; }
+  .edge-label { font-size: 11px; font-weight: 600; fill: #757575; text-anchor: middle; }
+  .title-text { font-size: 15px; font-weight: bold; fill: #757575; text-anchor: middle; }
+  .legend-text { font-size: 11px; fill: #757575; }
+</style>
+</defs>
+
+<text x="450" y="28" class="title-text">fuerza bruta -- arbol de exploracion (ejemplo 3x3)</text>
+
+<!-- Edges: nivel 0 -> 1 -->
+<path d="M 440,89 L 440,120 L 195,120 L 195,151" class="edge-line"/>
+<text x="317.5" y="114" class="edge-label">R</text>
+<path d="M 440,89 L 440,120 L 685,120 L 685,151" class="edge-line edge-dashed"/>
+<text x="562.5" y="114" class="edge-label">D</text>
+
+<!-- Edges: nivel 1 -> 2 -->
+<path d="M 195,189 L 195,220 L 90,220 L 90,251" class="edge-line"/>
+<text x="142.5" y="214" class="edge-label">R</text>
+<path d="M 195,189 L 195,220 L 300,220 L 300,251" class="edge-line edge-dashed"/>
+<text x="247.5" y="214" class="edge-label">D</text>
+<path d="M 685,189 L 685,220 L 580,220 L 580,251" class="edge-line"/>
+<text x="632.5" y="214" class="edge-label">R</text>
+<path d="M 685,189 L 685,220 L 790,220 L 790,251" class="edge-line edge-dashed"/>
+<text x="737.5" y="214" class="edge-label">D</text>
+
+<!-- Edges: nivel 2 -> 3 -->
+<path d="M 90,289 L 90,351" class="edge-line edge-dashed"/>
+<text x="104" y="324" class="edge-label">D</text>
+<path d="M 300,289 L 300,320 L 230,320 L 230,351" class="edge-line"/>
+<text x="265" y="314" class="edge-label">R</text>
+<path d="M 300,289 L 300,320 L 370,320 L 370,351" class="edge-line edge-dashed"/>
+<text x="335" y="314" class="edge-label">D</text>
+<path d="M 580,289 L 580,320 L 510,320 L 510,351" class="edge-line"/>
+<text x="545" y="314" class="edge-label">R</text>
+<path d="M 580,289 L 580,320 L 650,320 L 650,351" class="edge-line edge-dashed"/>
+<text x="615" y="314" class="edge-label">D</text>
+<path d="M 790,289 L 790,351" class="edge-line"/>
+<text x="804" y="324" class="edge-label">R</text>
+
+<!-- Edges: nivel 3 -> hojas -->
+<path d="M 90,389 L 90,444" class="edge-line edge-dashed"/>
+<text x="104" y="420.5" class="edge-label">D</text>
+<path d="M 230,389 L 230,444" class="edge-line edge-dashed"/>
+<text x="244" y="420.5" class="edge-label">D</text>
+<path d="M 370,389 L 370,444" class="edge-line"/>
+<text x="384" y="420.5" class="edge-label">R</text>
+<path d="M 510,389 L 510,444" class="edge-line edge-dashed"/>
+<text x="524" y="420.5" class="edge-label">D</text>
+<path d="M 650,389 L 650,444" class="edge-line"/>
+<text x="664" y="420.5" class="edge-label">R</text>
+<path d="M 790,389 L 790,444" class="edge-line"/>
+<text x="804" y="420.5" class="edge-label">R</text>
+
+<!-- Nodos nivel 0 -->
+<ellipse cx="440" cy="70" rx="34" ry="19" class="node-fill stroke-normal"/>
+<text x="440" y="74" class="ink-text">(0,0)</text>
+
+<!-- Nodos nivel 1 -->
+<ellipse cx="195" cy="170" rx="34" ry="19" class="node-fill stroke-normal"/>
+<text x="195" y="174" class="ink-text">(0,1)</text>
+<ellipse cx="685" cy="170" rx="34" ry="19" class="node-fill stroke-normal"/>
+<text x="685" y="174" class="ink-text">(1,0)</text>
+
+<!-- Nodos nivel 2 -->
+<ellipse cx="90" cy="270" rx="34" ry="19" class="node-fill stroke-normal"/>
+<text x="90" y="274" class="ink-text">(0,2)</text>
+<ellipse cx="300" cy="270" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="300" y="274" class="ink-text">(1,1)</text>
+<ellipse cx="580" cy="270" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="580" y="274" class="ink-text">(1,1)</text>
+<ellipse cx="790" cy="270" rx="34" ry="19" class="node-fill stroke-normal"/>
+<text x="790" y="274" class="ink-text">(2,0)</text>
+
+<!-- Nodos nivel 3 -->
+<ellipse cx="90" cy="370" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="90" y="374" class="ink-text">(1,2)</text>
+<ellipse cx="230" cy="370" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="230" y="374" class="ink-text">(1,2)</text>
+<ellipse cx="370" cy="370" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="370" y="374" class="ink-text">(2,1)</text>
+<ellipse cx="510" cy="370" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="510" y="374" class="ink-text">(1,2)</text>
+<ellipse cx="650" cy="370" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="650" y="374" class="ink-text">(2,1)</text>
+<ellipse cx="790" cy="370" rx="34" ry="19" class="fill-recalculada stroke-bold"/>
+<text x="790" y="374" class="ink-text">(2,1)</text>
+
+<!-- Hojas (destino + vida requerida) -->
+<ellipse cx="90" cy="470" rx="40" ry="26" class="fill-optima stroke-accent"/>
+<text x="90" y="466" class="ink-text">(2,2)</text>
+<text x="90" y="482" class="ink-subtext">vida: 7</text>
+
+<ellipse cx="230" cy="470" rx="40" ry="26" class="node-fill stroke-normal"/>
+<text x="230" y="466" class="ink-text">(2,2)</text>
+<text x="230" y="482" class="ink-subtext">vida: 20</text>
+
+<ellipse cx="370" cy="470" rx="40" ry="26" class="node-fill stroke-normal"/>
+<text x="370" y="466" class="ink-text">(2,2)</text>
+<text x="370" y="482" class="ink-subtext">vida: 16</text>
+
+<ellipse cx="510" cy="470" rx="40" ry="26" class="node-fill stroke-normal"/>
+<text x="510" y="466" class="ink-text">(2,2)</text>
+<text x="510" y="482" class="ink-subtext">vida: 22</text>
+
+<ellipse cx="650" cy="470" rx="40" ry="26" class="node-fill stroke-normal"/>
+<text x="650" y="466" class="ink-text">(2,2)</text>
+<text x="650" y="482" class="ink-subtext">vida: 18</text>
+
+<ellipse cx="790" cy="470" rx="40" ry="26" class="node-fill stroke-normal"/>
+<text x="790" y="466" class="ink-text">(2,2)</text>
+<text x="790" y="482" class="ink-subtext">vida: 8</text>
+
+<!-- Leyenda -->
+<text x="20" y="518" class="legend-text" font-weight="bold">leyenda:</text>
+
+<line x1="20" y1="535" x2="50" y2="535" class="edge-line"/>
+<text x="58" y="539" class="legend-text">= derecha (R)</text>
+<line x1="230" y1="535" x2="260" y2="535" class="edge-line edge-dashed"/>
+<text x="268" y="539" class="legend-text">= abajo (D)</text>
+
+<ellipse cx="30" cy="558" rx="10" ry="8" class="node-fill stroke-normal"/>
+<text x="48" y="562" class="legend-text">celda visitada una vez</text>
+<ellipse cx="290" cy="558" rx="10" ry="8" class="fill-recalculada stroke-bold"/>
+<text x="308" y="562" class="legend-text">celda recalculada (mismo (fil,col), distinto camino)</text>
+<ellipse cx="710" cy="558" rx="10" ry="8" class="fill-optima stroke-accent"/>
+<text x="728" y="562" class="legend-text">camino optimo</text>
+
+</svg>
