@@ -15,12 +15,9 @@ La función `vida_minima_necesaria(mazmorra, fil, col)` responde: ¿cuánta vida
 
 La recurrencia es:
 
-```
-vida_minima_necesaria(fil, col) = max(1, min(
-    vida_minima_necesaria(fil+1, col),
-    vida_minima_necesaria(fil, col+1)
-) - mazmorra[fil][col])
-```
+$$
+\text{vida\_minima\_necesaria}(fil, col) = \max\left(1,\ \min\big(\text{vida\_minima\_necesaria}(fil{+}1, col),\ \text{vida\_minima\_necesaria}(fil, col{+}1)\big) - mazmorra[fil][col]\right)
+$$
 
 Se elige el camino que exige menos vida, y se descuenta el efecto de la celda actual. El `max(1, ...)` garantiza que la vida nunca baje de 1.
 
@@ -29,7 +26,7 @@ Los casos base son:
 - **Última fila** (solo se puede ir a la derecha): `max(need_derecha - matrix[fil][col], 1)`
 - **Última columna** (solo se puede ir hacia abajo): `max(need_abajo - matrix[fil][col], 1)`
 
-Cada celda se calcula una sola vez gracias al [[hash table]] `memo`. Las llamadas siguientes a la misma celda retornan directamente el valor almacenado.
+Cada celda se calcula una sola vez gracias al [[hash table#Idea de implementación|hash table]] `memo`. Las llamadas siguientes a la misma celda retornan directamente el valor almacenado.
 
 ## Código
 
@@ -115,9 +112,9 @@ Sabemos que solo se puede ir hacia la derecha o hacia abajo, entonces podemos pr
 
 ## Complejidad
 
-**Temporal:** `O(m × n)` — cada celda se computa exactamente una vez y se guarda en `memo`.
+**Temporal:** $O(m \times n)$ — cada celda se computa exactamente una vez y se guarda en `memo`.
 
-**Espacial:** `O(m × n)` — el diccionario `memo` almacena como máximo `m×n` entradas, más `O(m+n)` de profundidad de la pila de recursión.
+**Espacial:** $O(m \times n)$ — el diccionario `memo` almacena como máximo `m×n` entradas, más $O(m+n)$ de profundidad de la pila de recursión.
 
 ## Cuándo usar esta técnica
 
@@ -127,14 +124,14 @@ Sabemos que solo se puede ir hacia la derecha o hacia abajo, entonces podemos pr
 - La estructura recursiva del problema es clara y la memoización se agrega naturalmente.
 
 ### Limitaciones
-- Requiere memoria adicional proporcional a la cantidad de subproblemas (`O(m×n)`).
+- Requiere memoria adicional proporcional a la cantidad de subproblemas ($O(m \times n)$).
 - La recursión profunda puede causar stack overflow en matrices muy grandes; en ese caso conviene una versión iterativa (bottom-up).
 
 ## Comparación con Fuerza Bruta
 
 Sobre una matriz 5×5, la recursión sin memoización realiza **251 llamadas** mientras que la versión con memoización realiza **41** (medido empíricamente con un contador de llamadas), obteniendo el mismo resultado (**6**). La diferencia crece exponencialmente con el tamaño de la entrada, ya que sin memo cada celda se recalcula múltiples veces.
 
-La Programación Dinámica garantiza `O(m×n)` independientemente de la instancia, lo que la convierte en la técnica más eficiente para este problema.
+La Programación Dinámica garantiza $O(m \times n)$ independientemente de la instancia, lo que la convierte en la técnica más eficiente para este problema.
 
 ## Referencias
 N/A

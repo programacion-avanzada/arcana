@@ -5,7 +5,7 @@ tags:
 ---
 ## Nombre y enunciado
 
-Los demonios han capturado a la princesa y la han encerrado en la esquina inferior derecha de una mazmorra representada por una [[array|matriz]] bidimensional `dungeon[m][n]`.
+Los demonios han capturado a la princesa y la han encerrado en la esquina inferior derecha de una mazmorra representada por una [[array#Ejemplo de código|matriz]] bidimensional `dungeon[m][n]`.
 
 Un caballero comienza en la celda superior izquierda `(0,0)` y debe rescatarla. Solo puede moverse **hacia la derecha** o **hacia abajo**. Cada celda tiene un valor entero: negativo si le quita vida, cero si no tiene efecto, positivo si le otorga vida. El caballero muere si su vida llega a **0 o menos** en cualquier momento.
 
@@ -34,8 +34,8 @@ La clave está en analizar el problema **desde el destino hacia el inicio**: en 
 **Salida:** Un entero positivo: la mínima vida inicial necesaria.
 
 **Restricciones:**
-- `1 ≤ m, n ≤ 200`
-- `-1000 ≤ dungeon[i][j] ≤ 1000`
+- $1 \le m, n \le 200$
+- $-1000 \le \text{dungeon[i][j]} \le 1000$
 
 ---
 

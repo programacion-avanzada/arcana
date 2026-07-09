@@ -111,15 +111,15 @@ Evolución del vector `dp`:
 
 Una implementación clásica usa una matriz `dp[m][n]`. Pero recorriendo la matriz desde la esquina inferior derecha hacia la superior izquierda, cada celda únicamente necesita conocer el valor inmediatamente debajo y el valor inmediatamente a la derecha — no hace falta conservar todas las filas ya calculadas.
 
-Por eso alcanza con reutilizar un único arreglo de longitud `n`, actualizándolo fila por fila, lo que reduce la complejidad espacial de `O(m × n)` a `O(n)` sin modificar la complejidad temporal.
+Por eso alcanza con reutilizar un único arreglo de longitud `n`, actualizándolo fila por fila, lo que reduce la complejidad espacial de $O(m \times n)$ a $O(n)$ sin modificar la complejidad temporal.
 
 ## Complejidad
 
 ### Temporal
-`O(m × n)` — cada celda se calcula exactamente una vez.
+$O(m \times n)$ — cada celda se calcula exactamente una vez.
 
 ### Espacial
-`O(n)` — un único vector auxiliar de tamaño `n`, reutilizado fila por fila.
+$O(n)$ — un único vector auxiliar de tamaño `n`, reutilizado fila por fila.
 
 ## Cuándo usar esta técnica
 
@@ -129,20 +129,20 @@ Por eso alcanza con reutilizar un único arreglo de longitud `n`, actualizándol
 - Interesa minimizar la memoria usada, por ejemplo con mazmorras muy grandes donde conservar la matriz completa no es necesario.
 
 ### Limitaciones
-- Si se necesita reconstruir el camino exacto, el vector de una sola fila no alcanza: hay que guardar la matriz `dp[m][n]` completa, perdiendo la ventaja de espacio `O(n)`.
+- Si se necesita reconstruir el camino exacto, el vector de una sola fila no alcanza: hay que guardar la matriz `dp[m][n]` completa, perdiendo la ventaja de espacio $O(n)$.
 - Requiere identificar de antemano el orden correcto de recorrido; en problemas con dependencias menos regulares esto puede ser menos natural que dejar que la recursión con memoización las resuelva sola.
 
 ## Comparación con Top-Down
 
-Ambas versiones comparten la misma complejidad temporal (`O(m × n)`), por lo que no es lo que las diferencia. La ventaja del bottom-up es de memoria y de constantes prácticas: evita el `O(m × n)` del memo y la pila de recursión del top-down, reemplazándolos por un único vector `O(n)`, y evita el overhead de las llamadas a función y el hashing de claves en cada acceso al memo.
+Ambas versiones comparten la misma complejidad temporal ($O(m \times n)$), por lo que no es lo que las diferencia. La ventaja del bottom-up es de memoria y de constantes prácticas: evita el $O(m \times n)$ del memo y la pila de recursión del top-down, reemplazándolos por un único vector $O(n)$, y evita el overhead de las llamadas a función y el hashing de claves en cada acceso al memo.
 
-Con las restricciones de este problema (`m, n ≤ 200`, profundidad de recursión máxima `m+n-2 = 398`) el top-down no corre un riesgo real de stack overflow — esa no es la razón para preferir bottom-up aquí.
+Con las restricciones de este problema ($m, n \le 200$, profundidad de recursión máxima $m+n-2 = 398$) el top-down no corre un riesgo real de stack overflow — esa no es la razón para preferir bottom-up aquí.
 
 | Característica              | Top-Down (Recursivo)                            | Bottom-Up (Iterativo) |
 | ---------------------------- | ------------------------------------------------ | ----------------------- |
-| Complejidad temporal         | `O(m × n)`                                       | `O(m × n)`               |
-| Complejidad espacial         | `O(m × n)` + stack                               | `O(n)`                   |
-| Riesgo de stack overflow     | Bajo/nulo dado `m, n ≤ 200` (profundidad ≤ 398)  | Nulo (no aplica)         |
+| Complejidad temporal         | $O(m \times n)$                                  | $O(m \times n)$          |
+| Complejidad espacial         | $O(m \times n)$ + stack                          | $O(n)$                   |
+| Riesgo de stack overflow     | Bajo/nulo dado $m, n \le 200$ (profundidad $\le 398$) | Nulo (no aplica)    |
 | Overhead de llamada/hashing  | Presente (call stack + memo dict)                | Ausente                  |
 | Reconstrucción del camino    | Directa (memo completo disponible)               | Requiere guardar la matriz completa |
 | Facilidad para depurar       | Media                                            | Alta                     |
