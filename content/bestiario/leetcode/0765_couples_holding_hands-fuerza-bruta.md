@@ -5,17 +5,19 @@ tags:
 ---
 ## Técnicas utilizadas
 
-Búsqueda por fuerza bruta sobre el espacio de intercambios: se prueban todas las combinaciones posibles de swaps entre pares de posiciones, generando distintas configuraciones de la fila hasta encontrar alguna en la que todas las parejas queden correctamente formadas.
+Búsqueda por fuerza bruta sobre el espacio de estados utilizando **BFS**: se exploran las configuraciones alcanzables de la fila, generando nuevos estados mediante intercambios entre pares de posiciones.
 
-> Al explorar por niveles, la primera configuración válida encontrada corresponde a la menor cantidad de intercambios.
+La búsqueda se realiza por niveles, donde cada nivel representa una cantidad fija de swaps realizados. Por lo tanto, la primera configuración válida encontrada corresponde a la menor cantidad de intercambios necesarios.
+
+> Para evitar explorar repetidamente la misma configuración, se utiliza un [set](../../grimorio/data-structures/set) que almacena los estados ya visitados.
 
 ## Idea de la solución
 
-El algoritmo realiza una búsqueda exhaustiva por niveles. En cada nivel se consideran todas las configuraciones alcanzables con una misma cantidad de intercambios. Desde cada configuración se prueban todos los pares de índices posibles como candidatos a intercambiar.
+El algoritmo realiza una búsqueda exhaustiva por niveles utilizando **BFS**. En cada nivel se consideran todas las configuraciones alcanzables con una misma cantidad de intercambios. Desde cada configuración se prueban todos los pares de índices posibles como candidatos a intercambiar.
 
 Como se exploran todas las configuraciones posibles de la fila (evitando únicamente volver a recorrer estados ya visitados), el algoritmo garantiza encontrar la cantidad mínima real de swaps, aunque a costa de explorar una cantidad de estados que crece muy rápidamente.
 
-### Código
+## Código
 
 ```python
 def pareja(x):
@@ -55,9 +57,9 @@ def fuerza_bruta(row):
         swaps += 1
 ```
 
-### Traza de ejemplo
+## Traza de ejemplo
 
-Con el vector: $row = [0, 2, 1, 3]$
+Con el vector: `row = [0, 2, 1, 3]`
 
 Las parejas son $(0, 1)$ y $(2, 3)$.
 
@@ -65,12 +67,12 @@ El algoritmo explora las configuraciones por niveles. Primero evalúa la configu
 
 | Configuración | Intercambios | ¿Válida? | Nota |
 |---|---:|---|---|
-| $[0, 2, 1, 3]$ | 0 | NO | Estado inicial |
-| $[2, 0, 1, 3]$ | 1 | NO | Generada con $swap(0, 1)$ |
-| $[1, 2, 0, 3]$ | 1 | NO | Generada con $swap(0, 2)$ |
-| $[3, 2, 1, 0]$ | 1 | SÍ | Generada con $swap(0, 3)$ |
+| `[0, 2, 1, 3]` | 0 | NO | Estado inicial |
+| `[2, 0, 1, 3]` | 1 | NO | Generada con $swap(0, 1)$ |
+| `[1, 2, 0, 3]` | 1 | NO | Generada con $swap(0, 2)$ |
+| `[3, 2, 1, 0]` | 1 | SÍ | Generada con $swap(0, 3)$ |
 
-Al llegar a $[3, 2, 1, 0]$, las personas quedan sentadas junto a sus parejas: $(3, 2)$ y $(1, 0)$.
+Al llegar a `[3, 2, 1, 0]`, las personas quedan sentadas junto a sus parejas: $(3, 2)$ y $(1, 0)$.
 
 Como la exploración se realiza por niveles, primero se revisan todas las configuraciones con 0 intercambios, luego las de 1 intercambio, luego las de 2, y así sucesivamente. Por eso, la primera configuración válida encontrada garantiza la mínima cantidad de swaps.
 
@@ -101,7 +103,7 @@ Por lo tanto, una cota superior para la complejidad espacial es $O(m!\cdot m)$.
 
 ### Limitaciones
 
-- Es inviable para los tamaños de entrada reales del problema: el crecimiento exponencial hace que el tiempo de ejecución sea impracticable ya con pocas decenas de personas.
+- Es inviable para los tamaños de entrada reales del problema: el crecimiento factorial hace que el tiempo de ejecución sea impracticable ya con pocas decenas de personas.
 - Explora combinaciones de swaps que nunca podrían formar parte de una solución óptima, haciendo trabajo redundante.
 
 ## Comparación con las otras soluciones
@@ -113,3 +115,4 @@ Frente a [greedy](0765_couples_holding_hands-greedy.md), la diferencia es aún m
 ## Referencias
 
 - Estructura de datos: [[set]]
+- Técnica de búsqueda: [BFS](https://algo.monster/problems/bfs_intro)
