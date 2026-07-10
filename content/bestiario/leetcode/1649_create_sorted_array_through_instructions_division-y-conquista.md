@@ -10,27 +10,29 @@ tags:
 
 ## Técnicas utilizadas
 
-**División y Conquista (Merge Sort modificado):** se adapta Merge Sort para que, durante cada fusión, además de ordenar, cuente cuántos elementos anteriores son estrictamente mayores que cada elemento. Es la misma idea que el clásico conteo de inversiones.
+**División y Conquista (Merge Sort modificado):** se adapta Merge Sort para que, durante cada fusión, además de ordenar, cuente cuántos elementos anteriores son estrictamente mayores que cada elemento. Es la misma idea que se utiliza en el problema de conteo de inversiones.
 
 ## Idea de la solución
 
 El enunciado describe construir `nums` insertando elementos uno por uno, pero no hace falta simular esas inserciones. El costo de insertar `instructions[i]` depende solo de dos cantidades sobre los elementos anteriores: cuántos son menores y cuántos son mayores. Si conseguimos esos dos números para cada posición, el problema se resuelve sin mantener ningún arreglo ordenado.
 
-Para obtenerlos usamos Merge Sort sobre los índices `[0, ..., n-1]` (comparando por `instructions`). Durante cada fusión, cuando un elemento de `left` resulta mayor que el actual de `right`, sabemos —por estar `left` ordenado— que todo el resto de `left` desde ahí en adelante también es mayor que ese elemento de `right`. Eso permite sumar de una sola vez:
+Para obtenerlos usamos Merge Sort sobre los índices $[0, ..., n-1]$ (comparando por `instructions`). Durante cada fusión, cuando un elemento de `left` resulta mayor que el actual de `right`, sabemos (por estar `left` ordenado) que todo el resto de `left` desde ahí en adelante también es mayor que ese elemento de `right`. Eso permite sumar de una sola vez:
 
-```
-greater_count[right[j]] += len(left) - i
-```
+$$
+greater\_count[\text{ right }[j]] \mathrel{+}= \lvert\text{left}\rvert - i
+$$
 
 en vez de comparar elemento por elemento. Como cada par de posiciones queda en mitades distintas exactamente una vez durante toda la recursión, cada relación "mayor que" se cuenta una única vez.
 
 Se elige acumular `greater_count[i]` (mayores) y derivar `less(i)` algebraicamente. Con `greater_count[i]` calculado, se recorre el arreglo una vez más:
 
-```
-equal(i)   = elementos iguales anteriores (diccionario de frecuencias)
-less(i)    = i - equal(i) - greater_count(i)
-costo(i)   = min(less(i), greater_count(i))
-```
+$$
+\begin{aligned}
+equal(i) &= \text{elementos\_iguales\_anteriores} \, (\text{diccionario de frecuencias}) \\
+less(i) &= i - equal(i) - greater\_count(i) \\
+costo(i) &= \min\bigl(less(i), greater\_count(i)\bigr)
+\end{aligned}
+$$
 
 ## Código
 
@@ -104,31 +106,31 @@ Costo total: `0+0+0+0+1+2 = 3` ✓
 
 ### Temporal
 
-`O(n log n)`.
+$O(n \log n)$.
 
-El Merge Sort divide el problema a la mitad en cada nivel de recursión (`log n` niveles) y hace trabajo `O(n)` en cada fusión. La recurrencia es:
+El Merge Sort divide el problema a la mitad en cada nivel de recursión ($\log n$ niveles) y hace trabajo $O(n)$ en cada fusión. La recurrencia es:
 
-```
+$
 T(n) = 2·T(n/2) + O(n)
-```
+$
 
-Por el Teorema Maestro (caso 2): `T(n) = O(n log n)`.
+Por el Teorema Maestro (caso 2): $T(n) = O(n \log n)$.
 
-El cálculo del costo final es `O(n)`, que no domina.
+El cálculo del costo final es $O(n)$, que no domina.
 
-Con `n = 10⁵`, esto equivale a ~`1.7 × 10⁶` operaciones → viable dentro de los límites de LeetCode.
+Con $n = 10^5$, esto equivale a ~$1.7 × 10^6$ operaciones → viable dentro de los límites de LeetCode.
 
 ### Espacial
 
-`O(n)`. Por `greater_count` y los arreglos temporales de cada fusión, más `O(log n)` de pila de recursión.
+$O(n)$. Por `greater_count` y los arreglos temporales de cada fusión, más $O(\log n)$ de pila de recursión.
 
 ## Cuándo usar esta técnica
 
 ### Favorable cuando
 
 - El problema puede reformularse como **conteo de relaciones entre pares de elementos** (quién es menor que quién, cuántas inversiones hay, etc.).
-- Se busca `O(n log n)` sin estructuras de datos adicionales complejas como árboles de Fenwick o segmentos.
-- Se busca evitar el `O(n²)` de comparar todo contra todo.
+- Se busca $O(n \log n)$ sin estructuras de datos adicionales complejas como árboles de Fenwick o segmentos.
+- Se busca evitar el $O(n^2)$ de comparar todo contra todo.
 - El espacio de valores es grande o no acotado, haciendo inviable un BIT por rango de valores.
 
 ### Limitaciones
@@ -139,7 +141,7 @@ Con `n = 10⁵`, esto equivale a ~`1.7 × 10⁶` operaciones → viable dentro d
 
 ### Comparación con Fuerza Bruta
 
-La fuerza bruta mantiene `nums` explícitamente e inserta cada elemento contando menores/mayores entre los ya insertados, con costo `O(n²)` — inviable para `n = 10⁵`. Esta solución logra el mismo resultado en `O(n log n)` al obtener esos conteos como subproducto del propio ordenamiento. El trade-off es complejidad de implementación a cambio de eficiencia.
+La fuerza bruta mantiene `nums` explícitamente e inserta cada elemento contando menores/mayores entre los ya insertados, con costo $O(n^2)$ — inviable para $n = 10^5$. Esta solución logra el mismo resultado en $O(n \log n)$ al obtener esos conteos como subproducto del propio ordenamiento. El trade-off es complejidad de implementación a cambio de eficiencia.
 
 ## Referencias
 

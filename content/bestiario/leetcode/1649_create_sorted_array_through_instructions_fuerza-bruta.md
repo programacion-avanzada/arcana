@@ -20,8 +20,8 @@ Para cada elemento `v = instructions[i]`, necesitamos dos cantidades:
 
 La forma más directa es recorrer `nums` elemento por elemento y contarlos. Luego se inserta `v` en su posición correcta (para mantener el orden y facilitar las búsquedas).
 
-Como `nums` siempre está ordenado, podemos usar `bisect` para encontrar la posición de inserción en `O(log n)`, facilitando el conteo de menores y mayores que también se resuelve en `O(log n)` usando `bisect_left` y `bisect_right`.
-Sin embargo, `bisect.insort` tiene un cuello de botella: aunque encuentra la posición en `O(log n)`, el desplazamiento de elementos en memoria para hacer lugar a la inserción cuesta `O(n)`.
+Como `nums` siempre está ordenado, podemos usar `bisect` para encontrar la posición de inserción en $O(\log n)$, facilitando el conteo de menores y mayores que también se resuelve en $O(\log n)$ usando `bisect_left` y `bisect_right`.
+Sin embargo, `bisect.insort` tiene un cuello de botella: aunque encuentra la posición en $O(\log n)$, el desplazamiento de elementos en memoria para hacer lugar a la inserción cuesta $O(n)$.
 
 ```python
 # Código de ejemplo para ilustrar el uso de bisect:
@@ -89,15 +89,15 @@ En el paso 4: `bisect_left([1,5,6], 2) = 1` (hay un elemento menor: el 1). `bise
 `O(n²)` en el peor caso.
 
 - El bucle principal itera `n` veces.
-- `bisect_left` y `bisect_right` son `O(log n)` cada uno.
-- `bisect.insort` hace la búsqueda en `O(log n)` pero el **desplazamiento** de elementos en la lista para insertar cuesta `O(n)`.
-- En total: `n × O(n) = O(n²)`.
+- `bisect_left` y `bisect_right` son $O(\log n)$ cada uno.
+- `bisect.insort` hace la búsqueda en $O(\log n)$ pero el **desplazamiento** de elementos en la lista para insertar cuesta $O(n)$.
+- En total: $n × O(n) = O(n²)$.
 
-Con `n = 10⁵`, esto implica del orden de `10¹⁰` operaciones en el peor caso → al borde del límite de tiempo de LeetCode (TLE).
+Con $n = 10⁵$, esto implica del orden de $10¹⁰$ operaciones en el peor caso → al borde del límite de tiempo de LeetCode (TLE).
 
 ### Espacial
 
-`O(n)` para almacenar `nums`.
+$O(n)$ para almacenar `nums`.
 
 ## Cuándo usar esta técnica
 
@@ -110,7 +110,7 @@ Con `n = 10⁵`, esto implica del orden de `10¹⁰` operaciones en el peor caso
 ### Limitaciones
 
 - No escala con valores superiores a las retricciones del problema (`n ≤ 10⁵`): produce TLE en LeetCode.
-- El cuello de botella no está en el conteo (que `bisect` hace en `O(log n)`) sino en el desplazamiento de memoria al insertar en una lista de Python.
+- El cuello de botella no está en el conteo (que `bisect` hace en $O(\log n)$) sino en el desplazamiento de memoria al insertar en una lista de Python.
 - No hay forma de mejorar el algoritmo en su forma actual sin cambiar la estructura de datos subyacente.
 
 ### Comparación con División y Conquista
