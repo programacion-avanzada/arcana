@@ -32,7 +32,7 @@ Además, una decisión que parece correcta al principio puede provocar intercamb
 
 **Entrada:**
 
-- Un array $row$ de longitud $m = 2n$, donde $row[i]$ representa la persona sentada en el asiento $i$.
+- Un array $row$ de longitud $m = 2n$, donde `row[i]` representa la persona sentada en el asiento $i$.
 - $n$ representa la cantidad de parejas.
 - $m$ representa la cantidad total de personas.
 - Las personas están numeradas de $0$ a $m - 1$.
