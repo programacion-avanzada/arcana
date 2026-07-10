@@ -1,6 +1,6 @@
 ---
 title: '1649 - Create Sorted Array through Instructions - División y Conquista'
-tags: 
+tags:
   - 'leetcode'
   - 'divide & conquer'
   - 'merge sort'
@@ -11,34 +11,32 @@ tags:
 
 **División y Conquista (Merge Sort modificado):** se adapta Merge Sort para que, durante cada fusión, además de ordenar, cuente cuántos elementos anteriores son estrictamente mayores que cada elemento. Es la misma idea que se utiliza en el problema de conteo de inversiones.
 
+A diferencia del Merge Sort estándar (que solo fusiona y ordena) acá se agrega un arreglo auxiliar `greater_count` que se actualiza durante cada fusión: cuando un elemento de `left` supera al actual de `right`, se acumula en `greater_count[right[j]]` cuántos elementos de `left` son mayores, aprovechando que `left` ya está ordenado.
+
 ## Idea de la solución
 
 El enunciado describe construir `nums` insertando elementos uno por uno, pero no hace falta simular esas inserciones. El costo de insertar `instructions[i]` depende solo de dos cantidades sobre los elementos anteriores: cuántos son menores y cuántos son mayores. Si conseguimos esos dos números para cada posición, el problema se resuelve sin mantener ningún arreglo ordenado.
 
 Para obtenerlos usamos Merge Sort sobre los índices $[0, ..., n-1]$ (comparando por `instructions`). Durante cada fusión, cuando un elemento de `left` resulta mayor que el actual de `right`, sabemos (por estar `left` ordenado) que todo el resto de `left` desde ahí en adelante también es mayor que ese elemento de `right`. Eso permite sumar de una sola vez:
 
-$$
-greater\_count[\text{ right }[j]] \mathrel{+}= \lvert\text{left}\rvert - i
-$$
+$$greater\_count[\text{right}[j]] \mathrel{+}= |\text{left}| - i$$
 
 en vez de comparar elemento por elemento. Como cada par de posiciones queda en mitades distintas exactamente una vez durante toda la recursión, cada relación "mayor que" se cuenta una única vez.
 
 Se elige acumular `greater_count[i]` (mayores) y derivar `less(i)` algebraicamente. Con `greater_count[i]` calculado, se recorre el arreglo una vez más:
 
-$$
-\begin{aligned}
-equal(i) &= \text{elementos\_iguales\_anteriores} \, (\text{diccionario de frecuencias}) \\
+$$\begin{aligned}
+equal(i) &= \text{elementos iguales anteriores (diccionario de frecuencias)} \\
 less(i) &= i - equal(i) - greater\_count(i) \\
-costo(i) &= \min\bigl(less(i), greater\_count(i)\bigr)
-\end{aligned}
-$$
+costo(i) &= \min\bigl(less(i),\ greater\_count(i)\bigr)
+\end{aligned}$$
 
 ## Código
 
 ```python
 def createSortedArray(instructions):
     n = len(instructions)
-    greater_count = [0] * n
+    greater_count = [0] * n  # agregado respecto al Merge Sort estándar
 
     def merge(left, right):
         result, i, j = [], 0, 0
@@ -46,7 +44,7 @@ def createSortedArray(instructions):
             if instructions[left[i]] <= instructions[right[j]]:
                 result.append(left[i]); i += 1
             else:
-                # left[i:] son todos mayores que instructions[right[j]]
+                # Modificación clave: left[i:] son todos mayores que instructions[right[j]]
                 greater_count[right[j]] += len(left) - i
                 result.append(right[j]); j += 1
         return result + left[i:] + right[j:]
@@ -86,20 +84,20 @@ def createSortedArray(instructions):
 
 **Fusión final** `[1,2,3]` con `[4,5,6]`: todas cumplen `<=`, sin nuevos conteos.
 
-Resultado: `greater_count = [0, 0, 0, 0, 2, 1]` para índices `[0,1,2,3,4,5]` — antes del valor 5 (índice 4) hay un mayor (6); antes del valor 4 (índice 5) hay dos (6 y 5).
+Resultado: `greater_count = [0, 0, 0, 0, 2, 1]` para índices `[0,1,2,3,4,5]` — antes del valor 5 (índice 4) hay un mayor (el 6); antes del valor 4 (índice 5) hay dos mayores (el 6 y el 5).
 
 **Cálculo del costo:**
 
-| i | valor | equal | greater | less = i − equal − greater | costo = min(less, greater) |
-|---|-------|-------|---------|----------------------------|----------------------------|
-| 0 | 1     | 0     | 0       | 0                          | 0                          |
-| 1 | 2     | 0     | 0       | 1                          | 0                          |
-| 2 | 3     | 0     | 0       | 2                          | 0                          |
-| 3 | 6     | 0     | 0       | 3                          | 0                          |
-| 4 | 5     | 0     | 1       | 3                          | 1                          |
-| 5 | 4     | 0     | 2       | 3                          | 2                          |
+| $i$ | valor | equal | greater | $less = i - equal - greater$ | $costo = \min(less, greater)$ |
+|-----|-------|-------|---------|------------------------------|-------------------------------|
+| 0   | 1     | 0     | 0       | 0                            | 0                             |
+| 1   | 2     | 0     | 0       | 1                            | 0                             |
+| 2   | 3     | 0     | 0       | 2                            | 0                             |
+| 3   | 6     | 0     | 0       | 3                            | 0                             |
+| 4   | 5     | 0     | 1       | 3                            | 1                             |
+| 5   | 4     | 0     | 2       | 3                            | 2                             |
 
-Costo total: `0+0+0+0+1+2 = 3` ✓
+Costo total: $0+0+0+0+1+2 = 3$ ✓
 
 ## Complejidad
 
@@ -109,15 +107,13 @@ $O(n \log n)$.
 
 El Merge Sort divide el problema a la mitad en cada nivel de recursión ($\log n$ niveles) y hace trabajo $O(n)$ en cada fusión. La recurrencia es:
 
-$
-T(n) = 2·T(n/2) + O(n)
-$
+$$T(n) = 2 \cdot T\!\left(\frac{n}{2}\right) + O(n)$$
 
 Por el Teorema Maestro (caso 2): $T(n) = O(n \log n)$.
 
 El cálculo del costo final es $O(n)$, que no domina.
 
-Con $n = 10^5$, esto equivale a ~$1.7 × 10^6$ operaciones → viable dentro de los límites de LeetCode.
+Con $n = 10^5$, esto equivale a ~$1.7 \times 10^6$ operaciones → viable dentro de los límites de LeetCode.
 
 ### Espacial
 
@@ -128,7 +124,7 @@ $O(n)$. Por `greater_count` y los arreglos temporales de cada fusión, más $O(\
 ### Favorable cuando
 
 - El problema puede reformularse como **conteo de relaciones entre pares de elementos** (quién es menor que quién, cuántas inversiones hay, etc.).
-- Se busca $O(n \log n)$ sin estructuras de datos adicionales complejas como árboles de Fenwick o segmentos.
+- Se busca $O(n \log n)$ sin estructuras de datos adicionales complejas como árboles de Fenwick o de segmentos.
 - Se busca evitar el $O(n^2)$ de comparar todo contra todo.
 - El espacio de valores es grande o no acotado, haciendo inviable un BIT por rango de valores.
 
