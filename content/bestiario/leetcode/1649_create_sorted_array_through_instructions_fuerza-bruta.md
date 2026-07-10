@@ -92,7 +92,7 @@ En el paso 4: `bisect_left([1,5,6], 2) = 1` (hay un elemento menor: el 1). `bise
 - `bisect.insort` hace la búsqueda en $O(\log n)$ pero el **desplazamiento** de elementos en la lista para insertar cuesta $O(n)$.
 - En total: $n × O(n) = O(n²)$.
 
-Con $n = 10⁵$, esto implica del orden de $10¹⁰$ operaciones en el peor caso → al borde del límite de tiempo de LeetCode (TLE).
+Con $n = 10^5$, cada inserción puede desplazar hasta $10^5$ elementos, y hay $10^5$ inserciones: $10^5 \times 10^5 = 10^{10}$ operaciones en el peor caso → excede el límite de tiempo de LeetCode (TLE), aunque en la práctica Python puede pasarlo al borde por las optimizaciones internas de `bisect`.
 
 ### Espacial
 
