@@ -1,6 +1,6 @@
 ---
 title: '1649 - Create Sorted Array through Instructions - Fuerza Bruta'
-tags: 
+tags:
   - 'leetcode'
   - 'brute force'
   - 'bisect'
@@ -9,7 +9,7 @@ tags:
 
 ## Técnicas utilizadas
 
-**Fuerza bruta con simulación directa:** se mantiene una lista ordenada `nums` y, por cada nuevo elemento, se recorre para contar cuántos valores son estrictamente menores y cuántos son estrictamente mayores. El mínimo de ambos conteos se acumula como costo.
+**Fuerza bruta con simulación directa:** se mantiene una lista ordenada `nums` y, por cada nuevo elemento, se usan búsquedas binarias para contar cuántos valores son estrictamente menores y cuántos son estrictamente mayores. El mínimo de ambos conteos se acumula como costo.
 
 ## Idea de la solución
 
@@ -17,37 +17,30 @@ Para cada elemento `v = instructions[i]`, necesitamos dos cantidades:
 - `less`: cuántos elementos ya en `nums` son `< v`
 - `greater`: cuántos elementos ya en `nums` son `> v`
 
-La forma más directa es recorrer `nums` elemento por elemento y contarlos. Luego se inserta `v` en su posición correcta (para mantener el orden y facilitar las búsquedas).
-
-Como `nums` siempre está ordenado, podemos usar `bisect` para encontrar la posición de inserción en $O(\log n)$, facilitando el conteo de menores y mayores que también se resuelve en $O(\log n)$ usando `bisect_left` y `bisect_right`.
-Sin embargo, `bisect.insort` tiene un cuello de botella: aunque encuentra la posición en $O(\log n)$, el desplazamiento de elementos en memoria para hacer lugar a la inserción cuesta $O(n)$.
+Como `nums` siempre está ordenado, podemos usar `bisect` para obtener ambas cantidades en $O(\log n)$. Sin embargo, `bisect.insort` tiene un cuello de botella: aunque encuentra la posición de inserción en $O(\log n)$, el desplazamiento de todos los elementos posteriores en memoria para hacer lugar cuesta $O(n)$. Ese desplazamiento es el que domina la complejidad total.
 
 ```python
-# Código de ejemplo para ilustrar el uso de bisect:
+# Ejemplo ilustrativo del uso de bisect:
 
 import bisect
 
 nums = [1, 3, 4, 7]
 
-# Buscar dónde insertar el 5
 posLeft = bisect.bisect_left(nums, 5)
-print(posLeft)  # 3 → se insertaría antes del 7 (esto también significa que hay 3 elementos menores que 5)
+print(posLeft)   # 3 → hay 3 elementos menores que 5
 
-# Buscar dónde insertar el 3
 posRight = bisect.bisect_right(nums, 3)
-print(posRight)  # 2 → se insertaría después del 3, antes del 4
+print(posRight)  # 2 → se insertaría después del 3
 
 print(len(nums) - posRight)  # 2 → hay dos elementos mayores que 3 (4 y 7)
 
-bisect.insort(nums, 5)  # Inserta el 5 en la posición correcta
+bisect.insort(nums, 5)
 print(nums)  # [1, 3, 4, 5, 7]
 ```
 
 ## Código
 
 ```python
-# Código de fuerza bruta para el problema:
-
 import bisect
 
 def createSortedArray(instructions):
@@ -56,10 +49,10 @@ def createSortedArray(instructions):
     cost = 0
 
     for v in instructions:
-        less    = bisect.bisect_left(nums, v)        # índice = cantidad de elementos < v
-        greater = len(nums) - bisect.bisect_right(nums, v)  # elementos > v
+        less    = bisect.bisect_left(nums, v)               # cantidad de elementos < v
+        greater = len(nums) - bisect.bisect_right(nums, v)  # cantidad de elementos > v
         cost = (cost + min(less, greater)) % MOD
-        bisect.insort(nums, v) # inserta v en nums manteniendo el orden
+        bisect.insort(nums, v)  # inserta v manteniendo el orden
 
     return cost
 ```
@@ -85,12 +78,12 @@ En el paso 4: `bisect_left([1,5,6], 2) = 1` (hay un elemento menor: el 1). `bise
 
 ### Temporal
 
-`O(n²)` en el peor caso.
+$O(n^2)$ en el peor caso.
 
-- El bucle principal itera `n` veces.
+- El bucle principal itera $n$ veces.
 - `bisect_left` y `bisect_right` son $O(\log n)$ cada uno.
 - `bisect.insort` hace la búsqueda en $O(\log n)$ pero el **desplazamiento** de elementos en la lista para insertar cuesta $O(n)$.
-- En total: $n × O(n) = O(n²)$.
+- En total: $n \times O(n) = O(n^2)$.
 
 Con $n = 10^5$, cada inserción puede desplazar hasta $10^5$ elementos, y hay $10^5$ inserciones: $10^5 \times 10^5 = 10^{10}$ operaciones en el peor caso → excede el límite de tiempo de LeetCode (TLE), aunque en la práctica Python puede pasarlo al borde por las optimizaciones internas de `bisect`.
 
@@ -102,13 +95,13 @@ $O(n)$ para almacenar `nums`.
 
 ### Favorable cuando
 
-- `n` es pequeño (hasta ~`10³` elementos).
-- Se necesita una solución rápida de verificar para comparar contra otras implementaciones.
+- $n$ es pequeño (hasta ~$10^3$ elementos).
+- Se necesita una solución rápida para verificar y comparar contra otras implementaciones.
 - La claridad del código importa más que la eficiencia.
 
 ### Limitaciones
 
-- No escala con valores superiores a las retricciones del problema (`n ≤ 10⁵`): produce TLE en LeetCode.
+- No escala bien con las restricciones del problema ($n \leq 10^5$): roza el límite de tiempo de LeetCode.
 - El cuello de botella no está en el conteo (que `bisect` hace en $O(\log n)$) sino en el desplazamiento de memoria al insertar en una lista de Python.
 - No hay forma de mejorar el algoritmo en su forma actual sin cambiar la estructura de datos subyacente.
 
