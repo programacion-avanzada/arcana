@@ -114,7 +114,7 @@ $O(n)$ para almacenar `nums`.
 
 ### Comparación con División y Conquista
 
-La solución de Merge Sort obtiene el mismo resultado en $O(n \times \log{n})$ reformulando el problema como conteo durante una fusión ordenada. No mantiene `nums` explícitamente ni requiere inserciones en listas ya que opera sobre índices. Es más difícil de entender, pero escala correctamente con las restricciones del problema.
+La solución de **Merge Sort modificado** obtiene el mismo resultado en $O(n \log n)$ reformulando el problema como conteo durante una fusión ordenada. No mantiene `nums` explícitamente ni requiere inserciones en listas, ya que opera sobre índices. Es más difícil de entender, pero escala correctamente con las restricciones del problema.
 
 ## Referencias
 
