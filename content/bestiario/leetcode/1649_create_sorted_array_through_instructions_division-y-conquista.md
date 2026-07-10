@@ -1,10 +1,9 @@
 ---
 title: '1649 - Create Sorted Array through Instructions - División y Conquista'
 tags: 
+  - 'leetcode'
   - 'divide & conquer'
   - 'merge sort'
-  - 'leetcode'
-  - 'python'
   - 'división y conquista'
 ---
 

@@ -1,10 +1,9 @@
 ---
 title: '1649 - Create Sorted Array through Instructions - Fuerza Bruta'
 tags: 
+  - 'leetcode'
   - 'brute force'
   - 'bisect'
-  - 'leetcode'
-  - 'python'
   - 'fuerza bruta'
 ---
 
