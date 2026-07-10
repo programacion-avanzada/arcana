@@ -32,7 +32,7 @@ Además, una decisión que parece correcta al principio puede provocar intercamb
 
 **Entrada:**
 
-- Un array `row` de longitud $m = 2n$, donde `row[i]` representa la persona sentada en el asiento $i$.
+- Un array $row$ de longitud $m = 2n$, donde $row[i]$ representa la persona sentada en el asiento $i$.
 - $n$ representa la cantidad de parejas.
 - $m$ representa la cantidad total de personas.
 - Las personas están numeradas de $0$ a $m - 1$.
@@ -42,7 +42,7 @@ Además, una decisión que parece correcta al principio puede provocar intercamb
 
 **Restricciones:**
 
-- $2 \leq n \leq 30$
+- $2 \leq n \leq 30$. Esta restricción proviene del enunciado original del problema. Indica que la   entrada siempre contendrá entre 2 y 30 parejas, es decir, entre 4 y 60 personas. El límite inferior evita el caso trivial de una única pareja, mientras que el límite superior define el tamaño máximo de la entrada.
 - $m = 2n$
 - $0 \leq row[i] < m$
 - $m == row.length$
@@ -53,17 +53,64 @@ Además, una decisión que parece correcta al principio puede provocar intercamb
 
 ## Ejemplo concreto
 
-Tomemos el arreglo inicial: row = $[0, 2, 1, 3]$
+Consideremos una fila de **4 parejas** ($n=4$):
 
-- Distribución inicial en la fila: $(0,2)$, $(1,3)$
+```text
+row = [0, 2, 1, 3, 5, 6, 4, 7]
+```
 
-Observamos que la pareja de 0 es 1, pero actualmente 0 está junto a 2, por lo que las parejas no están correctamente formadas $\rightarrow$ intercambiamos 2 y 1.
+Las parejas son: $(0,1)$, $(2,3)$, $(4,5)$ y $(6,7)$.
 
-- Nuevo estado de la fila: $(0,1)$, $(2,3)$
+1. **Estado inicial:**
 
-Ahora ambas parejas quedan correctamente formadas.
+   Analizamos si cada persona está ubicada junto a su pareja.
 
-- Cantidad de intercambios = 1 $\rightarrow$ Salida = 1.
+   * La persona `0` está junto a `2`, pero su pareja es `1` $\rightarrow$ **No está con su pareja.**
+   * La persona `2` está junto a `0`, pero su pareja es `3` $\rightarrow$ **No está con su pareja.**
+   * La persona `4` está junto a `7`, pero su pareja es `5` $\rightarrow$ **No está con su pareja.**
+   * La persona `6` está junto a `5`, pero su pareja es `7` $\rightarrow$ **No está con su pareja.**
+
+2. **Primer intercambio:**
+
+   Comenzamos por la primera posición de la fila.
+
+   * Encontramos a la persona `0`.
+   * Su pareja es `1`.
+   * Buscamos al `1`, que se encuentra en la posición `2`.
+   * La persona ubicada junto a `0` se encuentra en la posición `1`, por lo que allí debe quedar su pareja.
+   * Intercambiamos las personas ubicadas en las posiciones `1` y `2`, logrando que la pareja `(0,1)` quede junta.
+
+   La fila queda:
+
+   ```text
+   [0, 1, 2, 3, 5, 6, 4, 7]
+   ```
+
+   Ahora la pareja `(0,1)` quedó junta. Además, como consecuencia del intercambio, la pareja `(2,3)` también quedó correctamente ubicada.
+
+3. **Segundo intercambio:**
+
+   Continuamos recorriendo la fila hasta encontrar la siguiente persona que aún no está junto a su pareja.
+
+   * Encontramos a la persona `5`.
+   * Su pareja es `4`.
+   * Buscamos al `4`, que se encuentra en la posición `6`.
+   * La persona ubicada junto a `5` se encuentra en la posición `5`, por lo que allí debe quedar su pareja.
+   * Intercambiamos las personas ubicadas en las posiciones `5` y `6`, logrando que la pareja `(4,5)` quede junta.
+
+   La fila queda:
+
+   ```text
+   [0, 1, 2, 3, 5, 4, 6, 7]
+   ```
+
+   Ahora la pareja `(4,5)` también quedó junta. Además, como consecuencia del intercambio, la pareja `(6,7)` también quedó correctamente ubicada.
+
+4. **Resultado final:**
+
+   Todas las parejas quedaron ubicadas una al lado de la otra.
+
+**Resultado:** Se realizaron **2 intercambios**, la cantidad mínima necesaria para que todas las parejas queden juntas.
 
 ---
 
