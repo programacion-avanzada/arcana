@@ -101,3 +101,5 @@ Frente a [branch and bound](0765_couples_holding_hands-branch-and-bound.md), la 
 ## Referencias
 
 - Estructura de datos: [[map]]
+- Libro Algorithm Design: [Algorithm Design - Kleinberg & Tardos](https://theswissbay.ch/pdf/Gentoomen%20Library/Algorithms/Algorithm%20Design%20-%20John%20Kleinberg%20-%20%C3%89va%20Tardos.pdf)
+- [Artículo de referencia](https://repovive.com/roadmaps/greedy-algorithms/greedy-optimization/problem-couples-holding-hands)
