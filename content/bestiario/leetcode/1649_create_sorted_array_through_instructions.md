@@ -17,11 +17,6 @@ Por ejemplo, si se inserta el elemento `3` en `nums = [1,2,3,5]`, el costo de la
 
 Retorna el **costo total** para insertar todos los elementos de `instructions` en `nums`. Dado que la respuesta puede ser grande, retorna el resultado **módulo** $10^9 + 7$.
 
-**Restricciones:**
-
-- $1 \leq \text{instructions.length} \leq 10^5$
-- $1 \leq \text{instructions}[i] \leq 10^5$
-
 [Problema original](https://leetcode.com/problems/create-sorted-array-through-instructions/)
 
 ---
@@ -38,13 +33,18 @@ El problema, entonces, no es de simulación sino de estructura de datos: ¿cómo
 
 ## Definición formal
 
-**Entrada:** Un arreglo de enteros `instructions` de longitud $n$, donde cada elemento es un entero entre $1$ y $10^5$.
+**Entrada:** Un arreglo de enteros `instructions` de longitud $n$.
 
 **Salida:** Un entero que representa el costo total para insertar todos los elementos de `instructions` en un arreglo ordenado, retornado módulo $10^9 + 7$.
 
+**Restricciones:**
+
+- $1 \leq n \leq 10^5$
+- $1 \leq \text{instructions}[i] \leq 10^5$
+
 **Condición matemática explícita:**
 
-$$costo(i) = \min\bigl(\#\{j < i : \text{instructions}[j] < \text{instructions}[i]\},\ \#\{j < i : \text{instructions}[j] > \text{instructions}[i]\}\bigr)$$
+$$costo(i) = \min\Bigl(\#\{j < i : \text{instructions}[j] < \text{instructions}[i]\},\ \#\{j < i : \text{instructions}[j] > \text{instructions}[i]\}\Bigr)$$
 
 $$\text{resultado} = \left(\sum_{i=0}^{n-1} costo(i)\right) \mod (10^9 + 7)$$
 
@@ -71,7 +71,7 @@ Al insertar el 2, hay 1 elemento menor (el 1) y 2 mayores (el 5 y el 6). $\min(1
 
 Una primera aproximación razonable es **fuerza bruta**: mantener `nums` como lista ordenada y, por cada elemento nuevo, usar `bisect` para contar menores y mayores. Eso es $O(n^2)$ pero permite entender el problema y verificar resultados.
 
-El siguiente paso es notar que solo necesitamos saber, para cada nuevo valor `v`, cuántos de los valores anteriores caen en $[1, v-1]$. Esto es una **suma de prefijo sobre frecuencias**, lo que sugiere usar un árbol de Fenwick (Binary Indexed Tree) o un árbol de segmentos. Con cualquiera de estas estructuras, cada consulta e inserción cuesta $O(\log(\text{max\_val}))$.
+El siguiente paso es notar que solo necesitamos saber, para cada nuevo valor `v`, cuántos de los valores anteriores caen en $[1, v-1]$. Esto es una **suma de prefijo sobre frecuencias**, lo que sugiere usar un árbol de Fenwick (Binary Indexed Tree) o un árbol de segmentos. Con cualquiera de estas estructuras, cada consulta e inserción cuesta $O(\log(\text{max\_val}))$. 
 
 Una alternativa que no requiere estructuras de datos adicionales es usar **Merge Sort modificado**: al ordenar los índices por valor, el proceso de fusión permite contar elementos mayores de forma implícita, en el espíritu del conteo de inversiones.
 
