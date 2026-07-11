@@ -1,53 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="720" height="300" viewBox="0 0 720 300" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
-  <rect x="0" y="0" width="720" height="300" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
-  <text x="360" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#1f2328">Las 4 transiciones en cada paso</text>
-  <text x="360" y="56" text-anchor="middle" font-size="13" fill="#57606a">Cada recolector elige abajo (↓) o derecha (→): 2 × 2 = 4 combinaciones</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="720" height="360" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="360" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Las 4 transiciones en cada paso</text>
+  <text x="360" y="58" text-anchor="middle" font-size="13" fill="#57606a">Cada recolector elige abajo o derecha: 2 × 2 = 4 ramas. La recursión toma el máximo.</text>
 
-  <!-- four mini panels -->
-  <g>
-    <!-- panel template positions -->
-    <!-- Panel 1: both down -->
-    <g transform="translate(40,90)">
-      <rect x="0" y="0" width="140" height="150" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
-      <text x="70" y="24" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2328">A ↓  ·  B ↓</text>
-      <circle cx="45" cy="55" r="7" fill="#2563eb"/>
-      <line x1="45" y1="62" x2="45" y2="110" stroke="#2563eb" stroke-width="3.5" marker-end="url(#ab)"/>
-      <circle cx="95" cy="55" r="7" fill="#16a34a"/>
-      <line x1="95" y1="62" x2="95" y2="110" stroke="#16a34a" stroke-width="3.5" marker-end="url(#ag)"/>
-    </g>
-    <!-- Panel 2: A down B right -->
-    <g transform="translate(200,90)">
-      <rect x="0" y="0" width="140" height="150" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
-      <text x="70" y="24" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2328">A ↓  ·  B →</text>
-      <circle cx="45" cy="55" r="7" fill="#2563eb"/>
-      <line x1="45" y1="62" x2="45" y2="110" stroke="#2563eb" stroke-width="3.5" marker-end="url(#ab)"/>
-      <circle cx="70" cy="95" r="7" fill="#16a34a"/>
-      <line x1="77" y1="95" x2="120" y2="95" stroke="#16a34a" stroke-width="3.5" marker-end="url(#ag)"/>
-    </g>
-    <!-- Panel 3: A right B down -->
-    <g transform="translate(360,90)">
-      <rect x="0" y="0" width="140" height="150" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
-      <text x="70" y="24" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2328">A →  ·  B ↓</text>
-      <circle cx="40" cy="60" r="7" fill="#2563eb"/>
-      <line x1="47" y1="60" x2="95" y2="60" stroke="#2563eb" stroke-width="3.5" marker-end="url(#ab)"/>
-      <circle cx="95" cy="55" r="7" fill="#16a34a"/>
-      <line x1="95" y1="62" x2="95" y2="110" stroke="#16a34a" stroke-width="3.5" marker-end="url(#ag)"/>
-    </g>
-    <!-- Panel 4: both right -->
-    <g transform="translate(520,90)">
-      <rect x="0" y="0" width="140" height="150" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
-      <text x="70" y="24" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2328">A →  ·  B →</text>
-      <circle cx="40" cy="55" r="7" fill="#2563eb"/>
-      <line x1="47" y1="55" x2="95" y2="55" stroke="#2563eb" stroke-width="3.5" marker-end="url(#ab)"/>
-      <circle cx="40" cy="100" r="7" fill="#16a34a"/>
-      <line x1="47" y1="100" x2="95" y2="100" stroke="#16a34a" stroke-width="3.5" marker-end="url(#ag)"/>
-    </g>
+  <!-- root box (green = nodo actual) -->
+  <rect x="255" y="82" width="210" height="40" fill="#A9CE9E" stroke="#333" stroke-width="2"/>
+  <text x="360" y="108" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="15" fill="#1f2328">explorar(r1, c1, r2)</text>
+
+  <!-- elbow connectors (right-angle) from root bottom (360,122) to each child top -->
+  <g stroke="#333" stroke-width="2" fill="none">
+    <path d="M360,122 L360,150 L110,150 L110,180"/>
+    <path d="M360,122 L360,150 L270,150 L270,180"/>
+    <path d="M360,122 L360,150 L450,150 L450,180"/>
+    <path d="M360,122 L360,150 L610,150 L610,180"/>
   </g>
 
-  <text x="360" y="282" text-anchor="middle" font-size="12.5" fill="#57606a">La recursión toma el máximo de las 4 ramas. A = azul, B = verde.</text>
+  <!-- child boxes -->
+  <g font-family="Consolas, Menlo, monospace" font-size="13.5" text-anchor="middle">
+    <rect x="30" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="110" y="207" fill="#1f2328">explorar(</text>
+    <text x="110" y="225" fill="#1f2328">r1+1, c1, r2+1)</text>
+    <text x="110" y="266" fill="#5B2C91" font-weight="700">A ↓ · B ↓</text>
 
-  <defs>
-    <marker id="ab" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2563eb"/></marker>
-    <marker id="ag" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#16a34a"/></marker>
-  </defs>
+    <rect x="190" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="270" y="207" fill="#1f2328">explorar(</text>
+    <text x="270" y="225" fill="#1f2328">r1+1, c1, r2)</text>
+    <text x="270" y="266" fill="#5B2C91" font-weight="700">A ↓ · B →</text>
+
+    <rect x="370" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="450" y="207" fill="#1f2328">explorar(</text>
+    <text x="450" y="225" fill="#1f2328">r1, c1+1, r2+1)</text>
+    <text x="450" y="266" fill="#5B2C91" font-weight="700">A → · B ↓</text>
+
+    <rect x="530" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="610" y="207" fill="#1f2328">explorar(</text>
+    <text x="610" y="225" fill="#1f2328">r1, c1+1, r2)</text>
+    <text x="610" y="266" fill="#5B2C91" font-weight="700">A → · B →</text>
+  </g>
+
+  <text x="360" y="312" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="15" fill="#1f2328">explorar(...) = cerezas + max( rama₁, rama₂, rama₃, rama₄ )</text>
+  <text x="360" y="338" text-anchor="middle" font-size="12.5" fill="#57606a">c2 = r1 + c1 − r2  se deduce en cada rama</text>
 </svg>

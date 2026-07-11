@@ -1,68 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="700" height="430" viewBox="0 0 700 430" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
-  <rect x="0" y="0" width="700" height="430" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
-  <text x="350" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#1f2328">Subproblemas superpuestos → memoización</text>
-  <text x="350" y="56" text-anchor="middle" font-size="13" fill="#57606a">El mismo estado (r1,c1,r2) se alcanza por muchas ramas distintas</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="720" height="420" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="360" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Problemas Solapados</text>
+  <text x="360" y="56" text-anchor="middle" font-size="13" fill="#57606a">El estado explorar(1,1,1) se alcanza por dos ramas distintas: la PD lo calcula una sola vez</text>
 
-  <!-- edges -->
-  <g stroke="#afb8c1" stroke-width="1.6">
-    <line x1="350" y1="100" x2="180" y2="170"/>
-    <line x1="350" y1="100" x2="290" y2="170"/>
-    <line x1="350" y1="100" x2="410" y2="170"/>
-    <line x1="350" y1="100" x2="520" y2="170"/>
-
-    <line x1="180" y1="190" x2="120" y2="270"/>
-    <line x1="180" y1="190" x2="230" y2="270"/>
-    <line x1="290" y1="190" x2="230" y2="270"/>
-    <line x1="410" y1="190" x2="470" y2="270"/>
-    <line x1="520" y1="190" x2="470" y2="270"/>
-
-    <line x1="230" y1="290" x2="200" y2="360"/>
-    <line x1="230" y1="290" x2="320" y2="360"/>
-    <line x1="470" y1="290" x2="320" y2="360"/>
+  <!-- edges root -> level2 -->
+  <g stroke="#333" stroke-width="1.5" fill="none">
+    <line x1="350" y1="102" x2="120" y2="158"/>
+    <line x1="350" y1="102" x2="270" y2="158"/>
+    <line x1="350" y1="102" x2="430" y2="158"/>
+    <line x1="350" y1="102" x2="580" y2="158"/>
+  </g>
+  <g font-family="Consolas, Menlo, monospace" font-size="12" fill="#1f2328" text-anchor="middle">
+    <text x="205" y="126">+1</text>
+    <text x="296" y="126">+2</text>
+    <text x="404" y="126">+2</text>
+    <text x="495" y="126">+1</text>
   </g>
 
-  <!-- root -->
-  <g>
-    <rect x="305" y="80" width="90" height="34" rx="17" fill="#0969da"/>
-    <text x="350" y="102" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">(0,0,0)</text>
+  <!-- edges level2 -> level3 -->
+  <g stroke="#333" stroke-width="1.5" fill="none">
+    <line x1="270" y1="192" x2="150" y2="248"/>
+    <line x1="270" y1="192" x2="300" y2="248"/>
+    <line x1="430" y1="192" x2="440" y2="248"/>
+    <line x1="430" y1="192" x2="590" y2="248"/>
+  </g>
+  <g font-family="Consolas, Menlo, monospace" font-size="12" fill="#1f2328" text-anchor="middle">
+    <text x="196" y="222">+1</text>
+    <text x="298" y="222">+0</text>
+    <text x="450" y="222">+0</text>
+    <text x="522" y="222">+1</text>
   </g>
 
-  <!-- level 2 nodes -->
-  <g font-size="12.5" font-weight="600">
-    <rect x="140" y="170" width="80" height="32" rx="16" fill="#eaeef2" stroke="#afb8c1"/>
-    <text x="180" y="191" text-anchor="middle" fill="#1f2328">(1,0,1)</text>
-    <rect x="250" y="170" width="80" height="32" rx="16" fill="#eaeef2" stroke="#afb8c1"/>
-    <text x="290" y="191" text-anchor="middle" fill="#1f2328">(1,0,0)</text>
-    <rect x="370" y="170" width="80" height="32" rx="16" fill="#eaeef2" stroke="#afb8c1"/>
-    <text x="410" y="191" text-anchor="middle" fill="#1f2328">(0,1,1)</text>
-    <rect x="480" y="170" width="80" height="32" rx="16" fill="#eaeef2" stroke="#afb8c1"/>
-    <text x="520" y="191" text-anchor="middle" fill="#1f2328">(0,1,0)</text>
+  <!-- root (violeta) -->
+  <g font-family="Consolas, Menlo, monospace" font-size="13" text-anchor="middle" font-weight="600">
+    <rect x="292" y="70" width="116" height="32" fill="#C9B3DC" stroke="#5B2C91" stroke-width="2"/>
+    <text x="350" y="91" fill="#1f2328">(0,0,0)</text>
+
+    <!-- level 2 -->
+    <rect x="66" y="158" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="120" y="179" fill="#1f2328">(1,0,1)</text>
+    <rect x="216" y="158" width="108" height="32" fill="#C9B3DC" stroke="#5B2C91" stroke-width="2"/><text x="270" y="179" fill="#1f2328">(1,0,0)</text>
+    <rect x="376" y="158" width="108" height="32" fill="#C9B3DC" stroke="#5B2C91" stroke-width="2"/><text x="430" y="179" fill="#1f2328">(0,1,1)</text>
+    <rect x="526" y="158" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="580" y="179" fill="#1f2328">(0,1,0)</text>
+
+    <!-- level 3 : (1,1,1) repetido -> NARANJA -->
+    <rect x="96" y="248" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="150" y="269" fill="#1f2328">(2,0,1)</text>
+    <rect x="246" y="248" width="108" height="32" fill="#FFE599" stroke="#E8912D" stroke-width="2.4"/><text x="300" y="269" fill="#1f2328">(1,1,1)</text>
+    <rect x="386" y="248" width="108" height="32" fill="#FFE599" stroke="#E8912D" stroke-width="2.4"/><text x="440" y="269" fill="#1f2328">(1,1,1)</text>
+    <rect x="536" y="248" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="590" y="269" fill="#1f2328">(1,1,2)</text>
   </g>
 
-  <!-- level 3 nodes, with repeated (2,1,2) highlighted -->
-  <g font-size="12.5" font-weight="600">
-    <rect x="80" y="270" width="80" height="32" rx="16" fill="#eaeef2" stroke="#afb8c1"/>
-    <text x="120" y="291" text-anchor="middle" fill="#1f2328">(2,0,2)</text>
-
-    <rect x="190" y="270" width="80" height="32" rx="16" fill="#ffe3e3" stroke="#e5484d" stroke-width="2"/>
-    <text x="230" y="291" text-anchor="middle" fill="#a40e26">(1,1,2)</text>
-
-    <rect x="430" y="270" width="80" height="32" rx="16" fill="#ffe3e3" stroke="#e5484d" stroke-width="2"/>
-    <text x="470" y="291" text-anchor="middle" fill="#a40e26">(1,1,2)</text>
-  </g>
-
-  <!-- level 4 -->
-  <g font-size="12.5" font-weight="600">
-    <rect x="160" y="360" width="80" height="32" rx="16" fill="#eaeef2" stroke="#afb8c1"/>
-    <text x="200" y="381" text-anchor="middle" fill="#1f2328">(2,1,2)</text>
-    <rect x="280" y="360" width="80" height="32" rx="16" fill="#ffe3e3" stroke="#e5484d" stroke-width="2"/>
-    <text x="320" y="381" text-anchor="middle" fill="#a40e26">(2,2,2)</text>
-  </g>
-
-  <!-- callout for repeated -->
-  <rect x="500" y="330" width="180" height="78" rx="8" fill="#fff5f5" stroke="#e5484d" stroke-width="1.3"/>
-  <text x="590" y="352" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a40e26">Nodos repetidos</text>
-  <text x="590" y="372" text-anchor="middle" font-size="11.5" fill="#57606a">Fuerza bruta: recalcula</text>
-  <text x="590" y="388" text-anchor="middle" font-size="11.5" fill="#57606a">PD: cachea y reutiliza</text>
-  <text x="590" y="404" text-anchor="middle" font-size="11.5" fill="#57606a">O(4^2N) → O(N³)</text>
+  <!-- callout -->
+  <rect x="150" y="310" width="420" height="88" rx="8" fill="#FFF8E8" stroke="#E8912D" stroke-width="1.5"/>
+  <rect x="170" y="328" width="16" height="16" fill="#FFE599" stroke="#E8912D" stroke-width="1.8"/>
+  <text x="196" y="341" font-size="12.5" font-weight="700" fill="#B26A12">= mismo subproblema, alcanzado dos veces</text>
+  <text x="170" y="364" font-size="12" fill="#57606a">Fuerza bruta: expande el subárbol de (1,1,1) las dos veces.</text>
+  <text x="170" y="384" font-size="12" fill="#B26A12" font-weight="700">PD: lo computa una vez, lo cachea y lo reutiliza en O(1).</text>
 </svg>
