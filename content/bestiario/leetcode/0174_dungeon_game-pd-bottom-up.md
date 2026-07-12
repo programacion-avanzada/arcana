@@ -152,4 +152,7 @@ Con las restricciones de este problema ($m, n \le 200$, profundidad de recursió
 | Facilidad para depurar       | Media                                            | Alta                     |
 
 ## Referencias
-N/A
+
+- [LeetCode - Dungeon Game](https://leetcode.com/problems/dungeon-game/description/)
+- [CP-Algorithms - Introduction to Dynamic Programming](https://cp-algorithms.com/dynamic_programming/intro-to-dp.html)
+- [GeeksforGeeks - Dynamic Programming](https://www.geeksforgeeks.org/dsa/dynamic-programming/)

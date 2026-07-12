@@ -116,4 +116,7 @@ Detalle de `vida_requerida` para el camino óptimo:
 La fuerza bruta evalúa todos los caminos sin ninguna poda ni reutilización de resultados intermedios. Programación Dinámica resuelve cada celda exactamente una vez en $O(m×n)$, aprovechando que muchos caminos comparten subproblemas — algo que la fuerza bruta ignora por completo. Para instancias de tamaño real, esto la vuelve la técnica claramente preferible.
 
 ## Referencias
-N/A
+
+- [LeetCode - Dungeon Game](https://leetcode.com/problems/dungeon-game/description/)
+- [CP-Algorithms - Introduction to Dynamic Programming](https://cp-algorithms.com/dynamic_programming/intro-to-dp.html)
+- [GeeksforGeeks - Dynamic Programming](https://www.geeksforgeeks.org/dsa/dynamic-programming/)

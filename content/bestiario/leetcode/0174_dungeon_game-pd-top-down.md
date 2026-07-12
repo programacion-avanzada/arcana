@@ -138,4 +138,7 @@ Sobre una matriz 5×5, la recursión sin memoización realiza **251 llamadas** m
 La Programación Dinámica garantiza $O(m \times n)$ independientemente de la instancia, lo que la convierte en la técnica más eficiente para este problema.
 
 ## Referencias
-N/A
+
+- [LeetCode - Dungeon Game](https://leetcode.com/problems/dungeon-game/description/)
+- [CP-Algorithms - Introduction to Dynamic Programming](https://cp-algorithms.com/dynamic_programming/intro-to-dp.html)
+- [GeeksforGeeks - Dynamic Programming](https://www.geeksforgeeks.org/dsa/dynamic-programming/)
