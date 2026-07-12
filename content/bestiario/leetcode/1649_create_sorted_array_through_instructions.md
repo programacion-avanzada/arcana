@@ -44,9 +44,17 @@ El problema, entonces, no es de simulación sino de estructura de datos: ¿cómo
 
 **Condición matemática explícita:**
 
-$$costo(i) = \min\Bigl(\\#\{j < i : \text{instructions}[j] < \text{instructions}[i]\},\ \\#\{j < i : \text{instructions}[j] > \text{instructions}[i]\}\Bigr)$$
-
-$$\text{resultado} = \left(\sum_{i=0}^{n-1} costo(i)\right) \mod (10^9 + 7)$$
+El costo de insertar el $i$-ésimo elemento se define como:
+ 
+$$
+\text{costo}(i) = \min\Bigl(\bigl|\{j < i : \text{instructions}[j] < \text{instructions}[i]\}\bigr|,\ \bigl|\{j < i : \text{instructions}[j] > \text{instructions}[i]\}\bigr|\Bigr)
+$$
+ 
+donde $|\cdot|$ denota la cardinalidad del conjunto (cantidad de elementos que cumplen la condición). El resultado final es la suma de todos los costos individuales, tomada módulo $10^9+7$:
+ 
+$$
+\text{resultado} = \left(\sum_{i=0}^{n-1} \text{costo}(i)\right) \bmod (10^9 + 7)
+$$
 
 ---
 
@@ -71,7 +79,7 @@ Al insertar el 2, hay 1 elemento menor (el 1) y 2 mayores (el 5 y el 6). $\min(1
 
 Una primera aproximación razonable es **fuerza bruta**: mantener `nums` como lista ordenada y, por cada elemento nuevo, usar `bisect` para contar menores y mayores. Eso es $O(n^2)$ pero permite entender el problema y verificar resultados.
 
-El siguiente paso es notar que solo necesitamos saber, para cada nuevo valor `v`, cuántos de los valores anteriores caen en $[1, v-1]$. Esto es una **suma de prefijo sobre frecuencias**, lo que sugiere usar un árbol de Fenwick (Binary Indexed Tree) o un árbol de segmentos. Con cualquiera de estas estructuras, cada consulta e inserción cuesta $O(\log(\text{max\\_val}))$.
+El siguiente paso es notar que solo necesitamos saber, para cada nuevo valor `v`, cuántos de los valores anteriores caen en $[1, v-1]$. Esto es una **suma de prefijo sobre frecuencias**, lo que sugiere usar un árbol de Fenwick (Binary Indexed Tree) o un árbol de segmentos. Con cualquiera de estas estructuras, cada consulta e inserción cuesta $O(\log(\text{max\_val}))$.
 
 Una alternativa que no requiere estructuras de datos adicionales es usar **Merge Sort modificado**: al ordenar los índices por valor, el proceso de fusión permite contar elementos mayores de forma implícita, en el espíritu del conteo de inversiones.
 
