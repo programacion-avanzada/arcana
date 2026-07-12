@@ -1,5 +1,6 @@
 ---
 title: Leetcode1739 - Building Boxes
+tags: ['b/leetcode']
 ---
 
 ## Nombre y enunciado
