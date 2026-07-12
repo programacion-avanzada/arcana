@@ -5,7 +5,7 @@ title: Leetcode1739 - Building Boxes
 
 [LeetCode 1739 - Building Boxes](https://leetcode.com/problems/building-boxes/)
 
-Tenemos una habitación cúbica cuyo ancho, largo y alto valen `n` unidades. Hay que ubicar `n`
+Tenemos una habitación cúbica cuyo ancho, largo y alto valen `m` unidades. Hay que ubicar `n`
 cajas, donde cada caja es un cubo de lado unitario. Las reglas para apoyarlas son:
 
 - Se puede colocar cualquier caja directamente sobre el piso.
@@ -16,7 +16,7 @@ Dado `n`, hay que devolver la **mínima cantidad de cajas que tocan el piso**.
 
 ## Intuición
 
-Para que la cantidad de cajas que tocan el piso sea la `mínima`, necesitamos apilar las cajas lo más alto posible. Cómo podemos hacerlo? De la siguiente manera
+Para que la cantidad de cajas que tocan el piso sea la `mínima`, necesitamos apilar las cajas lo más alto posible. Esto se logra de la siguente manera:
 
 1. Aprovechando las paredes
 Para poner una caja arriba de otra, la caja de abajo tiene que tener sus 4 caras verticales adyacentes a otra caja o a una pared. Si armamos nuestra torre en el medio de la habitación, necesitamos rodear la caja base con 4 cajas. Pero si nos vamos a una esquina, las dos paredes de la habitación ya nos cubren 2 caras. Solo necesitamos poner 2 cajas adicionales para cubrir las caras restantes. 
@@ -24,7 +24,7 @@ Para poner una caja arriba de otra, la caja de abajo tiene que tener sus 4 caras
 2. Base
 Para tener 1 caja en el nivel 2, la caja base (nivel 1, la que está justo en el vértice de la esquina) necesita estar rodeada por 2 cajas adyacentes. Esto forma un pequeño triángulo en el piso de 3 cajas.
 Para tener 1 caja en el nivel 3, necesitás un triángulo de 3 cajas en el nivel 2. Y para sostener esas 3 cajas del nivel 2, necesitás un triángulo más grande en el piso (nivel 1) compuesto por 6 cajas.
-Las bases de cada nivel, terminan siendo números triangulares (Los números sucesión matemática de cantidades que pueden representarse geométricamente como puntos o elementos ordenados en forma de triángulo equilátero)
+Las bases de cada nivel terminan siendo números triangulares (la sucesión de cantidades que pueden representarse geométricamente como puntos ordenados en forma de triángulo equilátero)
 
 ![Piso triangular](piso_triangular.svg)
 
@@ -51,7 +51,7 @@ El límite superior de $10^9$ es parte del problema: descarta cualquier enfoque 
 `n` cajas de a una y empuja hacia soluciones que razonen sobre la estructura en lugar de
 enumerarla.
 
-## Ejemplos
+## Ejemplo concreto
 
 Tomemos una instancia resuelta a mano: n = 10.
 Para apilar la mayor cantidad de cajas con la menor base, empezamos encajándolas en el rincón.
@@ -78,9 +78,9 @@ tamaño de la base y la cantidad total de cajas que puede sostener.
 ![Regla Esquina](regla_esquina.svg)
 
 A partir de ahí aparece una decisión natural: dado `n`, ¿cuál es la base más chica que alcanza?
-Las soluciones del grupo atacan esa pregunta desde ángulos distintos —una **construye** la
-respuesta directamente y la otra la **busca** aprovechando una propiedad de monotonía—, pero
-ambas parten de entender primero esa relación entre base y capacidad total.
+Las soluciones del grupo atacan esa pregunta desde ángulos distintos: una construye la
+respuesta directamente y la otra la busca aprovechando una propiedad de monotonía. Ambas
+parten de entender primero esa relación entre base y capacidad total.
 
 ## Soluciones disponibles
 
