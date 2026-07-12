@@ -153,6 +153,6 @@ Con las restricciones de este problema ($m, n \le 200$, profundidad de recursió
 
 ## Referencias
 
-- [LeetCode - Dungeon Game](https://leetcode.com/problems/dungeon-game/description/)
+- [LeetCode - Dungeon Game](https://leetcode.com/problems/dungeon-game/)
 - [CP-Algorithms - Introduction to Dynamic Programming](https://cp-algorithms.com/dynamic_programming/intro-to-dp.html)
 - [GeeksforGeeks - Dynamic Programming](https://www.geeksforgeeks.org/dsa/dynamic-programming/)
