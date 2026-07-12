@@ -22,8 +22,8 @@ monótona, podemos usar **búsqueda binaria**.
 ### Qué estamos buscando
 
 El problema pide la **mínima cantidad de cajas que deben tocar el piso** para poder acomodar
-`n` cajas respetando la regla de soporte: una caja puede estar arriba solamente si está apoyada
-por tres cajas debajo.
+`n` cajas respetando la regla de soporte: una caja solo puede ir encima de otra si esa caja de abajo
+tiene sus cuatro caras verticales adyacentes a otra caja o a una pared.
 
 En lugar de decidir caja por caja dónde ponerlas, vamos a buscar la respuesta `m`:
 
