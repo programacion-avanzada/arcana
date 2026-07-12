@@ -245,21 +245,28 @@ pero todavía eficiente.
 - Aunque no construye la solución caja por caja, todavía depende de las fórmulas triangular y
   tetraédrica.
 
-## Comparación con la otra solución del grupo
+## Comparación con las otras soluciones del grupo
 
-La solución greedy en forma cerrada calcula directamente la pirámide completa más grande y luego
-completa las cajas sobrantes con una fórmula. Es más rápida, porque corre en $O(1)$, pero también
-usa despejes matemáticos más delicados.
+El grupo implementó dos variantes greedy: una **iterativa** ($O(\sqrt[3]{n})$) y una en **forma
+cerrada** ($O(1)$). Ambas construyen la pirámide completa más grande y rellenan el sobrante; se
+diferencian solo en cómo resuelven cada paso. Esta solución, en cambio, usa división y conquista:
+no decide de forma voraz cuántas cajas poner, sino que busca la mínima respuesta mediante una
+condición de factibilidad monótona.
 
-Esta solución, en cambio, usa **división y conquista**. No intenta decidir de forma voraz cuántas
-cajas poner, sino que busca la mínima respuesta posible mediante una condición de factibilidad.
-Es un poco más lenta, $O(\log^2 n)$, pero sigue siendo muy eficiente y puede resultar más clara
-para justificar.
+Comparación con cada variante:
+
+- **vs. greedy iterativa ($O(\sqrt[3]{n})$).** Las dos evitan el punto flotante y son exactas.
+  División y conquista es asintóticamente más rápida ($O(\log^2 n)$), aunque para $n \le 10^9$ la
+  diferencia es imperceptible. La iterativa es un poco más directa de leer.
+- **vs. greedy en forma cerrada ($O(1)$).** La forma cerrada es la más rápida, pero depende de
+  raíces en punto flotante y necesita corrección para no desviarse. División y conquista es más
+  lenta ($O(\log^2 n)$) pero no tiene riesgo numérico y es más fácil de justificar.
 
 Regla práctica:
 
-- **Greedy / forma cerrada:** mejor rendimiento.
-- **División y conquista / búsqueda binaria:** mejor alternativa no greedy, clara y segura.
+- **Greedy / forma cerrada:** mejor rendimiento, a costa de fragilidad numérica.
+- **Greedy iterativa:** exacta y simple, sin punto flotante.
+- **División y conquista / búsqueda binaria:** mejor alternativa no greedy, robusta y clara.
 - **Programación dinámica:** posible como idea, pero no recomendable para las restricciones del
   problema.
 
