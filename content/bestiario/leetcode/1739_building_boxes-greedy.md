@@ -1,5 +1,6 @@
 ---
 title: "Building Boxes — Greedy"
+tags: ['b/leetcode']
 problema: "LeetCode 1739 - Building Boxes"
 tecnica: "Greedy (iterativo y forma cerrada O(1))"
 grupo: "delta"
