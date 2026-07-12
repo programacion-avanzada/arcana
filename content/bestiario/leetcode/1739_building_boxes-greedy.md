@@ -25,7 +25,7 @@ pirámide perfecta más alta posible sin pasarnos de $n$.
 5. Apenas nos pasaríamos, frenamos. Nos quedamos con la pirámide perfecta anterior y sabemos
    cuántas cajas hay en el piso y cuántas "sobran" en la mano para la Fase 2.
 
-### Fase 2: acomodar el sobrante (ser "avaro" con el piso)
+### Fase 2: acomodar el sobrante
 
 Queda un remanente que no alcanza para un nivel completo. Lo agregamos expandiendo la base lo
 mínimo indispensable:
@@ -96,9 +96,9 @@ Como `cajas_totales == 10 == n`, no hay Fase 2. **Respuesta: 6.**
 
 - **Favorable cuando** querés una solución simple, legible y sin riesgo numérico. Trabaja con
   aritmética entera exacta, así que nunca falla por redondeo, y a $O(\sqrt[3]{n})$ es
-  rapidísima igual (para $n = 10^9$, ~1000 vueltas).
+  muy rápida igual (para $n = 10^9$, ~1000 vueltas).
 - **Limitaciones:** no es $O(1)$: recorre los niveles uno por uno. Si $n$ fuera descomunal o la
-  función se llamara millones de veces por segundo, la versión en forma cerrada rinde mejor.
+  función se llamara millones de veces por segundo, la versión en forma cerrada es mas conveniente.
 - **Comparación con la Solución 2 (forma cerrada).** Las dos usan **la misma estrategia voraz**
   (pirámide máxima + relleno del sobrante); cambia solo la implementación. Esta itera y suma
   nivel a nivel (exacta y robusta, $O(\sqrt[3]{n})$); la otra invierte las fórmulas con raíces
@@ -226,7 +226,7 @@ $$
 p = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
-El discriminante se simplifica lindo:
+El discriminante se simplifica:
 
 $$
 b^2 - 4ac = 1^2 - 4\cdot 1 \cdot(-2s) = 1 + 8s
@@ -239,9 +239,9 @@ $$
 **Me quedo con la raíz del $+$.** Como $s \ge 1$, entonces $\sqrt{1+8s} > 1$, y por lo tanto:
 
 $$
-\underbrace{\frac{-1 + \sqrt{1+8s}}{2}}_{>\,0 \;\checkmark}
+\underbrace{\frac{-1 + \sqrt{1+8s}}{2}}_{>\,0}
 \qquad\qquad
-\underbrace{\frac{-1 - \sqrt{1+8s}}{2}}_{<\,0 \;\times}
+\underbrace{\frac{-1 - \sqrt{1+8s}}{2}}_{<\,0}
 $$
 
 La negativa no tiene sentido (no existe "cantidad negativa de cajas"). Siempre sale una de cada
