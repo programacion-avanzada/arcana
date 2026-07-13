@@ -11,7 +11,10 @@ tags:
 
 **División y Conquista (Merge Sort modificado):** se adapta Merge Sort para que, durante cada fusión, además de ordenar, cuente cuántos elementos anteriores son estrictamente mayores que cada elemento. Es la misma idea que se utiliza en el problema de conteo de inversiones.
 
-A diferencia del Merge Sort estándar (que solo fusiona y ordena) acá se agrega un arreglo auxiliar `greater_count` que se actualiza durante cada fusión: cuando un elemento de `left` supera al actual de `right`, se acumula en `greater_count[right[j]]` cuántos elementos de `left` son mayores, aprovechando que `left` ya está ordenado.
+Se mantiene la división recursiva por la mitad y la fusión lineal de dos mitades ordenadas. Lo que se agrega respecto al Merge Sort clásico:
+- Se ordena por **índices** (`list(range(n))`) en lugar de valores, para poder acumular el conteo en la posición original.
+- Un arreglo auxiliar `greater_count`, persistente entre llamadas, que se completa durante las fusiones: cuando un elemento de `left` supera al actual de `right`, se suma de una sola vez `len(left) - i` a `greater_count[right[j]]` (aprovechando que `left` ya está ordenado, en vez de comparar uno por uno).
+- La comparación usa `<=` y no `<`, para no contar los elementos iguales como "mayores".
 
 ## Idea de la solución
 
@@ -19,9 +22,9 @@ El enunciado describe construir `nums` insertando elementos uno por uno, pero no
 
 Para obtenerlos usamos Merge Sort sobre los índices $[0, ..., n-1]$ (comparando por `instructions`). Durante cada fusión, cuando un elemento de `left` resulta mayor que el actual de `right`, sabemos (por estar `left` ordenado) que todo el resto de `left` desde ahí en adelante también es mayor que ese elemento de `right`. Eso permite sumar de una sola vez:
 
-$$greater\_count[\text{right}[j]] \mathrel{+}= |\text{left}| - i$$
+$$\text{greaterCount}[\text{right}[j]] \mathrel{+}= |\text{left}| - i$$
 
-en vez de comparar elemento por elemento. Como cada par de posiciones queda en mitades distintas exactamente una vez durante toda la recursión, cada relación "mayor que" se cuenta una única vez.
+En vez de comparar elemento por elemento. Como cada par de posiciones queda en mitades distintas exactamente una vez durante toda la recursión, cada relación "mayor que" se cuenta una única vez.
 
 Se elige acumular `greater_count[i]` (mayores) y derivar `less(i)` algebraicamente. Con `greater_count[i]` calculado, se recorre el arreglo una vez más:
 
@@ -70,34 +73,34 @@ def createSortedArray(instructions):
 
 ## Traza de ejemplo
 
-`instructions = [1, 2, 3, 6, 5, 4]`. Merge Sort divide hasta elementos sueltos, sin conteos todavía:
+`instructions = [1, 5, 6, 2]`. Merge Sort divide hasta elementos sueltos, sin conteos todavía:
 
 ```
-[1,2,3,6,5,4] → [1,2,3] | [6,5,4] → [1] [2,3] | [6] [5,4] → [1] [2] [3] [6] [5] [4]
+[1,5,6,2] → [1,5] | [6,2] → [1] [5] | [6] [2]
 ```
 
-**Mitad izquierda** (`[1] [2] [3]`): todas las fusiones cumplen `<=`, se copian sin generar conteos.
+**Mitad izquierda** (`[1]` con `[5]`): `1 <= 5`, se copia sin generar conteos. Resultado: `[1,5]`.
 
-**Mitad derecha** (`[6] [5] [4]`):
-- Fusión `[5]` con `[4]`: `5 > 4` → `greater_count[4] += 1`
-- Fusión `[6]` con `[4,5]`: `6 > 4` → `greater_count[4] += 1` → `greater_count[4] = 2`; luego `6 > 5` → `greater_count[5] += 1`
+**Mitad derecha** (`[6]` con `[2]`):
+- Fusión `[6]` con `[2]`: `6 > 2` → `greater_count[3] += 1` (el `3` es el índice del valor `2` en `instructions`)
 
-**Fusión final** `[1,2,3]` con `[4,5,6]`: todas cumplen `<=`, sin nuevos conteos.
+**Fusión final** `[1,5]` con `[2,6]`:
+- `1 <= 2` → se copia el `1` sin generar conteo.
+- `5 > 2` → `greater_count[3] += (len(left) - i) = 2 - 1 = 1` → `greater_count[3] = 1 + 1 = 2`
+- `5 <= 6` → se copia el `5` sin generar conteo.
 
-Resultado: `greater_count = [0, 0, 0, 0, 2, 1]` para índices `[0,1,2,3,4,5]` — antes del valor 5 (índice 4) hay un mayor (el 6); antes del valor 4 (índice 5) hay dos mayores (el 6 y el 5).
+Resultado: `greater_count = [0, 0, 0, 2]` para índices `[0,1,2,3]` — antes del valor `2` (índice 3) hay dos mayores (el `5` y el `6`).
 
 **Cálculo del costo:**
 
 | $i$ | valor | equal | greater | $less = i - equal - greater$ | $costo = \min(less, greater)$ |
 |-----|-------|-------|---------|------------------------------|-------------------------------|
 | 0   | 1     | 0     | 0       | 0                            | 0                             |
-| 1   | 2     | 0     | 0       | 1                            | 0                             |
-| 2   | 3     | 0     | 0       | 2                            | 0                             |
-| 3   | 6     | 0     | 0       | 3                            | 0                             |
-| 4   | 5     | 0     | 1       | 3                            | 1                             |
-| 5   | 4     | 0     | 2       | 3                            | 2                             |
+| 1   | 5     | 0     | 0       | 1                            | 0                             |
+| 2   | 6     | 0     | 0       | 2                            | 0                             |
+| 3   | 2     | 0     | 2       | 1                            | 1                             |
 
-Costo total: $0+0+0+0+1+2 = 3$ ✓
+Costo total: $0+0+0+1 = 1$ ✓
 
 ## Complejidad
 
@@ -107,13 +110,13 @@ $O(n \log n)$.
 
 El Merge Sort divide el problema a la mitad en cada nivel de recursión ($\log n$ niveles) y hace trabajo $O(n)$ en cada fusión. La recurrencia es:
 
-$$T(n) = 2 \cdot T\!\left(\frac{n}{2}\right) + O(n)$$
+$$T(n) = 2 \cdot T\left(\frac{n}{2}\right) + O(n)$$
 
 Por el Teorema Maestro (caso 2): $T(n) = O(n \log n)$.
 
 El cálculo del costo final es $O(n)$, que no domina.
 
-Con $n = 10^5$, esto equivale a ~$1.7 \times 10^6$ operaciones → viable dentro de los límites de LeetCode.
+Con $n = 10^5$, esto equivale a $\sim 1.7 \times 10^6$ operaciones → viable dentro de los límites de LeetCode.
 
 ### Espacial
 
