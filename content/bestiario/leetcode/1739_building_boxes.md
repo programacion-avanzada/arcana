@@ -104,6 +104,6 @@ parten de entender primero esa relación entre base y capacidad total.
 
 ## Referencias
 
-- [LeetCode 1739 — Building Boxes](https://leetcode.com/problems/building-boxes/)
+- [LeetCode 1739 - Building Boxes](https://leetcode.com/problems/building-boxes/)
 - [Diagrama de Young](https://en.wikipedia.org/wiki/Young_diagram) - el layout de alturas no
   crecientes que induce la regla de soporte
