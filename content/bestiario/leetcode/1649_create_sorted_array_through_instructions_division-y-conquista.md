@@ -28,7 +28,6 @@ En vez de comparar elemento por elemento. Como cada par de posiciones queda en m
 
 Se elige acumular `greater_count[i]` (mayores) y derivar `less(i)` algebraicamente. Con `greater_count[i]` calculado, se recorre el arreglo una vez más:
 
-<<<<<<< HEAD
 $$
 \begin{aligned}
 \text{equal}(i) &= \text{elementos iguales anteriores (diccionario de frecuencias)} \\
@@ -36,13 +35,6 @@ $$
 \text{costo}(i) &= \min\bigl(\text{less}(i), \text{greater\_count}(i)\bigr)
 \end{aligned}
 $$
-=======
-$$\begin{aligned}
-\text{equal}(i) &= \text{elementos iguales anteriores (diccionario de frecuencias)} \\
-\text{less}(i) &= i - \text{equal}(i) - \text{greaterCount}(i) \\
-\text{costo}(i) &= \min\bigl(\text{less}(i),\ \text{greaterCount}(i)\bigr)
-\end{aligned}$$
->>>>>>> 09b69f6ad58ea76a3e473e54ef10b3792897b559
 
 ## Código
 
