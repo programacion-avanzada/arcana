@@ -95,14 +95,14 @@ $O(n)$ para almacenar `nums`.
 
 ### Favorable cuando
 
-- $n$ es pequeño (hasta ~$10^3$ elementos).
+- $n$ es pequeño (hasta $\sim 10^3$ elementos).
 - Se necesita una solución rápida para verificar y comparar contra otras implementaciones.
 - La claridad del código importa más que la eficiencia.
 
 ### Limitaciones
 
 - No escala bien con las restricciones del problema ($n \leq 10^5$): roza el límite de tiempo de LeetCode.
-- El cuello de botella no está en el conteo (que `bisect` hace en $O(\log n)$) sino en el desplazamiento de memoria al insertar en una lista de Python.
+- El cuello de botella no está en el conteo, que se resuelve en $O(\log n)$ usando `bisect`, sino en el desplazamiento de memoria al insertar en una lista de Python.
 - No hay forma de mejorar el algoritmo en su forma actual sin cambiar la estructura de datos subyacente.
 
 ### Comparación con División y Conquista
