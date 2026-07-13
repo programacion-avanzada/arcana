@@ -1,5 +1,5 @@
 ---
-title: "Building Boxes — División y conquista"
+title: "Building Boxes - División y conquista"
 tags: ['b/leetcode']
 problema: "LeetCode 1739 - Building Boxes"
 tecnica: "División y conquista / Búsqueda binaria"
@@ -273,8 +273,8 @@ Regla práctica:
 
 ## Referencias
 
-- [LeetCode 1739 — Building Boxes](https://leetcode.com/problems/building-boxes/)
-- [Número triangular](https://en.wikipedia.org/wiki/Triangular_number) — $T(k)=\dfrac{k(k+1)}{2}$
-- [Número tetraédrico](https://en.wikipedia.org/wiki/Tetrahedral_number) — $\operatorname{Tet}(k)=\dfrac{k(k+1)(k+2)}{6}$
+- [LeetCode 1739 - Building Boxes](https://leetcode.com/problems/building-boxes/)
+- [Número triangular](https://en.wikipedia.org/wiki/Triangular_number) - $T(k)=\dfrac{k(k+1)}{2}$
+- [Número tetraédrico](https://en.wikipedia.org/wiki/Tetrahedral_number) - $\operatorname{Tet}(k)=\dfrac{k(k+1)(k+2)}{6}$
 - [Búsqueda binaria](https://en.wikipedia.org/wiki/Binary_search_algorithm)
 - [Divide and conquer algorithm](https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm)
