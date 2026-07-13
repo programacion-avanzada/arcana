@@ -1,5 +1,5 @@
 ---
-title: "Building Boxes — Greedy"
+title: "Building Boxes - Greedy"
 tags: ['b/leetcode']
 problema: "LeetCode 1739 - Building Boxes"
 tecnica: "Greedy (iterativo y forma cerrada O(1))"
@@ -71,7 +71,7 @@ def minimumBoxes(n: int) -> int:
 
 | Iteración | Condición `while` (futuro $\le 10$) | nivel | cajas_piso | cajas_totales |
 | :-------- | :---------------------------------- | :---: | :--------: | :-----------: |
-| Inicial   | —                                   | 0     | 0          | 0             |
+| Inicial   | -                                   | 0     | 0          | 0             |
 | 1         | $0+0+0+1 = 1 \le 10$ (V)            | 1     | 1          | 1             |
 | 2         | $1+1+1+1 = 4 \le 10$ (V)            | 2     | 3          | 4             |
 | 3         | $4+3+2+1 = 10 \le 10$ (V)           | 3     | 6          | 10            |
@@ -270,7 +270,7 @@ def tetra(r):
     return r * (r + 1) * (r + 2) // 6
 
 def resolver_cubica(a, b, c, d):
-    # raíz real (positiva) de a·x³ + b·x² + c·x + d = 0  — deshace la fórmula de la pirámide
+    # raíz real (positiva) de a·x³ + b·x² + c·x + d = 0  - deshace la fórmula de la pirámide
     B, C, D = b/a, c/a, d/a
     p = (3*C - B**2) / 3
     q = (2*B**3 - 9*B*C + 27*D) / 27
@@ -348,8 +348,8 @@ $r=3$, $c_{\text{suelo}}=6$, $s=3$, y $p = \left\lceil \frac{-1+\sqrt{25}}{2} \r
 
 **Referencias.**
 
-- [Número triangular](https://en.wikipedia.org/wiki/Triangular_number) — $T(K)=\dfrac{K(K+1)}{2}$
-- [Número tetraédrico](https://en.wikipedia.org/wiki/Tetrahedral_number) — $\operatorname{Tet}(K)=\dfrac{K(K+1)(K+2)}{6}$
+- [Número triangular](https://en.wikipedia.org/wiki/Triangular_number) - $T(K)=\dfrac{K(K+1)}{2}$
+- [Número tetraédrico](https://en.wikipedia.org/wiki/Tetrahedral_number) - $\operatorname{Tet}(K)=\dfrac{K(K+1)(K+2)}{6}$
 - [Ecuación cuadrática - fórmula resolvente](https://en.wikipedia.org/wiki/Quadratic_formula)
 - [Ecuación cúbica - solución trigonométrica (Cardano)](https://en.wikipedia.org/wiki/Cubic_equation#Trigonometric_and_hyperbolic_solutions)
 
