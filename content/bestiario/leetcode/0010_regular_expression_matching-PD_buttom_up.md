@@ -3,9 +3,7 @@ title: Leetcode0010 - Regular Expression Matching - PD Buttom-Up
 tags:
   - b/leetcode
 ---
-
 ## Técnicas utilizadas
-
 Programación dinámica con enfoque **Bottom-Up (tabulación)**. Se construye una matriz donde cada posición representa si un sufijo de la cadena coincide con un sufijo del patrón. En lugar de resolver el problema recursivamente, se resuelven primero los subproblemas más pequeños y luego se utilizan esos resultados para construir la solución final. Cada combinación posible de índices (estados) se resuelve una única vez y se almacena en la matriz.
 
 ## Idea de la solución
@@ -76,7 +74,6 @@ def is_match(s: str, p: str) -> bool:
     return dp[0][0]
 ```
 ## Traza de ejemplo
-
 Buscamos la solución para
 - **String:** addbzc
 - **Patrón**: ad\*ba\*.c
@@ -96,7 +93,6 @@ En este enfoque no existen llamadas recursivas, sino que se completa la tabla de
 | **dp[0][0]** | "addbzc" | "ad\*ba\*.c" | `a` coincide con `a`. Como no hay `*`, el resultado depende de `dp[1][1]`, que es `True`. Por tanto, `dp[0][0] = True`. La cadena matchea con el patrón. |
 
 ### Matriz 'dp'
-
 | dp[i][j] | 0 (a) | 1 (d) | 2 (*) | 3 (b) | 4 (a) | 5 (*) | 6 (.) | 7 (c) | 8 ("") |
 |:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|
 | 0 (a) | **T** | F | F | F | F | F | F | F | F |
@@ -107,15 +103,15 @@ En este enfoque no existen llamadas recursivas, sino que se completa la tabla de
 | 5 (c) | F | F | F | F | F | F | F | **T** | F |
 | 6 ("") | F | F | F | F | F | F | F | F | **T** |
 
-Durante el llenado de la matriz, el algoritmo calcula todos los estados dp[i][j], no únicamente los que forman parte del camino exitoso.
+Durante el llenado de la matriz, el algoritmo calcula todos los estados `dp[i][j]`, no únicamente los que forman parte del camino exitoso.
 
 Algunos de los numerosos estados con valor False más representativos son:
 
 | Estado | Motivo |
 |:-|:-|
-| dp[2][4] | Compara "dbzc" con "a*.c"; `d` no coincide con `a` → False. |
-| dp[1][4] | Compara "ddbzc" con "a*.c"; tampoco hay coincidencia → False. |
-| dp[3][6] | Compara "bzc" con ".c"; el `.` coincide con `b`, pero luego "zc" no coincide con "c" → False. |
+| `dp[2][4]` | Compara "dbzc" con "a*.c"; `d` no coincide con `a` → False. |
+| `dp[1][4]` | Compara "ddbzc" con "a*.c"; tampoco hay coincidencia → False. |
+| `dp[3][6]` | Compara "bzc" con ".c"; el `.` coincide con `b`, pero luego "zc" no coincide con "c" → False. |
 
 ### Dependencias del camino exitoso
 ```mermaid
@@ -132,35 +128,31 @@ flowchart LR
 
 El algoritmo nunca vuelve atrás ni recalcula estados. Cada posición de la tabla se calcula exactamente una vez reutilizando los resultados previamente obtenidos. 
 
-
 ## Complejidad
-
 ### Temporal
-
-**O(m · n)** siendo:
-- **m = |s|**
-- **n = |p|**
+$O(m \times n)$ siendo:
+- $m = |s|$
+- $n = |p|$
 
 Cada celda de la matriz se calcula una única vez.
 
-La matriz posee **(m + 1)(n + 1)** posiciones y cada una realiza únicamente operaciones constantes (comparaciones y accesos a otras celdas ya calculadas).
+La matriz posee $(m + 1) \times (n + 1)$ posiciones y cada una realiza únicamente operaciones constantes (comparaciones y accesos a otras celdas ya calculadas).
 
 Finalmente, el tiempo total es proporcional al producto de ambas longitudes (la complejidad resulta lineal respecto de la cantidad de estados posibles del problema).
 
 ### Espacial
-
-**O(m · n)**
+$O(m \times n)$
 
 La memoria utilizada corresponde principalmente a la matriz `dp`, que almacena un valor booleano para cada combinación posible entre índices de la cadena y del patrón.
 
-Al tener **(m + 1) × (n + 1)** posiciones, el consumo de memoria también es proporcional al producto de las longitudes de la cadena y del patrón. 
+Al tener $(m + 1) \times (n + 1)$ posiciones, el consumo de memoria también es proporcional al producto de las longitudes de la cadena y del patrón. 
 
 No existe utilización del stack de llamadas recursivas, ya que toda la resolución es iterativa. 
 
 ## Cuándo usar esta técnica
 ### Favorable cuando
 - Existen muchos subproblemas superpuestos, ya que cada estado se calcula una única vez.
-- Las restricciones de longitud permiten almacenar una matriz de tamaño **(m+1)(n+1)**.
+- Las restricciones de longitud permiten almacenar una matriz de tamaño $(m+1) \times (n+1)$.
 - La longitud de la cadena y del patrón puede crecer, ya que el algoritmo mantiene una complejidad polinómica. 
 - Se busca garantizar un tiempo de ejecución polinómico o predecible independientemente del patrón recibido (sobre todo en casos conflictivos dados por patrones con muchos operadores `*`, donde Backtracking sin memorización suele recalcular los mismos estados repetidamente). 
 
@@ -174,8 +166,8 @@ No existe utilización del stack de llamadas recursivas, ya que toda la resoluci
 ### Solución backtracking
 En comparación con la solución mediante Backtracking puro, esta implementación evita recalcular subproblemas gracias al almacenamiento de los resultados en la matriz `dp`. Mientras que Backtracking puede explorar repetidamente las mismas combinaciones de índices, la programación dinámica calcula cada estado exactamente una vez.
 
-Esto produce una mejora significativa en la complejidad temporal, pasando de un peor caso exponencial **O(2^(m+n))** a una complejidad polinómica **O(m · n)**.
+Esto produce una mejora significativa en la complejidad temporal, pasando de un peor caso exponencial $O(2^{(m+n)})$ a una complejidad polinómica $O(m \times n)$.
 
-Como contrapartida, esta solución incrementa el consumo de memoria de **O(m+n)**, utilizado por la pila de llamadas de la recursión, a **O(m · n)** debido al almacenamiento completo de la tabla de programación dinámica.
+Como contrapartida, esta solución incrementa el consumo de memoria de $O(m+n)$, utilizado por la pila de llamadas de la recursión, a $O(m \times n)$ debido al almacenamiento completo de la tabla de programación dinámica.
 
 En consecuencia, la programación dinámica resulta considerablemente más eficiente para patrones con muchas ambigüedades generadas por el operador `*`, donde el Backtracking puede degradarse explorando una gran cantidad de caminos posibles antes de determinar el resultado. Por otro lado, Backtracking  puede resultar suficiente para instancias pequeñas o cuando la poda por cortocircuito evita recorrer la mayor parte del árbol de búsqueda.

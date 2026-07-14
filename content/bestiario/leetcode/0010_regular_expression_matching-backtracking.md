@@ -3,15 +3,12 @@ title: Leetcode0010 - Regular Expression Matching - Backtracking
 tags:
   - b/leetcode
 ---
-
 ## Técnicas utilizadas
-
-Búsqueda de coincidencias exhaustivas mediante backtracking. Vamos a realizar lookahead (echar un vistazo) desde el carácter actual al carácter siguiente para decidir si es necesario ramificar la ambigüedad que plantea el carácter \*
+Búsqueda de coincidencias exhaustivas mediante **backtracking**. Vamos a realizar lookahead (echar un vistazo) desde el carácter actual al carácter siguiente para decidir si es necesario ramificar la ambigüedad que plantea el carácter \*
 
 Si es necesario ramificar, primero se ramificará el caso donde sea necesario ignorar `x*`. Luego, si es necesario, se remificará el caso donde se necesita consumir al menos un carácter del tipo `x*`.
 
 ## Idea de la solución
-
 El problema pide verificar si una cadena `s` matchea un patrón `p` que puede contener `.` (cualquier carácter) y `*` (cero o más del carácter anterior).
 
 La recursión avanza consumiendo un carácter a la vez de `s` y `p`. El backtracking aparece en el operador `*`: no se sabe de antemano cuántas veces repetir, entonces se prueban ambas ramas y se retrocede si ninguna lleva a una solución:
@@ -85,28 +82,26 @@ Buscamos la solución para
 ## Complejidad
 
 ### Temporal
-
-**O(2^(m + n))** en el peor caso, siendo `m = |s|` y `n = |p|` . Esto sucede al ramificar dos veces cuando ocurre que el patrón contiene una letra junto con `*`.
+$O(2^{(m + n)})$ en el peor caso, siendo $m = |s| \land n = |p|$ . Esto sucede al ramificar dos veces cuando ocurre que el patrón contiene una letra junto con `*`.
 
 La primera ramificación ocurre ignorando `x*`. Esta, a su vez, realiza ambas ramificaciones si lo requiere.
 
 Una vez que la primera ramificación retorna, si retornó falso, se ejecutará la segunda rama. Es así como las llamadas crecen exponencialmente en base 2.
 
 ### Espacial
-
-**O(m + n)** es la complejidad espacial, lo que corresponde a la cantidad de llamadas que ocurren y se almacenan en el stack a lo sumo `n + m` veces. Esto se ve cuando el patrón coincide con la cadena, ya que si se consumió todo el patrón, la cadena tiene que estar completamente consumida para retornar verdadero.
+$O(m + n)$ es la complejidad espacial, lo que corresponde a la cantidad de llamadas que ocurren y se almacenan en el stack a lo sumo $n + m$ veces. Esto se ve cuando el patrón coincide con la cadena, ya que si se consumió todo el patrón, la cadena tiene que estar completamente consumida para retornar verdadero.
 
 ## Cuándo usar esta técnica
 ### Favorable cuando
-- La longitud de la cadena y el patrón es acotado. En este caso, el peor caso teórico es **O(2^40)** dado por las restricciones de longitud impuestos en el problema.
+- La longitud de la cadena y el patrón es acotado. En este caso, el peor caso teórico es $O(2^{40})$ dado por las restricciones de longitud impuestos en el problema.
 - La poda por cortocircuito es efectiva en el caso promedio. En el caso de los lenguajes como Python, el `or` y el `and` de son lazy, es decir, en cuanto conocen el resultado, no evalúan el resto.
 
 ### Limitaciones
 - Recalcula subproblemas repetidos cuando ocurren las ramificaciones.
 - No escala bien cuando los límites de longitud crecen.
 - Patrones que contienen muchas ambigüedades y terminan no matcheando al final degradan el algoritmo. 
-    - Ejemplo: `s = "aaaaaaaaaaaaaaaaaaaab"` y `p = "a*a*a*a*a*a*a*a*a*a*c"` Ninguna poda ayuda: debe explorar todo antes de concluir `False`.
+    - Ejemplo: `s = "aaaaaaaaaaaaaaaaaab"` y `p = "a*a*a*a*a*a*a*a*c"` Ninguna poda ayuda: debe explorar todo antes de concluir `False`.
 
 ## Comparaciones
 ### Solución programación dinámica
-En comparación a las soluciones planteadas con programación dinámica podemos concluir que al no usar memorización, esta solución queda muy degradada al ocurrir el cálculo constante de subproblemas superpuestos. Esto lo vemos en la complejidad temporal ya que en caso de programación dinámica se concluyó que tiene en el peor caso una complejidad temporal de **O(n*m)**.
+En comparación a las soluciones planteadas con programación dinámica podemos concluir que al no usar memorización, esta solución queda muy degradada al ocurrir el cálculo constante de subproblemas superpuestos. Esto lo vemos en la complejidad temporal ya que en caso de programación dinámica se concluyó que tiene en el peor caso una complejidad temporal de $O(n \times m)$.

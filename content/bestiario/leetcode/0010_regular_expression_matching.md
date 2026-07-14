@@ -5,7 +5,7 @@ tags:
 ---
 ## Nombre y enunciado
 
-Dado un string s y un patrón p, implementar coincidencia con expresiones regulares que soporte los caracteres especiales:
+Dado un string **s** y un patrón **p**, implementar coincidencia con expresiones regulares que soporte los caracteres especiales:
 
 - `.` → coincide con cualquier carácter individual
 - `*` → coincide con cero o más ocurrencias del elemento anterior
@@ -14,25 +14,22 @@ Dado un string s y un patrón p, implementar coincidencia con expresiones regula
 
 [Problema original](https://leetcode.com/problems/regular-expression-matching/)
 
----
 ## Intuición
-
 A primera vista parece un problema de parsing, pero la dificultad real está en el `*`: al encontrarlo, no sabemos de antemano cuántas veces se repite el carácter previo. Hay que explorar múltiples posibilidades (cero repeticiones, una, dos, …), lo que genera una estructura de subproblemas superpuestos. Eso lo convierte en un candidato natural para la programación dinámica.
 
 El caso `.*` es especialmente traicionero: puede absorber cualquier cantidad de cualquier carácter, incluyendo ninguno.
 
 ## Definición formal
-
 **Entrada:** 
 - `s` — string de texto, compuesto solo de letras minúsculas (a–z).
 - `p` — patrón, compuesto de letras minúsculas, `.` y `*`.
 Se garantiza que `*` nunca aparece al inicio y nunca hay dos `*` consecutivos.
 
-**Salida:**`true` si `p` cubre `s` en su totalidad. Caso contrario, `false`.
+**Salida:** `true` si `p` cubre `s` en su totalidad. Caso contrario, `false`.
 
 **Restricciones:** 
-- 1 ≤ |s| ≤ 20
-- 1 ≤ |p| ≤ 20
+- $1 \le |s| \le 20$
+- $1 \le |p| \le 20$
 
 ## Ejemplo concreto
 Tomemos como cadena `s` = "aab" y patrón como `p`= "c\*a\*b".
@@ -40,8 +37,8 @@ Tomemos como cadena `s` = "aab" y patrón como `p`= "c\*a\*b".
 Resolución paso a paso
 | Segmento del patrón | Acción | Cadena restante |
 |:-------------:|:-------------:|:-------------:|
-| c\* | c repetido 0 veces → se decarta. | "aab" |
-| a\* | a reétido 2 veces → consume aa | "bb" |
+| c\* | c repetido 0 veces → se decarta | "aab" |
+| a\* | a repetido 2 veces → consume aa | "b" |
 | b |coincide con b → consume b | "" |
 
 **Resultado:** `true`.
@@ -52,7 +49,24 @@ Resolución paso a paso
 
 **Resultado:** `false`.
 
-En este caso el patrón parece cubrir el string pero falla al intentar hacer coincidir la `p*` con la doble `p`, dejando como caracter sobrante a la `i`.
+Para demostrar el resultado haremos uso de índices para guiarnos:
+- Índice s: `i_s = 0`
+- Índice p: `j_p = 0`
+
+*Se inicializan en 0 para estar al comienzo de la cadena y del patrón.*
+
+| i_s | j_p | s[i_s] | p[j_p] | Acción | Cadena restante |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 0 | 0 | m | m | coincide con m → consume m | ississippi |
+| 1 | 1 | i | i | coincide con i → consume i | ssissippi |
+| 2 | 2 | s | s* | s repetido 2 veces → consume ss | issippi |
+| 4 | 4 | i | i | coincide con i → consume i | ssippi |
+| 5 | 5 | s | s* | s repetido 2 veces → consume ss | ippi |
+| 7 | 7 | i | p* | p repetido 0 veces → se decarta | ippi |
+| 7 | 9 | i | . | coincide con i → se consume i | ppi |
+| 8 | 10 | p | "" | fin de patrón sin fin de cadena → se retorna falso | ppi |
+
+En este caso el patrón parece cubrir la cadena pero falla debido a que la `i` en la **posición 7** de la cadena provoca que la `p*` de la **posición 7** del patrón se ignore. Por lo tanto, solo queda `.` dentro del patrón y este se consume ahora sí con la `i`. Por último, al llegar al fin del patrón pero no la cadena, se retorna falso debido a que el patrón no abarco por completo la cadena.
 
 ## Por dónde empezar
 Comencemos con lo más intuitivo, _**¿qué ocurre si se recorren**_ `s` _**y**_ `p` _**en paralelo?**_
