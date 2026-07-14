@@ -147,7 +147,7 @@ La memoria utilizada corresponde principalmente a la matriz `dp`, que almacena u
 
 Al tener $(m + 1) \times (n + 1)$ posiciones, el consumo de memoria también es proporcional al producto de las longitudes de la cadena y del patrón. 
 
-No existe utilización del stack de llamadas recursivas, ya que toda la resolución es iterativa. 
+No existe utilización del [stack](../../grimorio/data-structures/stack.md) de llamadas recursivas, ya que toda la resolución es iterativa. 
 
 ## Cuándo usar esta técnica
 ### Favorable cuando
@@ -168,6 +168,6 @@ En comparación con la solución mediante Backtracking puro, esta implementació
 
 Esto produce una mejora significativa en la complejidad temporal, pasando de un peor caso exponencial $O(2^{(m+n)})$ a una complejidad polinómica $O(m \times n)$.
 
-Como contrapartida, esta solución incrementa el consumo de memoria de $O(m+n)$, utilizado por la pila de llamadas de la recursión, a $O(m \times n)$ debido al almacenamiento completo de la tabla de programación dinámica.
+Como contrapartida, esta solución incrementa el consumo de memoria de $O(m+n)$, utilizado por la [pila](../../grimorio/data-structures/stack.md) de llamadas de la recursión, a $O(m \times n)$ debido al almacenamiento completo de la tabla de programación dinámica.
 
 En consecuencia, la programación dinámica resulta considerablemente más eficiente para patrones con muchas ambigüedades generadas por el operador `*`, donde el Backtracking puede degradarse explorando una gran cantidad de caminos posibles antes de determinar el resultado. Por otro lado, Backtracking  puede resultar suficiente para instancias pequeñas o cuando la poda por cortocircuito evita recorrer la mayor parte del árbol de búsqueda.

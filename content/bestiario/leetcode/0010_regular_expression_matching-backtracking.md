@@ -89,7 +89,7 @@ La primera ramificación ocurre ignorando `x*`. Esta, a su vez, realiza ambas ra
 Una vez que la primera ramificación retorna, si retornó falso, se ejecutará la segunda rama. Es así como las llamadas crecen exponencialmente en base 2.
 
 ### Espacial
-$O(m + n)$ es la complejidad espacial, lo que corresponde a la cantidad de llamadas que ocurren y se almacenan en el stack a lo sumo $n + m$ veces. Esto se ve cuando el patrón coincide con la cadena, ya que si se consumió todo el patrón, la cadena tiene que estar completamente consumida para retornar verdadero.
+$O(m + n)$ es la complejidad espacial, lo que corresponde a la cantidad de llamadas que ocurren y se almacenan en el [stack](../../grimorio/data-structures/stack.md) a lo sumo $n + m$ veces. Esto se ve cuando el patrón coincide con la cadena, ya que si se consumió todo el patrón, la cadena tiene que estar completamente consumida para retornar verdadero.
 
 ## Cuándo usar esta técnica
 ### Favorable cuando
