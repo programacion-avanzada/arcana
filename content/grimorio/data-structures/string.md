@@ -130,11 +130,12 @@ Aunque lo más común es un array, también existen otras implementaciones:
 | --------------- | ---------------------------------------- | -------------------- |
 | Access          | O(1)                                     | O(1)                 |
 | Insert / Delete | O(n)                                     | O(n)                 |
-| Append          | O(n) inmutable / O(1) amortizado mutable | O(n)                 |
 | Concat          | O(n + m)                                 | O(n + m)             |
 | Find            | O(n*m) naive / O(n+m) KMP                | O(1)                 |
-| Compare         | O(n)                                     | O(1)                 |
 | Length          | O(1) ASCII / O(n) UTF-8 sin índice       | O(1)                 |
+| Compare         | O(n)                                     | O(1)                 |
+| Transform       | O(n)                                     | O(1)                 |
+| Append          | O(n) inmutable / O(1) amortizado mutable | O(n)                 |
 | Slice           | O(k)                                     | O(k)                 |
 
 ### Detalles operativos
