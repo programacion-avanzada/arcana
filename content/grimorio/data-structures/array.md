@@ -181,6 +181,12 @@ El array es base para matrices, listas dinámicas, heaps binarios (representados
 
 En arquitecturas modernas, el array se beneficia enormemente del caché de la CPU debido a la localidad de los datos; al estar contiguos, el procesador puede precargar bloques enteros, acelerando el procesamiento secuencial. 
 
+**Persistencia**: no es una buena base para estructuras persistentes. Modificar una versión sin destruir la anterior implica copiar el array completo ($O(n)$), ya que no permite compartir eficientemente partes de la estructura entre versiones.
+
+**Concurrencia**: escribir el mismo elemento desde varios hilos sin sincronización produce una condición de carrera que puede corromper el dato. Incluso escribir elementos distintos pero vecinos tiene costo: por la misma localidad de caché que acelera el acceso secuencial, los hilos terminan compitiendo por la misma línea de caché aunque no compartan ningún dato. Esto se conoce como false sharing y degrada el rendimiento aunque el resultado siga siendo correcto.
+
+**Aleatoriedad**: el acceso en $O(1)$ hace del array la estructura ideal cuando un algoritmo necesita acceder o intercambiar posiciones elegidas al azar.
+
 ## 6. Referencias y recursos
 
 * Cormen, T. H., et al. (2022). Introduction to Algorithms (4th ed. Chapter 10: Elementary Data Structures). MIT Press. 
