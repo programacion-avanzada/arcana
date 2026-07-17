@@ -291,4 +291,4 @@ Su inmutabilidad los convierte en claves ideales para hash tables: el hash se ca
 - [FreeCodeCamp - Strings](https://www.freecodecamp.org)
 - [Harper College - Data Structures](http://www.harpercollege.edu/bus-ss/cis/166/mmckenzi/contents.htm)
 - [Better String Library](http://bstring.sourceforge.net)
-- [Princeton CS217 - String Assignment](http://www.cs.princeton.edu/courses/archive/spring02/cs217/asgts/ish/ish.html)
+- [Princeton CS217 - String Assignment](http://www.cs.princeton.edu/courses/archive/spring02/cs217/asgts/mystring/mystring.html)
