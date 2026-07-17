@@ -156,6 +156,6 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
 - Leetcode Discussion: *Explain with Parentheses analog*
 - *Algoritmos Greedy y su optimalidad en problemas de ordenamiento*. Corvalán, A.
 - [Secuencias de Parentesis Balanceados y Caminos de Dyck](https://en.wikipedia.org/wiki/Dyck_path)
-- [[string|Operaciones elementales sobre Cadenas (Strings)]]
-- [[dynamic array|Uso del Arreglo Dinámico (Dynamic Array) en Python]]
-- [[stack|Uso de la Pila (Stack) en procesos recursivos]]
+- [[string#2. Operaciones y complejidad|Operaciones elementales sobre Cadenas (Strings)]]
+- [[dynamic array#2. Operaciones y complejidad|Uso del Arreglo Dinámico (Dynamic Array) en Python]]
+- [[stack#Pila implícita en recursión|Uso de la Pila (Stack) en procesos recursivos]]

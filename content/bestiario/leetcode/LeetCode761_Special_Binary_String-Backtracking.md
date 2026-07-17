@@ -176,6 +176,6 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
 
 - *Introduction to Algorithms* (Cormen et al.) - Sección de Backtracking y Búsqueda en Espacios de Estados.
 - *Números de Catalan y sus aplicaciones combinatorias*.
-- [[set|Definición y propiedades del Conjunto (Set)]]
-- [[string|Operaciones elementales sobre Cadenas (Strings)]]
-- [[stack|Uso de la Pila (Stack) en procesos recursivos]]
+- [[set#Definición y propiedades|Definición y propiedades del Conjunto (Set)]]
+- [[string#2. Operaciones y complejidad|Operaciones elementales sobre Cadenas (Strings)]]
+- [[stack#Pila implícita en recursión|Uso de la Pila (Stack) en procesos recursivos]]
