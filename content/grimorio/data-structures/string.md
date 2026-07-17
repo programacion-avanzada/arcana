@@ -143,7 +143,7 @@ Aunque lo más común es un array, también existen otras implementaciones:
 
 - **Encoding (UTF-8 vs ASCII):** En ASCII el acceso es siempre O(1). En UTF-8, debido a que los caracteres tienen ancho variable (1 a 4 bytes), el acceso y el cálculo de longitud pueden degradarse a O(n) si el lenguaje no utiliza índices adicionales.
 
-- **Data Locality (Localidad de datos):** Gracias a la contigüidad, los strings aprovechan la memoria caché de la CPU. Esto hace que, en la práctica, un recorrido O(n) sea extremadamente más veloz que en estructuras no contiguas como las listas enlazadas.
+- **Data Locality (Localidad de datos):** Gracias a la contigüidad, los strings aprovechan la memoria caché de la CPU. Esto hace que, en la práctica, un recorrido O(n) sea mucho más veloz que en estructuras no contiguas como las listas enlazadas.
 
 - **Inmutabilidad y memoria:** Cualquier modificación implica una copia O(n); concatenar en un bucle acumula ese costo hasta O(n²). Los buffers dinámicos lo evitan, aunque al reasignar pueden duplicar temporalmente el uso de memoria.
 
@@ -209,7 +209,7 @@ for _ in range(5):
 print(buffer.getvalue())
 ```
 
-Se usa un buffer para acumular caracteres sin crear nuevos strings en cada paso, reduciendo el costo a O(n)
+Se usa un buffer para acumular caracteres sin crear nuevos strings en cada paso, reduciendo el costo a O(n).
 
 ---
 
@@ -280,7 +280,7 @@ Su inmutabilidad los convierte en claves ideales para hash tables: el hash se ca
 
 ### Notas avanzadas
 
-- **Persistencia y Concurrencia:** la inmutabilidad del string estándar lo hace inherentemente seguro para hilos (thread-safe), permitiendo que múltiples procesos accedan a la misma instancia sin riesgo de modificación o corrupción de datos.
+- **Persistencia y Concurrencia:** la inmutabilidad del string estándar lo hace inherentemente seguro para hilos (thread-safe), permitiendo que múltiples hilos accedan a la misma instancia sin riesgo de modificación o corrupción de datos.
 
 - **Deduplicación de memoria (String Interning):** entornos como la JVM o .NET mantienen un pool de strings, donde valores iguales pueden compartir la misma referencia en memoria, optimizando el uso de recursos.
 
