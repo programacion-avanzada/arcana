@@ -128,7 +128,7 @@ Aunque lo más común es un array, también existen otras implementaciones:
 
 | Operación       | Tiempo (peor caso)                       | Complejidad Espacial |
 | --------------- | ---------------------------------------- | -------------------- |
-| Access          | O(1)                                     | O(1)                 |
+| Access          | O(1) ASCII / O(n) UTF-8 sin índice       | O(1)                 |
 | Insert / Delete | O(n)                                     | O(n)                 |
 | Concat          | O(n + m)                                 | O(n + m)             |
 | Find            | O(n*m) naive / O(n+m) KMP                | O(1)                 |
