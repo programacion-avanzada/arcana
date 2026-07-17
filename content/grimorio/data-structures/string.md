@@ -7,6 +7,7 @@ alias:
   - cadena
   - cadena de caracteres
 ---
+
 ## 1. Qué es y cómo funciona
 
 ### Intuición
@@ -98,16 +99,16 @@ Aunque lo más común es un array, también existen otras implementaciones:
 ### Operaciones principales
 
 1. **Access / Indexing (Acceso)**
-   **Función**: Obtiene el carácter en la posición i mediante acceso directo por índice.
+   **Función:** Obtiene el carácter en la posición i mediante acceso directo por índice.
 
 2. **Insert / Delete (Inserción y Borrado)**
-   **Función**: Agrega o elimina un carácter en cualquier posición, requiriendo desplazar elementos.
+   **Función:** Agrega o elimina un carácter en cualquier posición, requiriendo desplazar elementos.
 
 3. **Concatenation (Concatenación)**
-   **Función**: Une dos strings, generando un nuevo bloque de memoria con ambos contenidos.
+   **Función:** Une dos strings, generando un nuevo bloque de memoria con ambos contenidos.
 
 4. **Find / Search (Búsqueda)**
-   **Función**: Localiza una subcadena dentro de un texto; puede optimizarse con algoritmos como KMP.
+   **Función:** Localiza una subcadena dentro de un texto; puede optimizarse con algoritmos como KMP.
 
 5. **Length / Size (Tamaño)**
    **Función:** Devuelve la cantidad de caracteres almacenados.
@@ -116,7 +117,7 @@ Aunque lo más común es un array, también existen otras implementaciones:
    **Función:** Compara dos strings carácter a carácter.
 
 7. **Transformation (ToUpper / ToLower)**
-   **Función**: Convierte los caracteres recorriendo la cadena.
+   **Función:** Convierte los caracteres recorriendo la cadena.
 
 8. **Append (Añadir al final)**
    **Función:** Agrega contenido al final; en strings inmutables implica copia, en buffers evita este costo.
@@ -131,7 +132,7 @@ Aunque lo más común es un array, también existen otras implementaciones:
 | Access          | O(1) ASCII / O(n) UTF-8 sin índice       | O(1)                 |
 | Insert / Delete | O(n)                                     | O(n)                 |
 | Concat          | O(n + m)                                 | O(n + m)             |
-| Find            | O(n*m) naive / O(n+m) KMP                | O(1)                 |
+| Find            | O(n\*m) naive / O(n+m) KMP               | O(1)                 |
 | Length          | O(1) ASCII / O(n) UTF-8 sin índice       | O(1)                 |
 | Compare         | O(n)                                     | O(1)                 |
 | Transform       | O(n)                                     | O(1)                 |
