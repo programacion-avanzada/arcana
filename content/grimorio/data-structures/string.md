@@ -253,7 +253,7 @@ Alternativas: buffers mutables (StringBuilder), arrays de caracteres o estructur
 
 ### Ventajas / desventajas
 
-**Ventajas / desventajas:** El string estándar es la opción más simple y segura: acceso O(1), thread-safe por inmutabilidad y compatible universalmente. Su principal costo es que cualquier modificación implica una copia O(n), lo que lo hace inferior a StringBuilder para escritura intensiva, a los arrays de caracteres para control de bajo nivel, y a los Ropes para textos muy grandes.
+El string estándar es la opción más simple y segura: acceso O(1), thread-safe por inmutabilidad y compatible universalmente. Su principal costo es que cualquier modificación implica una copia O(n), lo que lo hace inferior a StringBuilder para escritura intensiva, a los arrays de caracteres para control de bajo nivel, y a los Ropes para textos muy grandes.
 
 ### Señales de reconocimiento
 
