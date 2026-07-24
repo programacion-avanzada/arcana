@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herramientas — Programación Avanzada</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2430; --muted:#6b7280; --line:#e5e7eb;
+    --soft-bg:#f3f4f6; --input-bg:#ffffff; --field-border:#e5e7eb;
+    --danger:#b91c1c; --chg-bg:#e0e7ff; --chg-bg-strong:#c7d2fe;
+    --accent:#4f46e5; --accent-soft:#eef2ff; --accent-hover:#4338ca; --ghost-hover:#e0e7ff;
+    --divide:#2563eb; --divide-soft:#dbeafe;
+    --merge:#d97706; --merge-soft:#fef3c7;
+    --left:#2563eb; --left-soft:#dbeafe;
+    --right:#7c3aed; --right-soft:#ede9fe;
+    --done:#059669; --done-soft:#d1fae5;
+    --base:#6b7280; --base-soft:#f3f4f6;
+    --pz-dot:#e5e7eb; --pz-canvas:#fafbff;
+    --st-exp:#eff6ff; --st-pod:#fef2f2; --st-sol:#ecfdf5;
+    --shadow:rgba(0,0,0,.03); --shadow-node:rgba(0,0,0,.08);
+    color-scheme:light;
+  }
+  [data-theme="dark"]{
+    --bg:#0f1420; --card:#171d2b; --ink:#e6e9f0; --muted:#98a2b3; --line:#2a3242;
+    --soft-bg:#1e2634; --input-bg:#1e2634; --field-border:#38414f;
+    --danger:#f87171; --chg-bg:#2b3550; --chg-bg-strong:#3a4770;
+    --accent:#818cf8; --accent-soft:#232a45; --accent-hover:#6d78e0; --ghost-hover:#2b3350;
+    --divide:#60a5fa; --divide-soft:#1c2f4d;
+    --merge:#fbbf24; --merge-soft:#3a2f16;
+    --left:#60a5fa; --left-soft:#1c2f4d;
+    --right:#a78bfa; --right-soft:#2c2545;
+    --done:#34d399; --done-soft:#123529;
+    --base:#98a2b3; --base-soft:#1e2634;
+    --pz-dot:#2a3242; --pz-canvas:#131826;
+    --st-exp:#182338; --st-pod:#331c1c; --st-sol:#123024;
+    --shadow:rgba(0,0,0,.4); --shadow-node:rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1700px;margin:0 auto;padding:20px 24px 60px}
+  h1{font-size:1.45rem;margin:0 0 2px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .theme-btn{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 14px;font-size:.85rem;font-weight:600;white-space:nowrap}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .signature{color:var(--muted);font-size:.85rem;margin-top:18px}
+  .signature a{color:var(--accent);text-decoration:none}
+  .signature a:hover{text-decoration:underline}
+  h2{font-size:1.2rem;margin:0 0 2px}
+  .badge{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.76rem;padding:3px 10px;border-radius:999px;margin-left:8px;vertical-align:middle}
+  .sub{color:var(--muted);font-size:.92rem;margin:0 0 16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 1px 2px var(--shadow)}
+  label{font-weight:600;font-size:.85rem;display:block;margin-bottom:6px}
+  input[type=text],select{width:100%;padding:10px 12px;border:1px solid var(--field-border);border-radius:9px;font-size:1rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--input-bg);color:var(--ink)}
+  select{font-family:inherit}
+  textarea{width:100%;padding:10px 12px;border:1px solid var(--field-border);border-radius:9px;font-size:.95rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--input-bg);color:var(--ink);resize:vertical;line-height:1.5;white-space:pre}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  /* grafo (izq, ancho fijo) + paneles/tabla (der, ocupan el resto; scrollean si no entran) */
+  .grid-main{display:flex;gap:20px;align-items:flex-start}
+  .col-graph{flex:0 0 auto;width:400px;max-width:100%}
+  .col-table{flex:1 1 0;min-width:0}
+  .col-graph svg{width:100%;max-width:400px;display:block}
+  @media(max-width:860px){.grid-main{flex-wrap:wrap}.col-graph{width:100%}}
+  button{cursor:pointer;border:none;border-radius:9px;padding:10px 16px;font-size:.92rem;font-weight:600;font-family:inherit}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:var(--accent-hover)}
+  .btn-ghost{background:var(--accent-soft);color:var(--accent)}
+  .btn-ghost:hover{background:var(--ghost-hover)}
+  .btn-nav{background:var(--card);border:1px solid var(--line);color:var(--ink);min-width:118px}
+  .btn-nav:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .err{color:var(--danger);font-size:.85rem;margin-top:8px;min-height:1em}
+  .hidden{display:none}
+
+  /* tabs */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .tab{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-weight:600;font-size:.9rem;color:var(--muted)}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* array row */
+  .arr{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+  .cell{min-width:42px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:9px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:1rem;position:relative;transition:all .15s}
+  .cell.active{outline:3px solid var(--divide);outline-offset:1px}
+  .cell.mergerange{outline:3px solid var(--merge);outline-offset:1px}
+  .cell.done{background:var(--done-soft);border-color:var(--done)}
+  .idx{position:absolute;top:-16px;left:0;right:0;text-align:center;font-size:.65rem;color:var(--muted);font-weight:500}
+
+  .stepbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .stepcount{font-weight:700;font-size:.95rem}
+  .phasetag{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.03em}
+  .tag-divide{background:var(--divide-soft);color:var(--divide)}
+  .tag-merge{background:var(--merge-soft);color:var(--merge)}
+  .tag-base{background:var(--base-soft);color:var(--base)}
+  .tag-done{background:var(--done-soft);color:var(--done)}
+  .tag-order{background:var(--accent-soft);color:var(--accent)}
+
+  .explain{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:.95rem;margin-top:14px}
+
+  /* merge detail */
+  .merge-detail{display:flex;gap:24px;flex-wrap:wrap;margin-top:14px}
+  .mcol{flex:1;min-width:190px}
+  .mcol h4{margin:0 0 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}
+  .h-left{color:var(--left)} .h-right{color:var(--right)} .h-out{color:var(--done)}
+  .mcell{min-width:38px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;position:relative}
+  .mcell.l{background:var(--left-soft);border:1px solid var(--left)}
+  .mcell.r{background:var(--right-soft);border:1px solid var(--right)}
+  .mcell.o{background:var(--done-soft);border:1px solid var(--done)}
+  .mcell.used{opacity:.3}
+  .ptr{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:.7rem;font-weight:700}
+  .ptr.l{color:var(--left)} .ptr.r{color:var(--right)}
+
+  svg{width:100%;height:auto;display:block}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:8px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid var(--line)}
+  .dot{width:15px;height:15px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+
+  .orderline{font-family:ui-monospace,monospace;font-size:.92rem;background:var(--soft-bg);border-radius:8px;padding:10px 12px;margin-top:6px;line-height:2}
+  .ochip{display:inline-block;padding:2px 8px;border-radius:6px;margin:2px;border:1px solid var(--line);background:var(--card)}
+  .ochip.cur{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .ochip.done{background:var(--done-soft);border-color:var(--done)}
+
+  details{margin-top:6px}
+  summary{cursor:pointer;font-weight:600;color:var(--accent)}
+  table.mt{border-collapse:collapse;width:100%;margin-top:10px;font-size:.9rem}
+  table.mt th,table.mt td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  table.mt th{background:var(--accent-soft);color:var(--accent)}
+  code{background:var(--soft-bg);padding:1px 5px;border-radius:5px;font-size:.9em}
+  .small{font-size:.82rem;color:var(--muted)}
+  .pill{display:inline-block;background:var(--done-soft);color:var(--done);font-weight:700;padding:4px 12px;border-radius:999px;font-size:.9rem}
+  /* trace table */
+  table.trace{border-collapse:collapse;width:auto;font-size:.9rem;margin-top:4px}
+  table.trace th,table.trace td{border:1px solid var(--line);padding:5px 7px;text-align:center}
+  table.trace th{background:var(--accent-soft);color:var(--accent);position:sticky;top:0}
+  table.trace tr.cur td{background:var(--merge-soft);font-weight:700}
+  table.trace td.yes{color:var(--done);font-weight:700}
+  table.trace td.no{color:var(--danger);font-weight:700}
+  table.trace td.chg{background:var(--chg-bg);font-weight:700}
+  table.trace tr.cur td.chg{background:var(--chg-bg-strong)}
+  .tracewrap{max-height:460px;overflow:auto;border-radius:8px;width:fit-content;max-width:100%}
+  .comps{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .comp{background:var(--soft-bg);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-family:ui-monospace,monospace;font-size:.88rem}
+  .comp.hot{background:var(--done-soft);border-color:var(--done)}
+  .pq{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .pqe{background:var(--divide-soft);border:1px solid var(--divide);color:var(--divide);border-radius:7px;padding:3px 8px;font-family:ui-monospace,monospace;font-size:.85rem}
+  .pqe.min{background:var(--merge-soft);border-color:var(--merge);color:var(--merge);font-weight:700}
+
+  /* ===== grafos arrastrables (mini-pizarra) ===== */
+  svg.graph-drag{cursor:grab;touch-action:none}
+  svg.graph-drag.dragging{cursor:grabbing}
+  svg.graph-drag circle{cursor:grab}
+  .col-graph .hint-drag{font-size:11px;color:#94a3b8;margin-top:4px}
+
+  /* ===== pizarra (árbol/grafo manual) ===== */
+  #pz-wrap{display:flex;flex-direction:column;gap:10px}
+  #pz-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  #pz-canvas{position:relative;width:100%;height:70vh;min-height:480px;border:1px solid var(--line);border-radius:12px;overflow:auto;
+    background:linear-gradient(var(--pz-canvas) 0 0) padding-box, radial-gradient(circle,var(--pz-dot) 1px,transparent 1px);
+    background-size:auto,22px 22px}
+  #pz-canvas.connect{cursor:crosshair}
+  #pz-edges{position:absolute;top:0;left:0;pointer-events:none;overflow:visible}
+  .pz-node{position:absolute;min-width:120px;max-width:250px;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:10px;box-shadow:0 2px 6px var(--shadow-node);user-select:none;z-index:2}
+  .pz-node.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .pz-node.connsrc{border-color:var(--merge);box-shadow:0 0 0 3px var(--merge-soft)}
+  .pz-node.st-exp{border-color:var(--divide);background:var(--st-exp)}
+  .pz-node.st-pod{border-color:var(--danger);background:var(--st-pod)}
+  .pz-node.st-sol{border-color:var(--done);background:var(--st-sol)}
+  .pz-head{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 8px;cursor:move;border-bottom:1px solid var(--line);border-radius:8px 8px 0 0;font-size:.72rem;font-weight:700;color:var(--muted)}
+  .pz-head .pz-id{font-family:ui-monospace,monospace}
+  .pz-mini{cursor:pointer;border:none;background:transparent;font-size:.85rem;line-height:1;padding:1px 5px;color:var(--muted);font-weight:700;border-radius:5px}
+  .pz-mini:hover{background:var(--accent-soft);color:var(--accent)}
+  .pz-body{width:100%;border:none;outline:none;resize:none;padding:7px 9px;font-size:.9rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:transparent;line-height:1.35;border-radius:0 0 8px 8px;color:var(--ink);white-space:pre-wrap;overflow:hidden}
+  .pz-hint{font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <h1>Herramientas — Programación Avanzada</h1>
+    <button id="theme-btn" class="theme-btn" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema claro/oscuro">🌙 Oscuro</button>
+  </div>
+  <p class="sub">Paso a paso navegable para validar ejercicios. Cargá los datos, apretá Resolver y recorré cada decisión con ◀ ▶ (también con las flechas del teclado).</p>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="cl" onclick="showTab(&#39;cl&#39;)">Coloreo</button>
+    <button class="tab" data-tab="kr" onclick="showTab(&#39;kr&#39;)">MST · Kruskal</button>
+    <button class="tab" data-tab="pr" onclick="showTab(&#39;pr&#39;)">MST · Prim</button>
+    <button class="tab" data-tab="dk" onclick="showTab(&#39;dk&#39;)">Caminos · Dijkstra</button>
+    <button class="tab" data-tab="hp" onclick="showTab(&#39;hp&#39;)">Montículo · Heap</button>
+    <button class="tab" data-tab="tr" onclick="showTab(&#39;tr&#39;)">Recorridos · DFS/BFS</button>
+    <button class="tab" data-tab="pz" onclick="showTab(&#39;pz&#39;)">Pizarra · Árbol/Grafo</button>
+  </div>
+
+<!-- ================= COLOREO ================= -->
+<section id="tab-cl" class="">
+  <div class="card">
+    <h2>Coloreo de Grafos <span class="badge">Greedy · NP-completo</span></h2>
+    <p class="small" style="margin:6px 0 14px">Asignar a cada vértice el menor color no usado por sus vecinos. Los tres algoritmos son el mismo greedy; cambia el <b>orden</b> de los vértices.</p>
+    <label for="cl-fmt">Formato de entrada</label>
+    <select id="cl-fmt" onchange="gfmt(&#39;cl&#39;)">
+      <option value="lista">Lista de aristas</option>
+      <option value="matriz">Matriz de adyacencia</option>
+    </select>
+    <div id="cl-lista" style="margin-top:12px" class="">
+      <div class="grid2">
+        <div>
+          <label for="cl-edges">Aristas (pares <code>X-Y</code> separados por coma)</label>
+          <input id="cl-edges" type="text" value="B-A, B-E, D-E, D-H, E-I, A-F, F-C, F-G, F-I, F-J, C-G, G-J, I-J, I-H" autocomplete="off">
+        </div>
+        <div>
+          <label for="cl-verts">Vértices y su orden (opcional, para Secuencial)</label>
+          <input id="cl-verts" type="text" value="A, B, C, D, E, F, G, H, I, J" autocomplete="off">
+        </div>
+      </div>
+    </div>
+    <div id="cl-matriz" class="hidden" style="margin-top:12px">
+      <label for="cl-matrix">Matriz de adyacencia (una fila por línea · 0 = sin arista · ≠0 = arista)</label>
+      <textarea id="cl-matrix" rows="5">0 1 1 0
+1 0 1 1
+1 1 0 1
+0 1 1 0</textarea>
+      <label for="cl-labels" style="margin-top:8px">Etiquetas (opcional, coma; por defecto a, b, c, …). En matriz también definen el orden de proceso.</label>
+      <input id="cl-labels" type="text" value="" autocomplete="off">
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div>
+        <label for="cl-algo">Algoritmo (orden de proceso)</label>
+        <select id="cl-algo">
+          <option value="wp">Welsh-Powell — grado decreciente (recomendado)</option>
+          <option value="seq">Secuencial — orden dado</option>
+          <option value="matula">Matula — grado creciente</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn-primary" onclick="CL.resolver()">▶ Resolver</button>
+    </div>
+    <div class="err" id="cl-err"></div>
+  </div>
+
+  <div id="cl-viz" class="card hidden">
+    <div class="stepbar">
+      <div><span class="phasetag tag-done" id="cl-phasetag">Resuelto</span>
+        <span class="stepcount" id="cl-stepcount" style="margin-left:8px">Paso 12 / 12</span></div>
+      <div class="row" style="margin:0">
+        <button class="btn-nav" id="cl-prev" onclick="CL.paso(-1)">◀ Anterior</button>
+        <button class="btn-nav" id="cl-auto" onclick="CL.toggleAuto()">▶ Auto</button>
+        <button class="btn-nav" id="cl-next" onclick="CL.paso(1)" disabled="">Siguiente ▶</button>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <label>Orden de proceso</label>
+      <div class="orderline" id="cl-order"><span class="ochip done">F<span style="opacity:.6;font-size:.8em"> g5</span></span><span class="ochip done">I<span style="opacity:.6;font-size:.8em"> g4</span></span><span class="ochip done">E<span style="opacity:.6;font-size:.8em"> g3</span></span><span class="ochip done">G<span style="opacity:.6;font-size:.8em"> g3</span></span><span class="ochip done">J<span style="opacity:.6;font-size:.8em"> g3</span></span><span class="ochip done">A<span style="opacity:.6;font-size:.8em"> g2</span></span><span class="ochip done">B<span style="opacity:.6;font-size:.8em"> g2</span></span><span class="ochip done">C<span style="opacity:.6;font-size:.8em"> g2</span></span><span class="ochip done">D<span style="opacity:.6;font-size:.8em"> g2</span></span><span class="ochip done">H<span style="opacity:.6;font-size:.8em"> g2</span></span></div>
+    </div>
+
+    <div class="grid-main" style="margin-top:8px">
+      <div class="col-graph">
+        <label>Grafo</label>
+        <svg id="cl-graph" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet"><line x1="324.04564036679574" y1="85.55728090000841" x2="230" y2="55" stroke="#cbd5e1" stroke-width="2"></line><line x1="324.04564036679574" y1="85.55728090000841" x2="324.04564036679574" y2="344.44271909999156" stroke="#cbd5e1" stroke-width="2"></line><line x1="382.1690426072246" y1="264.44271909999156" x2="324.04564036679574" y2="344.44271909999156" stroke="#cbd5e1" stroke-width="2"></line><line x1="382.1690426072246" y1="264.44271909999156" x2="77.83095739277545" y2="264.4427190999916" stroke="#cbd5e1" stroke-width="2"></line><line x1="324.04564036679574" y1="344.44271909999156" x2="77.83095739277542" y2="165.55728090000844" stroke="#cbd5e1" stroke-width="2"></line><line x1="230" y1="55" x2="230" y2="375" stroke="#cbd5e1" stroke-width="2"></line><line x1="230" y1="375" x2="382.1690426072246" y2="165.5572809000084" stroke="#cbd5e1" stroke-width="2"></line><line x1="230" y1="375" x2="135.95435963320432" y2="344.44271909999156" stroke="#cbd5e1" stroke-width="2"></line><line x1="230" y1="375" x2="77.83095739277542" y2="165.55728090000844" stroke="#cbd5e1" stroke-width="2"></line><line x1="230" y1="375" x2="135.95435963320426" y2="85.55728090000844" stroke="#cbd5e1" stroke-width="2"></line><line x1="382.1690426072246" y1="165.5572809000084" x2="135.95435963320432" y2="344.44271909999156" stroke="#cbd5e1" stroke-width="2"></line><line x1="135.95435963320432" y1="344.44271909999156" x2="135.95435963320426" y2="85.55728090000844" stroke="#cbd5e1" stroke-width="2"></line><line x1="77.83095739277542" y1="165.55728090000844" x2="135.95435963320426" y2="85.55728090000844" stroke="#cbd5e1" stroke-width="2"></line><line x1="77.83095739277542" y1="165.55728090000844" x2="77.83095739277545" y2="264.4427190999916" stroke="#cbd5e1" stroke-width="2"></line><g>
+        <circle cx="230" cy="55" r="19" fill="#3b82f6" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="230" y="60" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">A</text>
+        <text x="230" y="31" text-anchor="middle" font-size="11" fill="#6b7280">c2</text>
+      </g><g>
+        <circle cx="324.04564036679574" cy="85.55728090000841" r="19" fill="#22c55e" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="324.04564036679574" y="90.55728090000841" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">B</text>
+        <text x="324.04564036679574" y="61.55728090000841" text-anchor="middle" font-size="11" fill="#6b7280">c3</text>
+      </g><g>
+        <circle cx="382.1690426072246" cy="165.5572809000084" r="19" fill="#22c55e" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="382.1690426072246" y="170.5572809000084" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">C</text>
+        <text x="382.1690426072246" y="141.5572809000084" text-anchor="middle" font-size="11" fill="#6b7280">c3</text>
+      </g><g>
+        <circle cx="382.1690426072246" cy="264.44271909999156" r="19" fill="#3b82f6" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="382.1690426072246" y="269.44271909999156" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">D</text>
+        <text x="382.1690426072246" y="240.44271909999156" text-anchor="middle" font-size="11" fill="#6b7280">c2</text>
+      </g><g>
+        <circle cx="324.04564036679574" cy="344.44271909999156" r="19" fill="#ef4444" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="324.04564036679574" y="349.44271909999156" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">E</text>
+        <text x="324.04564036679574" y="320.44271909999156" text-anchor="middle" font-size="11" fill="#6b7280">c1</text>
+      </g><g>
+        <circle cx="230" cy="375" r="19" fill="#ef4444" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="230" y="380" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">F</text>
+        <text x="230" y="351" text-anchor="middle" font-size="11" fill="#6b7280">c1</text>
+      </g><g>
+        <circle cx="135.95435963320432" cy="344.44271909999156" r="19" fill="#3b82f6" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="135.95435963320432" y="349.44271909999156" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">G</text>
+        <text x="135.95435963320432" y="320.44271909999156" text-anchor="middle" font-size="11" fill="#6b7280">c2</text>
+      </g><g>
+        <circle cx="77.83095739277545" cy="264.4427190999916" r="19" fill="#ef4444" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="77.83095739277545" y="269.4427190999916" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">H</text>
+        <text x="77.83095739277545" y="240.44271909999162" text-anchor="middle" font-size="11" fill="#6b7280">c1</text>
+      </g><g>
+        <circle cx="77.83095739277542" cy="165.55728090000844" r="19" fill="#3b82f6" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="77.83095739277542" y="170.55728090000844" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">I</text>
+        <text x="77.83095739277542" y="141.55728090000844" text-anchor="middle" font-size="11" fill="#6b7280">c2</text>
+      </g><g>
+        <circle cx="135.95435963320426" cy="85.55728090000844" r="19" fill="#22c55e" stroke="rgba(0,0,0,.18)" stroke-width="1.5"></circle>
+        <text x="135.95435963320426" y="90.55728090000844" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">J</text>
+        <text x="135.95435963320426" y="61.557280900008436" text-anchor="middle" font-size="11" fill="#6b7280">c3</text>
+      </g></svg>
+        <label style="margin-top:12px">Colores usados</label>
+        <div class="legend" id="cl-palette" style="margin-top:4px"><span><i class="dot" style="background:#ef4444"></i> Color 1</span><span><i class="dot" style="background:#3b82f6"></i> Color 2</span><span><i class="dot" style="background:#22c55e"></i> Color 3</span></div>
+        <div style="margin-top:14px"><span class="pill" id="cl-cg">c(G) = 3 (final)</span></div>
+        <div class="explain" id="cl-explain">✓ Coloreo completo con 3 colores → c(G) = 3. Recordá: es una cota (c(G) ≥ C(G)), no necesariamente el óptimo.</div>
+      </div>
+      <div class="col-table">
+        <label>Tabla de asignación paso a paso</label>
+        <div class="tracewrap">
+          <table class="trace" id="cl-table">
+            <thead><tr><th>Orden</th><th>Vértice</th><th>Grado</th><th>Colores prohibidos</th><th>Color asignado</th></tr></thead>
+            <tbody><tr class=""><td>1</td><td><b>F</b></td><td>5</td><td>{—}</td><td><span class="dot" style="background:#ef4444;width:12px;height:12px;vertical-align:-1px"></span> color 1</td></tr><tr class=""><td>2</td><td><b>I</b></td><td>4</td><td>{1}</td><td><span class="dot" style="background:#3b82f6;width:12px;height:12px;vertical-align:-1px"></span> color 2</td></tr><tr class=""><td>3</td><td><b>E</b></td><td>3</td><td>{2}</td><td><span class="dot" style="background:#ef4444;width:12px;height:12px;vertical-align:-1px"></span> color 1</td></tr><tr class=""><td>4</td><td><b>G</b></td><td>3</td><td>{1}</td><td><span class="dot" style="background:#3b82f6;width:12px;height:12px;vertical-align:-1px"></span> color 2</td></tr><tr class=""><td>5</td><td><b>J</b></td><td>3</td><td>{1, 2}</td><td><span class="dot" style="background:#22c55e;width:12px;height:12px;vertical-align:-1px"></span> color 3</td></tr><tr class=""><td>6</td><td><b>A</b></td><td>2</td><td>{1}</td><td><span class="dot" style="background:#3b82f6;width:12px;height:12px;vertical-align:-1px"></span> color 2</td></tr><tr class=""><td>7</td><td><b>B</b></td><td>2</td><td>{1, 2}</td><td><span class="dot" style="background:#22c55e;width:12px;height:12px;vertical-align:-1px"></span> color 3</td></tr><tr class=""><td>8</td><td><b>C</b></td><td>2</td><td>{1, 2}</td><td><span class="dot" style="background:#22c55e;width:12px;height:12px;vertical-align:-1px"></span> color 3</td></tr><tr class=""><td>9</td><td><b>D</b></td><td>2</td><td>{1}</td><td><span class="dot" style="background:#3b82f6;width:12px;height:12px;vertical-align:-1px"></span> color 2</td></tr><tr class=""><td>10</td><td><b>H</b></td><td>2</td><td>{2}</td><td><span class="dot" style="background:#ef4444;width:12px;height:12px;vertical-align:-1px"></span> color 1</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details open=""><summary>Teoría y complejidad</summary>
+      <p style="margin-top:12px"><b>Número cromático C(G)</b> = mínimo de colores posible (ideal, único). <b>c(G)</b> = colores que usó una solución concreta. Siempre <code>c(G) ≥ C(G)</code>: estas heurísticas dan una <b>cota</b>, no el óptimo garantizado (coloreo óptimo es NP-completo).</p>
+      <table class="mt">
+        <tbody><tr><th>Algoritmo</th><th>Orden</th><th>Complejidad</th><th>¿Garantiza C(G)?</th></tr>
+        <tr><td>Secuencial</td><td>Arbitrario / dado</td><td>O(n+m)</td><td>No</td></tr>
+        <tr><td>Welsh-Powell</td><td>Grado decreciente</td><td>O(n log n + m)</td><td>No (mejor probabilidad)</td></tr>
+        <tr><td>Matula</td><td>Grado creciente</td><td>O(n log n + m)</td><td>No (suele dar peor)</td></tr>
+      </tbody></table>
+      <p style="margin-top:12px" class="small">Casos directos sin heurística: camino → C=2; ciclo par → 2, ciclo impar → 3; estrella → 2; k-completo → k; planar → ≤ 4 (Teorema de los 4 colores); bipartito con aristas → 2.</p>
+      <p class="small"><b>Nota sobre desempates:</b> cuando varios vértices tienen el mismo grado, este tool los procesa en el orden del campo <b>Vértices</b>. Como el greedy es sensible al orden, cambiar el desempate puede cambiar no solo los colores por vértice sino también <b>c(G)</b> (ej.: en el grafo canónico, Matula da 3 o 4 según el desempate). Para reproducir una resolución a mano puntual, reordená el campo Vértices con el orden de desempate que quieras.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= KRUSKAL ================= -->
+<section id="tab-kr" class="hidden">
+  <div class="card">
+    <h2>Kruskal <span class="badge">MST · greedy · Union-Find</span></h2>
+    <p class="small" style="margin:6px 0 14px">Ordena todas las aristas de menor a mayor peso y acepta cada una si <b>no forma ciclo</b> (find(u) ≠ find(v)), uniendo componentes con Union-Find. Termina con V−1 aristas.</p>
+    <label for="kr-fmt">Formato de entrada</label>
+    <select id="kr-fmt" onchange="gfmt(&#39;kr&#39;)">
+      <option value="lista">Lista de aristas</option>
+      <option value="matriz">Matriz de adyacencia</option>
+    </select>
+    <div id="kr-lista" style="margin-top:12px">
+      <label for="kr-edges">Aristas con peso (<code>u-v:peso</code> separadas por coma; también vale <code>u-v(peso)</code>)</label>
+      <input id="kr-edges" type="text" value="a-b:4, a-h:8, b-c:8, b-h:11, c-d:7, c-f:4, c-i:2, d-e:9, d-f:14, e-f:10, f-g:2, h-i:7, h-g:1, i-g:6" autocomplete="off">
+    </div>
+    <div id="kr-matriz" class="hidden" style="margin-top:12px">
+      <label for="kr-matrix">Matriz de adyacencia (una fila por línea · el número = peso · 0 = sin arista)</label>
+      <textarea id="kr-matrix" rows="4">0 2 0 6
+2 0 3 8
+0 3 0 5
+6 8 5 0</textarea>
+      <label for="kr-labels" style="margin-top:8px">Etiquetas (opcional, coma; por defecto a, b, c, …)</label>
+      <input id="kr-labels" type="text" value="" autocomplete="off">
+    </div>
+    <label for="kr-union" style="margin-top:12px">Convención de unión (qué raíz queda como representante al unir la arista u-v)</label>
+    <select id="kr-union" onchange="KR.resolver()">
+      <option value="size">Por tamaño — cuelga el árbol más chico del más grande (eficiente, default)</option>
+      <option value="v2u">raíz(v) → raíz(u) — la raíz del 2º nodo se cuelga de la del 1º</option>
+      <option value="u2v">raíz(u) → raíz(v) — la raíz del 1º nodo se cuelga de la del 2º</option>
+    </select>
+    <div class="row">
+      <button class="btn-primary" onclick="KR.resolver()">▶ Resolver</button>
+    </div>
+    <div class="err" id="kr-err"></div>
+  </div>
+
+  <div id="kr-viz" class="card hidden">
+    <div class="stepbar">
+      <div><span class="phasetag tag-done" id="kr-phasetag">Resuelto</span>
+        <span class="stepcount" id="kr-stepcount" style="margin-left:8px">Paso 13 / 13</span></div>
+      <div class="row" style="margin:0">
+        <button class="btn-nav" id="kr-prev" onclick="KR.paso(-1)">◀ Anterior</button>
+        <button class="btn-nav" id="kr-auto" onclick="KR.toggleAuto()">▶ Auto</button>
+        <button class="btn-nav" id="kr-next" onclick="KR.paso(1)" disabled="">Siguiente ▶</button>
+      </div>
+    </div>
+    <div class="grid-main" style="margin-top:14px">
+      <div class="col-graph">
+        <label>Grafo (verde = en el MST, rojo punteado = descartada por ciclo)</label>
+        <svg id="kr-graph" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet"><line x1="230" y1="55" x2="332.8460175498463" y2="92.43288910096352" stroke="#059669" stroke-width="4"></line><rect x="270.4230087749231" y="64.71644455048175" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="281.4230087749231" y="76.71644455048175" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">4</text><line x1="230" y1="55" x2="387.5692404819533" y2="187.21629157329113" stroke="#059669" stroke-width="4"></line><rect x="297.78462024097666" y="112.10814578664557" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="308.78462024097666" y="124.10814578664557" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">8</text><line x1="332.8460175498463" y1="92.43288910096352" x2="368.5640646055102" y2="295" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5 4"></line><rect x="339.7050410776783" y="184.71644455048175" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="350.7050410776783" y="196.71644455048175" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">8</text><line x1="332.8460175498463" y1="92.43288910096352" x2="387.5692404819533" y2="187.21629157329113" stroke="#cbd5e1" stroke-width="2"></line><rect x="349.2076290158998" y="130.82459033712732" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="360.2076290158998" y="142.82459033712732" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">11</text><line x1="368.5640646055102" y1="295" x2="284.72322293210703" y2="365.3508193257453" stroke="#059669" stroke-width="4"></line><rect x="315.6436437688086" y="321.17540966287265" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="326.6436437688086" y="333.17540966287265" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">7</text><line x1="368.5640646055102" y1="295" x2="175.27677706789302" y2="365.35081932574536" stroke="#059669" stroke-width="4"></line><rect x="260.9204208367016" y="321.17540966287265" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="271.9204208367016" y="333.17540966287265" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">4</text><line x1="368.5640646055102" y1="295" x2="91.43593539448983" y2="295.00000000000006" stroke="#059669" stroke-width="4"></line><rect x="219.00000000000003" y="286" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="230.00000000000003" y="298" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">2</text><line x1="284.72322293210703" y1="365.3508193257453" x2="72.4307595180467" y2="187.2162915732912" stroke="#059669" stroke-width="4"></line><rect x="167.57699122507688" y="267.28355544951825" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="178.57699122507688" y="279.28355544951825" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">9</text><line x1="284.72322293210703" y1="365.3508193257453" x2="175.27677706789302" y2="365.35081932574536" stroke="#cbd5e1" stroke-width="2"></line><rect x="219.00000000000003" y="356.3508193257453" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="230.00000000000003" y="368.3508193257453" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">14</text><line x1="72.4307595180467" y1="187.2162915732912" x2="175.27677706789302" y2="365.35081932574536" stroke="#cbd5e1" stroke-width="2"></line><rect x="112.85376829296986" y="267.2835554495183" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="123.85376829296986" y="279.2835554495183" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">10</text><line x1="175.27677706789302" y1="365.35081932574536" x2="127.15398245015368" y2="92.43288910096354" stroke="#059669" stroke-width="4"></line><rect x="140.21537975902334" y="219.89185421335446" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="151.21537975902334" y="231.89185421335446" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">2</text><line x1="387.5692404819533" y1="187.21629157329113" x2="91.43593539448983" y2="295.00000000000006" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5 4"></line><rect x="228.50258793822155" y="232.1081457866456" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="239.50258793822155" y="244.1081457866456" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">7</text><line x1="387.5692404819533" y1="187.21629157329113" x2="127.15398245015368" y2="92.43288910096354" stroke="#059669" stroke-width="4"></line><rect x="246.3616114660535" y="130.82459033712735" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="257.3616114660535" y="142.82459033712735" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">1</text><line x1="91.43593539448983" y1="295.00000000000006" x2="127.15398245015368" y2="92.43288910096354" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5 4"></line><rect x="98.29495892232175" y="184.7164445504818" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="109.29495892232175" y="196.7164445504818" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">6</text><circle cx="230" cy="55" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="230" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">a</text><circle cx="332.8460175498463" cy="92.43288910096352" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="332.8460175498463" y="97.43288910096352" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">b</text><circle cx="387.5692404819533" cy="187.21629157329113" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="387.5692404819533" y="192.21629157329113" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">h</text><circle cx="368.5640646055102" cy="295" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="368.5640646055102" y="300" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">c</text><circle cx="284.72322293210703" cy="365.3508193257453" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="284.72322293210703" y="370.3508193257453" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">d</text><circle cx="175.27677706789302" cy="365.35081932574536" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="175.27677706789302" y="370.35081932574536" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">f</text><circle cx="91.43593539448983" cy="295.00000000000006" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="91.43593539448983" y="300.00000000000006" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">i</text><circle cx="72.4307595180467" cy="187.2162915732912" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="72.4307595180467" y="192.2162915732912" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">e</text><circle cx="127.15398245015368" cy="92.43288910096354" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="127.15398245015368" y="97.43288910096354" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">g</text></svg>
+        <div style="margin-top:6px"><span class="pill" id="kr-w">W(MST) = 37</span></div>
+        <div class="explain" id="kr-explain">✓ MST completo: 8 aristas (V−1 = 8) y W(MST) = 37.</div>
+      </div>
+      <div class="col-table">
+        <label>Componentes (Union-Find)</label>
+        <div class="comps" id="kr-comps"><span class="comp">{a, b, c, d, e, f, g, h, i}</span></div>
+        <label style="margin-top:12px">Aristas ordenadas por peso</label>
+        <div class="pq" id="kr-sorted"><span class="pqe">h-g:1</span><span class="pqe">c-i:2</span><span class="pqe">f-g:2</span><span class="pqe">a-b:4</span><span class="pqe">c-f:4</span><span class="pqe">i-g:6</span><span class="pqe">c-d:7</span><span class="pqe">h-i:7</span><span class="pqe">a-h:8</span><span class="pqe">b-c:8</span><span class="pqe">d-e:9</span><span class="pqe">e-f:10</span><span class="pqe">b-h:11</span><span class="pqe">d-f:14</span></div>
+        <label style="margin-top:12px">Tabla Union-Find — representante de cada nodo (chequeá que <code>find(u) ≠ find(v)</code> para no cerrar ciclo)</label>
+        <p class="small" style="margin:2px 0 6px">Cada fila es una arista evaluada; las columnas muestran el representante de cada nodo después del paso. <code>union</code> opera sobre las <b>raíces</b> (find), no sobre los nodos sueltos. Celdas resaltadas = cambiaron en ese paso.</p>
+        <div class="tracewrap">
+          <table class="trace" id="kr-uf"><thead><tr><th>Paso</th><th>Arista</th><th>find(u)</th><th>find(v)</th><th>¿Ciclo?</th><th>a</th><th>b</th><th>h</th><th>c</th><th>d</th><th>f</th><th>i</th><th>e</th><th>g</th></tr></thead><tbody><tr><td>—</td><td>inicial</td><td>—</td><td>—</td><td>—</td><td class="">a</td><td class="">b</td><td class="">h</td><td class="">c</td><td class="">d</td><td class="">f</td><td class="">i</td><td class="">e</td><td class="">g</td></tr><tr class=""><td>1</td><td>h-g</td><td>h</td><td>g</td><td class="yes">No</td><td class="">a</td><td class="">b</td><td class="">h</td><td class="">c</td><td class="">d</td><td class="">f</td><td class="">i</td><td class="">e</td><td class="chg">h</td></tr><tr class=""><td>2</td><td>c-i</td><td>c</td><td>i</td><td class="yes">No</td><td class="">a</td><td class="">b</td><td class="">h</td><td class="">c</td><td class="">d</td><td class="">f</td><td class="chg">c</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>3</td><td>f-g</td><td>f</td><td>h</td><td class="yes">No</td><td class="">a</td><td class="">b</td><td class="">h</td><td class="">c</td><td class="">d</td><td class="chg">h</td><td class="">c</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>4</td><td>a-b</td><td>a</td><td>b</td><td class="yes">No</td><td class="">a</td><td class="chg">a</td><td class="">h</td><td class="">c</td><td class="">d</td><td class="">h</td><td class="">c</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>5</td><td>c-f</td><td>c</td><td>h</td><td class="yes">No</td><td class="">a</td><td class="">a</td><td class="">h</td><td class="chg">h</td><td class="">d</td><td class="">h</td><td class="chg">h</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>6</td><td>i-g</td><td>h</td><td>h</td><td class="no">Sí</td><td class="">a</td><td class="">a</td><td class="">h</td><td class="">h</td><td class="">d</td><td class="">h</td><td class="">h</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>7</td><td>c-d</td><td>h</td><td>d</td><td class="yes">No</td><td class="">a</td><td class="">a</td><td class="">h</td><td class="">h</td><td class="chg">h</td><td class="">h</td><td class="">h</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>8</td><td>h-i</td><td>h</td><td>h</td><td class="no">Sí</td><td class="">a</td><td class="">a</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>9</td><td>a-h</td><td>a</td><td>h</td><td class="yes">No</td><td class="chg">h</td><td class="chg">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>10</td><td>b-c</td><td>h</td><td>h</td><td class="no">Sí</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">e</td><td class="">h</td></tr><tr class=""><td>11</td><td>d-e</td><td>h</td><td>e</td><td class="yes">No</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="">h</td><td class="chg">h</td><td class="">h</td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details open=""><summary>Teoría y complejidad</summary>
+      <p style="margin-top:12px"><b>Union-Find (Disjoint Set):</b> cada nodo arranca como su propio conjunto. <code>find(x)</code> da el representante; <code>union(x,y)</code> fusiona. Antes de aceptar (u,v): si <code>find(u) ≠ find(v)</code> no hay ciclo → se acepta y se hace <code>union</code>; si son iguales, ya están conectados → cerraría ciclo, se descarta. No alcanza un array de visitados porque hay que saber si dos nodos están en el <b>mismo componente</b>, no solo si se visitaron.</p>
+      <p><b>Complejidad:</b> ordenar las aristas O(E log E); con compresión de caminos cada find es casi O(1), así que el total queda <code>O(E log E) = O(E log V)</code>. Conviene en grafos <b>dispersos</b> (E ≈ V).</p>
+      <p class="small">Si el grafo es disconexo nunca se llega a V−1 aristas → el resultado es un <b>bosque</b> (Minimum Spanning Forest), no un árbol. Con pesos repetidos el MST puede no ser único, pero su peso total sí.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= PRIM ================= -->
+<section id="tab-pr" class="hidden">
+  <div class="card">
+    <h2>Prim <span class="badge">MST · greedy · Cola de prioridad</span></h2>
+    <p class="small" style="margin:6px 0 14px">Crece un único árbol desde un nodo inicial. En cada paso agrega la arista más barata que conecta el árbol con un nodo todavía no incluido.</p>
+    <label for="pr-fmt">Formato de entrada</label>
+    <select id="pr-fmt" onchange="gfmt(&#39;pr&#39;)">
+      <option value="lista">Lista de aristas</option>
+      <option value="matriz">Matriz de adyacencia</option>
+    </select>
+    <div id="pr-lista" style="margin-top:12px">
+      <label for="pr-edges">Aristas con peso (<code>u-v:peso</code>)</label>
+      <input id="pr-edges" type="text" value="a-b:4, a-h:8, b-c:8, b-h:11, c-d:7, c-f:4, c-i:2, d-e:9, d-f:14, e-f:10, f-g:2, h-i:7, h-g:1, i-g:6" autocomplete="off">
+    </div>
+    <div id="pr-matriz" class="hidden" style="margin-top:12px">
+      <label for="pr-matrix">Matriz de adyacencia (una fila por línea · el número = peso · 0 = sin arista)</label>
+      <textarea id="pr-matrix" rows="4">0 2 0 6
+2 0 3 8
+0 3 0 5
+6 8 5 0</textarea>
+      <label for="pr-labels" style="margin-top:8px">Etiquetas (opcional, coma; por defecto a, b, c, …)</label>
+      <input id="pr-labels" type="text" value="" autocomplete="off">
+    </div>
+    <div style="margin-top:12px">
+      <label for="pr-start">Nodo inicial</label>
+      <input id="pr-start" type="text" value="a" autocomplete="off">
+    </div>
+    <div class="row">
+      <button class="btn-primary" onclick="PR.resolver()">▶ Resolver</button>
+    </div>
+    <div class="err" id="pr-err"></div>
+  </div>
+
+  <div id="pr-viz" class="card">
+    <div class="stepbar">
+      <div><span class="phasetag tag-order" id="pr-phasetag">Descarta</span>
+        <span class="stepcount" id="pr-stepcount" style="margin-left:8px">Paso 8 / 13</span></div>
+      <div class="row" style="margin:0">
+        <button class="btn-nav" id="pr-prev" onclick="PR.paso(-1)">◀ Anterior</button>
+        <button class="btn-nav" id="pr-auto" onclick="PR.toggleAuto()">▶ Auto</button>
+        <button class="btn-nav" id="pr-next" onclick="PR.paso(1)">Siguiente ▶</button>
+      </div>
+    </div>
+    <div class="grid-main" style="margin-top:14px">
+      <div class="col-graph">
+        <label>Grafo (verde = en el MST, azul = nodo en el árbol)</label>
+        <svg id="pr-graph" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet"><line x1="230" y1="55" x2="332.8460175498463" y2="92.43288910096352" stroke="#059669" stroke-width="4"></line><rect x="270.4230087749231" y="64.71644455048175" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="281.4230087749231" y="76.71644455048175" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">4</text><line x1="230" y1="55" x2="387.5692404819533" y2="187.21629157329113" stroke="#059669" stroke-width="4"></line><rect x="297.78462024097666" y="112.10814578664557" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="308.78462024097666" y="124.10814578664557" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">8</text><line x1="332.8460175498463" y1="92.43288910096352" x2="368.5640646055102" y2="295" stroke="#cbd5e1" stroke-width="2"></line><rect x="339.7050410776783" y="184.71644455048175" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="350.7050410776783" y="196.71644455048175" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">8</text><line x1="332.8460175498463" y1="92.43288910096352" x2="387.5692404819533" y2="187.21629157329113" stroke="#cbd5e1" stroke-width="2"></line><rect x="349.2076290158998" y="130.82459033712732" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="360.2076290158998" y="142.82459033712732" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">11</text><line x1="368.5640646055102" y1="295" x2="284.72322293210703" y2="365.3508193257453" stroke="#cbd5e1" stroke-width="2"></line><rect x="315.6436437688086" y="321.17540966287265" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="326.6436437688086" y="333.17540966287265" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">7</text><line x1="368.5640646055102" y1="295" x2="175.27677706789302" y2="365.35081932574536" stroke="#059669" stroke-width="4"></line><rect x="260.9204208367016" y="321.17540966287265" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="271.9204208367016" y="333.17540966287265" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">4</text><line x1="368.5640646055102" y1="295" x2="91.43593539448983" y2="295.00000000000006" stroke="#059669" stroke-width="4"></line><rect x="219.00000000000003" y="286" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="230.00000000000003" y="298" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">2</text><line x1="284.72322293210703" y1="365.3508193257453" x2="72.4307595180467" y2="187.2162915732912" stroke="#cbd5e1" stroke-width="2"></line><rect x="167.57699122507688" y="267.28355544951825" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="178.57699122507688" y="279.28355544951825" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">9</text><line x1="284.72322293210703" y1="365.3508193257453" x2="175.27677706789302" y2="365.35081932574536" stroke="#cbd5e1" stroke-width="2"></line><rect x="219.00000000000003" y="356.3508193257453" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="230.00000000000003" y="368.3508193257453" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">14</text><line x1="72.4307595180467" y1="187.2162915732912" x2="175.27677706789302" y2="365.35081932574536" stroke="#cbd5e1" stroke-width="2"></line><rect x="112.85376829296986" y="267.2835554495183" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="123.85376829296986" y="279.2835554495183" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">10</text><line x1="175.27677706789302" y1="365.35081932574536" x2="127.15398245015368" y2="92.43288910096354" stroke="#059669" stroke-width="4"></line><rect x="140.21537975902334" y="219.89185421335446" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="151.21537975902334" y="231.89185421335446" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">2</text><line x1="387.5692404819533" y1="187.21629157329113" x2="91.43593539448983" y2="295.00000000000006" stroke="#cbd5e1" stroke-width="2"></line><rect x="228.50258793822155" y="232.1081457866456" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="239.50258793822155" y="244.1081457866456" text-anchor="middle" font-size="11" font-weight="700" fill="#9ca3af">7</text><line x1="387.5692404819533" y1="187.21629157329113" x2="127.15398245015368" y2="92.43288910096354" stroke="#059669" stroke-width="4"></line><rect x="246.3616114660535" y="130.82459033712735" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="257.3616114660535" y="142.82459033712735" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">1</text><line x1="91.43593539448983" y1="295.00000000000006" x2="127.15398245015368" y2="92.43288910096354" stroke="#dc2626" stroke-width="3" stroke-dasharray="5 4"></line><rect x="98.29495892232175" y="184.7164445504818" width="22" height="17" rx="4" fill="#fff" opacity="0.92"></rect><text x="109.29495892232175" y="196.7164445504818" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">6</text><circle cx="230" cy="55" r="19" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle><text x="230" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">a</text><circle cx="332.8460175498463" cy="92.43288910096352" r="19" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle><text x="332.8460175498463" y="97.43288910096352" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">b</text><circle cx="387.5692404819533" cy="187.21629157329113" r="19" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle><text x="387.5692404819533" y="192.21629157329113" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">h</text><circle cx="368.5640646055102" cy="295" r="19" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle><text x="368.5640646055102" y="300" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">c</text><circle cx="284.72322293210703" cy="365.3508193257453" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="284.72322293210703" y="370.3508193257453" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">d</text><circle cx="175.27677706789302" cy="365.35081932574536" r="19" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle><text x="175.27677706789302" y="370.35081932574536" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">f</text><circle cx="91.43593539448983" cy="295.00000000000006" r="19" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle><text x="91.43593539448983" y="300.00000000000006" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">i</text><circle cx="72.4307595180467" cy="187.2162915732912" r="19" fill="#fff" stroke="#94a3b8" stroke-width="1.5"></circle><text x="72.4307595180467" y="192.2162915732912" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">e</text><circle cx="127.15398245015368" cy="92.43288910096354" r="19" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></circle><text x="127.15398245015368" y="97.43288910096354" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">g</text></svg>
+        <div style="margin-top:6px"><span class="pill" id="pr-w">W(MST) = 21 (parcial)</span></div>
+        <div class="explain" id="pr-explain">Extraigo la mínima g-i (6), pero i ya está en el árbol → entrada vieja (stale), se descarta sin agregar nada.</div>
+      </div>
+      <div class="col-table">
+        <label>Cola de prioridad (frontera: aristas hacia nodos fuera del árbol)</label>
+        <div class="pq" id="pr-pq"><span class="pqe min">h-i:7</span><span class="pqe">c-d:7</span><span class="pqe">b-c:8</span><span class="pqe">f-e:10</span><span class="pqe">b-h:11</span><span class="pqe">f-d:14</span></div>
+        <label style="margin-top:12px">En el árbol</label>
+        <div class="comps" id="pr-visited"><span class="comp">a</span><span class="comp">b</span><span class="comp">h</span><span class="comp">g</span><span class="comp">f</span><span class="comp">c</span><span class="comp">i</span></div>
+        <label style="margin-top:12px">Tabla de traza paso a paso</label>
+        <div class="tracewrap">
+          <table class="trace" id="pr-table">
+            <thead><tr><th>Paso</th><th>Arista extraída (mín.)</th><th>¿Destino ya en árbol?</th><th>¿Se agrega?</th><th>Peso acum.</th></tr></thead>
+            <tbody><tr class=""><td>1</td><td>a-b (4)</td><td class="yes">No</td><td class="yes">Sí</td><td>4</td></tr><tr class=""><td>2</td><td>a-h (8)</td><td class="yes">No</td><td class="yes">Sí</td><td>12</td></tr><tr class=""><td>3</td><td>h-g (1)</td><td class="yes">No</td><td class="yes">Sí</td><td>13</td></tr><tr class=""><td>4</td><td>g-f (2)</td><td class="yes">No</td><td class="yes">Sí</td><td>15</td></tr><tr class=""><td>5</td><td>f-c (4)</td><td class="yes">No</td><td class="yes">Sí</td><td>19</td></tr><tr class=""><td>6</td><td>c-i (2)</td><td class="yes">No</td><td class="yes">Sí</td><td>21</td></tr><tr class="cur"><td>7</td><td>g-i (6)</td><td class="no">Sí</td><td class="no">No</td><td>21</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details open=""><summary>Teoría y complejidad</summary>
+      <p style="margin-top:12px"><b>Mecánica:</b> se mantiene un conjunto de nodos ya en el árbol y una cola de prioridad con las aristas que salen de ese conjunto. Se extrae la mínima; si su destino ya está en el árbol se <b>descarta</b> (entrada vieja/stale), si no, se agrega el nodo y se insertan sus aristas hacia nodos no visitados.</p>
+      <p><b>Complejidad:</b> cada arista entra una vez en la cola → <code>O(E log V)</code>. Conviene en grafos <b>densos</b> (E ≈ V²); ahí incluso una versión con matriz sin cola da O(V²).</p>
+      <p class="small"><b>Prim vs Kruskal:</b> Prim crece un árbol desde adentro (un nodo inicial); Kruskal une fragmentos desde las aristas más baratas. Ambos son greedy y siempre correctos por la <b>Propiedad de Corte</b>. El peso final del MST es el mismo (acá, 37 en el grafo "Practiquemos").</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= DIJKSTRA ================= -->
+<section id="tab-dk" class="hidden">
+  <div class="card">
+    <h2>Dijkstra <span class="badge">Caminos mínimos · greedy · Cola de prioridad</span></h2>
+    <p class="small" style="margin:6px 0 14px">Calcula el camino más corto desde un nodo origen a todos los demás. En cada paso <b>finaliza</b> el nodo no visitado de menor distancia y <b>relaja</b> sus aristas salientes. Requiere pesos <b>no negativos</b>.</p>
+    <div class="grid2">
+      <div>
+        <label for="dk-fmt">Formato de entrada</label>
+        <select id="dk-fmt" onchange="gfmt(&#39;dk&#39;)">
+          <option value="lista">Lista de aristas</option>
+          <option value="matriz">Matriz de adyacencia</option>
+        </select>
+      </div>
+      <div>
+        <label for="dk-dir">Tipo de grafo</label>
+        <select id="dk-dir" onchange="DK.resolver()">
+          <option value="undir">No dirigido — cada arista vale en ambos sentidos</option>
+          <option value="dir">Dirigido — la arista u-v va solo de u → v (con flecha)</option>
+        </select>
+      </div>
+    </div>
+    <div id="dk-lista" style="margin-top:12px">
+      <label for="dk-edges">Aristas con peso (<code>u-v:peso</code>)</label>
+      <input id="dk-edges" type="text" value="a-b:7, a-c:9, a-f:14, b-c:10, b-d:15, c-d:11, c-f:2, d-e:6, e-f:9" autocomplete="off">
+    </div>
+    <div id="dk-matriz" class="hidden" style="margin-top:12px">
+      <label for="dk-matrix">Matriz de adyacencia (una fila por línea · el número = peso · 0 = sin arista). En dirigido: fila → columna.</label>
+      <textarea id="dk-matrix" rows="6">0 7 9 0 0 14
+7 0 10 15 0 0
+9 10 0 11 0 2
+0 15 11 0 6 0
+0 0 0 6 0 9
+14 0 2 0 9 0</textarea>
+      <label for="dk-labels" style="margin-top:8px">Etiquetas (opcional, coma; por defecto a, b, c, …)</label>
+      <input id="dk-labels" type="text" value="" autocomplete="off">
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div>
+        <label for="dk-start">Nodo origen</label>
+        <input id="dk-start" type="text" value="a" autocomplete="off">
+      </div>
+      <div>
+        <label for="dk-target">Nodo destino (opcional, resalta el camino)</label>
+        <input id="dk-target" type="text" value="e" autocomplete="off">
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn-primary" onclick="DK.resolver()">▶ Resolver</button>
+    </div>
+    <div class="err" id="dk-err"></div>
+  </div>
+
+  <div id="dk-viz" class="card hidden">
+    <div class="stepbar">
+      <div><span class="phasetag tag-order" id="dk-phasetag">—</span>
+        <span class="stepcount" id="dk-stepcount" style="margin-left:8px"></span></div>
+      <div class="row" style="margin:0">
+        <button class="btn-nav" id="dk-prev" onclick="DK.paso(-1)">◀ Anterior</button>
+        <button class="btn-nav" id="dk-auto" onclick="DK.toggleAuto()">▶ Auto</button>
+        <button class="btn-nav" id="dk-next" onclick="DK.paso(1)">Siguiente ▶</button>
+      </div>
+    </div>
+    <div class="grid-main" style="margin-top:14px">
+      <div class="col-graph">
+        <label>Grafo (azul = finalizado · naranja = nodo actual · verde = arbol de caminos mínimos)</label>
+        <svg id="dk-graph" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet"></svg>
+        <div style="margin-top:6px"><span class="pill" id="dk-res">—</span></div>
+        <div class="explain" id="dk-explain"></div>
+      </div>
+      <div class="col-table">
+        <label>Distancias actuales <span class="small">(dist · predecesor)</span></label>
+        <div class="comps" id="dk-dists"></div>
+        <label style="margin-top:12px">No visitados (candidatos a finalizar)</label>
+        <div class="pq" id="dk-pq"></div>
+        <label style="margin-top:12px">Tabla de Dijkstra — distancia mínima a cada nodo por iteración</label>
+        <p class="small" style="margin:2px 0 6px">Cada fila es una iteración: se finaliza el nodo no visitado de menor distancia (columna <b>Elegido</b>) y se relajan sus vecinos. Celdas resaltadas = se actualizaron en ese paso. <code>n</code><sub>p</sub> = distancia <code>n</code> llegando desde <code>p</code>. Los nodos ya finalizados se muestran en gris.</p>
+        <div class="tracewrap">
+          <table class="trace" id="dk-table"><thead></thead><tbody></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details open=""><summary>Teoría y complejidad</summary>
+      <p style="margin-top:12px"><b>Mecánica:</b> se mantiene <code>dist[v]</code> = mejor distancia conocida desde el origen (∞ al inicio, 0 para el origen) y <code>prev[v]</code> = predecesor en ese camino. En cada iteración se <b>finaliza</b> (marca definitiva) el nodo no visitado con menor <code>dist</code>; una vez finalizado, su distancia ya es óptima y no vuelve a cambiar. Luego se <b>relajan</b> sus aristas: si <code>dist[u] + peso(u,v) &lt; dist[v]</code>, se mejora <code>dist[v]</code> y <code>prev[v]=u</code>.</p>
+      <p><b>Diferencia con Prim:</b> Prim mira el peso de <b>la arista</b> que conecta el árbol con el nodo; Dijkstra mira la <b>distancia acumulada desde el origen</b> (<code>dist[u]+peso</code>). Por eso Prim arma el MST y Dijkstra el árbol de caminos mínimos — y en general <b>no</b> coinciden.</p>
+      <p><b>Complejidad:</b> con cola de prioridad binaria, <code>O((V+E) log V)</code>; con matriz/búsqueda lineal del mínimo, <code>O(V²)</code>.</p>
+      <p class="small"><b>Pesos negativos:</b> Dijkstra <b>no</b> funciona si hay aristas negativas (puede finalizar un nodo antes de descubrir un camino más barato). En ese caso se usa Bellman-Ford.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= MONTICULO / HEAP ================= -->
+<section id="tab-hp" class="hidden">
+  <div class="card">
+    <h2>Montículo (Heap) <span class="badge">Árbol binario completo · cola de prioridad</span></h2>
+    <p class="small" style="margin:6px 0 14px">Array 1-indexado (la posición 0 queda reservada): el hijo de <code>i</code> está en <code>2i</code> y <code>2i+1</code>, su padre en <code>⌊i/2⌋</code>. Insertar usa <b>sift-up</b>; extraer la raíz usa <b>sift-down</b>.</p>
+    <label for="hp-vals">Valores (separados por coma)</label>
+    <input id="hp-vals" type="text" value="10, 4, 15, 1, 7, 3, 9" autocomplete="off">
+    <div class="grid2" style="margin-top:12px">
+      <div>
+        <label for="hp-op">Operación</label>
+        <select id="hp-op" onchange="HP.resolver()">
+          <option value="insert">Construir insertando uno por uno (sift-up)</option>
+          <option value="floyd">Construir con Floyd — build-heap O(n) (sift-down desde ⌊n/2⌋)</option>
+          <option value="extract">Extraer la raíz (sift-down) — el input debe ser un heap válido</option>
+          <option value="heapsort">HeapSort — construir y extraer todo</option>
+        </select>
+      </div>
+      <div>
+        <label for="hp-type">Tipo de montículo</label>
+        <select id="hp-type" onchange="HP.resolver()">
+          <option value="min">Mínimo — el padre es ≤ que sus hijos (raíz = menor)</option>
+          <option value="max">Máximo — el padre es ≥ que sus hijos (raíz = mayor)</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn-primary" onclick="HP.resolver()">▶ Resolver</button>
+    </div>
+    <div class="err" id="hp-err"></div>
+  </div>
+
+  <div id="hp-viz" class="card hidden">
+    <div class="stepbar">
+      <div><span class="phasetag tag-order" id="hp-phasetag">—</span>
+        <span class="stepcount" id="hp-stepcount" style="margin-left:8px"></span></div>
+      <div class="row" style="margin:0">
+        <button class="btn-nav" id="hp-prev" onclick="HP.paso(-1)">◀ Anterior</button>
+        <button class="btn-nav" id="hp-auto" onclick="HP.toggleAuto()">▶ Auto</button>
+        <button class="btn-nav" id="hp-next" onclick="HP.paso(1)">Siguiente ▶</button>
+      </div>
+    </div>
+    <div class="grid-main" style="margin-top:14px">
+      <div class="col-graph">
+        <label>Árbol (naranja = nodo que se mueve · azul = nodo comparado · gris = ya ordenado/extraído)</label>
+        <svg id="hp-graph" viewBox="0 0 460 320" preserveAspectRatio="xMidYMid meet"></svg>
+        <div style="margin-top:6px"><span class="pill" id="hp-swaps">Intercambios: 0</span> <span class="pill" id="hp-res" style="background:var(--accent-soft);color:var(--accent)">—</span></div>
+        <div class="explain" id="hp-explain"></div>
+      </div>
+      <div class="col-table">
+        <label>Vector (posición 0 reservada)</label>
+        <div class="arr" id="hp-vec" style="margin-bottom:8px"></div>
+        <label style="margin-top:6px">Tabla paso a paso — estado del vector por posición</label>
+        <p class="small" style="margin:2px 0 6px">Cada fila es un paso. Celdas resaltadas = posiciones que cambiaron. Las posiciones en gris ya salieron del heap (ordenadas/extraídas).</p>
+        <div class="tracewrap">
+          <table class="trace" id="hp-table"><thead></thead><tbody></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details open=""><summary>Teoría y complejidad</summary>
+      <p style="margin-top:12px"><b>Condición de heap (local):</b> en un heap de mínimo cada padre es ≤ que sus dos hijos (en uno de máximo, ≥). No es un árbol de búsqueda: no hay orden garantizado entre hermanos ni entre ramas distintas.</p>
+      <p><b>Insertar (sift-up):</b> se coloca el nuevo valor en el último lugar libre y se intercambia con el padre mientras rompa la condición, subiendo hasta la raíz. <b>Extraer la raíz (sift-down):</b> se saca la raíz, se sube el último elemento al tope y se intercambia con el hijo más extremo (menor en min-heap) mientras rompa la condición, bajando hasta una hoja.</p>
+      <p><b>Build-heap de Floyd:</b> aplicar sift-down desde <code>⌊n/2⌋</code> hacia la raíz construye el heap en <b>O(n)</b>, mejor que insertar uno por uno (<code>n</code> sift-up = O(n log n)).</p>
+      <table class="mt">
+        <tbody><tr><th>Implementación</th><th>Insertar</th><th>Obtener prioridad</th></tr>
+        <tr><td>Lista ordenada</td><td>O(n)</td><td>O(1)</td></tr>
+        <tr><td>Lista desordenada</td><td>O(1)</td><td>O(n)</td></tr>
+        <tr><td><b>Montículo binario</b></td><td><b>O(log n)</b></td><td><b>O(log n)</b></td></tr>
+      </tbody></table>
+      <p style="margin-top:12px" class="small"><b>HeapSort:</b> build-heap + n extracciones = <b>O(n log n)</b> garantizado, in-place. Con max-heap el array queda <b>ascendente</b>; con min-heap, <b>descendente</b>.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= RECORRIDOS DFS / BFS ================= -->
+<section id="tab-tr" class="hidden">
+  <div class="card">
+    <h2>Recorridos <span class="badge">DFS · BFS · O(V+E)</span></h2>
+    <p class="small" style="margin:6px 0 14px"><b>DFS</b> (profundidad) usa una <b>pila</b>: expande un camino hasta el fondo y retrocede. <b>BFS</b> (anchura) usa una <b>cola</b>: recorre por niveles de distancia y calcula los saltos al origen. Lo que no se visita pertenece a otra componente conexa.</p>
+    <div class="grid2">
+      <div>
+        <label for="tr-fmt">Formato de entrada</label>
+        <select id="tr-fmt" onchange="gfmt(&#39;tr&#39;)">
+          <option value="lista">Lista de aristas</option>
+          <option value="matriz">Matriz de adyacencia</option>
+        </select>
+      </div>
+      <div>
+        <label for="tr-dir">Tipo de grafo</label>
+        <select id="tr-dir">
+          <option value="undir">No dirigido — la arista vale en ambos sentidos</option>
+          <option value="dir">Dirigido — la arista u-v va solo de u → v</option>
+        </select>
+      </div>
+    </div>
+    <div id="tr-lista" style="margin-top:12px">
+      <label for="tr-edges">Aristas (pares <code>u-v</code> separados por coma; si ponés peso <code>u-v:w</code> se ignora)</label>
+      <input id="tr-edges" type="text" value="0-1, 0-2, 1-3, 1-4, 2-5, 4-6, 5-6" autocomplete="off">
+    </div>
+    <div id="tr-matriz" class="hidden" style="margin-top:12px">
+      <label for="tr-matrix">Matriz de adyacencia (una fila por línea · 0 = sin arista · ≠0 = arista). En dirigido: fila → columna.</label>
+      <textarea id="tr-matrix" rows="5">0 1 1 0 0
+1 0 0 1 0
+1 0 0 0 1
+0 1 0 0 1
+0 0 1 1 0</textarea>
+      <label for="tr-labels" style="margin-top:8px">Etiquetas (opcional, coma; por defecto a, b, c, …)</label>
+      <input id="tr-labels" type="text" value="" autocomplete="off">
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div>
+        <label for="tr-algo">Algoritmo</label>
+        <select id="tr-algo">
+          <option value="dfs">DFS — búsqueda en profundidad (pila)</option>
+          <option value="bfs">BFS — búsqueda en anchura (cola)</option>
+        </select>
+      </div>
+      <div>
+        <label for="tr-start">Nodo inicial</label>
+        <input id="tr-start" type="text" value="0" autocomplete="off">
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div>
+        <label for="tr-order">Orden de vecinos (para reproducir tu traza a mano)</label>
+        <select id="tr-order">
+          <option value="asc">Ascendente por etiqueta (recomendado)</option>
+          <option value="load">Orden de carga (como aparecen en el input)</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn-primary" onclick="TR.resolver()">▶ Resolver</button>
+    </div>
+    <div class="err" id="tr-err"></div>
+  </div>
+
+  <div id="tr-viz" class="card hidden">
+    <div class="stepbar">
+      <div><span class="phasetag tag-order" id="tr-phasetag">—</span>
+        <span class="stepcount" id="tr-stepcount" style="margin-left:8px"></span></div>
+      <div class="row" style="margin:0">
+        <button class="btn-nav" id="tr-prev" onclick="TR.paso(-1)">◀ Anterior</button>
+        <button class="btn-nav" id="tr-auto" onclick="TR.toggleAuto()">▶ Auto</button>
+        <button class="btn-nav" id="tr-next" onclick="TR.paso(1)">Siguiente ▶</button>
+      </div>
+    </div>
+    <div class="grid-main" style="margin-top:14px">
+      <div class="col-graph">
+        <label>Grafo (naranja = nodo actual · azul = visitado · verde = arista del árbol de recorrido)</label>
+        <svg id="tr-graph" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet"></svg>
+        <div style="margin-top:6px"><span class="pill" id="tr-res">—</span></div>
+        <div class="explain" id="tr-explain"></div>
+      </div>
+      <div class="col-table">
+        <label id="tr-structlbl">Pila</label>
+        <div class="pq" id="tr-struct"></div>
+        <label style="margin-top:12px">Visitados (en orden de visita)</label>
+        <div class="comps" id="tr-visited"></div>
+        <div id="tr-distwrap" class="hidden">
+          <label style="margin-top:12px">Distancias al origen (saltos) — BFS</label>
+          <div class="comps" id="tr-dist"></div>
+        </div>
+        <label style="margin-top:12px">Tabla paso a paso</label>
+        <div class="tracewrap">
+          <table class="trace" id="tr-table"><thead></thead><tbody></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details open=""><summary>Teoría y complejidad</summary>
+      <p style="margin-top:12px"><b>DFS (pila):</b> se apila el inicio; en cada iteración se desapila un nodo y, si no estaba visitado, se marca, se procesa y se apilan sus vecinos no visitados. Como es una pila, el último vecino apilado es el primero en explorarse (profundidad). Un mismo nodo puede apilarse varias veces; al desapilarlo, si ya estaba visitado, se descarta.</p>
+      <p><b>BFS (cola):</b> se encola el inicio y se marca visitado; en cada iteración se desencola un nodo y se encolan sus vecinos no visitados, marcándolos al encolar. El orden por niveles permite calcular la <b>distancia en saltos</b> desde el origen.</p>
+      <table class="mt">
+        <tbody><tr><th></th><th>DFS</th><th>BFS</th></tr>
+        <tr><td>Estructura</td><td>Pila (o recursión)</td><td>Cola</td></tr>
+        <tr><td>Orden</td><td>Profundidad</td><td>Niveles de distancia</td></tr>
+        <tr><td>Distancia mínima (sin pesos)</td><td>No</td><td>Sí</td></tr>
+        <tr><td>Componentes conexas</td><td>Sí</td><td>Sí</td></tr>
+        <tr><td>Complejidad</td><td>O(V+E)</td><td>O(V+E)</td></tr>
+      </tbody></table>
+      <p style="margin-top:12px" class="small">Lo que queda sin visitar tras una corrida pertenece a otra componente conexa. El orden exacto de visita depende del orden de vecinos elegido (acá configurable).</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= PIZARRA ================= -->
+<section id="tab-pz" class="hidden">
+  <div class="card">
+    <h2>Pizarra <span class="badge">Árbol / Grafo libre</span></h2>
+    <p class="sub" style="margin-top:6px">Armá a mano un árbol o grafo: creá nodos, escribí lo que quieras adentro (estado, cota, decisión, valor…), conectalos y arrastralos. Pensada para hacer backtracking y branch &amp; bound a mano. Se guarda solo en este navegador (localStorage).</p>
+    <div id="pz-wrap">
+      <div id="pz-toolbar">
+        <button class="btn-primary" onclick="PZ.addNode()">+ Nodo</button>
+        <button class="btn-ghost" onclick="PZ.addChild()">+ Hijo del seleccionado</button>
+        <button class="btn-nav" id="pz-connbtn" onclick="PZ.toggleConnect()">Conectar</button>
+        <button class="btn-nav" onclick="PZ.cycleState()">Estado &#9656;</button>
+        <button class="btn-nav" onclick="PZ.removeSel()">Eliminar</button>
+        <button class="btn-nav" onclick="PZ.clearAll()">Limpiar</button>
+        <span class="pz-hint" id="pz-hint"></span>
+      </div>
+      <div class="legend">
+        <span><span class="sw" style="background:#fff;border-color:#cbd5e1"></span> neutro</span>
+        <span><span class="sw" style="background:#eff6ff;border-color:#2563eb"></span> explorando</span>
+        <span><span class="sw" style="background:#fef2f2;border-color:#b91c1c"></span> podado</span>
+        <span><span class="sw" style="background:#ecfdf5;border-color:#059669"></span> solución</span>
+      </div>
+      <div id="pz-canvas"><svg id="pz-edges"></svg></div>
+    </div>
+  </div>
+</section>
+
+  <p class="signature">Hecho con ❤️ por <b>Grupo Delta 1C2026</b> (y <a href="https://claude.ai">Claude</a>)</p>
+</div>
+
+<script>
+"use strict";
+
+/* ===== tema claro/oscuro ===== */
+const THEME_LS='hpa-theme';
+function applyTheme(mode){
+  document.documentElement.setAttribute('data-theme', mode==='dark'?'dark':'light');
+  const b=document.getElementById('theme-btn');
+  if(b) b.textContent = mode==='dark' ? '☀ Claro' : '🌙 Oscuro';
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';
+  const next=cur==='dark'?'light':'dark';
+  try{ localStorage.setItem(THEME_LS,next); }catch(e){}
+  applyTheme(next);
+}
+(function initTheme(){
+  let saved=null;
+  try{ saved=localStorage.getItem(THEME_LS); }catch(e){}
+  if(!saved){
+    saved=(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  }
+  applyTheme(saved);
+})();
+
+/* ===== tabs ===== */
+const TAB_IDS=['cl','kr','pr','dk','hp','tr','pz'];
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
+  TAB_IDS.forEach(x=>document.getElementById('tab-'+x).classList.toggle('hidden',x!==t));
+  window.ACTIVE=t;
+  [CL,KR,PR,DK,HP,TR].forEach(m=>{try{m.stopAuto();}catch(e){}});
+}
+window.ACTIVE='cl';
+
+/* ========================================================= */
+/* ====  DRAG: mini-pizarra para grafos (nodos movibles) === */
+/* ========================================================= */
+/* Permite arrastrar los nodos de los SVG de grafo sin tocar los
+   algoritmos: cada render llama DRAG.apply(svgId,pos) para respetar
+   las posiciones movidas, y una sola vez DRAG.attach(svgId,redraw)
+   para instalar el arrastre. DRAG.reset(svgId) limpia al recargar
+   un grafo nuevo. Las posiciones se guardan por grafo en localStorage. */
+const DRAG=(function(){
+  const LS='hpa-drag-v1';
+  let store={};                 // { svgId: { nodo: {x,y} } }
+  const meta={};                // { svgId: {redraw, radius, pos, down} }  estado runtime
+  try{ store=JSON.parse(localStorage.getItem(LS))||{}; }catch(e){ store={}; }
+  function persist(){ try{ localStorage.setItem(LS,JSON.stringify(store)); }catch(e){} }
+
+  // Devuelve una copia de pos con los overrides guardados aplicados.
+  // Se llama en CADA render, justo antes de dibujar.
+  function apply(svgId,pos){
+    const ov=store[svgId]||{};
+    const out={};
+    for(const k in pos){
+      out[k]= (ov[k]&&isFinite(ov[k].x)&&isFinite(ov[k].y)) ? {x:ov[k].x,y:ov[k].y} : {x:pos[k].x,y:pos[k].y};
+    }
+    if(meta[svgId]) meta[svgId].pos=out;   // recordamos posiciones efectivas para el hit-test
+    return out;
+  }
+
+  function reset(svgId){ if(store[svgId]){ delete store[svgId]; persist(); } if(meta[svgId]) meta[svgId].pos=null; }
+
+  // convierte coords de pantalla a coords del viewBox del SVG
+  function toVB(svg,clientX,clientY){
+    const r=svg.getBoundingClientRect();
+    const vb=svg.viewBox.baseVal;
+    const w=vb&&vb.width?vb.width:r.width, h=vb&&vb.height?vb.height:r.height;
+    const ox=vb?vb.x:0, oy=vb?vb.y:0;
+    // preserveAspectRatio xMidYMid meet → escala uniforme, con márgenes
+    const scale=Math.min(r.width/w, r.height/h);
+    const dispW=w*scale, dispH=h*scale;
+    const padX=(r.width-dispW)/2, padY=(r.height-dispH)/2;
+    return { x: ox+(clientX-r.left-padX)/scale, y: oy+(clientY-r.top-padY)/scale };
+  }
+
+  function pick(svgId,vx,vy){
+    const m=meta[svgId]; if(!m||!m.pos) return null;
+    let best=null,bd=Infinity;
+    for(const k in m.pos){
+      const d=Math.hypot(m.pos[k].x-vx, m.pos[k].y-vy);
+      if(d<bd){ bd=d; best=k; }
+    }
+    return (best!==null && bd<=(m.radius||26)) ? best : null;
+  }
+
+  // Instala el arrastre una sola vez por svgId. redraw() debe re-renderizar.
+  function attach(svgId,redraw,opts){
+    opts=opts||{};
+    const svg=document.getElementById(svgId); if(!svg) return;
+    if(meta[svgId]){ meta[svgId].redraw=redraw; meta[svgId].radius=opts.radius||26; return; } // ya instalado
+    const m={redraw,radius:opts.radius||26,pos:null,drag:null};
+    meta[svgId]=m;
+    svg.style.touchAction='none';
+    svg.classList.add('graph-drag');
+    // pista visual (una sola vez)
+    const host=svg.parentNode;
+    if(host && !host.querySelector('.hint-drag')){
+      const h=document.createElement('div');
+      h.className='hint-drag';
+      h.textContent='✋ Podés arrastrar los nodos para reordenarlos. El algoritmo no cambia.';
+      host.appendChild(h);
+    }
+
+    function start(clientX,clientY){
+      const p=toVB(svg,clientX,clientY);
+      const node=pick(svgId,p.x,p.y);
+      if(node===null) return false;
+      const cur=(store[svgId]&&store[svgId][node])||m.pos[node];
+      m.drag={node, dx:cur.x-p.x, dy:cur.y-p.y};
+      svg.classList.add('dragging');
+      return true;
+    }
+    function move(clientX,clientY){
+      if(!m.drag) return;
+      const p=toVB(svg,clientX,clientY);
+      (store[svgId]=store[svgId]||{})[m.drag.node]={x:p.x+m.drag.dx, y:p.y+m.drag.dy};
+      m.redraw();
+    }
+    function end(){ if(m.drag){ m.drag=null; svg.classList.remove('dragging'); persist(); } }
+
+    svg.addEventListener('mousedown',e=>{ if(start(e.clientX,e.clientY)){ e.preventDefault(); } });
+    window.addEventListener('mousemove',e=>{ if(m.drag){ move(e.clientX,e.clientY); e.preventDefault(); } });
+    window.addEventListener('mouseup',end);
+    svg.addEventListener('touchstart',e=>{ const t=e.touches[0]; if(t&&start(t.clientX,t.clientY)){ e.preventDefault(); } },{passive:false});
+    svg.addEventListener('touchmove',e=>{ const t=e.touches[0]; if(m.drag&&t){ move(t.clientX,t.clientY); e.preventDefault(); } },{passive:false});
+    svg.addEventListener('touchend',end);
+    // primer redraw para que apply() cachee las posiciones efectivas (necesario para el hit-test)
+    try{ m.redraw(); }catch(e){}
+  }
+
+  return {apply,attach,reset};
+})();
+
+/* ===== formato de entrada de grafos: lista vs matriz ===== */
+function gfmt(p){
+  const matriz=document.getElementById(p+'-fmt').value==='matriz';
+  document.getElementById(p+'-lista').classList.toggle('hidden',matriz);
+  document.getElementById(p+'-matriz').classList.toggle('hidden',!matriz);
+}
+function gEdges(p,weighted,directed){
+  if(document.getElementById(p+'-fmt').value==='matriz'){
+    return GU.matrixToGraph(document.getElementById(p+'-matrix').value,document.getElementById(p+'-labels').value,{weighted,directed});
+  }
+  return {edgeStr:document.getElementById(p+'-edges').value,labels:null};
+}
+
+/* ========================================================= */
+/* ======================  COLOREO  ======================== */
+/* ========================================================= */
+const CL=(function(){
+  let steps=[],cur=0,autoTimer=null,layout=null,order=[],degmap={};
+  const PALETTE=['#ef4444','#3b82f6','#22c55e','#f59e0b','#a855f7','#14b8a6','#ec4899','#84cc16','#0ea5e9','#f97316'];
+  const UNCOLORED='#d1d5db';
+
+  function parse(edgesStr,vertsStr){
+    const adj={},vorder=[];
+    const add=v=>{if(!(v in adj)){adj[v]=new Set();vorder.push(v);}};
+    // vertices declarados primero (definen orden secuencial)
+    vertsStr.split(/[,\s]+/).map(x=>x.trim()).filter(Boolean).forEach(add);
+    const edges=[];
+    edgesStr.split(',').map(x=>x.trim()).filter(Boolean).forEach(e=>{
+      const m=e.split(/[-–—]/).map(x=>x.trim()).filter(Boolean);
+      if(m.length!==2) throw new Error('Arista inválida: "'+e+'". Usá el formato X-Y.');
+      const [u,v]=m;
+      if(u===v) throw new Error('Bucle no permitido: "'+e+'".');
+      add(u);add(v);adj[u].add(v);adj[v].add(u);edges.push([u,v]);
+    });
+    if(!vorder.length) throw new Error('Cargá al menos una arista o vértice.');
+    if(vorder.length>14) throw new Error('Para que el grafo se vea bien, usá hasta 14 vértices.');
+    return {adj,vorder,edges};
+  }
+
+  function buildSteps(adj,vorder,algo){
+    degmap={};vorder.forEach(v=>degmap[v]=adj[v].size);
+    order=vorder.slice();
+    if(algo==='wp') order.sort((a,b)=>degmap[b]-degmap[a]);          // estable: ties = orden de entrada
+    else if(algo==='matula') order.sort((a,b)=>degmap[a]-degmap[b]);
+    const names={wp:'Welsh-Powell (grado decreciente)',seq:'Secuencial (orden dado)',matula:'Matula (grado creciente)'};
+    const steps=[],color={};
+    steps.push({type:'order',color:{},cur:null,
+      msg:`Algoritmo: ${names[algo]}. Orden de proceso → ${order.map(v=>`${v}(g${degmap[v]})`).join(', ')}. A cada vértice le asigno el menor color que no usen sus vecinos ya coloreados.`});
+    order.forEach((v,idx)=>{
+      const colored=[...adj[v]].filter(u=>color[u]).sort();
+      const used=new Set(colored.map(u=>color[u]));
+      let c=1;while(used.has(c))c++;
+      color[v]=c;
+      const usedTxt=colored.length?colored.map(u=>`${u}=color ${color[u]}`).join(', '):'ninguno';
+      const forb=[...used].sort((a,b)=>a-b);
+      steps.push({type:'assign',cur:v,color:Object.assign({},color),ord:idx+1,deg:degmap[v],forb,assigned:c,
+        msg:`Vértice ${v} (grado ${degmap[v]}). Vecinos ya coloreados: ${usedTxt}. Colores prohibidos: {${forb.join(', ')||'—'}}. Menor color libre → color ${c}.`});
+    });
+    const cg=Math.max(0,...Object.values(color));
+    steps.push({type:'final',cur:null,color:Object.assign({},color),cg,
+      msg:`✓ Coloreo completo con ${cg} colores → c(G) = ${cg}. Recordá: es una cota (c(G) ≥ C(G)), no necesariamente el óptimo.`});
+    return steps;
+  }
+
+  function buildLayout(vorder,edges){
+    const cx=230,cy=215,R=160,n=vorder.length,pos={};
+    vorder.forEach((v,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n;pos[v]={x:cx+R*Math.cos(ang),y:cy+R*Math.sin(ang)};});
+    return {pos,edges,vorder};
+  }
+
+  function renderGraph(st){
+    const {edges,vorder}=layout,svg=document.getElementById('cl-graph');
+    const pos=DRAG.apply('cl-graph',layout.pos);
+    let s='';
+    edges.forEach(([u,v])=>{s+=`<line x1="${pos[u].x}" y1="${pos[u].y}" x2="${pos[v].x}" y2="${pos[v].y}" stroke="#cbd5e1" stroke-width="2"/>`;});
+    vorder.forEach(v=>{
+      const cnum=st.color[v],fill=cnum?PALETTE[(cnum-1)%PALETTE.length]:UNCOLORED;
+      const isCur=st.cur===v,r=isCur?23:19;
+      const txtFill=cnum?'#fff':'#374151';
+      s+=`<g>
+        <circle cx="${pos[v].x}" cy="${pos[v].y}" r="${r}" fill="${fill}" stroke="${isCur?'#1f2430':'rgba(0,0,0,.18)'}" stroke-width="${isCur?4:1.5}"/>
+        <text x="${pos[v].x}" y="${pos[v].y+5}" text-anchor="middle" font-size="15" font-weight="700" fill="${txtFill}">${v}</text>
+        ${cnum?`<text x="${pos[v].x}" y="${pos[v].y-r-5}" text-anchor="middle" font-size="11" fill="#6b7280">c${cnum}</text>`:''}
+      </g>`;
+    });
+    svg.innerHTML=s;
+  }
+
+  function renderPalette(st){
+    const used=new Set(Object.values(st.color));
+    const max=Math.max(0,...used);
+    const el=document.getElementById('cl-palette');
+    if(!max){el.innerHTML='<span class="small">todavía sin colores</span>';return;}
+    let s='';
+    for(let c=1;c<=max;c++)s+=`<span><i class="dot" style="background:${PALETTE[(c-1)%PALETTE.length]}"></i> Color ${c}</span>`;
+    el.innerHTML=s;
+  }
+
+  function renderOrder(st){
+    const el=document.getElementById('cl-order');
+    if(!order.length){el.innerHTML='';return;}
+    const doneSet=new Set(Object.keys(st.color));
+    el.innerHTML=order.map(v=>{
+      let c='ochip';
+      if(st.cur===v)c+=' cur';
+      else if(doneSet.has(v))c+=' done';
+      return `<span class="${c}">${v}<span style="opacity:.6;font-size:.8em"> g${degmap[v]}</span></span>`;
+    }).join('');
+  }
+
+  function renderStep(){
+    const st=steps[cur];
+    document.getElementById('cl-stepcount').textContent=`Paso ${cur+1} / ${steps.length}`;
+    document.getElementById('cl-prev').disabled=cur===0;
+    document.getElementById('cl-next').disabled=cur===steps.length-1;
+    const pt=document.getElementById('cl-phasetag');
+    pt.className='phasetag '+(st.type==='final'?'tag-done':'tag-order');
+    pt.textContent=st.type==='order'?'Orden':st.type==='final'?'Resuelto':`Coloreando ${st.cur}`;
+    renderOrder(st);renderGraph(st);renderPalette(st);
+    document.getElementById('cl-explain').textContent=st.msg;
+    const cg=Math.max(0,...Object.values(st.color));
+    document.getElementById('cl-cg').textContent=`c(G) = ${cg||'—'}`+(st.type==='final'?' (final)':' (parcial)');
+    // tabla de asignación paso a paso
+    let rows='';
+    for(let i=0;i<=cur;i++){
+      const s=steps[i];
+      if(s.type!=='assign') continue;
+      const isCur=i===cur;
+      const dot=`<span class="dot" style="background:${PALETTE[(s.assigned-1)%PALETTE.length]};width:12px;height:12px;vertical-align:-1px"></span>`;
+      rows+=`<tr class="${isCur?'cur':''}"><td>${s.ord}</td><td><b>${s.cur}</b></td><td>${s.deg}</td><td>{${s.forb.join(', ')||'—'}}</td><td>${dot} color ${s.assigned}</td></tr>`;
+    }
+    document.querySelector('#cl-table tbody').innerHTML=rows;
+  }
+
+  function resolver(){
+    stopAuto();const err=document.getElementById('cl-err');err.textContent='';
+    let g;try{
+      const f=gEdges('cl',false,false);
+      const vertsStr=f.labels?f.labels.join(', '):document.getElementById('cl-verts').value;
+      g=parse(f.edgeStr,vertsStr);
+    }catch(e){err.textContent=e.message;return;}
+    const algo=document.getElementById('cl-algo').value;
+    steps=buildSteps(g.adj,g.vorder,algo);layout=buildLayout(g.vorder,g.edges);cur=0;
+    DRAG.reset('cl-graph');
+    document.getElementById('cl-viz').classList.remove('hidden');
+    renderStep();
+    DRAG.attach('cl-graph',()=>renderStep());
+    document.getElementById('cl-viz').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));renderStep();}
+  function toggleAuto(){if(autoTimer){stopAuto();return;}document.getElementById('cl-auto').textContent='⏸ Pausar';autoTimer=setInterval(()=>{if(cur>=steps.length-1){stopAuto();return;}cur++;renderStep();},1000);}
+  function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}const b=document.getElementById('cl-auto');if(b)b.textContent='▶ Auto';}
+  function ejemplo(){
+    document.getElementById('cl-edges').value='B-A, B-E, D-E, D-H, E-I, A-F, F-C, F-G, F-I, F-J, C-G, G-J, I-J, I-H';
+    document.getElementById('cl-verts').value='A, B, C, D, E, F, G, H, I, J';
+    resolver();
+  }
+  return {resolver,paso,toggleAuto,stopAuto,ejemplo};
+})();
+
+/* ========================================================= */
+/* ============  UTIL GRAFOS PONDERADOS (Kruskal/Prim)  ===== */
+/* ========================================================= */
+const GU=(function(){
+  function parseW(edgesStr){
+    const adj={},vorder=[],edges=[];
+    const add=v=>{if(!(v in adj)){adj[v]=[];vorder.push(v);}};
+    edgesStr.split(',').map(x=>x.trim()).filter(Boolean).forEach(tok=>{
+      const m=tok.match(/^([A-Za-z0-9_]+)\s*[-–—]\s*([A-Za-z0-9_]+)\s*[\s:=(]\s*(-?\d+(?:\.\d+)?)\s*\)?$/);
+      if(!m) throw new Error('Arista inválida: "'+tok+'". Usá el formato u-v:peso (ej. a-b:4).');
+      const u=m[1],v=m[2],w=Number(m[3]);
+      if(u===v) throw new Error('Bucle no permitido: "'+tok+'".');
+      add(u);add(v);
+      adj[u].push({to:v,w});adj[v].push({to:u,w});
+      edges.push({u,v,w});
+    });
+    if(!vorder.length) throw new Error('Cargá al menos una arista.');
+    if(vorder.length>14) throw new Error('Para que el grafo se vea bien, usá hasta 14 vértices.');
+    return {adj,vorder,edges};
+  }
+  function layout(vorder){
+    const cx=230,cy=215,R=160,n=vorder.length,pos={};
+    vorder.forEach((v,i)=>{const a=-Math.PI/2+i*2*Math.PI/n;pos[v]={x:cx+R*Math.cos(a),y:cy+R*Math.sin(a)};});
+    return pos;
+  }
+  function norm(u,v,w){return [u,v].sort().join('~')+'~'+w;}
+  function render(svgId,pos,vorder,edges,edgeStyle,nodeStyle){
+    pos=DRAG.apply(svgId,pos);
+    let s='';
+    edges.forEach((e,i)=>{
+      const st=edgeStyle(e,i);
+      const x1=pos[e.u].x,y1=pos[e.u].y,x2=pos[e.v].x,y2=pos[e.v].y,mx=(x1+x2)/2,my=(y1+y2)/2;
+      s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st.stroke}" stroke-width="${st.width}"${st.dash?' stroke-dasharray="5 4"':''}/>`;
+      s+=`<rect x="${mx-11}" y="${my-9}" width="22" height="17" rx="4" fill="#fff" opacity="0.92"/>`;
+      s+=`<text x="${mx}" y="${my+3}" text-anchor="middle" font-size="11" font-weight="700" fill="${st.label||'#9ca3af'}">${e.w}</text>`;
+    });
+    vorder.forEach(v=>{
+      const ns=nodeStyle(v);
+      s+=`<circle cx="${pos[v].x}" cy="${pos[v].y}" r="${ns.r||19}" fill="${ns.fill}" stroke="${ns.stroke}" stroke-width="${ns.sw}"/>`;
+      s+=`<text x="${pos[v].x}" y="${pos[v].y+5}" text-anchor="middle" font-size="14" font-weight="700" fill="${ns.text}">${v}</text>`;
+    });
+    document.getElementById(svgId).innerHTML=s;
+  }
+  const PRAC='a-b:4, a-h:8, b-c:8, b-h:11, c-d:7, c-f:4, c-i:2, d-e:9, d-f:14, e-f:10, f-g:2, h-i:7, h-g:1, i-g:6';
+  const CANON='a-d:4, a-b:2, a-f:5, d-b:1, d-e:2, b-e:3, b-f:8, b-g:4, b-c:7, e-c:10, f-g:1, g-c:6';
+  function matrixToGraph(mtxStr,labelsStr,opts){
+    const rows=(mtxStr||'').trim().split(/\r?\n/).map(r=>r.trim()).filter(Boolean)
+      .map(r=>r.split(/[\s,;]+/).filter(s=>s.length).map(Number));
+    const n=rows.length;
+    if(!n) throw new Error('La matriz está vacía.');
+    rows.forEach((r,i)=>{
+      if(r.length!==n) throw new Error(`La matriz debe ser cuadrada: la fila ${i+1} tiene ${r.length} valores pero hay ${n} filas.`);
+      r.forEach(x=>{if(!Number.isFinite(x)) throw new Error(`La matriz tiene un valor no numérico en la fila ${i+1}.`);});
+    });
+    let labels;
+    if(labelsStr && labelsStr.trim()){
+      labels=labelsStr.split(/[,\s]+/).map(s=>s.trim()).filter(Boolean);
+      if(labels.length!==n) throw new Error(`Diste ${labels.length} etiquetas pero la matriz es ${n}×${n}.`);
+      if(new Set(labels).size!==labels.length) throw new Error('Hay etiquetas repetidas.');
+    }else{
+      labels=Array.from({length:n},(_,i)=> n<=26?String.fromCharCode(97+i):String(i+1));
+    }
+    const out=[];
+    if(opts.directed){
+      for(let i=0;i<n;i++)for(let j=0;j<n;j++){
+        if(i===j)continue;const w=rows[i][j];if(w===0)continue;
+        out.push(opts.weighted?`${labels[i]}-${labels[j]}:${w}`:`${labels[i]}-${labels[j]}`);
+      }
+    }else{
+      for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){
+        const w=rows[i][j]||rows[j][i];if(w===0)continue;
+        out.push(opts.weighted?`${labels[i]}-${labels[j]}:${w}`:`${labels[i]}-${labels[j]}`);
+      }
+    }
+    if(!out.length) throw new Error('La matriz no define ninguna arista (todo ceros fuera de la diagonal).');
+    return {edgeStr:out.join(', '),labels};
+  }
+  return {parseW,layout,norm,render,matrixToGraph,PRAC,CANON};
+})();
+
+/* ========================================================= */
+/* ======================  KRUSKAL  ======================== */
+/* ========================================================= */
+const KR=(function(){
+  let steps=[],cur=0,autoTimer=null,pos=null,edgesAll=[],vorder=[],sorted=[];
+
+  function find(p,x){while(p[x]!==x){p[x]=p[p[x]];x=p[x];}return x;}
+
+  function buildSteps(g,umode){
+    vorder=g.vorder; edgesAll=g.edges;
+    sorted=g.edges.map((e,i)=>({u:e.u,v:e.v,w:e.w,ord:i})).sort((a,b)=>a.w-b.w||a.ord-b.ord);
+    const p={},sz={}; vorder.forEach(v=>{p[v]=v;sz[v]=1;});
+    const comps=()=>{const gr={};vorder.forEach(v=>{const r=find(p,v);(gr[r]=gr[r]||[]).push(v);});return Object.values(gr).map(a=>a.slice().sort());};
+    const reps=()=>{const r={};vorder.forEach(v=>r[v]=find(p,v));return r;};
+    const S=[];
+    S.push({type:'start',table:[],mstOrd:[],rejOrd:[],weight:0,comps:comps(),reps:reps(),fu:null,fv:null,hot:[],cur:null,
+      msg:'Aristas ordenadas por peso (ver lista). Cada nodo arranca siendo su propio representante. Acepto de menor a mayor si no cierran ciclo.'});
+    let weight=0,accepted=0; const mstOrd=[],rejOrd=[],table=[];
+    for(const e of sorted){
+      if(accepted>=vorder.length-1) break;
+      const ru=find(p,e.u),rv=find(p,e.v),cycle=ru===rv; let hot=[];
+      if(!cycle){
+        if(umode==='v2u'){p[rv]=ru;sz[ru]+=sz[rv];}            // raíz(v) cuelga de raíz(u)
+        else if(umode==='u2v'){p[ru]=rv;sz[rv]+=sz[ru];}        // raíz(u) cuelga de raíz(v)
+        else if(sz[ru]<sz[rv]){p[ru]=rv;sz[rv]+=sz[ru];}else{p[rv]=ru;sz[ru]+=sz[rv];} // por tamaño
+        weight+=e.w;accepted++;mstOrd.push(e.ord);hot=[e.u,e.v];
+      }else rejOrd.push(e.ord);
+      table.push({paso:table.length+1,arista:`${e.u}-${e.v} (${e.w})`,cycle,accept:!cycle,weight});
+      S.push({type:'eval',cur:e,paso:table.length,accept:!cycle,cycle,fu:ru,fv:rv,reps:reps(),
+        table:table.slice(),mstOrd:mstOrd.slice(),rejOrd:rejOrd.slice(),weight,comps:comps(),hot,
+        msg:cycle
+          ?`Arista ${e.u}-${e.v} (${e.w}): find(${e.u})=${ru} y find(${e.v})=${rv} → SON IGUALES → ya están en el mismo componente → cerraría un ciclo → SE DESCARTA.`
+          :`Arista ${e.u}-${e.v} (${e.w}): find(${e.u})=${ru} y find(${e.v})=${rv} → SON DISTINTOS → no hay ciclo → SE ACEPTA y union(${e.u},${e.v}). Peso acumulado = ${weight}.`});
+    }
+    const conn=accepted===vorder.length-1;
+    S.push({type:'final',cur:null,fu:null,fv:null,reps:reps(),table:table.slice(),mstOrd:mstOrd.slice(),rejOrd:rejOrd.slice(),weight,comps:comps(),hot:[],
+      msg:conn?`✓ MST completo: ${accepted} aristas (V−1 = ${vorder.length-1}) y W(MST) = ${weight}.`
+              :`Se agotaron las aristas con ${accepted} aceptadas (faltan para ${vorder.length-1}). Grafo disconexo → bosque (Spanning Forest), W = ${weight}.`});
+    return S;
+  }
+
+  function render(){
+    const st=steps[cur];
+    document.getElementById('kr-stepcount').textContent=`Paso ${cur+1} / ${steps.length}`;
+    document.getElementById('kr-prev').disabled=cur===0;
+    document.getElementById('kr-next').disabled=cur===steps.length-1;
+    const pt=document.getElementById('kr-phasetag');
+    pt.className='phasetag '+(st.type==='final'?'tag-done':'tag-order');
+    pt.textContent=st.type==='start'?'Inicio':st.type==='final'?'Resuelto':(st.accept?'Acepta':'Descarta');
+    const mstSet=new Set(st.mstOrd),rejSet=new Set(st.rejOrd),curOrd=st.cur?st.cur.ord:-1;
+    GU.render('kr-graph',pos,vorder,edgesAll,
+      (e,i)=>{
+        if(mstSet.has(i)) return {stroke:'#059669',width:i===curOrd?5:4,label:'#059669'};
+        if(i===curOrd) return {stroke:'#dc2626',width:3,dash:true,label:'#dc2626'};
+        if(rejSet.has(i)) return {stroke:'#fca5a5',width:1.5,dash:true,label:'#9ca3af'};
+        return {stroke:'#cbd5e1',width:2,label:'#9ca3af'};
+      },
+      v=>{const hot=st.hot.includes(v);return {fill:hot?'#d1fae5':'#fff',stroke:hot?'#059669':'#94a3b8',sw:hot?3:1.5,text:'#1f2430'};});
+    // comps
+    const hotSet=new Set(st.hot);
+    document.getElementById('kr-comps').innerHTML=st.comps.map(c=>{
+      const hot=c.some(v=>hotSet.has(v));
+      return `<span class="comp${hot?' hot':''}">{${c.join(', ')}}</span>`;
+    }).join('');
+    // sorted list
+    document.getElementById('kr-sorted').innerHTML=sorted.map(e=>{
+      const isCur=st.cur&&e.ord===st.cur.ord;
+      return `<span class="pqe${isCur?' min':''}">${e.u}-${e.v}:${e.w}</span>`;
+    }).join('');
+    document.getElementById('kr-explain').textContent=st.msg;
+    document.getElementById('kr-w').textContent=`W(MST) = ${st.weight}`+(st.type==='final'?'':' (parcial)');
+    // tabla union-find (representante de cada nodo, fila por paso)
+    document.querySelector('#kr-uf thead').innerHTML=
+      '<tr><th>Paso</th><th>Arista</th><th>find(u)</th><th>find(v)</th><th>¿Ciclo?</th>'+vorder.map(v=>`<th>${v}</th>`).join('')+'</tr>';
+    let ufRows='',prev=null;
+    for(let i=0;i<=cur;i++){
+      const s=steps[i];
+      if(s.type==='final') continue;
+      const cells=vorder.map(v=>{
+        const changed=prev&&prev[v]!==s.reps[v];
+        return `<td class="${changed?'chg':''}">${s.reps[v]}</td>`;
+      }).join('');
+      if(s.type==='start'){
+        ufRows+=`<tr><td>—</td><td>inicial</td><td>—</td><td>—</td><td>—</td>${cells}</tr>`;
+      }else{
+        const isCur=i===cur,cyc=s.fu===s.fv;
+        ufRows+=`<tr class="${isCur?'cur':''}"><td>${s.paso}</td><td>${s.cur.u}-${s.cur.v}</td><td>${s.fu}</td><td>${s.fv}</td><td class="${cyc?'no':'yes'}">${cyc?'Sí':'No'}</td>${cells}</tr>`;
+      }
+      prev=s.reps;
+    }
+    document.querySelector('#kr-uf tbody').innerHTML=ufRows;
+  }
+
+  function resolver(){
+    stopAuto();const err=document.getElementById('kr-err');err.textContent='';
+    let g;try{g=GU.parseW(gEdges('kr',true,false).edgeStr);}catch(e){err.textContent=e.message;return;}
+    const umode=document.getElementById('kr-union').value;
+    pos=GU.layout(g.vorder);steps=buildSteps(g,umode);cur=0;
+    DRAG.reset('kr-graph');
+    document.getElementById('kr-viz').classList.remove('hidden');render();
+    DRAG.attach('kr-graph',()=>render());
+    document.getElementById('kr-viz').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
+  function toggleAuto(){if(autoTimer){stopAuto();return;}document.getElementById('kr-auto').textContent='⏸ Pausar';autoTimer=setInterval(()=>{if(cur>=steps.length-1){stopAuto();return;}cur++;render();},1000);}
+  function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}const b=document.getElementById('kr-auto');if(b)b.textContent='▶ Auto';}
+  function ejemplo(which){document.getElementById('kr-edges').value=which==='canon'?GU.CANON:GU.PRAC;resolver();}
+  return {resolver,paso,toggleAuto,stopAuto,ejemplo};
+})();
+
+/* ========================================================= */
+/* ========================  PRIM  ========================= */
+/* ========================================================= */
+const PR=(function(){
+  let steps=[],cur=0,autoTimer=null,pos=null,edgesAll=[],vorder=[];
+
+  function buildSteps(g,start){
+    vorder=g.vorder;edgesAll=g.edges;
+    const adj=g.adj;
+    if(!(start in adj)) throw new Error(`El nodo inicial "${start}" no está en el grafo.`);
+    const visited=new Set([start]);let pq=[];
+    const push=node=>adj[node].forEach(e=>{if(!visited.has(e.to))pq.push({u:node,v:e.to,w:e.w});});
+    push(start);
+    const S=[],mst=[],table=[];let weight=0;
+    const snapPQ=()=>pq.slice().sort((a,b)=>a.w-b.w);
+    S.push({type:'start',visited:[...visited],pq:snapPQ(),mst:[],weight:0,cur:null,table:[],
+      msg:`Arranco el árbol en ${start}. Cargo en la cola de prioridad sus aristas hacia nodos no visitados.`});
+    while(visited.size<vorder.length&&pq.length){
+      pq.sort((a,b)=>a.w-b.w);
+      const e=pq.shift();
+      if(visited.has(e.v)){
+        table.push({paso:table.length+1,arista:`${e.u}-${e.v} (${e.w})`,stale:true,accept:false,weight});
+        S.push({type:'skip',cur:e,visited:[...visited],pq:snapPQ(),mst:mst.slice(),weight,table:table.slice(),
+          msg:`Extraigo la mínima ${e.u}-${e.v} (${e.w}), pero ${e.v} ya está en el árbol → entrada vieja (stale), se descarta sin agregar nada.`});
+      }else{
+        visited.add(e.v);mst.push(e);weight+=e.w;push(e.v);
+        table.push({paso:table.length+1,arista:`${e.u}-${e.v} (${e.w})`,stale:false,accept:true,weight});
+        S.push({type:'add',cur:e,visited:[...visited],pq:snapPQ(),mst:mst.slice(),weight,table:table.slice(),
+          msg:`Extraigo la mínima ${e.u}-${e.v} (${e.w}). ${e.v} no estaba en el árbol → lo agrego, sumo ${e.w} (acumulado = ${weight}) y cargo sus aristas hacia nodos no visitados.`});
+      }
+    }
+    const conn=visited.size===vorder.length;
+    S.push({type:'final',cur:null,visited:[...visited],pq:snapPQ(),mst:mst.slice(),weight,table:table.slice(),
+      msg:conn?`✓ MST completo: ${mst.length} aristas (V−1 = ${vorder.length-1}) y W(MST) = ${weight}.`
+              :`Cola vacía con ${visited.size}/${vorder.length} nodos en el árbol → el grafo es disconexo desde ${start}.`});
+    return S;
+  }
+
+  function render(){
+    const st=steps[cur];
+    document.getElementById('pr-stepcount').textContent=`Paso ${cur+1} / ${steps.length}`;
+    document.getElementById('pr-prev').disabled=cur===0;
+    document.getElementById('pr-next').disabled=cur===steps.length-1;
+    const pt=document.getElementById('pr-phasetag');
+    pt.className='phasetag '+(st.type==='final'?'tag-done':'tag-order');
+    pt.textContent=st.type==='start'?'Inicio':st.type==='final'?'Resuelto':st.type==='add'?'Agrega':'Descarta';
+    const mstKeys=new Set(st.mst.map(e=>GU.norm(e.u,e.v,e.w)));
+    const curKey=st.cur?GU.norm(st.cur.u,st.cur.v,st.cur.w):null;
+    const vis=new Set(st.visited);
+    GU.render('pr-graph',pos,vorder,edgesAll,
+      (e)=>{
+        const k=GU.norm(e.u,e.v,e.w);
+        if(mstKeys.has(k)) return {stroke:'#059669',width:4,label:'#059669'};
+        if(k===curKey) return {stroke:st.type==='add'?'#059669':'#dc2626',width:3,dash:st.type!=='add',label:st.type==='add'?'#059669':'#dc2626'};
+        return {stroke:'#cbd5e1',width:2,label:'#9ca3af'};
+      },
+      v=>{const inT=vis.has(v);return {fill:inT?'#dbeafe':'#fff',stroke:inT?'#2563eb':'#94a3b8',sw:inT?3:1.5,text:'#1f2430'};});
+    document.getElementById('pr-pq').innerHTML=st.pq.length?st.pq.map((e,i)=>`<span class="pqe${i===0?' min':''}">${e.u}-${e.v}:${e.w}</span>`).join(''):'<span class="small">(vacía)</span>';
+    document.getElementById('pr-visited').innerHTML=st.visited.map(v=>`<span class="comp">${v}</span>`).join('');
+    document.getElementById('pr-explain').textContent=st.msg;
+    document.getElementById('pr-w').textContent=`W(MST) = ${st.weight}`+(st.type==='final'?'':' (parcial)');
+    const tb=document.querySelector('#pr-table tbody');
+    tb.innerHTML=st.table.map((r,k)=>{
+      const isCur=k===st.table.length-1&&(st.type==='add'||st.type==='skip');
+      return `<tr class="${isCur?'cur':''}"><td>${r.paso}</td><td>${r.arista}</td><td class="${r.stale?'no':'yes'}">${r.stale?'Sí':'No'}</td><td class="${r.accept?'yes':'no'}">${r.accept?'Sí':'No'}</td><td>${r.weight}</td></tr>`;
+    }).join('');
+  }
+
+  function resolver(){
+    stopAuto();const err=document.getElementById('pr-err');err.textContent='';
+    let g;try{g=GU.parseW(gEdges('pr',true,false).edgeStr);}catch(e){err.textContent=e.message;return;}
+    const start=document.getElementById('pr-start').value.trim();
+    let S;try{pos=GU.layout(g.vorder);S=buildSteps(g,start);}catch(e){err.textContent=e.message;return;}
+    steps=S;cur=0;
+    DRAG.reset('pr-graph');
+    document.getElementById('pr-viz').classList.remove('hidden');render();
+    DRAG.attach('pr-graph',()=>render());
+    document.getElementById('pr-viz').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
+  function toggleAuto(){if(autoTimer){stopAuto();return;}document.getElementById('pr-auto').textContent='⏸ Pausar';autoTimer=setInterval(()=>{if(cur>=steps.length-1){stopAuto();return;}cur++;render();},1000);}
+  function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}const b=document.getElementById('pr-auto');if(b)b.textContent='▶ Auto';}
+  function ejemplo(which){document.getElementById('pr-edges').value=which==='canon'?GU.CANON:GU.PRAC;document.getElementById('pr-start').value='a';resolver();}
+  return {resolver,paso,toggleAuto,stopAuto,ejemplo};
+})();
+
+/* ========================================================= */
+/* ======================  DIJKSTRA  ======================= */
+/* ========================================================= */
+const DK=(function(){
+  let steps=[],cur=0,autoTimer=null,pos=null,edgesAll=[],vorder=[],directed=false,startNode=null,targetNode=null,pathEdges=null;
+  const INF=Infinity;
+  const fmt=d=>d===INF?'∞':String(d);
+
+  function parseDK(edgesStr,dir){
+    const adj={},vord=[],edges=[];
+    const add=v=>{if(!(v in adj)){adj[v]=[];vord.push(v);}};
+    edgesStr.split(',').map(x=>x.trim()).filter(Boolean).forEach(tok=>{
+      const m=tok.match(/^([A-Za-z0-9_]+)\s*[-–—>]+\s*([A-Za-z0-9_]+)\s*[\s:=(]\s*(-?\d+(?:\.\d+)?)\s*\)?$/);
+      if(!m) throw new Error('Arista inválida: "'+tok+'". Usá el formato u-v:peso (ej. a-b:7).');
+      const u=m[1],v=m[2],w=Number(m[3]);
+      if(u===v) throw new Error('Bucle no permitido: "'+tok+'".');
+      add(u);add(v);
+      adj[u].push({to:v,w});
+      if(!dir) adj[v].push({to:u,w});
+      edges.push({u,v,w});
+    });
+    if(!vord.length) throw new Error('Cargá al menos una arista.');
+    if(vord.length>14) throw new Error('Para que el grafo se vea bien, usá hasta 14 vértices.');
+    return {adj,vorder:vord,edges};
+  }
+
+  function buildSteps(g,start,target){
+    vorder=g.vorder;edgesAll=g.edges;
+    if(!(start in g.adj)) throw new Error(`El nodo origen "${start}" no está en el grafo.`);
+    if(target && !(target in g.adj)) throw new Error(`El nodo destino "${target}" no está en el grafo.`);
+    const dist={},prev={},visited=new Set();
+    vorder.forEach(v=>{dist[v]=INF;prev[v]=null;});
+    dist[start]=0;
+    const snap=()=>({dist:Object.assign({},dist),prev:Object.assign({},prev),visited:[...visited]});
+    const S=[];
+    S.push(Object.assign({type:'start',cur:null,chg:[],relaxed:[]},snap(),
+      {msg:`Inicializo: dist(${start}) = 0 y dist(resto) = ∞. Ningún nodo finalizado todavía. En cada iteración finalizo el no visitado de menor distancia.`}));
+    while(visited.size<vorder.length){
+      // elegir no visitado de menor dist
+      let u=null,best=INF;
+      vorder.forEach(v=>{if(!visited.has(v)&&dist[v]<best){best=dist[v];u=v;}});
+      if(u===null) break; // resto inalcanzable
+      visited.add(u);
+      const chg=[];const relaxed=[];
+      g.adj[u].forEach(e=>{
+        if(visited.has(e.to))return;
+        const nd=dist[u]+e.w;
+        if(nd<dist[e.to]){
+          relaxed.push({v:e.to,old:dist[e.to],nw:nd,via:u});
+          dist[e.to]=nd;prev[e.to]=u;chg.push(e.to);
+        }
+      });
+      const relaxTxt=relaxed.length
+        ? relaxed.map(r=>`${r.v}: ${r.old===INF?'∞':r.old} → ${r.nw} (vía ${u})`).join('; ')
+        : 'ninguna mejora';
+      S.push(Object.assign({type:'select',cur:u,chg,relaxed},snap(),
+        {msg:`Finalizo ${u} (menor distancia entre los no visitados: dist=${fmt(best)}). Relajo sus aristas → ${relaxTxt}.`}));
+    }
+    // reconstruir camino al destino
+    let path=null;
+    if(target){
+      if(dist[target]===INF){
+        path={ok:false};
+      }else{
+        const seq=[];let x=target;while(x!==null){seq.unshift(x);x=prev[x];}
+        path={ok:true,seq,cost:dist[target]};
+      }
+    }
+    const reach=vorder.filter(v=>dist[v]<INF).length;
+    let finalMsg=`✓ Dijkstra completo desde ${start}. `;
+    if(target){
+      finalMsg+= path.ok
+        ? `Camino mínimo a ${target}: ${path.seq.join(' → ')} con costo ${path.cost}.`
+        : `${target} es inalcanzable desde ${start} (dist = ∞).`;
+    } else {
+      finalMsg+= reach===vorder.length?`Todos los nodos son alcanzables.`:`${reach}/${vorder.length} nodos alcanzables (el resto queda en ∞).`;
+    }
+    S.push(Object.assign({type:'final',cur:null,chg:[],relaxed:[]},snap(),{msg:finalMsg,path}));
+    return {steps:S,path};
+  }
+
+  function arrow(x1,y1,x2,y2,r,color,width,dash){
+    // recorta la línea en el borde de los nodos y dibuja punta si es dirigido
+    const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
+    const sx=x1+ux*r,sy=y1+uy*r,ex=x2-ux*r,ey=y2-uy*r;
+    let s=`<line x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${color}" stroke-width="${width}"${dash?' stroke-dasharray="5 4"':''}/>`;
+    if(directed){
+      const ah=9,aw=5,bx=ex-ux*ah,by=ey-uy*ah,px=-uy,py=ux;
+      s+=`<polygon points="${ex.toFixed(1)},${ey.toFixed(1)} ${(bx+px*aw).toFixed(1)},${(by+py*aw).toFixed(1)} ${(bx-px*aw).toFixed(1)},${(by-py*aw).toFixed(1)}" fill="${color}"/>`;
+    }
+    return {s,mx:(sx+ex)/2,my:(sy+ey)/2};
+  }
+
+  function render(){
+    const st=steps[cur];
+    document.getElementById('dk-stepcount').textContent=`Paso ${cur+1} / ${steps.length}`;
+    document.getElementById('dk-prev').disabled=cur===0;
+    document.getElementById('dk-next').disabled=cur===steps.length-1;
+    const pt=document.getElementById('dk-phasetag');
+    pt.className='phasetag '+(st.type==='final'?'tag-done':'tag-order');
+    pt.textContent=st.type==='start'?'Inicio':st.type==='final'?'Resuelto':`Finaliza ${st.cur}`;
+    const vis=new Set(st.visited);
+    // aristas del árbol de caminos mínimos según prev actual
+    const treeSet=new Set();
+    vorder.forEach(v=>{if(st.prev[v]!==null)treeSet.add(st.prev[v]+'>'+v);});
+    // aristas del camino final resaltado
+    const pSet=new Set();
+    if(st.type==='final'&&pathEdges)pathEdges.forEach(k=>pSet.add(k));
+    const chgSet=new Set(st.chg);
+    const NR=19;
+    const dpos=DRAG.apply('dk-graph',pos);
+    let svg='';
+    edgesAll.forEach(e=>{
+      const a=dpos[e.u],b=dpos[e.v];
+      const key=e.u+'>'+e.v, keyR=e.v+'>'+e.u;
+      const inTree=treeSet.has(key)||(!directed&&treeSet.has(keyR));
+      const inPath=pSet.has(key)||(!directed&&pSet.has(keyR));
+      // arista que se está relajando ahora (desde cur hacia un chg)
+      const relaxingNow=st.cur && ((e.u===st.cur&&chgSet.has(e.v))||(!directed&&e.v===st.cur&&chgSet.has(e.u)));
+      let color='#cbd5e1',width=2,dash=false,label='#9ca3af';
+      if(inPath){color='#dc2626';width=5;label='#dc2626';}
+      else if(inTree){color='#059669';width=4;label='#059669';}
+      if(relaxingNow){color='#d97706';width=4;dash=false;label='#d97706';}
+      const ar=arrow(a.x,a.y,b.x,b.y,NR,color,width,dash);
+      svg+=ar.s;
+      svg+=`<rect x="${(ar.mx-11).toFixed(1)}" y="${(ar.my-9).toFixed(1)}" width="22" height="17" rx="4" fill="#fff" opacity="0.92"/>`;
+      svg+=`<text x="${ar.mx.toFixed(1)}" y="${(ar.my+3).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="${label}">${e.w}</text>`;
+    });
+    vorder.forEach(v=>{
+      const isCur=st.cur===v, fin=vis.has(v)&&!isCur;
+      const fill=isCur?'#fef3c7':fin?'#dbeafe':'#fff';
+      const stroke=isCur?'#d97706':fin?'#2563eb':'#94a3b8';
+      const sw=isCur?4:fin?3:1.5;
+      svg+=`<circle cx="${dpos[v].x}" cy="${dpos[v].y}" r="${NR}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+      svg+=`<text x="${dpos[v].x}" y="${dpos[v].y+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">${v}</text>`;
+      const d=st.dist[v];
+      svg+=`<text x="${dpos[v].x}" y="${dpos[v].y-NR-5}" text-anchor="middle" font-size="11" font-weight="700" fill="${d===INF?'#9ca3af':'#2563eb'}">${fmt(d)}</text>`;
+    });
+    document.getElementById('dk-graph').innerHTML=svg;
+    // distancias (chips)
+    document.getElementById('dk-dists').innerHTML=vorder.map(v=>{
+      const d=st.dist[v],fin=vis.has(v),hot=chgSet.has(v);
+      const p=st.prev[v]?`<span style="opacity:.6">·${st.prev[v]}</span>`:'';
+      return `<span class="comp${hot?' hot':''}" style="${fin?'opacity:.55':''}">${v}: ${fmt(d)}${p}${fin?' ✓':''}</span>`;
+    }).join('');
+    // no visitados
+    const unvis=vorder.filter(v=>!vis.has(v)).map(v=>({v,d:st.dist[v]})).sort((a,b)=>a.d-b.d);
+    document.getElementById('dk-pq').innerHTML=unvis.length
+      ? unvis.map((o,i)=>`<span class="pqe${i===0&&o.d!==INF?' min':''}">${o.v}:${fmt(o.d)}</span>`).join('')
+      : '<span class="small">(todos finalizados)</span>';
+    document.getElementById('dk-explain').textContent=st.msg;
+    // resultado pill
+    const resEl=document.getElementById('dk-res');
+    if(st.type==='final'&&targetNode){
+      const p=st.path;
+      resEl.textContent=p.ok?`${startNode} → ${targetNode}: ${p.cost}`:`${targetNode}: inalcanzable`;
+    }else{
+      resEl.textContent=`origen ${startNode}`;
+    }
+    renderTable();
+  }
+
+  function renderTable(){
+    document.querySelector('#dk-table thead').innerHTML=
+      '<tr><th>Iter</th><th>Elegido</th>'+vorder.map(v=>`<th>${v}</th>`).join('')+'</tr>';
+    // qué nodos están finalizados en cada fila (acumulado)
+    let rows='',iter=0;
+    for(let i=0;i<=cur;i++){
+      const s=steps[i];
+      if(s.type==='final') continue;
+      const finSet=new Set(s.visited);
+      const chgSet=new Set(s.chg);
+      const cells=vorder.map(v=>{
+        const d=s.dist[v];
+        const fin=finSet.has(v)&&s.cur!==v;
+        const sub=s.prev[v]?`<sub>${s.prev[v]}</sub>`:'';
+        const cls=chgSet.has(v)?'chg':'';
+        const style=fin?'color:#9ca3af':'';
+        const isPicked=s.cur===v;
+        return `<td class="${cls}" style="${style}${isPicked?';background:#fef3c7;font-weight:700':''}">${fmt(d)}${d===INF?'':sub}</td>`;
+      }).join('');
+      const isCur=i===cur;
+      if(s.type==='start'){
+        rows+=`<tr class="${isCur?'cur':''}"><td>0</td><td>inicial</td>${cells}</tr>`;
+      }else{
+        iter++;
+        rows+=`<tr class="${isCur?'cur':''}"><td>${iter}</td><td><b>${s.cur}</b> (${fmt(s.dist[s.cur])})</td>${cells}</tr>`;
+      }
+    }
+    document.querySelector('#dk-table tbody').innerHTML=rows;
+  }
+
+  function resolver(){
+    stopAuto();const err=document.getElementById('dk-err');err.textContent='';
+    const dir=document.getElementById('dk-dir').value==='dir';
+    let g;try{g=parseDK(gEdges('dk',true,dir).edgeStr,dir);}catch(e){err.textContent=e.message;return;}
+    directed=dir;
+    const start=document.getElementById('dk-start').value.trim();
+    const target=document.getElementById('dk-target').value.trim();
+    if(g.edges.some(e=>e.w<0))err.textContent='⚠ Hay pesos negativos: Dijkstra puede dar un resultado incorrecto. Para grafos con aristas negativas usá Bellman-Ford.';
+    let out;try{pos=GU.layout(g.vorder);out=buildSteps(g,start,target||null);}catch(e){err.textContent=e.message;return;}
+    DRAG.reset('dk-graph');
+    startNode=start;targetNode=target||null;
+    pathEdges=null;
+    if(out.path&&out.path.ok){pathEdges=[];for(let k=0;k<out.path.seq.length-1;k++)pathEdges.push(out.path.seq[k]+'>'+out.path.seq[k+1]);}
+    steps=out.steps;cur=0;
+    document.getElementById('dk-viz').classList.remove('hidden');render();
+    DRAG.attach('dk-graph',()=>render());
+    document.getElementById('dk-viz').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
+  function toggleAuto(){if(autoTimer){stopAuto();return;}document.getElementById('dk-auto').textContent='⏸ Pausar';autoTimer=setInterval(()=>{if(cur>=steps.length-1){stopAuto();return;}cur++;render();},1000);}
+  function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}const b=document.getElementById('dk-auto');if(b)b.textContent='▶ Auto';}
+  function ejemplo(which){
+    if(which==='prac'){
+      document.getElementById('dk-edges').value=GU.PRAC;
+      document.getElementById('dk-dir').value='undir';
+      document.getElementById('dk-start').value='a';
+      document.getElementById('dk-target').value='e';
+    }else{
+      document.getElementById('dk-edges').value='a-b:7, a-c:9, a-f:14, b-c:10, b-d:15, c-d:11, c-f:2, d-e:6, e-f:9';
+      document.getElementById('dk-dir').value='undir';
+      document.getElementById('dk-start').value='a';
+      document.getElementById('dk-target').value='e';
+    }
+    resolver();
+  }
+  return {resolver,paso,toggleAuto,stopAuto,ejemplo};
+})();
+
+/* ========================================================= */
+/* ===================  MONTICULO / HEAP  ================== */
+/* ========================================================= */
+const HP=(function(){
+  let steps=[],cur=0,autoTimer=null,lay=null,maxN=0,isMin=true;
+
+  function parseVals(s){
+    const parts=s.split(/[,\s]+/).map(x=>x.trim()).filter(Boolean);
+    if(!parts.length) throw new Error('Cargá al menos un valor.');
+    const nums=parts.map(p=>{const n=Number(p);if(!Number.isFinite(n))throw new Error('Valor no numérico: "'+p+'".');return n;});
+    if(nums.length>31) throw new Error('Para que el árbol se vea bien, usá hasta 31 valores.');
+    return nums;
+  }
+
+  function buildLayout(n){
+    const xpos={};let c=0;
+    (function ino(i){if(i>n)return;ino(2*i);xpos[i]=c++;ino(2*i+1);})(1);
+    const depth=i=>Math.floor(Math.log2(i));
+    const maxd=n>=1?depth(n):0;
+    const slotW=44,levelH=62,W=Math.max(300,c*slotW),pos={};
+    for(let i=1;i<=n;i++)pos[i]={x:(xpos[i]+0.5)*(W/Math.max(1,c)),y:30+depth(i)*levelH};
+    return {pos,W,height:30+maxd*levelH+34,depth};
+  }
+
+  // === motor de pasos ===
+  function makeEngine(){
+    const h=[null]; let swaps=0; let HS=0, SF=1; const S=[];
+    const lt=(a,b)=>isMin?a<b:a>b;
+    const sym=isMin?'<':'>', symNot=isMin?'≥':'≤', tname=isMin?'mínimo':'máximo';
+    const push=o=>S.push(Object.assign({arr:h.slice(),heapSize:HS,sortedFrom:SF,swaps},o));
+    const swap=(i,j)=>{const t=h[i];h[i]=h[j];h[j]=t;};
+    function siftUp(i){
+      while(i>1){
+        const p=i>>1,vi=h[i],vp=h[p];
+        if(lt(vi,vp)){
+          swap(i,p);swaps++;
+          push({act:p,other:i,tag:'up',action:`swap ${i}↔${p}`,
+            msg:`Comparo pos ${i} (${vi}) con su padre pos ${p} (${vp}): ${vi} ${sym} ${vp} → rompe la condición, intercambio. ${vi} sube a la pos ${p}.`});
+          i=p;
+        }else{
+          push({act:i,other:p,tag:'up',action:`pos ${i} ok`,
+            msg:`Comparo pos ${i} (${vi}) con su padre pos ${p} (${vp}): ${vi} ${symNot} ${vp} → cumple la condición de ${tname}, se detiene.`});
+          return;
+        }
+      }
+      push({act:1,other:null,tag:'up',action:'raíz',msg:`pos 1 es la raíz: no tiene padre, se detiene.`});
+    }
+    function siftDown(i,size){
+      while(true){
+        const l=2*i,r=l+1;let ext=i;
+        if(l<=size&&lt(h[l],h[ext]))ext=l;
+        if(r<=size&&lt(h[r],h[ext]))ext=r;
+        if(ext!==i){
+          const vi=h[i],ve=h[ext];
+          swap(i,ext);swaps++;
+          push({act:ext,other:i,tag:'down',action:`swap ${i}↔${ext}`,
+            msg:`pos ${i} (${vi}) vs su hijo ${isMin?'menor':'mayor'} pos ${ext} (${ve}): ${ve} ${sym} ${vi} → intercambio, ${vi} baja a la pos ${ext}.`});
+          i=ext;
+        }else{
+          const hasChild=2*i<=size;
+          push({act:i,other:null,tag:'down',action:`pos ${i} ok`,
+            msg:hasChild?`pos ${i} (${h[i]}) ya cumple con sus hijos → termina.`:`pos ${i} (${h[i]}) es hoja (sin hijos) → termina.`});
+          return;
+        }
+      }
+    }
+    return {h,S,push,siftUp,siftDown,getSwaps:()=>swaps,
+      setHS:v=>{HS=v;},setSF:v=>{SF=v;},lt,sym,symNot,tname,
+      swapRaw:swap};
+  }
+
+  function buildInsert(vals){
+    const E=makeEngine();const{h,S,push,siftUp}=E;
+    E.setHS(0);E.setSF(1);
+    push({act:null,other:null,tag:'start',action:'inicio',msg:`Heap de ${isMin?'mínimo':'máximo'} vacío. Inserto los valores uno por uno; cada uno entra al final y sube con sift-up.`});
+    let n=0;
+    vals.forEach(v=>{
+      n++;h[n]=v;E.setHS(n);E.setSF(n+1);
+      push({act:n,other:n>1?(n>>1):null,tag:'place',action:`insertar ${v}`,
+        msg:`Inserto ${v} en la pos ${n} (último lugar libre). Ahora aplico sift-up.`});
+      siftUp(n);
+    });
+    E.setHS(n);E.setSF(n+1);
+    push({act:null,other:null,tag:'final',action:'fin',msg:`✓ Heap de ${isMin?'mínimo':'máximo'} construido con ${n} elementos. Intercambios totales: ${E.getSwaps()}.`,res:`Heap válido ✓`});
+    return S;
+  }
+
+  function buildFloyd(vals){
+    const E=makeEngine();const{h,S,push,siftDown}=E;
+    const n=vals.length;for(let k=1;k<=n;k++)h[k]=vals[k-1];
+    E.setHS(n);E.setSF(n+1);
+    push({act:null,other:null,tag:'start',action:'inicio',msg:`Array inicial cargado tal cual (todavía no es un heap). Aplico sift-down desde la pos ⌊n/2⌋ = ${Math.floor(n/2)} hacia la raíz.`});
+    for(let i=Math.floor(n/2);i>=1;i--){
+      push({act:i,other:null,tag:'floyd',action:`sift-down ${i}`,msg:`Aplico sift-down a la pos ${i} (valor ${h[i]}).`});
+      siftDown(i,n);
+    }
+    push({act:null,other:null,tag:'final',action:'fin',msg:`✓ Heap de ${isMin?'mínimo':'máximo'} construido con Floyd en O(n). Intercambios totales: ${E.getSwaps()}.`,res:`Heap válido ✓`});
+    return S;
+  }
+
+  function isValidHeap(vals){
+    for(let i=2;i<=vals.length;i++){const p=i>>1;if(isMin?vals[i-1]<vals[p-1]:vals[i-1]>vals[p-1])return false;}
+    return true;
+  }
+
+  function buildExtract(vals){
+    if(!isValidHeap(vals)) throw new Error(`El input no es un heap de ${isMin?'mínimo':'máximo'} válido. Usá el modo "Construir" primero, o pegá un heap correcto.`);
+    const E=makeEngine();const{h,S,push,siftDown,swapRaw}=E;
+    let n=vals.length;for(let k=1;k<=n;k++)h[k]=vals[k-1];
+    E.setHS(n);E.setSF(n+1);
+    push({act:1,other:null,tag:'start',action:'inicio',msg:`Heap válido. La raíz (pos 1 = ${h[1]}) es el elemento de mayor prioridad a extraer.`});
+    const root=h[1],last=h[n];
+    swapRaw(1,n);E.getSwaps();
+    E.setHS(n-1);E.setSF(n);
+    push({act:1,other:n,tag:'extract',action:`extraer ${root}`,
+      msg:`Extraigo la raíz ${root}. Muevo el último elemento (${last}, pos ${n}) a la raíz y reduzco el heap a ${n-1} elementos. La pos ${n} queda fuera del heap.`});
+    siftDown(1,n-1);
+    push({act:null,other:null,tag:'final',action:'fin',msg:`✓ Raíz extraída: ${root}. El heap quedó con ${n-1} elementos y la condición de ${isMin?'mínimo':'máximo'} restaurada.`,res:`Extraído: ${root}`});
+    return S;
+  }
+
+  function buildHeapsort(vals){
+    const E=makeEngine();const{h,S,push,siftDown,swapRaw}=E;
+    const n=vals.length;for(let k=1;k<=n;k++)h[k]=vals[k-1];
+    E.setHS(n);E.setSF(n+1);
+    push({act:null,other:null,tag:'start',action:'inicio',msg:`Fase 1: construyo el heap con Floyd (sift-down desde ⌊n/2⌋).`});
+    for(let i=Math.floor(n/2);i>=1;i--){
+      push({act:i,other:null,tag:'floyd',action:`sift-down ${i}`,msg:`Build-heap: sift-down a la pos ${i} (valor ${h[i]}).`});
+      siftDown(i,n);
+    }
+    push({act:1,other:null,tag:'floyd',action:'heap listo',msg:`Heap construido. Fase 2: extraigo el extremo repetidamente, colocándolo al final del array.`});
+    for(let k=n;k>=2;k--){
+      const top=h[1],end=h[k];
+      swapRaw(1,k);
+      E.setHS(k-1);E.setSF(k);
+      push({act:1,other:k,tag:'move',action:`fijar ${top}→pos ${k}`,
+        msg:`Intercambio la raíz ${top} (pos 1) con la pos ${k} (${end}): ${top} queda fijo en su lugar final (pos ${k}). Reduzco el heap a ${k-1} y hago sift-down de la raíz.`});
+      siftDown(1,k-1);
+    }
+    E.setHS(0);E.setSF(1);
+    const sortedArr=h.slice(1);
+    push({act:null,other:null,tag:'final',action:'fin',
+      msg:`✓ HeapSort completo. Array ${isMin?'descendente':'ascendente'}: [${sortedArr.join(', ')}]. Intercambios totales: ${E.getSwaps()}.`,
+      res:`Ordenado: [${sortedArr.join(', ')}]`});
+    return S;
+  }
+
+  // === render ===
+  function render(){
+    const st=steps[cur];
+    document.getElementById('hp-stepcount').textContent=`Paso ${cur+1} / ${steps.length}`;
+    document.getElementById('hp-prev').disabled=cur===0;
+    document.getElementById('hp-next').disabled=cur===steps.length-1;
+    const labels={start:['tag-base','Inicio'],place:['tag-divide','Insertar'],up:['tag-divide','Sube · sift-up'],
+      down:['tag-merge','Baja · sift-down'],floyd:['tag-merge','Sift-down'],extract:['tag-order','Extrae'],
+      move:['tag-order','Al final'],final:['tag-done','Resuelto']};
+    const [cls,txt]=labels[st.tag]||['tag-order','—'];
+    const pt=document.getElementById('hp-phasetag');pt.className='phasetag '+cls;pt.textContent=txt;
+    const curN=st.arr.length-1, HS=st.heapSize;
+    // árbol
+    const svg=document.getElementById('hp-graph');
+    svg.setAttribute('viewBox',`0 0 ${lay.W} ${lay.height}`);
+    let s='';
+    for(let i=2;i<=curN;i++){
+      const p=i>>1,a=lay.pos[p],b=lay.pos[i];if(!a||!b)continue;
+      const faded=(i>HS||p>HS);
+      s+=`<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="${faded?'#e5e7eb':'#cbd5e1'}" stroke-width="${faded?1.2:2}"/>`;
+    }
+    for(let i=1;i<=curN;i++){
+      const pp=lay.pos[i];if(!pp)continue;
+      const removed=i>HS;
+      const isAct=st.act===i,isOther=st.other===i;
+      let fill='#fff',stroke='#94a3b8',sw=1.5,tcol='#1f2430';
+      if(removed){fill='#f3f4f6';stroke='#cbd5e1';tcol='#9ca3af';}
+      if(isOther){fill='#dbeafe';stroke='#2563eb';sw=3;}
+      if(isAct){fill='#fef3c7';stroke='#d97706';sw=4;}
+      s+=`<circle cx="${pp.x.toFixed(1)}" cy="${pp.y.toFixed(1)}" r="17" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+      s+=`<text x="${pp.x.toFixed(1)}" y="${(pp.y+5).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="700" fill="${tcol}">${st.arr[i]}</text>`;
+      s+=`<text x="${pp.x.toFixed(1)}" y="${(pp.y-23).toFixed(1)}" text-anchor="middle" font-size="9" fill="#9ca3af">${i}</text>`;
+    }
+    svg.innerHTML=s;
+    // vector
+    const vec=document.getElementById('hp-vec');
+    let vs=`<div class="cell" style="background:#f3f4f6;color:#9ca3af;min-width:34px"><span class="idx">0</span>—</div>`;
+    for(let i=1;i<=curN;i++){
+      const removed=i>HS,isAct=st.act===i,isOther=st.other===i;
+      let style='min-width:38px;';
+      if(removed)style+='background:#f3f4f6;color:#9ca3af;';
+      if(isOther)style+='outline:3px solid #2563eb;outline-offset:1px;';
+      if(isAct)style+='outline:3px solid #d97706;outline-offset:1px;';
+      vs+=`<div class="cell" style="${style}"><span class="idx">${i}</span>${st.arr[i]}</div>`;
+    }
+    vec.innerHTML=vs;
+    document.getElementById('hp-explain').textContent=st.msg;
+    document.getElementById('hp-swaps').textContent=`Intercambios: ${st.swaps}`;
+    const resEl=document.getElementById('hp-res');
+    resEl.textContent=st.res?st.res:(isMin?'heap de mínimo':'heap de máximo');
+    // tabla
+    document.querySelector('#hp-table thead').innerHTML=
+      '<tr><th>Paso</th><th>Acción</th><th>Int.</th>'+Array.from({length:maxN},(_,k)=>`<th>${k+1}</th>`).join('')+'</tr>';
+    let rows='';
+    for(let r=0;r<=cur;r++){
+      const s2=steps[r];const cn=s2.arr.length-1;
+      const cells=Array.from({length:maxN},(_,k)=>{
+        const pos=k+1;
+        if(pos>cn)return `<td></td>`;
+        const removed=pos>s2.heapSize;
+        const chg=(s2.act===pos||s2.other===pos);
+        const style=removed?'color:#9ca3af;background:#f3f4f6':'';
+        return `<td class="${chg?'chg':''}" style="${style}">${s2.arr[pos]}</td>`;
+      }).join('');
+      rows+=`<tr class="${r===cur?'cur':''}"><td>${r}</td><td style="text-align:left;white-space:nowrap">${s2.action}</td><td>${s2.swaps}</td>${cells}</tr>`;
+    }
+    document.querySelector('#hp-table tbody').innerHTML=rows;
+  }
+
+  function resolver(){
+    stopAuto();const err=document.getElementById('hp-err');err.textContent='';
+    let vals;try{vals=parseVals(document.getElementById('hp-vals').value);}catch(e){err.textContent=e.message;return;}
+    isMin=document.getElementById('hp-type').value==='min';
+    const op=document.getElementById('hp-op').value;
+    maxN=vals.length;lay=buildLayout(maxN);
+    let S;try{
+      S = op==='floyd'?buildFloyd(vals):op==='extract'?buildExtract(vals):op==='heapsort'?buildHeapsort(vals):buildInsert(vals);
+    }catch(e){err.textContent=e.message;document.getElementById('hp-viz').classList.add('hidden');return;}
+    steps=S;cur=0;
+    document.getElementById('hp-viz').classList.remove('hidden');render();
+    document.getElementById('hp-viz').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
+  function toggleAuto(){if(autoTimer){stopAuto();return;}document.getElementById('hp-auto').textContent='⏸ Pausar';autoTimer=setInterval(()=>{if(cur>=steps.length-1){stopAuto();return;}cur++;render();},900);}
+  function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}const b=document.getElementById('hp-auto');if(b)b.textContent='▶ Auto';}
+  return {resolver,paso,toggleAuto,stopAuto};
+})();
+
+/* ========================================================= */
+/* ==================  RECORRIDOS DFS/BFS  ================= */
+/* ========================================================= */
+const TR=(function(){
+  let steps=[],cur=0,autoTimer=null,pos=null,edgesAll=[],vorder=[],directed=false,kind='dfs';
+
+  function parseTR(edgeStr,dir){
+    const adj={},vord=[],edges=[];
+    const add=v=>{if(!(v in adj)){adj[v]=[];vord.push(v);}};
+    edgeStr.split(',').map(x=>x.trim()).filter(Boolean).forEach(tok=>{
+      const m=tok.match(/^([A-Za-z0-9_]+)\s*[-–—>]+\s*([A-Za-z0-9_]+)(?:\s*[:=(]\s*-?\d+(?:\.\d+)?\s*\)?)?$/);
+      if(!m) throw new Error('Arista inválida: "'+tok+'". Usá el formato u-v (el peso es opcional y se ignora).');
+      const u=m[1],v=m[2];
+      if(u===v) throw new Error('Bucle no permitido: "'+tok+'".');
+      add(u);add(v);
+      adj[u].push(v);
+      if(!dir) adj[v].push(u);
+      edges.push({u,v});
+    });
+    if(!vord.length) throw new Error('Cargá al menos una arista.');
+    if(vord.length>14) throw new Error('Para que el grafo se vea bien, usá hasta 14 vértices.');
+    return {adj,vorder:vord,edges};
+  }
+
+  function ncmp(a,b){const na=Number(a),nb=Number(b);if(Number.isFinite(na)&&Number.isFinite(nb))return na-nb;return a<b?-1:a>b?1:0;}
+  function neighbors(adj,v,ord){
+    const ns=adj[v].slice();
+    if(ord==='asc') ns.sort(ncmp);
+    // 'load' = orden de carga (como vienen en adj); dedup conservando primero
+    const seen=new Set(),out=[];
+    ns.forEach(n=>{if(!seen.has(n)){seen.add(n);out.push(n);}});
+    return out;
+  }
+
+  function buildDFS(g,start,ord){
+    const adj=g.adj;vorder=g.vorder;edgesAll=g.edges;
+    if(!(start in adj)) throw new Error(`El nodo inicial "${start}" no está en el grafo.`);
+    const visited=new Set(),order=[],parent={};
+    const stack=[{node:start,parent:null}];
+    const S=[];
+    const snap=(extra)=>Object.assign({struct:stack.map(e=>e.node),visited:[...order],order:[...order],parent:Object.assign({},parent),dist:null},extra);
+    S.push(snap({cur:null,pushed:[],tag:'start',action:'apilar inicio',msg:`Apilo el nodo inicial ${start}. En cada paso desapilo el tope; si no está visitado, lo visito y apilo sus vecinos no visitados.`}));
+    while(stack.length){
+      const e=stack.pop();const v=e.node;
+      if(visited.has(v)){
+        S.push(snap({cur:v,pushed:[],tag:'skip',action:`desapilar ${v} (ya visitado)`,msg:`Desapilo ${v}, pero ya estaba visitado → se descarta sin hacer nada.`}));
+        continue;
+      }
+      visited.add(v);order.push(v);if(e.parent!==null)parent[v]=e.parent;
+      const ns=neighbors(adj,v,ord).filter(n=>!visited.has(n));
+      // apilar en orden elegido: para que el primero del orden se explore primero, apilar al revés
+      const toPush=ns.slice().reverse();
+      toPush.forEach(n=>stack.push({node:n,parent:v}));
+      S.push(snap({cur:v,pushed:ns.slice(),tag:'visit',action:`visitar ${v}`,
+        msg:`Desapilo y visito ${v}. Apilo sus vecinos no visitados: ${ns.length?ns.join(', '):'(ninguno)'}. ${ns.length?'El primero del orden queda arriba para explorarse primero.':''}`}));
+    }
+    finalStep(S,visited,'pila');
+    return S;
+  }
+
+  function buildBFS(g,start,ord){
+    const adj=g.adj;vorder=g.vorder;edgesAll=g.edges;
+    if(!(start in adj)) throw new Error(`El nodo inicial "${start}" no está en el grafo.`);
+    const visited=new Set([start]),order=[],parent={},dist={};
+    vorder.forEach(v=>dist[v]=Infinity);dist[start]=0;
+    const queue=[start];
+    const S=[];
+    const snap=(extra)=>Object.assign({struct:queue.slice(),visited:[...order],order:[...order],parent:Object.assign({},parent),dist:Object.assign({},dist)},extra);
+    S.push(snap({cur:null,pushed:[],tag:'start',action:'encolar inicio',msg:`Encolo el nodo inicial ${start} con distancia 0 y lo marco visitado. En cada paso desencolo el frente y encolo sus vecinos no visitados.`}));
+    while(queue.length){
+      const v=queue.shift();order.push(v);
+      const ns=neighbors(adj,v,ord).filter(n=>!visited.has(n));
+      ns.forEach(n=>{visited.add(n);dist[n]=dist[v]+1;parent[n]=v;queue.push(n);});
+      S.push(snap({cur:v,pushed:ns.slice(),tag:'visit',action:`procesar ${v}`,
+        msg:`Desencolo ${v} (distancia ${dist[v]}). Encolo sus vecinos no visitados con distancia ${dist[v]+1}: ${ns.length?ns.join(', '):'(ninguno)'}.`}));
+    }
+    finalStep(S,visited,'cola',dist);
+    return S;
+  }
+
+  function finalStep(S,visited,structName,dist){
+    const unv=vorder.filter(v=>!visited.has(v));
+    let msg=`✓ Recorrido completo. Orden de visita: ${[...visited].length?vorder.filter(v=>visited.has(v)).length+' nodos':'—'}. `;
+    // orden real: reconstruir desde último snap.order
+    const lastOrder=S[S.length-1].order;
+    msg=`✓ Recorrido completo desde el inicio. Orden de visita: ${lastOrder.join(' → ')}. `;
+    if(unv.length) msg+=`Nodos no alcanzados (otra componente conexa${dist?', distancia ∞':''}): ${unv.join(', ')}.`;
+    else msg+=`Se visitaron todos los nodos: el grafo (desde el inicio) es una sola componente.`;
+    const last=S[S.length-1];
+    S.push(Object.assign({},last,{cur:null,pushed:[],tag:'final',action:'fin',struct:[],msg}));
+  }
+
+  function arrow(x1,y1,x2,y2,r,color,width){
+    const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
+    const sx=x1+ux*r,sy=y1+uy*r,ex=x2-ux*r,ey=y2-uy*r;
+    let s=`<line x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${color}" stroke-width="${width}"/>`;
+    if(directed){const ah=9,aw=5,bx=ex-ux*ah,by=ey-uy*ah,px=-uy,py=ux;
+      s+=`<polygon points="${ex.toFixed(1)},${ey.toFixed(1)} ${(bx+px*aw).toFixed(1)},${(by+py*aw).toFixed(1)} ${(bx-px*aw).toFixed(1)},${(by-py*aw).toFixed(1)}" fill="${color}"/>`;}
+    return s;
+  }
+
+  function render(){
+    const st=steps[cur];
+    document.getElementById('tr-stepcount').textContent=`Paso ${cur+1} / ${steps.length}`;
+    document.getElementById('tr-prev').disabled=cur===0;
+    document.getElementById('tr-next').disabled=cur===steps.length-1;
+    const pt=document.getElementById('tr-phasetag');
+    pt.className='phasetag '+(st.tag==='final'?'tag-done':st.tag==='skip'?'tag-merge':'tag-order');
+    pt.textContent=st.tag==='start'?'Inicio':st.tag==='final'?'Resuelto':st.tag==='skip'?`Descarta ${st.cur}`:`Visita ${st.cur}`;
+    const vis=new Set(st.visited);
+    const treeSet=new Set();
+    Object.keys(st.parent).forEach(v=>treeSet.add(st.parent[v]+'>'+v));
+    const NR=18;
+    const dpos=DRAG.apply('tr-graph',pos);
+    let svg='';
+    edgesAll.forEach(e=>{
+      const a=dpos[e.u],b=dpos[e.v];
+      const key=e.u+'>'+e.v,keyR=e.v+'>'+e.u;
+      const inTree=treeSet.has(key)||(!directed&&treeSet.has(keyR));
+      const justNow=st.cur&&((e.u===st.cur&&st.pushed.includes(e.v))||(!directed&&e.v===st.cur&&st.pushed.includes(e.u)));
+      let color='#cbd5e1',width=2;
+      if(inTree){color='#059669';width=4;}
+      if(justNow){color='#d97706';width=4;}
+      svg+=arrow(a.x,a.y,b.x,b.y,NR,color,width);
+    });
+    vorder.forEach(v=>{
+      const isCur=st.cur===v,seen=vis.has(v)&&!isCur;
+      const fill=isCur?'#fef3c7':seen?'#dbeafe':'#fff';
+      const stroke=isCur?'#d97706':seen?'#2563eb':'#94a3b8';
+      const sw=isCur?4:seen?3:1.5;
+      svg+=`<circle cx="${dpos[v].x}" cy="${dpos[v].y}" r="${NR}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+      svg+=`<text x="${dpos[v].x}" y="${dpos[v].y+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2430">${v}</text>`;
+      if(st.dist){const d=st.dist[v];svg+=`<text x="${dpos[v].x}" y="${dpos[v].y-NR-5}" text-anchor="middle" font-size="11" font-weight="700" fill="${d===Infinity?'#9ca3af':'#2563eb'}">${d===Infinity?'∞':d}</text>`;}
+    });
+    document.getElementById('tr-graph').innerHTML=svg;
+    // estructura
+    document.getElementById('tr-structlbl').textContent=(kind==='dfs'?'Pila (tope a la derecha)':'Cola (frente a la izquierda)');
+    const struct=st.struct;
+    document.getElementById('tr-struct').innerHTML=struct.length
+      ? struct.map((n,i)=>{const top=kind==='dfs'?i===struct.length-1:i===0;return `<span class="pqe${top?' min':''}">${n}</span>`;}).join('')
+      : '<span class="small">(vacía)</span>';
+    document.getElementById('tr-visited').innerHTML=st.order.length
+      ? st.order.map((v,i)=>`<span class="comp${st.cur===v?' hot':''}">${i+1}. ${v}</span>`).join('')
+      : '<span class="small">(ninguno aún)</span>';
+    // distancias
+    const dw=document.getElementById('tr-distwrap');
+    if(st.dist){dw.classList.remove('hidden');
+      document.getElementById('tr-dist').innerHTML=vorder.map(v=>`<span class="comp">${v}: ${st.dist[v]===Infinity?'∞':st.dist[v]}</span>`).join('');
+    }else dw.classList.add('hidden');
+    document.getElementById('tr-explain').textContent=st.msg;
+    document.getElementById('tr-res').textContent=(kind==='dfs'?'DFS':'BFS')+(st.tag==='final'?' · '+st.order.length+' visitados':'');
+    // tabla
+    const distCol=kind==='bfs';
+    document.querySelector('#tr-table thead').innerHTML=
+      '<tr><th>Paso</th><th>Operación</th><th>'+(kind==='dfs'?'Pila':'Cola')+'</th><th>Visitados</th>'+(distCol?'<th>d(actual)</th>':'')+'</tr>';
+    let rows='';
+    for(let i=0;i<=cur;i++){
+      const s=steps[i];
+      const structStr=s.struct.length?s.struct.join(' '):'∅';
+      const visStr=s.order.length?s.order.join(' '):'∅';
+      const dcell=distCol?`<td>${s.cur&&s.dist?(s.dist[s.cur]===Infinity?'∞':s.dist[s.cur]):'—'}</td>`:'';
+      rows+=`<tr class="${i===cur?'cur':''}"><td>${i}</td><td style="text-align:left;white-space:nowrap">${s.action}</td><td style="white-space:nowrap">${structStr}</td><td style="text-align:left">${visStr}</td>${dcell}</tr>`;
+    }
+    document.querySelector('#tr-table tbody').innerHTML=rows;
+  }
+
+  function resolver(){
+    stopAuto();const err=document.getElementById('tr-err');err.textContent='';
+    directed=document.getElementById('tr-dir').value==='dir';
+    let g;try{g=parseTR(gEdges('tr',false,directed).edgeStr,directed);}catch(e){err.textContent=e.message;return;}
+    kind=document.getElementById('tr-algo').value;
+    const start=document.getElementById('tr-start').value.trim();
+    const ord=document.getElementById('tr-order').value;
+    let S;try{pos=GU.layout(g.vorder);S=kind==='bfs'?buildBFS(g,start,ord):buildDFS(g,start,ord);}catch(e){err.textContent=e.message;return;}
+    steps=S;cur=0;
+    DRAG.reset('tr-graph');
+    document.getElementById('tr-viz').classList.remove('hidden');render();
+    DRAG.attach('tr-graph',()=>render());
+    document.getElementById('tr-viz').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
+  function toggleAuto(){if(autoTimer){stopAuto();return;}document.getElementById('tr-auto').textContent='⏸ Pausar';autoTimer=setInterval(()=>{if(cur>=steps.length-1){stopAuto();return;}cur++;render();},900);}
+  function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}const b=document.getElementById('tr-auto');if(b)b.textContent='▶ Auto';}
+  return {resolver,paso,toggleAuto,stopAuto};
+})();
+
+/* ===== teclado ===== */
+
+/* ========================================================= */
+/* ============  PIZARRA (árbol/grafo manual)  ============== */
+/* ========================================================= */
+const PZ=(function(){
+  const LS='hpa-pz-board-v1';
+  const HINT='Clic en un nodo para seleccionarlo · arrastrá desde la barra gris · doble clic en el lienzo crea un nodo.';
+  const STATES=['','exp','pod','sol'];
+  let nodes=[], edges=[], seq=1, sel=null, connectMode=false, connSrc=null, canvas=null, svg=null;
+
+  function save(){ try{ localStorage.setItem(LS,JSON.stringify({nodes,edges,seq})); }catch(e){} }
+  function load(){ try{ const d=JSON.parse(localStorage.getItem(LS)); if(d&&d.nodes){nodes=d.nodes;edges=d.edges||[];seq=d.seq||(nodes.length+1);} }catch(e){} }
+
+  function getNode(id){ return nodes.find(n=>n.id===id); }
+  function elNode(id){ return canvas.querySelector('.pz-node[data-id="'+id+'"]'); }
+
+  function hint(msg){ const h=document.getElementById('pz-hint'); if(!h)return; h.style.color=''; h.textContent=msg?msg:HINT; }
+  function flash(msg){ const h=document.getElementById('pz-hint'); if(!h)return; h.textContent='⚠ '+msg; h.style.color='#b91c1c'; setTimeout(()=>{h.style.color='';h.textContent=HINT;},2400); }
+  function select(id){ sel=id; render(); }
+
+  function autoresize(ta){ ta.style.height='auto'; ta.style.height=Math.max(ta.scrollHeight,28)+'px'; }
+
+  function center(n){ const el=elNode(n.id); const w=el?el.offsetWidth:130, h=el?el.offsetHeight:60; return {x:n.x+w/2,y:n.y+h/2,w:w,h:h}; }
+  function borderPoint(towards,box){
+    const dx=towards.x-box.x, dy=towards.y-box.y;
+    if(!dx&&!dy)return {x:box.x,y:box.y};
+    const sx=dx?(box.w/2)/Math.abs(dx):Infinity, sy=dy?(box.h/2)/Math.abs(dy):Infinity;
+    const t=Math.min(sx,sy);
+    return {x:box.x+dx*t,y:box.y+dy*t};
+  }
+
+  function drawEdges(){
+    if(!svg)return;
+    let s='<defs><marker id="pz-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#94a3b8"/></marker></defs>';
+    edges.forEach(e=>{
+      const a=getNode(e.from), b=getNode(e.to); if(!a||!b)return;
+      const ca=center(a), cb=center(b);
+      const p1=borderPoint(cb,ca), p2=borderPoint(ca,cb);
+      s+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="#94a3b8" stroke-width="2" marker-end="url(#pz-arrow)"/>';
+    });
+    svg.setAttribute('width',canvas.scrollWidth); svg.setAttribute('height',canvas.scrollHeight);
+    svg.innerHTML=s;
+  }
+
+  function wire(el,n){
+    const head=el.querySelector('.pz-head');
+    head.addEventListener('pointerdown',ev=>{
+      if(ev.target.classList.contains('pz-mini'))return;
+      select(n.id);
+      const sx=ev.clientX, sy=ev.clientY, ox=n.x, oy=n.y;
+      head.setPointerCapture(ev.pointerId);
+      function mv(e){ n.x=Math.max(0,ox+(e.clientX-sx)); n.y=Math.max(0,oy+(e.clientY-sy)); el.style.left=n.x+'px'; el.style.top=n.y+'px'; drawEdges(); }
+      function up(){ try{head.releasePointerCapture(ev.pointerId);}catch(_){} head.removeEventListener('pointermove',mv); head.removeEventListener('pointerup',up); save(); }
+      head.addEventListener('pointermove',mv); head.addEventListener('pointerup',up);
+      ev.preventDefault();
+    });
+    el.addEventListener('click',ev=>{ if(connectMode){ onConnectClick(n.id); ev.stopPropagation(); return; } select(n.id); });
+    el.querySelector('[data-act="child"]').addEventListener('click',ev=>{ ev.stopPropagation(); select(n.id); addChild(); });
+    el.querySelector('[data-act="del"]').addEventListener('click',ev=>{ ev.stopPropagation(); select(n.id); removeSel(); });
+    const ta=el.querySelector('.pz-body');
+    ta.addEventListener('input',()=>{ n.text=ta.value; autoresize(ta); save(); });
+    ta.addEventListener('pointerdown',ev=>ev.stopPropagation());
+    ta.addEventListener('focus',()=>{ sel=n.id; canvas.querySelectorAll('.pz-node.sel').forEach(x=>{if(x!==el)x.classList.remove('sel');}); el.classList.add('sel'); });
+  }
+
+  function render(){
+    if(!canvas)return;
+    nodes.forEach(n=>{
+      let el=elNode(n.id);
+      if(!el){
+        el=document.createElement('div');
+        el.className='pz-node'; el.dataset.id=n.id;
+        el.innerHTML='<div class="pz-head"><span class="pz-id"></span><span>'
+          +'<button class="pz-mini" title="crear hijo" data-act="child">&#43;</button>'
+          +'<button class="pz-mini" title="eliminar" data-act="del">&#10005;</button></span></div>'
+          +'<textarea class="pz-body" rows="2" placeholder="info…"></textarea>';
+        canvas.appendChild(el);
+        wire(el,n);
+      }
+      el.style.left=n.x+'px'; el.style.top=n.y+'px';
+      el.querySelector('.pz-id').textContent='#'+n.id;
+      el.classList.toggle('sel',sel===n.id);
+      el.classList.toggle('connsrc',connSrc===n.id);
+      el.classList.remove('st-exp','st-pod','st-sol');
+      if(n.state==='exp')el.classList.add('st-exp');
+      else if(n.state==='pod')el.classList.add('st-pod');
+      else if(n.state==='sol')el.classList.add('st-sol');
+      const ta=el.querySelector('.pz-body');
+      if(document.activeElement!==ta && ta.value!==(n.text||'')) ta.value=n.text||'';
+      autoresize(ta);
+    });
+    canvas.querySelectorAll('.pz-node').forEach(el=>{ if(!getNode(+el.dataset.id)) el.remove(); });
+    drawEdges();
+  }
+
+  function addNode(x,y){
+    const id=seq++;
+    if(x==null){ x=(canvas?canvas.scrollLeft:0)+40+((nodes.length*26)%220); y=(canvas?canvas.scrollTop:0)+40+((nodes.length*20)%170); }
+    const n={id:id,x:x,y:y,text:'',state:''}; nodes.push(n); render(); select(id); save();
+    setTimeout(()=>{ const el=elNode(id); if(el){ const ta=el.querySelector('.pz-body'); if(ta)ta.focus(); } },0);
+    return n;
+  }
+  function addChild(){
+    if(sel==null){ flash('Seleccioná primero un nodo (clic) para crearle un hijo.'); return; }
+    const p=getNode(sel); if(!p)return;
+    const c=addNode(p.x+30,p.y+120);
+    edges.push({from:p.id,to:c.id}); render(); select(c.id); save();
+  }
+  function toggleConnect(){
+    connectMode=!connectMode; connSrc=null;
+    canvas.classList.toggle('connect',connectMode);
+    const b=document.getElementById('pz-connbtn');
+    if(b){ b.classList.toggle('btn-primary',connectMode); b.classList.toggle('btn-nav',!connectMode); }
+    hint(connectMode?'Modo conectar: clic en el nodo ORIGEN y después en el DESTINO. (Tocá "Conectar" de nuevo para salir.)':'');
+    render();
+  }
+  function onConnectClick(id){
+    if(connSrc==null){ connSrc=id; render(); hint('Origen #'+id+' elegido. Ahora clic en el nodo destino.'); return; }
+    if(connSrc!==id && !edges.some(e=>e.from===connSrc&&e.to===id)) edges.push({from:connSrc,to:id});
+    connSrc=null; render(); save(); hint('Arista creada. Clic en otro origen, o "Conectar" para salir.');
+  }
+  function cycleState(){
+    if(sel==null){ flash('Seleccioná un nodo para cambiarle el estado.'); return; }
+    const n=getNode(sel); const i=STATES.indexOf(n.state||''); n.state=STATES[(i+1)%STATES.length]; render(); save();
+  }
+  function removeSel(){
+    if(sel==null){ flash('Seleccioná un nodo para eliminar.'); return; }
+    nodes=nodes.filter(n=>n.id!==sel); edges=edges.filter(e=>e.from!==sel&&e.to!==sel);
+    sel=null; render(); save();
+  }
+  function clearAll(){
+    if(nodes.length && !confirm('¿Vaciar la pizarra? Se borran todos los nodos.')) return;
+    nodes=[]; edges=[]; seq=1; sel=null; connSrc=null; render(); save();
+  }
+
+  function init(){
+    canvas=document.getElementById('pz-canvas'); svg=document.getElementById('pz-edges');
+    if(!canvas)return;
+    canvas.addEventListener('click',e=>{ if((e.target===canvas||e.target===svg)&&!connectMode){ sel=null; render(); } });
+    canvas.addEventListener('dblclick',e=>{ if(e.target===canvas||e.target===svg){ const r=canvas.getBoundingClientRect(); addNode(e.clientX-r.left+canvas.scrollLeft-20,e.clientY-r.top+canvas.scrollTop-14); } });
+    hint(''); load(); render();
+  }
+
+  return {addNode,addChild,toggleConnect,cycleState,removeSel,clearAll,init,stopAuto:function(){}};
+})();
+PZ.init();
+
+const MODS={cl:[CL,'cl-viz'],kr:[KR,'kr-viz'],pr:[PR,'pr-viz'],dk:[DK,'dk-viz'],hp:[HP,'hp-viz'],tr:[TR,'tr-viz']};
+document.addEventListener('keydown',e=>{
+  if(/^(TEXTAREA|INPUT|SELECT)$/.test((e.target||{}).tagName||''))return;
+  const [mod,vizId]=MODS[window.ACTIVE]||MODS.cl;
+  const viz=document.getElementById(vizId);
+  if(!viz||viz.classList.contains('hidden'))return;
+  if(e.key==='ArrowRight')mod.paso(1);
+  if(e.key==='ArrowLeft')mod.paso(-1);
+});
+</script>
+
+
+</body></html>
