@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0117)file:///C:/Users/TOMASBENJAMINCROTTI/Documents/Segundo%20Cerebro/OUTPUTS/herramientas/herramientas-prog-avanzada.html -->
 <html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,26 +6,54 @@
 <style>
   :root{
     --bg:#f6f7fb; --card:#ffffff; --ink:#1f2430; --muted:#6b7280; --line:#e5e7eb;
-    --accent:#4f46e5; --accent-soft:#eef2ff;
+    --soft-bg:#f3f4f6; --input-bg:#ffffff; --field-border:#e5e7eb;
+    --danger:#b91c1c; --chg-bg:#e0e7ff; --chg-bg-strong:#c7d2fe;
+    --accent:#4f46e5; --accent-soft:#eef2ff; --accent-hover:#4338ca; --ghost-hover:#e0e7ff;
     --divide:#2563eb; --divide-soft:#dbeafe;
     --merge:#d97706; --merge-soft:#fef3c7;
     --left:#2563eb; --left-soft:#dbeafe;
     --right:#7c3aed; --right-soft:#ede9fe;
     --done:#059669; --done-soft:#d1fae5;
     --base:#6b7280; --base-soft:#f3f4f6;
+    --pz-dot:#e5e7eb; --pz-canvas:#fafbff;
+    --st-exp:#eff6ff; --st-pod:#fef2f2; --st-sol:#ecfdf5;
+    --shadow:rgba(0,0,0,.03); --shadow-node:rgba(0,0,0,.08);
+    color-scheme:light;
+  }
+  [data-theme="dark"]{
+    --bg:#0f1420; --card:#171d2b; --ink:#e6e9f0; --muted:#98a2b3; --line:#2a3242;
+    --soft-bg:#1e2634; --input-bg:#1e2634; --field-border:#38414f;
+    --danger:#f87171; --chg-bg:#2b3550; --chg-bg-strong:#3a4770;
+    --accent:#818cf8; --accent-soft:#232a45; --accent-hover:#6d78e0; --ghost-hover:#2b3350;
+    --divide:#60a5fa; --divide-soft:#1c2f4d;
+    --merge:#fbbf24; --merge-soft:#3a2f16;
+    --left:#60a5fa; --left-soft:#1c2f4d;
+    --right:#a78bfa; --right-soft:#2c2545;
+    --done:#34d399; --done-soft:#123529;
+    --base:#98a2b3; --base-soft:#1e2634;
+    --pz-dot:#2a3242; --pz-canvas:#131826;
+    --st-exp:#182338; --st-pod:#331c1c; --st-sol:#123024;
+    --shadow:rgba(0,0,0,.4); --shadow-node:rgba(0,0,0,.5);
+    color-scheme:dark;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
   .wrap{max-width:1700px;margin:0 auto;padding:20px 24px 60px}
   h1{font-size:1.45rem;margin:0 0 2px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .theme-btn{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 14px;font-size:.85rem;font-weight:600;white-space:nowrap}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .signature{color:var(--muted);font-size:.85rem;margin-top:18px}
+  .signature a{color:var(--accent);text-decoration:none}
+  .signature a:hover{text-decoration:underline}
   h2{font-size:1.2rem;margin:0 0 2px}
   .badge{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.76rem;padding:3px 10px;border-radius:999px;margin-left:8px;vertical-align:middle}
   .sub{color:var(--muted);font-size:.92rem;margin:0 0 16px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 1px 2px var(--shadow)}
   label{font-weight:600;font-size:.85rem;display:block;margin-bottom:6px}
-  input[type=text],select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-size:1rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:#fff}
+  input[type=text],select{width:100%;padding:10px 12px;border:1px solid var(--field-border);border-radius:9px;font-size:1rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--input-bg);color:var(--ink)}
   select{font-family:inherit}
-  textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-size:.95rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:#fff;resize:vertical;line-height:1.5;white-space:pre}
+  textarea{width:100%;padding:10px 12px;border:1px solid var(--field-border);border-radius:9px;font-size:.95rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--input-bg);color:var(--ink);resize:vertical;line-height:1.5;white-space:pre}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:640px){.grid2{grid-template-columns:1fr}}
@@ -38,23 +65,23 @@
   @media(max-width:860px){.grid-main{flex-wrap:wrap}.col-graph{width:100%}}
   button{cursor:pointer;border:none;border-radius:9px;padding:10px 16px;font-size:.92rem;font-weight:600;font-family:inherit}
   .btn-primary{background:var(--accent);color:#fff}
-  .btn-primary:hover{background:#4338ca}
+  .btn-primary:hover{background:var(--accent-hover)}
   .btn-ghost{background:var(--accent-soft);color:var(--accent)}
-  .btn-ghost:hover{background:#e0e7ff}
-  .btn-nav{background:#fff;border:1px solid var(--line);color:var(--ink);min-width:118px}
+  .btn-ghost:hover{background:var(--ghost-hover)}
+  .btn-nav{background:var(--card);border:1px solid var(--line);color:var(--ink);min-width:118px}
   .btn-nav:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
   button:disabled{opacity:.4;cursor:not-allowed}
-  .err{color:#b91c1c;font-size:.85rem;margin-top:8px;min-height:1em}
+  .err{color:var(--danger);font-size:.85rem;margin-top:8px;min-height:1em}
   .hidden{display:none}
 
   /* tabs */
   .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-  .tab{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-weight:600;font-size:.9rem;color:var(--muted)}
+  .tab{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-weight:600;font-size:.9rem;color:var(--muted)}
   .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
   /* array row */
   .arr{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
-  .cell{min-width:42px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:9px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:1rem;position:relative;transition:all .15s}
+  .cell{min-width:42px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:9px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:1rem;position:relative;transition:all .15s}
   .cell.active{outline:3px solid var(--divide);outline-offset:1px}
   .cell.mergerange{outline:3px solid var(--merge);outline-offset:1px}
   .cell.done{background:var(--done-soft);border-color:var(--done)}
@@ -90,8 +117,8 @@
   .sw{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid var(--line)}
   .dot{width:15px;height:15px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.15)}
 
-  .orderline{font-family:ui-monospace,monospace;font-size:.92rem;background:#f3f4f6;border-radius:8px;padding:10px 12px;margin-top:6px;line-height:2}
-  .ochip{display:inline-block;padding:2px 8px;border-radius:6px;margin:2px;border:1px solid var(--line);background:#fff}
+  .orderline{font-family:ui-monospace,monospace;font-size:.92rem;background:var(--soft-bg);border-radius:8px;padding:10px 12px;margin-top:6px;line-height:2}
+  .ochip{display:inline-block;padding:2px 8px;border-radius:6px;margin:2px;border:1px solid var(--line);background:var(--card)}
   .ochip.cur{background:var(--accent);color:#fff;border-color:var(--accent)}
   .ochip.done{background:var(--done-soft);border-color:var(--done)}
 
@@ -100,7 +127,7 @@
   table.mt{border-collapse:collapse;width:100%;margin-top:10px;font-size:.9rem}
   table.mt th,table.mt td{border:1px solid var(--line);padding:7px 9px;text-align:left}
   table.mt th{background:var(--accent-soft);color:var(--accent)}
-  code{background:#f3f4f6;padding:1px 5px;border-radius:5px;font-size:.9em}
+  code{background:var(--soft-bg);padding:1px 5px;border-radius:5px;font-size:.9em}
   .small{font-size:.82rem;color:var(--muted)}
   .pill{display:inline-block;background:var(--done-soft);color:var(--done);font-weight:700;padding:4px 12px;border-radius:999px;font-size:.9rem}
   /* trace table */
@@ -109,97 +136,65 @@
   table.trace th{background:var(--accent-soft);color:var(--accent);position:sticky;top:0}
   table.trace tr.cur td{background:var(--merge-soft);font-weight:700}
   table.trace td.yes{color:var(--done);font-weight:700}
-  table.trace td.no{color:#b91c1c;font-weight:700}
-  table.trace td.chg{background:#e0e7ff;font-weight:700}
-  table.trace tr.cur td.chg{background:#c7d2fe}
+  table.trace td.no{color:var(--danger);font-weight:700}
+  table.trace td.chg{background:var(--chg-bg);font-weight:700}
+  table.trace tr.cur td.chg{background:var(--chg-bg-strong)}
   .tracewrap{max-height:460px;overflow:auto;border-radius:8px;width:fit-content;max-width:100%}
   .comps{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-  .comp{background:#f3f4f6;border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-family:ui-monospace,monospace;font-size:.88rem}
+  .comp{background:var(--soft-bg);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-family:ui-monospace,monospace;font-size:.88rem}
   .comp.hot{background:var(--done-soft);border-color:var(--done)}
   .pq{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
   .pqe{background:var(--divide-soft);border:1px solid var(--divide);color:var(--divide);border-radius:7px;padding:3px 8px;font-family:ui-monospace,monospace;font-size:.85rem}
   .pqe.min{background:var(--merge-soft);border-color:var(--merge);color:var(--merge);font-weight:700}
+
+  /* ===== grafos arrastrables (mini-pizarra) ===== */
+  svg.graph-drag{cursor:grab;touch-action:none}
+  svg.graph-drag.dragging{cursor:grabbing}
+  svg.graph-drag circle{cursor:grab}
+  .col-graph .hint-drag{font-size:11px;color:#94a3b8;margin-top:4px}
+
+  /* ===== pizarra (árbol/grafo manual) ===== */
+  #pz-wrap{display:flex;flex-direction:column;gap:10px}
+  #pz-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  #pz-canvas{position:relative;width:100%;height:70vh;min-height:480px;border:1px solid var(--line);border-radius:12px;overflow:auto;
+    background:linear-gradient(var(--pz-canvas) 0 0) padding-box, radial-gradient(circle,var(--pz-dot) 1px,transparent 1px);
+    background-size:auto,22px 22px}
+  #pz-canvas.connect{cursor:crosshair}
+  #pz-edges{position:absolute;top:0;left:0;pointer-events:none;overflow:visible}
+  .pz-node{position:absolute;min-width:120px;max-width:250px;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:10px;box-shadow:0 2px 6px var(--shadow-node);user-select:none;z-index:2}
+  .pz-node.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .pz-node.connsrc{border-color:var(--merge);box-shadow:0 0 0 3px var(--merge-soft)}
+  .pz-node.st-exp{border-color:var(--divide);background:var(--st-exp)}
+  .pz-node.st-pod{border-color:var(--danger);background:var(--st-pod)}
+  .pz-node.st-sol{border-color:var(--done);background:var(--st-sol)}
+  .pz-head{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 8px;cursor:move;border-bottom:1px solid var(--line);border-radius:8px 8px 0 0;font-size:.72rem;font-weight:700;color:var(--muted)}
+  .pz-head .pz-id{font-family:ui-monospace,monospace}
+  .pz-mini{cursor:pointer;border:none;background:transparent;font-size:.85rem;line-height:1;padding:1px 5px;color:var(--muted);font-weight:700;border-radius:5px}
+  .pz-mini:hover{background:var(--accent-soft);color:var(--accent)}
+  .pz-body{width:100%;border:none;outline:none;resize:none;padding:7px 9px;font-size:.9rem;font-family:ui-monospace,Menlo,Consolas,monospace;background:transparent;line-height:1.35;border-radius:0 0 8px 8px;color:var(--ink);white-space:pre-wrap;overflow:hidden}
+  .pz-hint{font-size:.82rem;color:var(--muted)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Herramientas — Programación Avanzada</h1>
+  <div class="topbar">
+    <h1>Herramientas — Programación Avanzada</h1>
+    <button id="theme-btn" class="theme-btn" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema claro/oscuro">🌙 Oscuro</button>
+  </div>
   <p class="sub">Paso a paso navegable para validar ejercicios. Cargá los datos, apretá Resolver y recorré cada decisión con ◀ ▶ (también con las flechas del teclado).</p>
 
   <div class="tabs">
-    <button class="tab" data-tab="ms" onclick="showTab(&#39;ms&#39;)">D&amp;C · MergeSort</button>
-    <button class="tab" data-tab="cl" onclick="showTab(&#39;cl&#39;)">Coloreo</button>
+    <button class="tab active" data-tab="cl" onclick="showTab(&#39;cl&#39;)">Coloreo</button>
     <button class="tab" data-tab="kr" onclick="showTab(&#39;kr&#39;)">MST · Kruskal</button>
     <button class="tab" data-tab="pr" onclick="showTab(&#39;pr&#39;)">MST · Prim</button>
     <button class="tab" data-tab="dk" onclick="showTab(&#39;dk&#39;)">Caminos · Dijkstra</button>
     <button class="tab" data-tab="hp" onclick="showTab(&#39;hp&#39;)">Montículo · Heap</button>
-    <button class="tab active" data-tab="tr" onclick="showTab(&#39;tr&#39;)">Recorridos · DFS/BFS</button>
+    <button class="tab" data-tab="tr" onclick="showTab(&#39;tr&#39;)">Recorridos · DFS/BFS</button>
+    <button class="tab" data-tab="pz" onclick="showTab(&#39;pz&#39;)">Pizarra · Árbol/Grafo</button>
   </div>
-
-<!-- ================= MERGESORT ================= -->
-<section id="tab-ms" class="hidden">
-  <div class="card">
-    <h2>MergeSort <span class="badge">D&amp;C · O(n log n)</span></h2>
-    <label for="ms-arr" style="margin-top:12px">Array (números separados por coma)</label>
-    <input id="ms-arr" type="text" value="8, 2, 6, 4, 1, 3, 7, 9" autocomplete="off">
-    <div class="row">
-      <button class="btn-primary" onclick="MS.resolver()">▶ Resolver</button>
-    </div>
-    <div class="err" id="ms-err"></div>
-  </div>
-
-  <div id="ms-viz" class="card hidden">
-    <div class="stepbar">
-      <div><span class="phasetag" id="ms-phasetag">—</span>
-        <span class="stepcount" id="ms-stepcount" style="margin-left:8px"></span></div>
-      <div class="row" style="margin:0">
-        <button class="btn-nav" id="ms-prev" onclick="MS.paso(-1)">◀ Anterior</button>
-        <button class="btn-nav" id="ms-auto" onclick="MS.toggleAuto()">▶ Auto</button>
-        <button class="btn-nav" id="ms-next" onclick="MS.paso(1)">Siguiente ▶</button>
-      </div>
-    </div>
-    <div style="margin-top:18px">
-      <label>Estado del array</label>
-      <div class="arr" id="ms-arrview"></div>
-    </div>
-    <div id="ms-mergebox" class="merge-detail hidden">
-      <div class="mcol"><h4 class="h-left">Mitad izquierda</h4><div class="arr" id="ms-leftview"></div></div>
-      <div class="mcol"><h4 class="h-right">Mitad derecha</h4><div class="arr" id="ms-rightview"></div></div>
-      <div class="mcol"><h4 class="h-out">Salida (fusión)</h4><div class="arr" id="ms-outview"></div></div>
-    </div>
-    <div class="explain" id="ms-explain"></div>
-    <div class="legend">
-      <span><i class="sw" style="background:var(--divide-soft);border-color:var(--divide)"></i> dividiendo</span>
-      <span><i class="sw" style="background:var(--merge-soft);border-color:var(--merge)"></i> fusionando</span>
-      <span><i class="sw" style="background:var(--left-soft);border-color:var(--left)"></i> izquierda · i</span>
-      <span><i class="sw" style="background:var(--right-soft);border-color:var(--right)"></i> derecha · j</span>
-      <span><i class="sw" style="background:var(--done-soft);border-color:var(--done)"></i> ordenado</span>
-    </div>
-  </div>
-
-  <div id="ms-treecard" class="card hidden">
-    <label>Árbol de recursión (fase de división)</label>
-    <p class="small">Cada caja es una llamada recursiva sobre un segmento; se resalta el segmento del paso actual.</p>
-    <svg id="ms-tree" viewBox="0 0 900 300" preserveAspectRatio="xMidYMin meet"></svg>
-  </div>
-
-  <div class="card">
-    <details open=""><summary>Complejidad (Teorema Maestro)</summary>
-      <p style="margin-top:12px">Dos llamadas sobre la mitad + O(n) de fusión:</p>
-      <p style="text-align:center;font-size:1.1rem"><code>T(n) = 2·T(n/2) + O(n)</code></p>
-      <table class="mt">
-        <tbody><tr><th>Param</th><th>Valor</th><th>Por qué</th></tr>
-        <tr><td><code>a</code></td><td>2</td><td>se ordenan las dos mitades</td></tr>
-        <tr><td><code>b</code></td><td>2</td><td>cada mitad es n/2</td></tr>
-        <tr><td><code>c</code></td><td>1</td><td>la fusión recorre los n elementos una vez</td></tr>
-      </tbody></table>
-      <p style="margin-top:12px"><code>log₂(2)=1 = c</code> → <b>Caso 2</b> → <code>O(n·log₂ n) = <b>O(n log n)</b></code>. Vale en todos los casos; usa O(n) de memoria extra.</p>
-    </details>
-  </div>
-</section>
 
 <!-- ================= COLOREO ================= -->
-<section id="tab-cl" class="hidden">
+<section id="tab-cl" class="">
   <div class="card">
     <h2>Coloreo de Grafos <span class="badge">Greedy · NP-completo</span></h2>
     <p class="small" style="margin:6px 0 14px">Asignar a cada vértice el menor color no usado por sus vecinos. Los tres algoritmos son el mismo greedy; cambia el <b>orden</b> de los vértices.</p>
@@ -245,7 +240,7 @@
     <div class="err" id="cl-err"></div>
   </div>
 
-  <div id="cl-viz" class="card">
+  <div id="cl-viz" class="card hidden">
     <div class="stepbar">
       <div><span class="phasetag tag-done" id="cl-phasetag">Resuelto</span>
         <span class="stepcount" id="cl-stepcount" style="margin-left:8px">Paso 12 / 12</span></div>
@@ -372,7 +367,7 @@
     <div class="err" id="kr-err"></div>
   </div>
 
-  <div id="kr-viz" class="card">
+  <div id="kr-viz" class="card hidden">
     <div class="stepbar">
       <div><span class="phasetag tag-done" id="kr-phasetag">Resuelto</span>
         <span class="stepcount" id="kr-stepcount" style="margin-left:8px">Paso 13 / 13</span></div>
@@ -657,7 +652,7 @@
 </section>
 
 <!-- ================= RECORRIDOS DFS / BFS ================= -->
-<section id="tab-tr" class="">
+<section id="tab-tr" class="hidden">
   <div class="card">
     <h2>Recorridos <span class="badge">DFS · BFS · O(V+E)</span></h2>
     <p class="small" style="margin:6px 0 14px"><b>DFS</b> (profundidad) usa una <b>pila</b>: expande un camino hasta el fondo y retrocede. <b>BFS</b> (anchura) usa una <b>cola</b>: recorre por niveles de distancia y calcula los saltos al origen. Lo que no se visita pertenece a otra componente conexa.</p>
@@ -770,21 +765,169 @@
   </div>
 </section>
 
-  <p class="small">Herramientas de estudio · Segundo Cerebro · Programación Avanzada.</p>
+<!-- ================= PIZARRA ================= -->
+<section id="tab-pz" class="hidden">
+  <div class="card">
+    <h2>Pizarra <span class="badge">Árbol / Grafo libre</span></h2>
+    <p class="sub" style="margin-top:6px">Armá a mano un árbol o grafo: creá nodos, escribí lo que quieras adentro (estado, cota, decisión, valor…), conectalos y arrastralos. Pensada para hacer backtracking y branch &amp; bound a mano. Se guarda solo en este navegador (localStorage).</p>
+    <div id="pz-wrap">
+      <div id="pz-toolbar">
+        <button class="btn-primary" onclick="PZ.addNode()">+ Nodo</button>
+        <button class="btn-ghost" onclick="PZ.addChild()">+ Hijo del seleccionado</button>
+        <button class="btn-nav" id="pz-connbtn" onclick="PZ.toggleConnect()">Conectar</button>
+        <button class="btn-nav" onclick="PZ.cycleState()">Estado &#9656;</button>
+        <button class="btn-nav" onclick="PZ.removeSel()">Eliminar</button>
+        <button class="btn-nav" onclick="PZ.clearAll()">Limpiar</button>
+        <span class="pz-hint" id="pz-hint"></span>
+      </div>
+      <div class="legend">
+        <span><span class="sw" style="background:#fff;border-color:#cbd5e1"></span> neutro</span>
+        <span><span class="sw" style="background:#eff6ff;border-color:#2563eb"></span> explorando</span>
+        <span><span class="sw" style="background:#fef2f2;border-color:#b91c1c"></span> podado</span>
+        <span><span class="sw" style="background:#ecfdf5;border-color:#059669"></span> solución</span>
+      </div>
+      <div id="pz-canvas"><svg id="pz-edges"></svg></div>
+    </div>
+  </div>
+</section>
+
+  <p class="signature">Hecho con ❤️ por <b>Grupo Delta 1C2026</b> (y <a href="https://claude.ai">Claude</a>)</p>
 </div>
 
 <script>
 "use strict";
 
+/* ===== tema claro/oscuro ===== */
+const THEME_LS='hpa-theme';
+function applyTheme(mode){
+  document.documentElement.setAttribute('data-theme', mode==='dark'?'dark':'light');
+  const b=document.getElementById('theme-btn');
+  if(b) b.textContent = mode==='dark' ? '☀ Claro' : '🌙 Oscuro';
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';
+  const next=cur==='dark'?'light':'dark';
+  try{ localStorage.setItem(THEME_LS,next); }catch(e){}
+  applyTheme(next);
+}
+(function initTheme(){
+  let saved=null;
+  try{ saved=localStorage.getItem(THEME_LS); }catch(e){}
+  if(!saved){
+    saved=(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  }
+  applyTheme(saved);
+})();
+
 /* ===== tabs ===== */
-const TAB_IDS=['ms','cl','kr','pr','dk','hp','tr'];
+const TAB_IDS=['cl','kr','pr','dk','hp','tr','pz'];
 function showTab(t){
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
   TAB_IDS.forEach(x=>document.getElementById('tab-'+x).classList.toggle('hidden',x!==t));
   window.ACTIVE=t;
-  [MS,CL,KR,PR,DK,HP,TR].forEach(m=>{try{m.stopAuto();}catch(e){}});
+  [CL,KR,PR,DK,HP,TR].forEach(m=>{try{m.stopAuto();}catch(e){}});
 }
-window.ACTIVE='ms';
+window.ACTIVE='cl';
+
+/* ========================================================= */
+/* ====  DRAG: mini-pizarra para grafos (nodos movibles) === */
+/* ========================================================= */
+/* Permite arrastrar los nodos de los SVG de grafo sin tocar los
+   algoritmos: cada render llama DRAG.apply(svgId,pos) para respetar
+   las posiciones movidas, y una sola vez DRAG.attach(svgId,redraw)
+   para instalar el arrastre. DRAG.reset(svgId) limpia al recargar
+   un grafo nuevo. Las posiciones se guardan por grafo en localStorage. */
+const DRAG=(function(){
+  const LS='hpa-drag-v1';
+  let store={};                 // { svgId: { nodo: {x,y} } }
+  const meta={};                // { svgId: {redraw, radius, pos, down} }  estado runtime
+  try{ store=JSON.parse(localStorage.getItem(LS))||{}; }catch(e){ store={}; }
+  function persist(){ try{ localStorage.setItem(LS,JSON.stringify(store)); }catch(e){} }
+
+  // Devuelve una copia de pos con los overrides guardados aplicados.
+  // Se llama en CADA render, justo antes de dibujar.
+  function apply(svgId,pos){
+    const ov=store[svgId]||{};
+    const out={};
+    for(const k in pos){
+      out[k]= (ov[k]&&isFinite(ov[k].x)&&isFinite(ov[k].y)) ? {x:ov[k].x,y:ov[k].y} : {x:pos[k].x,y:pos[k].y};
+    }
+    if(meta[svgId]) meta[svgId].pos=out;   // recordamos posiciones efectivas para el hit-test
+    return out;
+  }
+
+  function reset(svgId){ if(store[svgId]){ delete store[svgId]; persist(); } if(meta[svgId]) meta[svgId].pos=null; }
+
+  // convierte coords de pantalla a coords del viewBox del SVG
+  function toVB(svg,clientX,clientY){
+    const r=svg.getBoundingClientRect();
+    const vb=svg.viewBox.baseVal;
+    const w=vb&&vb.width?vb.width:r.width, h=vb&&vb.height?vb.height:r.height;
+    const ox=vb?vb.x:0, oy=vb?vb.y:0;
+    // preserveAspectRatio xMidYMid meet → escala uniforme, con márgenes
+    const scale=Math.min(r.width/w, r.height/h);
+    const dispW=w*scale, dispH=h*scale;
+    const padX=(r.width-dispW)/2, padY=(r.height-dispH)/2;
+    return { x: ox+(clientX-r.left-padX)/scale, y: oy+(clientY-r.top-padY)/scale };
+  }
+
+  function pick(svgId,vx,vy){
+    const m=meta[svgId]; if(!m||!m.pos) return null;
+    let best=null,bd=Infinity;
+    for(const k in m.pos){
+      const d=Math.hypot(m.pos[k].x-vx, m.pos[k].y-vy);
+      if(d<bd){ bd=d; best=k; }
+    }
+    return (best!==null && bd<=(m.radius||26)) ? best : null;
+  }
+
+  // Instala el arrastre una sola vez por svgId. redraw() debe re-renderizar.
+  function attach(svgId,redraw,opts){
+    opts=opts||{};
+    const svg=document.getElementById(svgId); if(!svg) return;
+    if(meta[svgId]){ meta[svgId].redraw=redraw; meta[svgId].radius=opts.radius||26; return; } // ya instalado
+    const m={redraw,radius:opts.radius||26,pos:null,drag:null};
+    meta[svgId]=m;
+    svg.style.touchAction='none';
+    svg.classList.add('graph-drag');
+    // pista visual (una sola vez)
+    const host=svg.parentNode;
+    if(host && !host.querySelector('.hint-drag')){
+      const h=document.createElement('div');
+      h.className='hint-drag';
+      h.textContent='✋ Podés arrastrar los nodos para reordenarlos. El algoritmo no cambia.';
+      host.appendChild(h);
+    }
+
+    function start(clientX,clientY){
+      const p=toVB(svg,clientX,clientY);
+      const node=pick(svgId,p.x,p.y);
+      if(node===null) return false;
+      const cur=(store[svgId]&&store[svgId][node])||m.pos[node];
+      m.drag={node, dx:cur.x-p.x, dy:cur.y-p.y};
+      svg.classList.add('dragging');
+      return true;
+    }
+    function move(clientX,clientY){
+      if(!m.drag) return;
+      const p=toVB(svg,clientX,clientY);
+      (store[svgId]=store[svgId]||{})[m.drag.node]={x:p.x+m.drag.dx, y:p.y+m.drag.dy};
+      m.redraw();
+    }
+    function end(){ if(m.drag){ m.drag=null; svg.classList.remove('dragging'); persist(); } }
+
+    svg.addEventListener('mousedown',e=>{ if(start(e.clientX,e.clientY)){ e.preventDefault(); } });
+    window.addEventListener('mousemove',e=>{ if(m.drag){ move(e.clientX,e.clientY); e.preventDefault(); } });
+    window.addEventListener('mouseup',end);
+    svg.addEventListener('touchstart',e=>{ const t=e.touches[0]; if(t&&start(t.clientX,t.clientY)){ e.preventDefault(); } },{passive:false});
+    svg.addEventListener('touchmove',e=>{ const t=e.touches[0]; if(m.drag&&t){ move(t.clientX,t.clientY); e.preventDefault(); } },{passive:false});
+    svg.addEventListener('touchend',end);
+    // primer redraw para que apply() cachee las posiciones efectivas (necesario para el hit-test)
+    try{ m.redraw(); }catch(e){}
+  }
+
+  return {apply,attach,reset};
+})();
 
 /* ===== formato de entrada de grafos: lista vs matriz ===== */
 function gfmt(p){
@@ -798,134 +941,6 @@ function gEdges(p,weighted,directed){
   }
   return {edgeStr:document.getElementById(p+'-edges').value,labels:null};
 }
-
-/* ========================================================= */
-/* =====================  MERGESORT  ======================= */
-/* ========================================================= */
-const MS=(function(){
-  let steps=[],cur=0,autoTimer=null,treeLayout=null;
-
-  function parseArr(s){
-    const parts=s.split(/[,\s]+/).map(x=>x.trim()).filter(x=>x.length);
-    if(!parts.length) throw new Error("Cargá al menos un número.");
-    const nums=parts.map(p=>{const n=Number(p); if(!Number.isFinite(n)) throw new Error('Valor no numérico: "'+p+'".'); return n;});
-    if(nums.length>16) throw new Error("Para que el árbol se vea bien, usá hasta 16 elementos.");
-    return nums;
-  }
-
-  function buildSteps(arr){
-    const steps=[],work=arr.slice();
-    const snap=e=>Object.assign({snapshot:work.slice()},e);
-    function ms(lo,hi){
-      if(lo===hi){steps.push(snap({type:'base',range:[lo,hi],
-        msg:`Caso base: el segmento [${lo}..${hi}] tiene 1 solo elemento (${work[lo]}). Ya está ordenado.`}));return;}
-      const mid=Math.floor((lo+hi)/2);
-      steps.push(snap({type:'divide',range:[lo,hi],mid,
-        msg:`Dividir: parto [${lo}..${hi}] = [${work.slice(lo,hi+1).join(', ')}] en izquierda [${lo}..${mid}] = [${work.slice(lo,mid+1).join(', ')}] y derecha [${mid+1}..${hi}] = [${work.slice(mid+1,hi+1).join(', ')}].`}));
-      ms(lo,mid); ms(mid+1,hi); merge(lo,mid,hi);
-    }
-    function merge(lo,mid,hi){
-      const left=work.slice(lo,mid+1),right=work.slice(mid+1,hi+1);
-      steps.push(snap({type:'merge-start',range:[lo,hi],mid,left:left.slice(),right:right.slice(),i:0,j:0,out:[],
-        msg:`Combinar: las dos mitades ya están ordenadas → izq=[${left.join(', ')}] y der=[${right.join(', ')}]. Fusiono con punteros i y j eligiendo el menor.`}));
-      let i=0,j=0;const out=[];
-      while(i<left.length&&j<right.length){
-        const le=left[i]<=right[j],chosen=le?left[i]:right[j],from=le?'izquierda':'derecha';
-        steps.push(snap({type:'merge-pick',range:[lo,hi],mid,left:left.slice(),right:right.slice(),i,j,out:out.slice(),
-          msg:`Comparo izq[i]=${left[i]} con der[j]=${right[j]}: ${le?`${left[i]} ≤ ${right[j]}`:`${right[j]} < ${left[i]}`} → tomo ${chosen} (${from}) y avanzo ese puntero.`}));
-        if(le){out.push(left[i]);i++;}else{out.push(right[j]);j++;}
-      }
-      while(i<left.length){steps.push(snap({type:'merge-pick',range:[lo,hi],mid,left:left.slice(),right:right.slice(),i,j,out:out.slice(),
-        msg:`La derecha se agotó. Copio el resto de la izquierda: ${left[i]}.`}));out.push(left[i]);i++;}
-      while(j<right.length){steps.push(snap({type:'merge-pick',range:[lo,hi],mid,left:left.slice(),right:right.slice(),i,j,out:out.slice(),
-        msg:`La izquierda se agotó. Copio el resto de la derecha: ${right[j]}.`}));out.push(right[j]);j++;}
-      for(let t=0;t<out.length;t++)work[lo+t]=out[t];
-      steps.push(snap({type:'merge-done',range:[lo,hi],out:out.slice(),
-        msg:`Segmento [${lo}..${hi}] fusionado y ordenado → [${out.join(', ')}]. Sube al nivel de arriba.`}));
-    }
-    ms(0,arr.length-1);
-    steps.push(snap({type:'final',range:[0,arr.length-1],msg:`✓ Listo. Array ordenado: [${work.join(', ')}].`}));
-    return steps;
-  }
-
-  function buildTreeLayout(arr){
-    let leafX=0;const W=900,gapY=64,nodes=[],edges=[];
-    function rec(lo,hi,depth){
-      const id=lo+'-'+hi;
-      if(lo===hi){const x=(leafX++ +0.5);const n={id,depth,x,label:String(arr[lo])};nodes.push(n);return n;}
-      const mid=Math.floor((lo+hi)/2),L=rec(lo,mid,depth+1),R=rec(mid+1,hi,depth+1),x=(L.x+R.x)/2;
-      const n={id,depth,x,label:arr.slice(lo,hi+1).join(',')};nodes.push(n);edges.push([n,L]);edges.push([n,R]);return n;
-    }
-    rec(0,arr.length-1,0);
-    const slot=W/leafX,maxDepth=Math.max(...nodes.map(n=>n.depth));
-    nodes.forEach(n=>{n.px=n.x*slot;n.py=20+n.depth*gapY;});
-    return {nodes,edges,height:20+maxDepth*gapY+46,W};
-  }
-  function renderTree(activeId){
-    if(!treeLayout)return;
-    const {nodes,edges,height,W}=treeLayout,svg=document.getElementById('ms-tree');
-    svg.setAttribute('viewBox',`0 0 ${W} ${height}`);
-    let s='';
-    edges.forEach(([p,c])=>{s+=`<line x1="${p.px}" y1="${p.py+13}" x2="${c.px}" y2="${c.py+13}" stroke="#cbd5e1" stroke-width="1.5"/>`;});
-    nodes.forEach(n=>{
-      const active=n.id===activeId,w=Math.max(34,n.label.length*9+14);
-      s+=`<g><rect x="${n.px-w/2}" y="${n.py}" width="${w}" height="26" rx="6" fill="${active?'#dbeafe':'#fff'}" stroke="${active?'#2563eb':'#cbd5e1'}" stroke-width="${active?2.5:1.2}"/><text x="${n.px}" y="${n.py+17}" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace" fill="#1f2430">${n.label}</text></g>`;
-    });
-    svg.innerHTML=s;
-  }
-
-  function renderStep(){
-    const st=steps[cur];
-    document.getElementById('ms-stepcount').textContent=`Paso ${cur+1} / ${steps.length}`;
-    document.getElementById('ms-prev').disabled=cur===0;
-    document.getElementById('ms-next').disabled=cur===steps.length-1;
-    const tags={divide:['tag-divide','Dividir'],'merge-start':['tag-merge','Combinar'],'merge-pick':['tag-merge','Combinar'],'merge-done':['tag-merge','Combinar'],base:['tag-base','Caso base'],final:['tag-done','Resuelto']};
-    const [cls,txt]=tags[st.type],pt=document.getElementById('ms-phasetag');
-    pt.className='phasetag '+cls;pt.textContent=txt;
-    const av=document.getElementById('ms-arrview');av.innerHTML='';
-    const [lo,hi]=st.range;
-    st.snapshot.forEach((v,k)=>{
-      const d=document.createElement('div');d.className='cell';const inR=k>=lo&&k<=hi;
-      if(inR&&(st.type==='divide'||st.type==='base'))d.classList.add('active');
-      if(inR&&st.type.startsWith('merge'))d.classList.add('mergerange');
-      if(st.type==='final'||(st.type==='merge-done'&&inR))d.classList.add('done');
-      d.innerHTML=`<span class="idx">${k}</span>${v}`;av.appendChild(d);
-    });
-    const mb=document.getElementById('ms-mergebox');
-    if(st.type==='merge-start'||st.type==='merge-pick'){
-      mb.classList.remove('hidden');
-      fill('ms-leftview',st.left,'l',st.i,'i');fill('ms-rightview',st.right,'r',st.j,'j');fill('ms-outview',st.out,'o',-1,null);
-    }else mb.classList.add('hidden');
-    document.getElementById('ms-explain').textContent=st.msg;
-    renderTree(st.range[0]+'-'+st.range[1]);
-  }
-  function fill(id,arr,cls,ptr,name){
-    const el=document.getElementById(id);el.innerHTML='';
-    arr.forEach((v,k)=>{
-      const d=document.createElement('div');d.className='mcell '+cls;
-      if(ptr>=0&&k<ptr)d.classList.add('used');
-      if(ptr>=0&&k===ptr){const p=document.createElement('span');p.className='ptr '+cls;p.textContent=name;d.appendChild(p);}
-      d.appendChild(document.createTextNode(v));el.appendChild(d);
-    });
-    if(!arr.length)el.innerHTML='<span class="small">(vacío)</span>';
-  }
-
-  function resolver(){
-    stopAuto();const err=document.getElementById('ms-err');err.textContent='';
-    let arr;try{arr=parseArr(document.getElementById('ms-arr').value);}catch(e){err.textContent=e.message;return;}
-    steps=buildSteps(arr);treeLayout=buildTreeLayout(arr);cur=0;
-    document.getElementById('ms-viz').classList.remove('hidden');
-    document.getElementById('ms-treecard').classList.remove('hidden');
-    renderStep();
-    document.getElementById('ms-viz').scrollIntoView({behavior:'smooth',block:'start'});
-  }
-  function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));renderStep();}
-  function toggleAuto(){if(autoTimer){stopAuto();return;}document.getElementById('ms-auto').textContent='⏸ Pausar';autoTimer=setInterval(()=>{if(cur>=steps.length-1){stopAuto();return;}cur++;renderStep();},900);}
-  function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}const b=document.getElementById('ms-auto');if(b)b.textContent='▶ Auto';}
-  function ejemplo(){document.getElementById('ms-arr').value='8, 2, 6, 4, 1, 3, 7, 9';resolver();}
-  function aleatorio(){const n=6+Math.floor(Math.random()*5);const a=Array.from({length:n},()=>Math.floor(Math.random()*99)+1);document.getElementById('ms-arr').value=a.join(', ');resolver();}
-  return {resolver,paso,toggleAuto,stopAuto,ejemplo,aleatorio};
-})();
 
 /* ========================================================= */
 /* ======================  COLOREO  ======================== */
@@ -985,7 +1000,8 @@ const CL=(function(){
   }
 
   function renderGraph(st){
-    const {pos,edges,vorder}=layout,svg=document.getElementById('cl-graph');
+    const {edges,vorder}=layout,svg=document.getElementById('cl-graph');
+    const pos=DRAG.apply('cl-graph',layout.pos);
     let s='';
     edges.forEach(([u,v])=>{s+=`<line x1="${pos[u].x}" y1="${pos[u].y}" x2="${pos[v].x}" y2="${pos[v].y}" stroke="#cbd5e1" stroke-width="2"/>`;});
     vorder.forEach(v=>{
@@ -1056,8 +1072,10 @@ const CL=(function(){
     }catch(e){err.textContent=e.message;return;}
     const algo=document.getElementById('cl-algo').value;
     steps=buildSteps(g.adj,g.vorder,algo);layout=buildLayout(g.vorder,g.edges);cur=0;
+    DRAG.reset('cl-graph');
     document.getElementById('cl-viz').classList.remove('hidden');
     renderStep();
+    DRAG.attach('cl-graph',()=>renderStep());
     document.getElementById('cl-viz').scrollIntoView({behavior:'smooth',block:'start'});
   }
   function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));renderStep();}
@@ -1098,6 +1116,7 @@ const GU=(function(){
   }
   function norm(u,v,w){return [u,v].sort().join('~')+'~'+w;}
   function render(svgId,pos,vorder,edges,edgeStyle,nodeStyle){
+    pos=DRAG.apply(svgId,pos);
     let s='';
     edges.forEach((e,i)=>{
       const st=edgeStyle(e,i);
@@ -1248,7 +1267,9 @@ const KR=(function(){
     let g;try{g=GU.parseW(gEdges('kr',true,false).edgeStr);}catch(e){err.textContent=e.message;return;}
     const umode=document.getElementById('kr-union').value;
     pos=GU.layout(g.vorder);steps=buildSteps(g,umode);cur=0;
+    DRAG.reset('kr-graph');
     document.getElementById('kr-viz').classList.remove('hidden');render();
+    DRAG.attach('kr-graph',()=>render());
     document.getElementById('kr-viz').scrollIntoView({behavior:'smooth',block:'start'});
   }
   function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
@@ -1332,7 +1353,9 @@ const PR=(function(){
     const start=document.getElementById('pr-start').value.trim();
     let S;try{pos=GU.layout(g.vorder);S=buildSteps(g,start);}catch(e){err.textContent=e.message;return;}
     steps=S;cur=0;
+    DRAG.reset('pr-graph');
     document.getElementById('pr-viz').classList.remove('hidden');render();
+    DRAG.attach('pr-graph',()=>render());
     document.getElementById('pr-viz').scrollIntoView({behavior:'smooth',block:'start'});
   }
   function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
@@ -1452,9 +1475,10 @@ const DK=(function(){
     if(st.type==='final'&&pathEdges)pathEdges.forEach(k=>pSet.add(k));
     const chgSet=new Set(st.chg);
     const NR=19;
+    const dpos=DRAG.apply('dk-graph',pos);
     let svg='';
     edgesAll.forEach(e=>{
-      const a=pos[e.u],b=pos[e.v];
+      const a=dpos[e.u],b=dpos[e.v];
       const key=e.u+'>'+e.v, keyR=e.v+'>'+e.u;
       const inTree=treeSet.has(key)||(!directed&&treeSet.has(keyR));
       const inPath=pSet.has(key)||(!directed&&pSet.has(keyR));
@@ -1474,10 +1498,10 @@ const DK=(function(){
       const fill=isCur?'#fef3c7':fin?'#dbeafe':'#fff';
       const stroke=isCur?'#d97706':fin?'#2563eb':'#94a3b8';
       const sw=isCur?4:fin?3:1.5;
-      svg+=`<circle cx="${pos[v].x}" cy="${pos[v].y}" r="${NR}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
-      svg+=`<text x="${pos[v].x}" y="${pos[v].y+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">${v}</text>`;
+      svg+=`<circle cx="${dpos[v].x}" cy="${dpos[v].y}" r="${NR}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+      svg+=`<text x="${dpos[v].x}" y="${dpos[v].y+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">${v}</text>`;
       const d=st.dist[v];
-      svg+=`<text x="${pos[v].x}" y="${pos[v].y-NR-5}" text-anchor="middle" font-size="11" font-weight="700" fill="${d===INF?'#9ca3af':'#2563eb'}">${fmt(d)}</text>`;
+      svg+=`<text x="${dpos[v].x}" y="${dpos[v].y-NR-5}" text-anchor="middle" font-size="11" font-weight="700" fill="${d===INF?'#9ca3af':'#2563eb'}">${fmt(d)}</text>`;
     });
     document.getElementById('dk-graph').innerHTML=svg;
     // distancias (chips)
@@ -1542,11 +1566,13 @@ const DK=(function(){
     const target=document.getElementById('dk-target').value.trim();
     if(g.edges.some(e=>e.w<0))err.textContent='⚠ Hay pesos negativos: Dijkstra puede dar un resultado incorrecto. Para grafos con aristas negativas usá Bellman-Ford.';
     let out;try{pos=GU.layout(g.vorder);out=buildSteps(g,start,target||null);}catch(e){err.textContent=e.message;return;}
+    DRAG.reset('dk-graph');
     startNode=start;targetNode=target||null;
     pathEdges=null;
     if(out.path&&out.path.ok){pathEdges=[];for(let k=0;k<out.path.seq.length-1;k++)pathEdges.push(out.path.seq[k]+'>'+out.path.seq[k+1]);}
     steps=out.steps;cur=0;
     document.getElementById('dk-viz').classList.remove('hidden');render();
+    DRAG.attach('dk-graph',()=>render());
     document.getElementById('dk-viz').scrollIntoView({behavior:'smooth',block:'start'});
   }
   function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
@@ -1917,9 +1943,10 @@ const TR=(function(){
     const treeSet=new Set();
     Object.keys(st.parent).forEach(v=>treeSet.add(st.parent[v]+'>'+v));
     const NR=18;
+    const dpos=DRAG.apply('tr-graph',pos);
     let svg='';
     edgesAll.forEach(e=>{
-      const a=pos[e.u],b=pos[e.v];
+      const a=dpos[e.u],b=dpos[e.v];
       const key=e.u+'>'+e.v,keyR=e.v+'>'+e.u;
       const inTree=treeSet.has(key)||(!directed&&treeSet.has(keyR));
       const justNow=st.cur&&((e.u===st.cur&&st.pushed.includes(e.v))||(!directed&&e.v===st.cur&&st.pushed.includes(e.u)));
@@ -1933,9 +1960,9 @@ const TR=(function(){
       const fill=isCur?'#fef3c7':seen?'#dbeafe':'#fff';
       const stroke=isCur?'#d97706':seen?'#2563eb':'#94a3b8';
       const sw=isCur?4:seen?3:1.5;
-      svg+=`<circle cx="${pos[v].x}" cy="${pos[v].y}" r="${NR}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
-      svg+=`<text x="${pos[v].x}" y="${pos[v].y+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2430">${v}</text>`;
-      if(st.dist){const d=st.dist[v];svg+=`<text x="${pos[v].x}" y="${pos[v].y-NR-5}" text-anchor="middle" font-size="11" font-weight="700" fill="${d===Infinity?'#9ca3af':'#2563eb'}">${d===Infinity?'∞':d}</text>`;}
+      svg+=`<circle cx="${dpos[v].x}" cy="${dpos[v].y}" r="${NR}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+      svg+=`<text x="${dpos[v].x}" y="${dpos[v].y+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2430">${v}</text>`;
+      if(st.dist){const d=st.dist[v];svg+=`<text x="${dpos[v].x}" y="${dpos[v].y-NR-5}" text-anchor="middle" font-size="11" font-weight="700" fill="${d===Infinity?'#9ca3af':'#2563eb'}">${d===Infinity?'∞':d}</text>`;}
     });
     document.getElementById('tr-graph').innerHTML=svg;
     // estructura
@@ -1978,7 +2005,9 @@ const TR=(function(){
     const ord=document.getElementById('tr-order').value;
     let S;try{pos=GU.layout(g.vorder);S=kind==='bfs'?buildBFS(g,start,ord):buildDFS(g,start,ord);}catch(e){err.textContent=e.message;return;}
     steps=S;cur=0;
+    DRAG.reset('tr-graph');
     document.getElementById('tr-viz').classList.remove('hidden');render();
+    DRAG.attach('tr-graph',()=>render());
     document.getElementById('tr-viz').scrollIntoView({behavior:'smooth',block:'start'});
   }
   function paso(d){stopAuto();cur=Math.max(0,Math.min(steps.length-1,cur+d));render();}
@@ -1988,9 +2017,157 @@ const TR=(function(){
 })();
 
 /* ===== teclado ===== */
-const MODS={ms:[MS,'ms-viz'],cl:[CL,'cl-viz'],kr:[KR,'kr-viz'],pr:[PR,'pr-viz'],dk:[DK,'dk-viz'],hp:[HP,'hp-viz'],tr:[TR,'tr-viz']};
+
+/* ========================================================= */
+/* ============  PIZARRA (árbol/grafo manual)  ============== */
+/* ========================================================= */
+const PZ=(function(){
+  const LS='hpa-pz-board-v1';
+  const HINT='Clic en un nodo para seleccionarlo · arrastrá desde la barra gris · doble clic en el lienzo crea un nodo.';
+  const STATES=['','exp','pod','sol'];
+  let nodes=[], edges=[], seq=1, sel=null, connectMode=false, connSrc=null, canvas=null, svg=null;
+
+  function save(){ try{ localStorage.setItem(LS,JSON.stringify({nodes,edges,seq})); }catch(e){} }
+  function load(){ try{ const d=JSON.parse(localStorage.getItem(LS)); if(d&&d.nodes){nodes=d.nodes;edges=d.edges||[];seq=d.seq||(nodes.length+1);} }catch(e){} }
+
+  function getNode(id){ return nodes.find(n=>n.id===id); }
+  function elNode(id){ return canvas.querySelector('.pz-node[data-id="'+id+'"]'); }
+
+  function hint(msg){ const h=document.getElementById('pz-hint'); if(!h)return; h.style.color=''; h.textContent=msg?msg:HINT; }
+  function flash(msg){ const h=document.getElementById('pz-hint'); if(!h)return; h.textContent='⚠ '+msg; h.style.color='#b91c1c'; setTimeout(()=>{h.style.color='';h.textContent=HINT;},2400); }
+  function select(id){ sel=id; render(); }
+
+  function autoresize(ta){ ta.style.height='auto'; ta.style.height=Math.max(ta.scrollHeight,28)+'px'; }
+
+  function center(n){ const el=elNode(n.id); const w=el?el.offsetWidth:130, h=el?el.offsetHeight:60; return {x:n.x+w/2,y:n.y+h/2,w:w,h:h}; }
+  function borderPoint(towards,box){
+    const dx=towards.x-box.x, dy=towards.y-box.y;
+    if(!dx&&!dy)return {x:box.x,y:box.y};
+    const sx=dx?(box.w/2)/Math.abs(dx):Infinity, sy=dy?(box.h/2)/Math.abs(dy):Infinity;
+    const t=Math.min(sx,sy);
+    return {x:box.x+dx*t,y:box.y+dy*t};
+  }
+
+  function drawEdges(){
+    if(!svg)return;
+    let s='<defs><marker id="pz-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#94a3b8"/></marker></defs>';
+    edges.forEach(e=>{
+      const a=getNode(e.from), b=getNode(e.to); if(!a||!b)return;
+      const ca=center(a), cb=center(b);
+      const p1=borderPoint(cb,ca), p2=borderPoint(ca,cb);
+      s+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="#94a3b8" stroke-width="2" marker-end="url(#pz-arrow)"/>';
+    });
+    svg.setAttribute('width',canvas.scrollWidth); svg.setAttribute('height',canvas.scrollHeight);
+    svg.innerHTML=s;
+  }
+
+  function wire(el,n){
+    const head=el.querySelector('.pz-head');
+    head.addEventListener('pointerdown',ev=>{
+      if(ev.target.classList.contains('pz-mini'))return;
+      select(n.id);
+      const sx=ev.clientX, sy=ev.clientY, ox=n.x, oy=n.y;
+      head.setPointerCapture(ev.pointerId);
+      function mv(e){ n.x=Math.max(0,ox+(e.clientX-sx)); n.y=Math.max(0,oy+(e.clientY-sy)); el.style.left=n.x+'px'; el.style.top=n.y+'px'; drawEdges(); }
+      function up(){ try{head.releasePointerCapture(ev.pointerId);}catch(_){} head.removeEventListener('pointermove',mv); head.removeEventListener('pointerup',up); save(); }
+      head.addEventListener('pointermove',mv); head.addEventListener('pointerup',up);
+      ev.preventDefault();
+    });
+    el.addEventListener('click',ev=>{ if(connectMode){ onConnectClick(n.id); ev.stopPropagation(); return; } select(n.id); });
+    el.querySelector('[data-act="child"]').addEventListener('click',ev=>{ ev.stopPropagation(); select(n.id); addChild(); });
+    el.querySelector('[data-act="del"]').addEventListener('click',ev=>{ ev.stopPropagation(); select(n.id); removeSel(); });
+    const ta=el.querySelector('.pz-body');
+    ta.addEventListener('input',()=>{ n.text=ta.value; autoresize(ta); save(); });
+    ta.addEventListener('pointerdown',ev=>ev.stopPropagation());
+    ta.addEventListener('focus',()=>{ sel=n.id; canvas.querySelectorAll('.pz-node.sel').forEach(x=>{if(x!==el)x.classList.remove('sel');}); el.classList.add('sel'); });
+  }
+
+  function render(){
+    if(!canvas)return;
+    nodes.forEach(n=>{
+      let el=elNode(n.id);
+      if(!el){
+        el=document.createElement('div');
+        el.className='pz-node'; el.dataset.id=n.id;
+        el.innerHTML='<div class="pz-head"><span class="pz-id"></span><span>'
+          +'<button class="pz-mini" title="crear hijo" data-act="child">&#43;</button>'
+          +'<button class="pz-mini" title="eliminar" data-act="del">&#10005;</button></span></div>'
+          +'<textarea class="pz-body" rows="2" placeholder="info…"></textarea>';
+        canvas.appendChild(el);
+        wire(el,n);
+      }
+      el.style.left=n.x+'px'; el.style.top=n.y+'px';
+      el.querySelector('.pz-id').textContent='#'+n.id;
+      el.classList.toggle('sel',sel===n.id);
+      el.classList.toggle('connsrc',connSrc===n.id);
+      el.classList.remove('st-exp','st-pod','st-sol');
+      if(n.state==='exp')el.classList.add('st-exp');
+      else if(n.state==='pod')el.classList.add('st-pod');
+      else if(n.state==='sol')el.classList.add('st-sol');
+      const ta=el.querySelector('.pz-body');
+      if(document.activeElement!==ta && ta.value!==(n.text||'')) ta.value=n.text||'';
+      autoresize(ta);
+    });
+    canvas.querySelectorAll('.pz-node').forEach(el=>{ if(!getNode(+el.dataset.id)) el.remove(); });
+    drawEdges();
+  }
+
+  function addNode(x,y){
+    const id=seq++;
+    if(x==null){ x=(canvas?canvas.scrollLeft:0)+40+((nodes.length*26)%220); y=(canvas?canvas.scrollTop:0)+40+((nodes.length*20)%170); }
+    const n={id:id,x:x,y:y,text:'',state:''}; nodes.push(n); render(); select(id); save();
+    setTimeout(()=>{ const el=elNode(id); if(el){ const ta=el.querySelector('.pz-body'); if(ta)ta.focus(); } },0);
+    return n;
+  }
+  function addChild(){
+    if(sel==null){ flash('Seleccioná primero un nodo (clic) para crearle un hijo.'); return; }
+    const p=getNode(sel); if(!p)return;
+    const c=addNode(p.x+30,p.y+120);
+    edges.push({from:p.id,to:c.id}); render(); select(c.id); save();
+  }
+  function toggleConnect(){
+    connectMode=!connectMode; connSrc=null;
+    canvas.classList.toggle('connect',connectMode);
+    const b=document.getElementById('pz-connbtn');
+    if(b){ b.classList.toggle('btn-primary',connectMode); b.classList.toggle('btn-nav',!connectMode); }
+    hint(connectMode?'Modo conectar: clic en el nodo ORIGEN y después en el DESTINO. (Tocá "Conectar" de nuevo para salir.)':'');
+    render();
+  }
+  function onConnectClick(id){
+    if(connSrc==null){ connSrc=id; render(); hint('Origen #'+id+' elegido. Ahora clic en el nodo destino.'); return; }
+    if(connSrc!==id && !edges.some(e=>e.from===connSrc&&e.to===id)) edges.push({from:connSrc,to:id});
+    connSrc=null; render(); save(); hint('Arista creada. Clic en otro origen, o "Conectar" para salir.');
+  }
+  function cycleState(){
+    if(sel==null){ flash('Seleccioná un nodo para cambiarle el estado.'); return; }
+    const n=getNode(sel); const i=STATES.indexOf(n.state||''); n.state=STATES[(i+1)%STATES.length]; render(); save();
+  }
+  function removeSel(){
+    if(sel==null){ flash('Seleccioná un nodo para eliminar.'); return; }
+    nodes=nodes.filter(n=>n.id!==sel); edges=edges.filter(e=>e.from!==sel&&e.to!==sel);
+    sel=null; render(); save();
+  }
+  function clearAll(){
+    if(nodes.length && !confirm('¿Vaciar la pizarra? Se borran todos los nodos.')) return;
+    nodes=[]; edges=[]; seq=1; sel=null; connSrc=null; render(); save();
+  }
+
+  function init(){
+    canvas=document.getElementById('pz-canvas'); svg=document.getElementById('pz-edges');
+    if(!canvas)return;
+    canvas.addEventListener('click',e=>{ if((e.target===canvas||e.target===svg)&&!connectMode){ sel=null; render(); } });
+    canvas.addEventListener('dblclick',e=>{ if(e.target===canvas||e.target===svg){ const r=canvas.getBoundingClientRect(); addNode(e.clientX-r.left+canvas.scrollLeft-20,e.clientY-r.top+canvas.scrollTop-14); } });
+    hint(''); load(); render();
+  }
+
+  return {addNode,addChild,toggleConnect,cycleState,removeSel,clearAll,init,stopAuto:function(){}};
+})();
+PZ.init();
+
+const MODS={cl:[CL,'cl-viz'],kr:[KR,'kr-viz'],pr:[PR,'pr-viz'],dk:[DK,'dk-viz'],hp:[HP,'hp-viz'],tr:[TR,'tr-viz']};
 document.addEventListener('keydown',e=>{
-  const [mod,vizId]=MODS[window.ACTIVE]||MODS.ms;
+  if(/^(TEXTAREA|INPUT|SELECT)$/.test((e.target||{}).tagName||''))return;
+  const [mod,vizId]=MODS[window.ACTIVE]||MODS.cl;
   const viz=document.getElementById(vizId);
   if(!viz||viz.classList.contains('hidden'))return;
   if(e.key==='ArrowRight')mod.paso(1);
