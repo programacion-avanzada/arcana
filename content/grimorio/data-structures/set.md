@@ -48,7 +48,7 @@ Python no incluye un `TreeSet` en su librería estándar; `sortedcontainers.Sort
 
 **Diagrama de un árbol binario de búsqueda balanceado:**
 
-![](/attachments/grimorio/data-structures/treeSet.svg)
+![](/attachments/grimorio/data-structures/tree-set.svg)
 
 
 ---

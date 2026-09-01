@@ -35,7 +35,7 @@ Internamente, la estructura mantiene una secuencia de nodos enlazados en ambas d
 
 En la representación, el primer nodo apunta hacia `null` por su lado anterior. Cada nodo apunta al siguiente y al anterior, hasta llegar al último nodo, cuyo puntero siguiente apunta a `null`.
 
-![Representación de una lista doblemente enlazada](lista%20doblemente%20enlazada.svg)
+![Representación de una lista doblemente enlazada](lista-doblemente-enlazada.svg)
 
 Diagrama simplificado:
 

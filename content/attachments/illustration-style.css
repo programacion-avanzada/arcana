@@ -18,20 +18,22 @@ Referencia: content/attachments/grimorio/data-structures/stack.svg,
             content/attachments/grimorio/data-structures/hashtable.svg,
             content/attachments/grimorio/data-structures/deque.svg,
             content/attachments/grimorio/data-structures/hashset.svg,
-            content/attachments/grimorio/data-structures/treeSet.svg,
-            content/attachments/grimorio/data-structures/array simple.svg,
-            content/attachments/grimorio/data-structures/array circular.svg,
-            content/attachments/grimorio/data-structures/estructura cuadro.svg,
-            content/attachments/grimorio/data-structures/estructura python.svg,
-            content/attachments/grimorio/data-structures/lista doblemente enlazada.svg,
-            content/attachments/grimorio/data-structures/string hola array.svg,
-            content/attachments/grimorio/data-structures/string hola null.svg,
-            content/attachments/grimorio/data-structures/string chat.svg
+            content/attachments/grimorio/data-structures/tree-set.svg,
+            content/attachments/grimorio/data-structures/array-simple.svg,
+            content/attachments/grimorio/data-structures/array-circular.svg,
+            content/attachments/grimorio/data-structures/estructura-cuadro.svg,
+            content/attachments/grimorio/data-structures/estructura-python.svg,
+            content/attachments/grimorio/data-structures/lista-doblemente-enlazada.svg,
+            content/attachments/grimorio/data-structures/string-hola-array.svg,
+            content/attachments/grimorio/data-structures/string-hola-null.svg,
+            content/attachments/grimorio/data-structures/string-chat.svg
 
-Las 13 primeras cubren el vocabulario completo (celda, valor,
+Nombres de archivo: kebab-case.svg siempre (sin espacios, sin camelCase),
+salvo casos ya publicados que no valga la pena romper. Las 13 primeras
+cubren el vocabulario completo (celda, valor,
 fantasma, anotación de operación, acento/puntero, consulta, índice, puntero
 estructural); las clases funcionan igual sobre <rect> que sobre <circle>
-(ver treeSet.svg, nodos de árbol).
+(ver tree-set.svg, nodos de árbol).
 */
 
 text { font-family: 'Courier New', Courier, monospace; }

@@ -33,11 +33,11 @@ El simple redimensiona al llenarse y es óptimo para agregar al final, pero inse
 
 #### Array dinámico
 
-![Array dinámico](array%20simple.svg)
+![Array dinámico](array-simple.svg)
 
 #### Array circular dinámico
 
-![Array dinámico](array%20circular.svg)
+![Array dinámico](array-circular.svg)
 
 ## 2. Operaciones y complejidad
 

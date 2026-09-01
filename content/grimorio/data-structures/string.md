@@ -66,7 +66,7 @@ La forma más común de representar un string es como un **arreglo (array) conti
 
 Ejemplo: `"hola"`
 
-![Representación en memoria de "hola"](string%20hola%20array.svg)
+![Representación en memoria de "hola"](string-hola-array.svg)
 
 Esto permite:
 
@@ -75,13 +75,13 @@ Esto permite:
 
 En lenguajes como C, además, se utiliza un carácter especial de terminación (`'\0'`):
 
-![Representación en memoria de "hola" con terminador nulo](string%20hola%20null.svg)
+![Representación en memoria de "hola" con terminador nulo](string-hola-null.svg)
 
 #### Ilustración
 
 String: `"chat"`
 
-![Ilustración del string "chat" con índices y contenido](string%20chat.svg)
+![Ilustración del string "chat" con índices y contenido](string-chat.svg)
 
 #### Variantes de representación
 
