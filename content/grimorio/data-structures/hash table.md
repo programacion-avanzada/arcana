@@ -66,10 +66,10 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 #### Complejidad Temporal
 | Métodos | Promedio<sup>1</sup> | Peor caso / Con colisiones<br>Resolución: Lista enlazada | Peor caso / Con colisiones<br>Resolución: Árbol binario |
 | :--- | :--- | :--- | :--- |
-| `hash(clave)` | *O(m)*<sup>2</sup> | - | - |
-| `insertar(clave, valor)` | *O(1)* | *O(n)*<sup>3</sup> | *O(log(n))* |
-| `buscar(clave)` | *O(1)* | *O(n)* | *O(log(n))* |
-| `eliminar(clave)` | *O(1)* | *O(n)* | *O(log(n))* |
+| `hash(clave)` | $O(m)$<sup>2</sup> | - | - |
+| `insertar(clave, valor)` | $O(1)$ | $O(n)$<sup>3</sup> | $O(\log n)$ |
+| `buscar(clave)` | $O(1)$ | $O(n)$ | $O(\log n)$ |
+| `eliminar(clave)` | $O(1)$ | $O(n)$ | $O(\log n)$ |
 
 **Notas:**
 
@@ -82,11 +82,11 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 #### Complejidad Espacial
 Esta complejidad puede verse afectada en gran parte por la función de Hash, debido a que según cómo sea de precisa y manejada podemos evitar **colisiones**, variando así las posibilidades de tener un mayor o menor uso de la complejidad espacial, en normas generales podemos deducir que ganamos “velocidad” en cuánto a complejidad computacional, sin embargo perdemos en complejidad espacial, ya que requerimos más estructuras dinámicas o un mayor uso de la memoria para guardar los elementos en caso de tener colisiones, lo que desencadena en que vamos a tener estructuras auxiliares (listas nodos, etc) o también es común que tengamos ciertos espacios vacíos en el array.
 
-- Espacio total: `O(n)`
+- Espacio total: $O(n)$
 
 ### Detalles operativos
 - **Puede haber colisiones**: Distintas claves pueden mapear al mismo índice; deben resolverse con encadenamiento o direccionamiento abierto.
-- **Depende de la función hash**: Una mala función hash degrada el rendimiento hacia O(n).
+- **Depende de la función hash**: Una mala función hash degrada el rendimiento hacia $O(n)$.
 - **Factor de carga y redimensionamiento**: Cuando la tabla se llena demasiado, se realiza **rehashing**, lo cual es costoso pero poco frecuente (costo amortizado).
 - **Claves deben ser hashables**: En implementaciones como Python, deben ser inmutables (ej: `str`, `int`, `tuple`).
 - **No mantiene orden (en general)**: Salvo implementaciones específicas (como `dict` en Python moderno), no se garantiza orden de inserción.
@@ -201,14 +201,14 @@ def ackermann(m, n, hashtable):
 - **vs árboles** → más rápida en promedio, pero sin orden  
 
 ### Ventajas
-- Acceso promedio `O(1)`  
+- Acceso promedio $O(1)$  
 - Alta eficiencia  
 - Flexibilidad de claves  
 
 ### Desventajas
 - No mantiene orden  
 - Depende de la función hash  
-- Puede degradar a `O(n)`  
+- Puede degradar a $O(n)$  
 - Mayor uso de memoria  
 
 ### Señales de reconocimiento
@@ -220,7 +220,7 @@ def ackermann(m, n, hashtable):
 ### ¿Cuándo conviene usarlo?
 - Cuando el problema requiere acceso rápido por clave y el orden no es importante
 
-**Trade off**: Una tabla de hash permite realizar operaciones fundamentales en tiempo constante promedio (O(1)), siendo altamente eficiente para búsquedas y actualizaciones. Sin embargo, su rendimiento depende críticamente de la calidad de la función hash, el manejo de colisiones y el control del factor de carga.
+**Trade off**: Una tabla de hash permite realizar operaciones fundamentales en tiempo constante promedio ($O(1)$), siendo altamente eficiente para búsquedas y actualizaciones. Sin embargo, su rendimiento depende críticamente de la calidad de la función hash, el manejo de colisiones y el control del factor de carga.
 
 
 ## 5. Relaciones y extensiones
@@ -244,7 +244,7 @@ Más flexible, pero usa más memoria
 
 #### Cuckoo Hashing
 - Usa **dos funciones hash** y permite reubicar elementos  
-- Búsqueda `O(1)` garantizada  
+- Búsqueda $O(1)$ garantizada  
 - Inserciones pueden ser costosas por reubicaciones
 
 #### Robin Hood Hashing
@@ -267,7 +267,7 @@ Más flexible, pero usa más memoria
 ### Relaciones con Otras Estructuras
 **Base del tipo abstracto “diccionario” ([[map]])**: Generaliza la idea de asociar claves con valores, similar a estructuras como mapas ordenados, pero optimizada para acceso directo en lugar de orden.
 
-**Alternativa a árboles de búsqueda (como BST o árboles balanceados)**: Mientras los árboles mantienen los datos ordenados con complejidad O(log n), la hash table prioriza velocidad O(1) promedio sacrificando el orden.
+**Alternativa a árboles de búsqueda (como BST o árboles balanceados)**: Mientras los árboles mantienen los datos ordenados con complejidad $O(\log n)$, la hash table prioriza velocidad $O(1)$ promedio sacrificando el orden.
 
 **Usada en el [[set]]**: Implementa estructuras donde solo interesa la pertenencia de elementos (sin valores asociados), reutilizando el mecanismo de hashing.
 
@@ -286,7 +286,7 @@ Una hash table puede implementarse de forma **persistente** (inmutable), donde c
 Un enfoque común en lenguajes funcionales es usar estructuras como **Hash Array Mapped Trie (HAMT)**.
 
 ##### Implicancias:
-- Las operaciones siguen siendo cercanas a O(1) promedio (a veces O(log n) por la estructura tipo trie).
+- Las operaciones siguen siendo cercanas a $O(1)$ promedio (a veces $O(\log n)$ por la estructura tipo trie).
 - Se comparten grandes porciones de memoria entre versiones → eficiencia espacial.
 - Permite funcionalidades como **undo/redo**, backtracking o concurrencia sin locks.
 - Trade-off: mayor complejidad de implementación y overhead constante mayor que una tabla mutable.
@@ -308,7 +308,7 @@ Existen varias estrategias:
 #### Aleatoriedad (hashing y seguridad)
 El comportamiento de una hash table depende fuertemente de la **calidad de la función hash**.
 - Una buena función hash distribuye uniformemente las claves.
-- Una mala distribución produce muchas colisiones → degradación a O(n).
+- Una mala distribución produce muchas colisiones → degradación a $O(n)$.
 
 Para mitigar problemas:
 - Hashing aleatorizado (randomized hashing): Se introduce una semilla aleatoria para evitar patrones predecibles.

@@ -44,7 +44,7 @@ Es requerido que la pila respete esas complejidades para sus operaciones element
 ### Detalles operativos
 - Puede haber overflow (si hay límite de tamaño)
 - Puede haber underflow (hacer pop en pila vacía)
-- No permite búsqueda eficiente, ya que es `O(n)`
+- No permite búsqueda eficiente, ya que es $O(n)$
 
 ## 3. Implementación
 
@@ -114,7 +114,7 @@ while not s.is_empty():
 
 #### Ventajas
 - Simplicidad extrema
-- Operaciones O(1) garantizadas
+- Operaciones $O(1)$ garantizadas
 - Modelo mental claro
 
 #### Desventajas

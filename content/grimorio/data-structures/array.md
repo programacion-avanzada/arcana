@@ -48,7 +48,7 @@ Se observa una estructura lineal donde cada elemento es accesible directamente m
 ### Complejidad
 - Acceso y actualización por índice: $O(1)$ (tiempo constante)
 - Búsqueda por valor: $O(n)$ en el peor caso (debe recorrer el array).
-- Búsqueda en arrays ordenados: la búsqueda desciende a $O(log\,n)$ si se utilizan algoritmos como **búsqueda binaria**.
+- Búsqueda en arrays ordenados: la búsqueda desciende a $O(\log n)$ si se utilizan algoritmos como **búsqueda binaria**.
 
 Es requerido que el array respete estas complejidades debido a su representación contigua en memoria.
 
@@ -157,8 +157,8 @@ Además, las listas enlazadas utilizan memoria dinámica, lo que les permite aju
 
 | Ventajas | Desventajas |
 | ----- | ----- |
-| **Acceso rápido:** Podes acceder a cualquier elemento instantáneamente si conoces su índice (Complejidad O(1)). | **Tamaño fijo:** Una vez definido el tamaño, no se puede cambiar. Tienes que crear uno nuevo y copiar los datos. |
-| **Eficiencia de memoria:** No desperdician espacio en punteros o metadatos adicionales (como las listas enlazadas). | **Costo de inserción/borrado:** Para insertar un elemento al inicio, es inevitable "empujar" todos los demás hacia adelante (Complejidad O(n)). |
+| **Acceso rápido:** Podes acceder a cualquier elemento instantáneamente si conoces su índice (Complejidad $O(1)$). | **Tamaño fijo:** Una vez definido el tamaño, no se puede cambiar. Tienes que crear uno nuevo y copiar los datos. |
+| **Eficiencia de memoria:** No desperdician espacio en punteros o metadatos adicionales (como las listas enlazadas). | **Costo de inserción/borrado:** Para insertar un elemento al inicio, es inevitable "empujar" todos los demás hacia adelante (Complejidad $O(n)$). |
 | **Simplicidad:** Son fáciles de entender y están disponibles en prácticamente todos los lenguajes de programación. | **Memoria contigua:** Requieren un bloque de memoria ininterrumpido; si la memoria está muy fragmentada, es posible que la creación del array falle. |
 
 ### Señales de reconocimiento

@@ -44,8 +44,8 @@ una colección de pares **clave→valor** bajo ciertas reglas fundamentales:
 
 Un Map es una abstracción lógica, por lo que puede implementarse de diferentes maneras:
 
-- **HashMap:** Utiliza funciones hash para lograr un acceso promedio de O(1).
-- **TreeMap:** Usa árboles balanceados para mantener las claves ordenadas, con operaciones O(log n).
+- **HashMap:** Utiliza funciones hash para lograr un acceso promedio de $O(1)$.
+- **TreeMap:** Usa árboles balanceados para mantener las claves ordenadas, con operaciones $O(\log n)$.
 - **Lista o array de pares:** Implementación simple, útil para conjuntos pequeños.
 
 Lógicamente, cada implementación ofrece distintos compromisos entre:
@@ -75,11 +75,11 @@ La complejidad de un Map depende de su implementación concreta.
 
 | Implementación | Inserción                      | Búsqueda                       | Eliminación                    |
 | -------------- | ------------------------------ | ------------------------------ | ------------------------------ |
-| HashMap        | O(1) promedio / O(n) peor caso | O(1) promedio / O(n) peor caso | O(1) promedio / O(n) peor caso |
-| TreeMap        | O(log n)                       | O(log n)                       | O(log n)                       |
-| Lista / Array  | O(1) / O(n) según estrategia   | O(n)                           | O(n)                           |
+| HashMap        | $O(1)$ promedio / $O(n)$ peor caso | $O(1)$ promedio / $O(n)$ peor caso | $O(1)$ promedio / $O(n)$ peor caso |
+| TreeMap        | $O(\log n)$                       | $O(\log n)$                       | $O(\log n)$                       |
+| Lista / Array  | $O(1)$ / $O(n)$ según estrategia   | $O(n)$                           | $O(n)$                           |
 
-> **Nota sobre Lista/Array:** la inserción es O(1) si siempre se agrega al final sin verificar duplicados; es O(n) si primero se busca la clave para evitarlos. La elección depende del contrato: un Map que garantiza unicidad de claves debe hacer la búsqueda previa.
+> **Nota sobre Lista/Array:** la inserción es $O(1)$ si siempre se agrega al final sin verificar duplicados; es $O(n)$ si primero se busca la clave para evitarlos. La elección depende del contrato: un Map que garantiza unicidad de claves debe hacer la búsqueda previa.
 
 > No existe una única complejidad para los Maps. El rendimiento depende de cómo se implemente internamente.
 
@@ -226,8 +226,8 @@ No conviene usarlo cuando:
 
 | Estructura       | Ventaja frente al Map                                       | Desventaja frente al Map                        |
 | ---------------- | ----------------------------------------------------------- | ----------------------------------------------- |
-| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n)                |
-| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)                            |
+| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta $O(n)$                |
+| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal $O(n)$                            |
 | Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Más complejo de implementar como TDA base       |
 | [[set]]          | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados                   |
 
@@ -263,7 +263,7 @@ Hay varias pistas en un problema que sugieren que un Map puede ser la estructura
 ### Relación con otras estructuras
 
 - Respecto a su relación con otras estructuras, los mapas dependen conceptualmente de:
-  - [[hash table]], la implementación más común para lograr acceso promedio O(1).
+  - [[hash table]], la implementación más común para lograr acceso promedio $O(1)$.
   - [[array]], como base para almacenar datos (especialmente en hashing).
   - [[linked list]], usadas en manejo de colisiones.
   - Árboles, para mantener orden y garantizar complejidad logarítmica.

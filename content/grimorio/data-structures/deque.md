@@ -55,7 +55,7 @@ La complejidad del metodo `clear()` sera mayor si no esta presente el **Garbage 
 
 ### Detalles operativos
 - Flexibilidad: Al permitir push y pop en ambos lados, un deque puede actuar como una pila (usando solo un extremo) o como una cola (insertando en uno y quitando en otro).
-- Búsqueda ineficiente: Al igual que la Pila, buscar un elemento interno es `O(n)`.
+- Búsqueda ineficiente: Al igual que la Pila, buscar un elemento interno es $O(n)$.
 
 ## 3. Implementación
 ### Idea de implementación
@@ -173,19 +173,19 @@ print("La palabra: "+palabra+" "+ "si es un palindromo"if palindromo else "no es
 - Procesamiento de datos en tiempo real.
 
 ### Cuándo NO usarlo
-- Si el problema requiere encontrar elementos en posiciones intermedias, el costo O(n) lo hace ineficiente.
+- Si el problema requiere encontrar elementos en posiciones intermedias, el costo $O(n)$ lo hace ineficiente.
 - Si el tamaño de los datos es conocido y no habrá inserciones en los extremos, un array estático consume menos memoria.
 
 ### Comparaciones
 - **vs Pila**: El deque es una versión más flexible que permite el acceso por ambos extremos, no sólo por el tope.
 - **vs Cola**: El deque permite comportarse como una cola pero añade la posibilidad de insertar elementos al frente si es necesario.
-- **vs Lista**: El deque es más eficiente para inserciones y extracciones en ambos extremos O(1), mientras que la lista es O(n).
+- **vs Lista**: El deque es más eficiente para inserciones y extracciones en ambos extremos $O(1)$, mientras que la lista es $O(n)$.
 
 ### Ventajas / desventajas
 | Ventajas | Desventajas |
 | :--- | :--- |
 | Comportamiento FIFO, LIFO si el problema lo requiere ambos| No cumple el contrato de pila o cola a estrictamente |
-| Tiempo O(1) para añadir o eliminar elementos en extremos |  Falta de acceso aleatorio |
+| Tiempo $O(1)$ para añadir o eliminar elementos en extremos |  Falta de acceso aleatorio |
 
 ### Señales de reconocimiento
 - “Procesar por ambos extremos de un conjunto de datos”.
