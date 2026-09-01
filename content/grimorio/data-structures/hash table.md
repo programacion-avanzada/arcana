@@ -12,7 +12,7 @@ alias:
 ### Intuición
 Una tabla hash funciona como un conjunto de cajones numerados donde, mediante una fórmula (función hash), cada elemento se guarda y se busca directamente en una posición específica sin recorrer toda la estructura.
 
-### Definición y propiedades
+### Definición / propiedades
 
 #### Definición
 Una **Tabla Hash** permite almacenar y recuperar elementos de manera eficiente implementando el tipo de dato abstracto **diccionario**, asociando claves (*key*) con valores (*value*).
@@ -63,7 +63,7 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 
 ### Complejidad
 
-#### Complejidad Temporal
+#### Complejidad temporal
 | Métodos | Promedio<sup>1</sup> | Peor caso / Con colisiones<br>Resolución: Lista enlazada | Peor caso / Con colisiones<br>Resolución: Árbol binario |
 | :--- | :--- | :--- | :--- |
 | `hash(clave)` | $O(m)$<sup>2</sup> | - | - |
@@ -79,7 +79,7 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 
 <sup>3</sup>Para cada *n* en las celdas, se hace referencia a la cantidad de elementos de la subestructura de resolución.
 
-#### Complejidad Espacial
+#### Complejidad espacial
 Esta complejidad puede verse afectada en gran parte por la función de Hash, debido a que según cómo sea de precisa y manejada podemos evitar **colisiones**, variando así las posibilidades de tener un mayor o menor uso de la complejidad espacial, en normas generales podemos deducir que ganamos “velocidad” en cuánto a complejidad computacional, sin embargo perdemos en complejidad espacial, ya que requerimos más estructuras dinámicas o un mayor uso de la memoria para guardar los elementos en caso de tener colisiones, lo que desencadena en que vamos a tener estructuras auxiliares (listas nodos, etc) o también es común que tengamos ciertos espacios vacíos en el array.
 
 - Espacio total: $O(n)$
@@ -105,7 +105,7 @@ Cada clave se transforma en un índice del arreglo interno (bucket), permitiendo
 - La estructura debe manejar correctamente las colisiones sin perder información.
 - La cantidad de elementos almacenados nunca supera la capacidad lógica definida.
 
-### Construyendo una tabla hash propia
+### Ejemplo de código
 
 ```python
 class HashTable:
@@ -200,16 +200,20 @@ def ackermann(m, n, hashtable):
 - **vs arrays** → mejor acceso por clave  
 - **vs árboles** → más rápida en promedio, pero sin orden  
 
-### Ventajas
-- Acceso promedio $O(1)$  
-- Alta eficiencia  
-- Flexibilidad de claves  
+### Ventajas / desventajas
 
-### Desventajas
-- No mantiene orden  
-- Depende de la función hash  
-- Puede degradar a $O(n)$  
-- Mayor uso de memoria  
+Ventajas:
+
+- Acceso promedio $O(1)$
+- Alta eficiencia
+- Flexibilidad de claves
+
+Desventajas:
+
+- No mantiene orden
+- Depende de la función hash
+- Puede degradar a $O(n)$
+- Mayor uso de memoria
 
 ### Señales de reconocimiento
 - Búsqueda frecuente por clave
@@ -225,7 +229,7 @@ def ackermann(m, n, hashtable):
 
 ## 5. Relaciones y extensiones
 
-### Variantes según manejo de colisiones
+### Variantes
 
 #### Open Addressing (direccionamiento abierto)
 En lugar de usar listas, todo se guarda en el mismo arreglo.
@@ -252,19 +256,19 @@ Más flexible, pero usa más memoria
 - Minimiza la variación en tiempos de búsqueda
 - Muy eficiente en práctica (usado en sistemas reales)
 
-### Versiones Orientadas a Memoria Caché
+### Versiones orientadas a memoria caché
 
 #### Cache-conscious Hash Table
 - Diseñadas para aprovechar mejor la caché del CPU  
 - Menos saltos de memoria → más rápidas en práctica
 
-### Optimizaciones Comunes
+### Optimizaciones comunes
 - Resize dinámico (rehashing)
 - Funciones hash universales
 - Load factor tuning
 - Evitar clustering primario/secundario
 
-### Relaciones con Otras Estructuras
+### Relación con otras estructuras
 **Base del tipo abstracto “diccionario” ([[map]])**: Generaliza la idea de asociar claves con valores, similar a estructuras como mapas ordenados, pero optimizada para acceso directo en lugar de orden.
 
 **Alternativa a árboles de búsqueda (como BST o árboles balanceados)**: Mientras los árboles mantienen los datos ordenados con complejidad $O(\log n)$, la hash table prioriza velocidad $O(1)$ promedio sacrificando el orden.

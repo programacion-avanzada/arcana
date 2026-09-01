@@ -15,7 +15,7 @@ Un array dinámico es como una estantería de libros: se empieza con un mueble d
 
 Resuelve el problema de necesitar acceso inmediato por posición cuando la cantidad de elementos es incierta o crece con el tiempo.
 
-### Definición
+### Definición / propiedades
 
 Estructura que almacena datos de manera contigua y ajusta su capacidad en tiempo de ejecución. Sus propiedades clave:
 
@@ -89,7 +89,7 @@ Se mantiene un bloque contiguo en _heap_ con dos variables: `size` (elementos al
 - Nunca se accede fuera del rango válido.
 - Al eliminar en posición `i`, todos los elementos a la derecha se desplazan para mantener la contigüidad.
 
-### Ejemplos de código
+### Ejemplo de código
 
 ```python title="Array dinámico en python"
 class ArrayDinamico:
@@ -161,7 +161,7 @@ for i in range(arr.size):
 - Inserciones/eliminaciones frecuentes en el medio → es preferible lista enlazada.
 - Memoria muy fragmentada → es preferible lista enlazada (no requiere bloque contiguo).
 
-### Comparaciones con Alternativas
+### Comparaciones
 
 |                            | Array dinámico  | array estático | lista enlazada |
 | -------------------------- | --------------- | -------------- | -------------- |

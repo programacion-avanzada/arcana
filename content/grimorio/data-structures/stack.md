@@ -12,7 +12,7 @@ alias:
 Una "pila" es como una pila de platos: el último que ponés es el primero que sacás.
 Resuelve problemas donde el orden de procesamiento debe invertirse o deshacerse (LIFO). Es una estructura con acceso restringido desde el tope.
 
-### Definición y propiedades
+### Definición / propiedades
 - Estructura LIFO (Last-In, First-Out)
 - Solo se puede acceder/modificar el elemento en el tope
 - No hay acceso directo a elementos intermedios
@@ -112,12 +112,16 @@ while not s.is_empty():
 - **vs [[linked list]].** la pila es una linked list con acceso restringido al tope. Esa restricción es una ventaja de diseño: garantiza el contrato LIFO e impide operaciones que romperían la semántica. Usá linked list cuando necesitás acceso o modificación en posiciones arbitrarias.
 - **vs [[deque]].** el deque es una generalización que incluye a la pila: permite insertar y eliminar en ambos extremos. Usar un deque como pila es válido, pero expone operaciones innecesarias que rompen la restricción LIFO. Preferí la pila cuando querés que la estructura garantice ese contrato por diseño.
 
-#### Ventajas
+### Ventajas / desventajas
+
+Ventajas:
+
 - Simplicidad extrema
 - Operaciones $O(1)$ garantizadas
 - Modelo mental claro
 
-#### Desventajas
+Desventajas:
+
 - Muy limitada en operaciones
 - No permite acceso ni búsqueda eficiente
 - Puede ser demasiado restrictiva para algunos problemas

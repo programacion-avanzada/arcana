@@ -15,7 +15,7 @@ Un **array** es una **colección de elementos contiguos de datos del mismo tipo*
 
 Resuelve el problema de tener que crear muchas variables individuales. Por ejemplo, en lugar de tener `amigo1`, `amigo2`, `amigo3`, podemos tener una sola lista de `amigos` que almacene todos los valores.
 
-### Definición y propiedades
+### Definición / propiedades
 
 - **Estructura de datos lineal**: Los elementos están organizados en una secuencia.
 - **Tamaño Fijo**: Una vez que un array es creado, su tamaño no puede ser cambiado. Esto significa que debemos saber el número máximo de elementos que necesitaremos almacenar en el momento de la creación del array.  

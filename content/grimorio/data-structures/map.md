@@ -21,7 +21,7 @@ No buscás por posición ni por índice numérico: buscás por una **clave**
 Un Map funciona exactamente así: mantiene asociaciones entre **claves** y **valores**.
 Su objetivo es permitir recuperar información **a partir de una clave** de manera clara y eficiente.
 
-### Definición y propiedades
+### Definición / propiedades
 
 **Definición formal:** Un Map es un tipo de dato abstracto que mantiene
 una colección de pares **clave→valor** bajo ciertas reglas fundamentales:
@@ -83,6 +83,13 @@ La complejidad de un Map depende de su implementación concreta.
 
 > No existe una única complejidad para los Maps. El rendimiento depende de cómo se implemente internamente.
 
+### Detalles operativos
+
+- **Clave duplicada:** `insert`/`update` sobrescriben el valor existente; nunca coexisten dos entradas con la misma clave.
+- **Clave inexistente:** `find` retorna un valor nulo o centinela (no lanza excepción); `delete` no tiene efecto.
+- **Orden:** no garantizado salvo que la implementación lo provea explícitamente (ej. `TreeMap` ordena por clave, `HashMap` no garantiza orden).
+- **Costo oculto:** en implementaciones basadas en tabla hash, superar el factor de carga dispara un rehash que reinserta todas las claves, rompiendo puntualmente la complejidad amortizada.
+
 ---
 
 ## 3. Implementación
@@ -130,7 +137,7 @@ Estas condiciones deben cumplirse siempre:
 
 ---
 
-### Ejemplo de código (Python)
+### Ejemplo de código
 
 Implementación mínima de un **Map** usando una lista de pares clave→valor:
 
@@ -231,7 +238,7 @@ No conviene usarlo cuando:
 | Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Más complejo de implementar como TDA base       |
 | [[set]]          | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados                   |
 
-### Ventajas / Desventajas
+### Ventajas / desventajas
 
 | Ventajas                                           | Desventajas                                                          |
 | -------------------------------------------------- | -------------------------------------------------------------------- |

@@ -10,7 +10,7 @@ alias:
 ## 1. Qué es y cómo funciona
 ### Intuición
 Un deque (pronunciado "deck", acrónimo de Double-Ended Queue) es un tipo especial de estructura de datos que permite añadir y eliminar elementos de ambos extremos de forma eficiente. Resuelve problemas donde se necesita la flexibilidad de una pila y una cola simultáneamente.
-### Definición y propiedades
+### Definición / propiedades
 - Generalización de Pila y Cola: Puede comportarse como LIFO o FIFO según la necesidad.
 - Acceso en ambos extremos: Permite insertar y eliminar elementos tanto en el frente (front) como en el final (back).
 - Acceso restringido: Al igual que sus variantes, no permite acceso directo eficiente a elementos intermedios.

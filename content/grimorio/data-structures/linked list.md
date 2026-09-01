@@ -14,7 +14,7 @@ alias:
 ### Intuición
 Una lista simplemente enlazada funciona como una cadena: cada elemento está ligado al siguiente a través de un puntero. Permite insertar y eliminar elementos sin mover el resto.
 
-### Definición y propiedades
+### Definición / propiedades
 - Estructura dinámica de nodos
 - Cada nodo tiene: dato + referencia al siguiente
 - Acceso secuencial (no hay acceso directo por índice)
@@ -50,10 +50,8 @@ La imagen muestra una lista de tres nodos enlazados. Cada nodo está dividido en
 - Puede haber underflow (al intentar borrar o leer en una lista vacía)
 - No permite búsqueda eficiente ni acceso directo, ya que es $O(n)$
 - La función  `insertarOrdenado(x)` asume que la lista se encuentra ordenada.
-
-### Casos a considerar
-- Cuando se borra un elemento de una lista con un unico nodo, se borra donde se encuentra el `head`. Se debe modificar el `head` a lo que corresponda (otro nodo o `null`).
-- Si hay varios nodos con el mismo dato, tanto `buscar(x)` como `eliminar(x)` solo actuan sobre la primera aparición. Si se desea eliminar todas las ocurrencias, hay que iterar explícitamente en vez de retornar en la primera coincidencia
+- Cuando se borra un elemento de una lista con un único nodo, se borra donde se encuentra el `head`. Se debe modificar el `head` a lo que corresponda (otro nodo o `null`).
+- Si hay varios nodos con el mismo dato, tanto `buscar(x)` como `eliminar(x)` solo actúan sobre la primera aparición. Si se desea eliminar todas las ocurrencias, hay que iterar explícitamente en vez de retornar en la primera coincidencia.
 
 ## 3. Implementación
 
@@ -151,7 +149,7 @@ lista.recorrer()  # 1, 2, 3
 - Manejo dinámico de memoria (cuando no se conoce el tamaño de antemano)
 - Cuando importa el orden pero no un elemento en específico
 
-### Cuándo NO usarla
+### Cuándo NO usarlo
 - Cuando necesitás acceso directo a una posición específica
 - Cuando recorrés constantemente toda la estructura
 - Cuando el problema requiere acceso aleatorio frecuente
@@ -161,12 +159,16 @@ lista.recorrer()  # 1, 2, 3
 - **vs Lista Doble.** la lista doble permite recorrer en ambas direcciones, pero consume más memoria. La lista simple es más económica en memoria pero restringe el recorrido a un solo sentido. Elegí lista simple si la memoria es crítica y el recorrido es siempre hacia adelante.
 - **vs Pila / Cola.** la pila y la cola restringen por diseño dónde podés insertar y eliminar para garantizar su comportamiento. La lista simple no tiene estas restricciones. Usá lista simple cuando necesitás operar o buscar en posiciones intermedias.
 
-#### Ventajas
+### Ventajas / desventajas
+
+Ventajas:
+
 - Crecimiento dinámico
 - Inserción y eliminación sin reordenamiento
 - Flexibilidad y simplicidad alta
 
-#### Desventajas
+Desventajas:
+
 - Recorrido restringido a un solo sentido (unidireccional)
 - No permite acceso directo ni búsqueda eficiente
 - Overhead adicional por punteros

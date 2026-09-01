@@ -33,11 +33,17 @@ En Python, los objetos por defecto usan un diccionario interno dinámico para gu
 
 ## 2. Operaciones y complejidad
 
-### Operaciones principales y Complejidad
+### Operaciones principales
 
-- **Acceso / Lectura (Read Field):** $O(1)$. Se accede directamente al atributo (ej. `punto.x`) mediante una búsqueda optimizada en memoria.
-- **Modificación (Write Field):** $O(1)$. Si la estructura es mutable, se reasigna la referencia del campo a un nuevo valor.
-- **Instanciación (Create):** $O(K)$, donde $K$ es la cantidad de campos, ya que se debe reservar el espacio y asignar las referencias iniciales de cada atributo. Aunque en la práctica este numero es muy pequeño y fijo, así que podriamos considerar que es $O(1)$.
+- **Acceso / Lectura (Read Field):** Se accede directamente al atributo (ej. `punto.x`) mediante una búsqueda optimizada en memoria.
+- **Modificación (Write Field):** Si la estructura es mutable, se reasigna la referencia del campo a un nuevo valor.
+- **Instanciación (Create):** Se debe reservar el espacio y asignar las referencias iniciales de cada atributo, ya que la cantidad de campos $K$ está definida de antemano.
+
+### Complejidad
+
+- Acceso / Lectura: $O(1)$
+- Modificación: $O(1)$
+- Instanciación: $O(K)$, donde $K$ es la cantidad de campos. Aunque en la práctica este número es muy pequeño y fijo, así que podríamos considerar que es $O(1)$.
 
 ### Detalles operativos
 
@@ -99,7 +105,7 @@ color_fondo = ColorRGB(255, 255, 255)
 - vs Arreglo: La estructura viene a "ordenar" (no literalmente) los datos que podemos llegar a tener dentro de un Arreglo, en vez de accederlos por un indice, los tenemos definidos en la estructura con referencias y nombres. Además, el Arreglo necesita que los valores sean homogéneos, y la Estructura permite tener agrupados varios tipos de valores.
 - vs Mapa: Se asemejan en el hecho de que ambos trabajan con 'clave: valor', pero un mapa es dinámico y se le pueden agregar mas "clave valor" a como hagan falta, cuando en la estructura se resigna a la mutabilidad en pos de ser más eficiente a la hora de acceder a los datos. Depende el caso de uso puede ser mas útil una u otra. En el caso de un DTO una estructura es mucho mas prolijo que tener muchos mapas para representar cada dato.
 
-### Ventajas / Desventajas
+### Ventajas / desventajas
 
 **Ventajas:**
 - Acceso a campos extremadamente eficiente ($O(1)$).

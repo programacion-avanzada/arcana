@@ -16,7 +16,7 @@ alias:
 
 ---
 
-### Definición y propiedades
+### Definición / propiedades
 
 **Definición formal:** Por el axioma de extensionalidad de Zermelo-Fraenkel, un conjunto está totalmente determinado por su pertenencia:
 
@@ -30,7 +30,7 @@ De esta definición se sacan las siguientes propiedades:
 
 ---
 
-### Representación interna
+### Representación
 
 #### HashSet (tabla hash)
 
@@ -73,7 +73,7 @@ Python no incluye un `TreeSet` en su librería estándar; `sortedcontainers.Sort
 
 ---
 
-### Tabla de complejidad
+### Complejidad
 
 | Operación | `set` (promedio) | `set` (peor caso) | `SortedSet` |
 |---|:---:|:---:|:---:|
@@ -110,7 +110,7 @@ Python no incluye un `TreeSet` en su librería estándar; `sortedcontainers.Sort
 
 ## 3. Implementación
 
-### Idea central
+### Idea de implementación
 
 Mantener una colección que impida ingresar repetidos. Implementado con un `HashMap` o `LinkedHashMap`, debe asegurarse que los datos no se modifican; en un `TreeMap`, debe haber un criterio definido para ordenar los datos.
 
@@ -124,7 +124,7 @@ Mantener una colección que impida ingresar repetidos. Implementado con un `Hash
 
 ---
 
-### Implementación manual en Python
+### Ejemplo de código
 
 ```python
 class MiSet:
@@ -181,14 +181,14 @@ print("Intersección:", a.interseccion(b))  # ['mundo']
 
 ## 4. Uso y criterio
 
-### Cuándo usarlo ✅
+### Casos de uso
 
 - Colección sin elementos duplicados.
 - Operaciones matemáticas de conjuntos.
 - *Membership testing* (verificar si ya existe un elemento en la colección).
 - Seguimiento de elementos visitados.
 
-### Cuándo **no** usarlo ❌
+### Cuándo NO usarlo
 
 - Cuando el **orden** de los elementos importa (el `HashSet` estándar no lo garantiza; si se necesita orden, usar `LinkedHashSet` o `SortedSet`).
 - Cuando se necesita trabajar con duplicados.
@@ -196,7 +196,7 @@ print("Intersección:", a.interseccion(b))  # ['mundo']
 
 ---
 
-### Comparación con otras estructuras
+### Comparaciones
 
 | Estructura | Duplicados | Orden | Búsqueda | Cuándo elegirla |
 |---|:---:|:---:|:---:|---|
@@ -208,7 +208,7 @@ print("Intersección:", a.interseccion(b))  # ['mundo']
 
 ---
 
-### Ventajas y desventajas
+### Ventajas / desventajas
 
 **Ventajas:**
 - Operaciones en tiempo constante (HashSet) o logarítmico (TreeSet).
@@ -235,7 +235,7 @@ Considerá usar un `Set` cuando el problema presente alguna de estas caracterís
 
 ## 5. Relaciones y extensiones
 
-### Variantes del Set
+### Variantes
 
 | Variante | Descripción |
 |---|---|
