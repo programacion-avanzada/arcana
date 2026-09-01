@@ -25,11 +25,11 @@ Los strings facilitan:
 
 #### Definición formal
 
-Un string es una **secuencia finita de caracteres** pertenecientes a un alfabeto Σ (por ejemplo, ASCII o Unicode):
+Un string es una **secuencia finita de caracteres** pertenecientes a un alfabeto $\Sigma$ (por ejemplo, ASCII o Unicode):
 
-S = c₀ c₁ c₂ ... cₙ₋₁
+$$S = c_0 \, c_1 \, c_2 \, \ldots \, c_{n-1}$$
 
-donde cada cᵢ ∈ Σ.
+donde cada $c_i \in \Sigma$.
 
 #### Invariantes (lo que siempre se cumple)
 
@@ -46,10 +46,10 @@ donde cada cᵢ ∈ Σ.
   `"abc" ≠ "cba"`
 
 - **Indexado:** acceso directo a cualquier posición
-  Ej: S[0] = 'h'
+  Ej: `S[0] = 'h'`
 
 - **Longitud definida:**
-  len("hola") = 4
+  `len("hola") = 4`
 
 - **Puede ser inmutable o mutable:**
   - Inmutable (más común): más seguro, pero puede implicar copias
@@ -73,7 +73,7 @@ Esto permite:
 - Acceso en $O(1)$ por índice
 - Recorrido secuencial eficiente
 
-En lenguajes como C, además, se utiliza un carácter especial de terminación (`'\0'`):
+En lenguajes como C, además, se utiliza un carácter especial de terminación (`\0`):
 
 ![Representación en memoria de "hola" con terminador nulo](string-hola-null.svg)
 
@@ -126,17 +126,17 @@ Aunque lo más común es un array, también existen otras implementaciones:
 
 ### Complejidad
 
-| Operación       | Tiempo (peor caso)                       | Complejidad Espacial          |
-| --------------- | ---------------------------------------- | ------------------------------|
-| Access          | $O(1)$ ASCII / $O(n)$ UTF-8 sin índice       | $O(1)$                          |
-| Insert / Delete | $O(n)$                                     | $O(n)$                          |
-| Concat          | $O(n + m)$                                 | $O(n + m)$                      |
-| Find            | $O(n \cdot m)$ naive / $O(n+m)$ KMP               | $O(1)$ naive / $O(m)$ KMP         |
-| Length          | $O(1)$ ASCII / $O(n)$ UTF-8 sin índice       | $O(1)$                          |
-| Compare         | $O(n)$                                     | $O(1)$                          |
-| Transform       | $O(n)$                                     | $O(n)$ inmutable / $O(1)$ mutable |
-| Append          | $O(n)$ inmutable / $O(1)$ amortizado mutable | $O(n)$                          |
-| Slice           | $O(k)$                                     | $O(k)$                          |
+| Operación       | Tiempo (peor caso)                           | Complejidad espacial               |
+| --------------- | --------------------------------------------- | ----------------------------------- |
+| Access          | $O(1)$ ASCII / $O(n)$ UTF-8 sin índice         | $O(1)$                              |
+| Insert / Delete | $O(n)$                                         | $O(n)$                              |
+| Concat          | $O(n + m)$                                     | $O(n + m)$                          |
+| Find            | $O(n \cdot m)$ naive / $O(n+m)$ KMP            | $O(1)$ naive / $O(m)$ KMP           |
+| Length          | $O(1)$ ASCII / $O(n)$ UTF-8 sin índice         | $O(1)$                              |
+| Compare         | $O(n)$                                         | $O(1)$                              |
+| Transform       | $O(n)$                                         | $O(n)$ inmutable / $O(1)$ mutable   |
+| Append          | $O(n)$ inmutable / $O(1)$ amortizado mutable   | $O(n)$                              |
+| Slice           | $O(k)$                                         | $O(k)$                              |
 
 ### Detalles operativos
 
@@ -156,13 +156,13 @@ Un string se implementa típicamente como un **array contiguo de caracteres** ju
 
 Estructura básica:
 
-- char[] (datos)
-- length (tamaño)
-- opcional: capacity o terminador \0
+- `char[]` (datos)
+- `length` (tamaño)
+- opcional: `capacity` o terminador `\0`
 
 **Estrategias:**
 
-- **Inmutable:** cada modificación crea un nuevo array y copia los datos → simple pero costoso ($O(n)$)
+- **Inmutable:** cada modificación crea un nuevo array y copia los datos → simple pero costoso, $O(n)$
 - **Mutable (buffer):** usa capacidad extra y redimensiona cuando es necesario → permite append $O(1)$ amortizado
 
 **Algoritmos clave:**
@@ -178,7 +178,7 @@ Invariantes según el caso:
 
 - En strings inmutables: no modificar el contenido
 - En buffers: tamaño ≤ capacidad
-- En C: debe terminar con \0
+- En C: debe terminar con `\0`
 
 ### Ejemplo de código
 
