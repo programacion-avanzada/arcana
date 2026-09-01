@@ -1,86 +1,56 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="320" height="300" viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame       { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .divider     { stroke: #9baec8; stroke-width: 1; }
+    .val         { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .ghost       { fill: #f5f7fa; fill-opacity: 0.5; stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; }
+    .ghost-val   { font-size: 16px; font-weight: 700; fill: #555555; text-anchor: middle; }
+    .op          { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .op-arrow    { stroke: #777777; stroke-width: 1.5; fill: none; }
+    .op-arrow-fill { fill: #777777; }
+    .top-label   { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .top-arrow   { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .top-arrow-fill { fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .frame       { fill: #1e2330; stroke: #4a6fa5; }
+      .divider     { stroke: #4a6fa5; }
+      .val         { fill: #e2e8f0; }
+      .ghost       { fill: #1e2330; stroke: #8899aa; }
+      .ghost-val   { fill: #aab4c0; }
+      .op          { fill: #8899aa; }
+      .op-arrow    { stroke: #8899aa; }
+      .op-arrow-fill { fill: #8899aa; }
+      .top-label   { fill: #d4884a; }
+      .top-arrow   { stroke: #d4884a; }
+      .top-arrow-fill { fill: #d4884a; }
+    }
+  </style>
 
-<svg
-   width="30.150864mm"
-   height="25.785675mm"
-   viewBox="0 0 30.150864 25.785675"
-   version="1.1"
-   id="svg1"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs1" />
-  <g
-     id="layer1"
-     transform="translate(-24.294121,-21.368254)">
-    <path
-       style="fill:none;stroke:#cccccc;stroke-width:0.223065"
-       d="M 34.977387,30.650309 V 47.042395 H 46.05412 V 30.741377"
-       id="path1" />
-    <text
-       xml:space="preserve"
-       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-       x="37.828476"
-       y="23.857092"
-       id="text1"><tspan
-         id="tspan1"
-         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-         x="37.828476"
-         y="23.857092">top</tspan><tspan
-         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-         x="37.828476"
-         y="28.266804"
-         id="tspan5" /></text>
-    <text
-       xml:space="preserve"
-       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-       x="39.72377"
-       y="44.511459"
-       id="text2"><tspan
-         id="tspan2"
-         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-         x="39.72377"
-         y="44.511459">1</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-       x="39.554436"
-       y="40.356785"
-       id="text3"><tspan
-         id="tspan3"
-         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-         x="39.554436"
-         y="40.356785">2</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-       x="39.566784"
-       y="36.161549"
-       id="text4"><tspan
-         id="tspan4"
-         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-         x="39.566784"
-         y="36.161549">3</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-       x="24.21475"
-       y="30.893318"
-       id="text6"><tspan
-         id="tspan6"
-         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-         x="24.21475"
-         y="30.893318">push ↴</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:3.52777px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;letter-spacing:0.304271px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-       x="43.676468"
-       y="30.918016"
-       id="text7"><tspan
-         id="tspan7"
-         style="fill:#cccccc;stroke:#cccccc;stroke-width:0.264583"
-         x="43.676468"
-         y="30.918016">↱ pop</tspan></text>
-  </g>
+  <!-- puntero top -->
+  <text x="160" y="70" class="top-label">top</text>
+  <path d="M160,78 L160,102" class="top-arrow"/>
+  <path d="M153,99 L160,111 L167,99 Z" class="top-arrow-fill"/>
+
+  <!-- pila como un unico contenedor con 3 elementos -->
+  <rect x="95" y="110" width="130" height="150" rx="10" class="frame"/>
+  <line x1="95" y1="160" x2="225" y2="160" class="divider"/>
+  <line x1="95" y1="210" x2="225" y2="210" class="divider"/>
+  <text x="160" y="142" class="val">3</text>
+  <text x="160" y="192" class="val">2</text>
+  <text x="160" y="242" class="val">1</text>
+
+  <!-- push: un elemento nuevo entra por arriba y pasa a ser el tope -->
+  <text x="45" y="46" class="op">push</text>
+  <rect x="15" y="54" width="60" height="40" rx="6" class="ghost"/>
+  <text x="45" y="80" class="ghost-val">4</text>
+  <path d="M76,90 L98,113" class="op-arrow"/>
+  <path d="M89,112 L103,117 L99,103 Z" class="op-arrow-fill"/>
+
+  <!-- pop: el tope actual sale del contenedor -->
+  <text x="275" y="46" class="op">pop</text>
+  <rect x="245" y="54" width="60" height="40" rx="6" class="ghost"/>
+  <text x="275" y="80" class="ghost-val">3</text>
+  <path d="M222,113 L244,90" class="op-arrow"/>
+  <path d="M244,100 L248,86 L234,91 Z" class="op-arrow-fill"/>
 </svg>

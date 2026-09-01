@@ -1,0 +1,115 @@
+/*
+Guía de estilo para ilustraciones SVG de Arcana.
+
+Quartz embebe cada SVG como <img src="...">, así que el navegador lo carga
+como un documento aislado: no puede leer variables CSS ni el atributo
+saved-theme de la página. Por eso cada ilustración lleva su propio <style>
+con @media (prefers-color-scheme: dark) adentro (sigue la preferencia del
+sistema operativo/navegador, no el botón de modo oscuro manual del sitio).
+
+Uso: copiar el bloque de abajo dentro de un <style> en el SVG nuevo, ajustar
+qué clases se necesitan y borrar el resto. No se referencia como stylesheet
+externo, cada SVG es autocontenido.
+
+Referencia: content/attachments/grimorio/data-structures/stack.svg,
+            content/attachments/grimorio/data-structures/map.svg,
+            content/attachments/grimorio/data-structures/array.svg,
+            content/attachments/grimorio/data-structures/lista-enlazada.svg,
+            content/attachments/grimorio/data-structures/hashtable.svg,
+            content/attachments/grimorio/data-structures/deque.svg,
+            content/attachments/grimorio/data-structures/hashset.svg,
+            content/attachments/grimorio/data-structures/treeSet.svg,
+            content/attachments/grimorio/data-structures/array simple.svg,
+            content/attachments/grimorio/data-structures/array circular.svg,
+            content/attachments/grimorio/data-structures/estructura cuadro.svg,
+            content/attachments/grimorio/data-structures/estructura python.svg,
+            content/attachments/grimorio/data-structures/lista doblemente enlazada.svg,
+            content/attachments/grimorio/data-structures/string hola array.svg,
+            content/attachments/grimorio/data-structures/string hola null.svg,
+            content/attachments/grimorio/data-structures/string chat.svg
+
+Las 13 primeras cubren el vocabulario completo (celda, valor,
+fantasma, anotación de operación, acento/puntero, consulta, índice, puntero
+estructural); las clases funcionan igual sobre <rect> que sobre <circle>
+(ver treeSet.svg, nodos de árbol).
+*/
+
+text { font-family: 'Courier New', Courier, monospace; }
+
+/* elemento/celda normal de la estructura */
+.frame, .cell { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+.divider      { stroke: #9baec8; stroke-width: 1; }
+.val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+.val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; } /* variante para strings/valores largos, ej. tablas */
+.idx          { font-size: 12px; fill: #777777; text-anchor: middle; } /* índice bajo una celda, ej. array */
+
+/* puntero estructural permanente: parte de la estructura en sí (next de un
+   nodo, cadena de colisión), no una operación de paso. Mismo color que
+   frame/divider porque ES estructura, a diferencia de .op-arrow */
+.link      { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+.link-fill { fill: #9baec8; }
+
+/* elemento "fantasma": todavía no forma parte de la estructura (por entrar
+   o por salir), o un valor hipotético/de ejemplo */
+.ghost     { fill: #f5f7fa; fill-opacity: 0.5; stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; }
+.ghost-val { font-size: 16px; font-weight: 700; fill: #555555; text-anchor: middle; }
+
+/* anotación secundaria: nombre de operación, índice, flecha de operación */
+.op            { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+.op-arrow      { stroke: #777777; stroke-width: 1.5; fill: none; }
+.op-arrow-fill { fill: #777777; }
+
+/* acento: puntero o marcador destacado (top, head, cursor actual) */
+.top-label, .accent-label   { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+.top-arrow, .accent-arrow   { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+.top-arrow-fill, .accent-arrow-fill { fill: #c0742a; }
+
+/* consulta/lookup: valor de entrada real (no fantasma) que dispara una
+   búsqueda, se combina con .top-label/.top-arrow para señalar el resultado */
+.query { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+
+/* valor especial / error (ej. terminador nulo) */
+.cell-null { fill: #fff4e6; stroke: #c0742a; stroke-width: 1.5; stroke-dasharray: 5,3; }
+.char-null { font-size: 16px; font-weight: 700; fill: #a0522d; }
+
+@media (prefers-color-scheme: dark) {
+  .frame, .cell { fill: #1e2330; stroke: #4a6fa5; }
+  .divider      { stroke: #4a6fa5; }
+  .val, .val-sm { fill: #e2e8f0; }
+  .idx          { fill: #8899aa; }
+
+  .link      { stroke: #4a6fa5; }
+  .link-fill { fill: #4a6fa5; }
+
+  .ghost     { fill: #1e2330; stroke: #8899aa; }
+  .ghost-val { fill: #aab4c0; }
+
+  .op            { fill: #8899aa; }
+  .op-arrow      { stroke: #8899aa; }
+  .op-arrow-fill { fill: #8899aa; }
+
+  .top-label, .accent-label   { fill: #d4884a; }
+  .top-arrow, .accent-arrow   { stroke: #d4884a; }
+  .top-arrow-fill, .accent-arrow-fill { fill: #d4884a; }
+
+  .query { fill: #1e2330; stroke: #d4884a; }
+
+  .cell-null { fill: #2a1f10; stroke: #d4884a; }
+  .char-null { fill: #d4884a; }
+}
+
+/* ---------------------------------------------------------------------
+   Sinónimos de content/attachments/grimorio/data-structures/string*.svg.
+   Son anteriores a esta guía (de ahí salió la paleta/técnica) y usan sus
+   propios nombres de clase; se documentan acá para no perder el registro,
+   no hace falta reescribir esos archivos.
+   --------------------------------------------------------------------- */
+.char      { font-size: 24px; font-weight: 700; fill: #1a1a2e; } /* = .val, para un único glyph grande */
+.idx-val   { font-size: 14px; font-weight: 600; fill: #4a6fa5; } /* índice en azul de estructura, en vez de gris */
+.row-label { font-size: 12px; fill: #888888; } /* = .op sin bold, para un caption de fila */
+
+@media (prefers-color-scheme: dark) {
+  .char      { fill: #e2e8f0; }
+  .idx-val   { fill: #6a9fd8; }
+  .row-label { fill: #8899aa; }
+}

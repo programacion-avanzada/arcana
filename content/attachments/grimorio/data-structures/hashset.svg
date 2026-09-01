@@ -1,68 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160" font-family="'Courier New', monospace">
-  <defs>
-    <style>
-      .slot { stroke: #374151; stroke-width: 1.5; rx: 4; }
-      .empty { fill: #f3f4f6; }
-      .occupied { fill: #dbeafe; }
-      .idx { font-size: 11px; fill: #6b7280; text-anchor: middle; }
-      .val { font-size: 13px; fill: #1e40af; text-anchor: middle; font-weight: 600; }
-      .lbl { font-size: 11px; fill: #9ca3af; text-anchor: middle; }
-      .arrow { stroke: #93c5fd; stroke-width: 1.2; fill: none; marker-end: url(#ah); }
-      .hash { font-size: 10px; fill: #6b7280; text-anchor: middle; font-style: italic; }
-    </style>
-    <marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#93c5fd"/>
-    </marker>
-  </defs>
+<svg width="560" height="200" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame       { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .divider     { stroke: #9baec8; stroke-width: 1; }
+    .val-sm      { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx         { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .top-label   { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .top-arrow   { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .top-arrow-fill { fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .frame       { fill: #1e2330; stroke: #4a6fa5; }
+      .divider     { stroke: #4a6fa5; }
+      .val-sm      { fill: #e2e8f0; }
+      .idx         { fill: #8899aa; }
+      .top-label   { fill: #d4884a; }
+      .top-arrow   { stroke: #d4884a; }
+      .top-arrow-fill { fill: #d4884a; }
+    }
+  </style>
 
-  <!-- Index labels -->
-  <g>
-    <text class="idx" x="50" y="20">[0]</text>
-    <text class="idx" x="140" y="20">[1]</text>
-    <text class="idx" x="230" y="20">[2]</text>
-    <text class="idx" x="320" y="20">[3]</text>
-    <text class="idx" x="410" y="20">[4]</text>
-    <text class="idx" x="500" y="20">[5]</text>
-    <text class="idx" x="590" y="20">[6]</text>
-    <text class="idx" x="680" y="20">[7]</text>
-  </g>
+  <!-- hashset: array de 8 slots con direccionamiento abierto -->
+  <rect x="20" y="90" width="520" height="60" rx="8" class="frame"/>
+  <line x1="85"  y1="90" x2="85"  y2="150" class="divider"/>
+  <line x1="150" y1="90" x2="150" y2="150" class="divider"/>
+  <line x1="215" y1="90" x2="215" y2="150" class="divider"/>
+  <line x1="280" y1="90" x2="280" y2="150" class="divider"/>
+  <line x1="345" y1="90" x2="345" y2="150" class="divider"/>
+  <line x1="410" y1="90" x2="410" y2="150" class="divider"/>
+  <line x1="475" y1="90" x2="475" y2="150" class="divider"/>
 
-  <!-- Slots -->
-  <g>
-    <rect class="slot empty"    x="15"  y="30" width="70" height="44"/>
-    <rect class="slot occupied" x="105" y="30" width="70" height="44"/>
-    <rect class="slot empty"    x="195" y="30" width="70" height="44"/>
-    <rect class="slot occupied" x="285" y="30" width="70" height="44"/>
-    <rect class="slot empty"    x="375" y="30" width="70" height="44"/>
-    <rect class="slot occupied" x="465" y="30" width="70" height="44"/>
-    <rect class="slot empty"    x="555" y="30" width="70" height="44"/>
-    <rect class="slot occupied" x="645" y="30" width="70" height="44"/>
-  </g>
+  <text x="53"  y="168" class="idx">0</text>
+  <text x="118" y="168" class="idx">1</text>
+  <text x="183" y="168" class="idx">2</text>
+  <text x="248" y="168" class="idx">3</text>
+  <text x="313" y="168" class="idx">4</text>
+  <text x="378" y="168" class="idx">5</text>
+  <text x="443" y="168" class="idx">6</text>
+  <text x="508" y="168" class="idx">7</text>
 
-  <!-- Slot content -->
-  <g>
-    <text class="lbl" x="50"  y="57">vacío</text>
-    <text class="val" x="140" y="57">"ab"</text>
-    <text class="lbl" x="230" y="57">vacío</text>
-    <text class="val" x="320" y="57">"xy"</text>
-    <text class="lbl" x="410" y="57">vacío</text>
-    <text class="val" x="500" y="57">"cd"</text>
-    <text class="lbl" x="590" y="57">vacío</text>
-    <text class="val" x="680" y="57">"hi"</text>
-  </g>
+  <!-- slot 1: "ab" -->
+  <rect x="87" y="92" width="61" height="56" rx="4" class="top-arrow"/>
+  <text x="118" y="127" class="val-sm">"ab"</text>
+  <text x="118" y="72" class="top-label">= 1</text>
+  <path d="M118,78 L118,86" class="top-arrow"/>
+  <path d="M112,86 L118,94 L124,86 Z" class="top-arrow-fill"/>
 
-  <!-- Hash function labels -->
-  <g>
-    <text class="hash" x="140" y="100">h("ab")%8 = 1</text>
-    <path class="arrow" d="M140,88 L140,76"/>
+  <!-- slot 3: "xy" -->
+  <rect x="217" y="92" width="61" height="56" rx="4" class="top-arrow"/>
+  <text x="248" y="127" class="val-sm">"xy"</text>
+  <text x="248" y="72" class="top-label">= 3</text>
+  <path d="M248,78 L248,86" class="top-arrow"/>
+  <path d="M242,86 L248,94 L254,86 Z" class="top-arrow-fill"/>
 
-    <text class="hash" x="320" y="100">h("xy")%8 = 3</text>
-    <path class="arrow" d="M320,88 L320,76"/>
+  <!-- slot 5: "cd" -->
+  <rect x="347" y="92" width="61" height="56" rx="4" class="top-arrow"/>
+  <text x="378" y="127" class="val-sm">"cd"</text>
+  <text x="378" y="72" class="top-label">= 5</text>
+  <path d="M378,78 L378,86" class="top-arrow"/>
+  <path d="M372,86 L378,94 L384,86 Z" class="top-arrow-fill"/>
 
-    <text class="hash" x="500" y="100">h("cd")%8 = 5</text>
-    <path class="arrow" d="M500,88 L500,76"/>
-
-    <text class="hash" x="680" y="100">h("hi")%8 = 7</text>
-    <path class="arrow" d="M680,88 L680,76"/>
-  </g>
+  <!-- slot 7: "hi" -->
+  <rect x="477" y="92" width="61" height="56" rx="4" class="top-arrow"/>
+  <text x="508" y="127" class="val-sm">"hi"</text>
+  <text x="508" y="72" class="top-label">= 7</text>
+  <path d="M508,78 L508,86" class="top-arrow"/>
+  <path d="M502,86 L508,94 L514,86 Z" class="top-arrow-fill"/>
 </svg>
