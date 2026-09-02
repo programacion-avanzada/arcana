@@ -2,6 +2,7 @@
 title: El Despertar
 tags:
   - recursividad
+  - desafio
 ---
 
 Forma final del Devorador, la más peligrosa. Cada avatar que domina una región de `n` dimensiones se manifiesta en **2 nuevos avatares**, pero cada uno solo logra estabilizarse en **un cuarto** de las dimensiones restantes (`n/4`). El ritual de invocación es más costoso cuanto mayor es la porción que intentan controlar. Antes de dividirse, los avatares deben sincronizar un **sello maestro** que recorre *todas* las dimensiones de la región original (costo lineal en `n`).

@@ -2,6 +2,7 @@
 title: 'Cálculo de Complejidad 2'
 tags:
   - complejidad
+  - desafio
 ---
 
 Suponga que debe ordenar un vector por el método de Selección. Su entrada es de 2000 elementos y en su PC obtuvo un tiempo de 10 segundos.

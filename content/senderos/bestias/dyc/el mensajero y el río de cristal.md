@@ -2,6 +2,8 @@
 title: 'El Mensajero y el Río de Cristal'
 tags:
   - dyc
+  - desafio
+  - resuelto
 ---
 El mensajero Aldric debe cruzar el Río de Cristal, dividido en $n$ secciones. Cada sección tiene una altura de corriente. Aldric necesita encontrar la sección con la corriente más alta para evitarla. No tiene tiempo de recorrer todo el río: debe hacerlo en el menor tiempo posible.
 

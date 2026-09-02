@@ -2,6 +2,8 @@
 title: 'Análisis de Fragmento de Código 2'
 tags:
   - complejidad
+  - desafio
+  - resuelto
 ---
 
 Mirá este fragmento de código:

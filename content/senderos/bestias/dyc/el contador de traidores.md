@@ -2,6 +2,7 @@
 title: El Contador de Traidores
 tags:
   - dyc
+  - desafio
 ---
 El Senado Imperial lleva un registro de `n` lealtades, cada una un entero. Dos lealtades `(i, j)` forman una **inversión** si `i < j` pero `lealtad[i] > lealtad[j]`: un superior en la lista tiene menos lealtad que un subordinado, señal de corrupción. El Senado necesita contar cuántas inversiones hay para detectar el nivel de traición… pero `n` puede ser enorme.
 ## Enunciado: Contar Inversiones

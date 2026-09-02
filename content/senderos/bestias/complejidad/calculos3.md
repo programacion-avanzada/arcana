@@ -2,6 +2,7 @@
 title: 'Cálculo de Complejidad 3'
 tags:
   - complejidad
+  - desafio
 ---
 
 El algoritmo de selección ordenó un vector de 10000 enteros en 5 seg.

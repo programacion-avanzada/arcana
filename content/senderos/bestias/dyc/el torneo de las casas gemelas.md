@@ -2,6 +2,7 @@
 title: El Torneo de las Casas Gemelas
 tags:
   - dyc
+  - desafio
 ---
 Las Casas Gemelas del Imperio celebran el Gran Torneo cada siglo. Cada casa tiene exactamente `n` guerreros (con `n` potencia de 2). El árbitro necesita organizar un torneo donde cada guerrero de la Casa Norte compita contra exactamente un guerrero de la Casa Sur. Pero los emparejamientos deben hacerse de forma que ningún guerrero compita más de una vez, y la asignación debe hacerse en tiempo $O(n \log{n})$. El árbitro recuerda haber visto este patrón antes... en los pergaminos de multiplicación de polinomios.
 ## Enunciado: Multiplicación de Polinomios / Introducción a FFT

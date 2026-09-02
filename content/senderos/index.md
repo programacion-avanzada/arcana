@@ -15,4 +15,5 @@ Elegí un sendero si necesitás guía. Abandonalo si encontrás algo más intere
 ## Los Senderos
 
 1. [[complejidad]]
-2. [[el martillo y la trampa]]
+2. [[la grieta de vaelthorn]]
+3. [[el martillo y la trampa]]

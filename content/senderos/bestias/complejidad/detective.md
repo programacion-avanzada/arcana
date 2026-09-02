@@ -2,6 +2,7 @@
 title: 'El detective algorítmico'
 tags:
   - complejidad
+  - desafio
 ---
 
 Un programador midió su algoritmo con distintas entradas:

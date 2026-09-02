@@ -2,6 +2,7 @@
 title: 'Ajedrez'
 tags:
   - complejidad
+  - desafio
 ---
 
 ## Historia

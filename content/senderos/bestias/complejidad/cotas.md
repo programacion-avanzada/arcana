@@ -2,6 +2,8 @@
 title: 'Cotas'
 tags:
   - complejidad
+  - desafio
+  - resuelto
 ---
 
 ¿Cuáles de estas afirmaciones son verdaderas?

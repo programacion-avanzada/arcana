@@ -2,6 +2,7 @@
 title: La Fisura se Abre
 tags:
   - recursividad
+  - desafio
 ---
 
 El Devorador mutó. En esta nueva forma, cada avatar que domina una región de `n` dimensiones:

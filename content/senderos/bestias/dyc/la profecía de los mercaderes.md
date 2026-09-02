@@ -2,6 +2,7 @@
 title: La Profecía de los Mercaderes
 tags:
   - dyc
+  - desafio
 ---
 Los mercaderes del Imperio registran el precio de la Gema Celeste día a día. Un vidente afirma que si comprás la gema en el día `i` y la vendés en el día `j` (con `i < j`), podés maximizar tu ganancia. Pero con siglos de registros, los mercaderes necesitan un algoritmo eficiente: buscar todas las parejas `(i, j)` es demasiado lento.
 
