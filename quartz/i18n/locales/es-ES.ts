@@ -47,7 +47,7 @@ export default {
     },
     transcludes: {
       transcludeOf: ({ targetSlug }) => `Transcluido de ${targetSlug}`,
-      linkToOriginal: "Enlace al original",
+      linkToOriginal: "Abrir artículo",
     },
     search: {
       title: "Buscar",
