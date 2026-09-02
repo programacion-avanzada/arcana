@@ -15,4 +15,4 @@ Elegí un sendero si necesitás guía. Abandonalo si encontrás algo más intere
 ## Los Senderos
 
 1. [[complejidad]]
-2. [[división y conquista]]
+2. [[el martillo y la trampa]]

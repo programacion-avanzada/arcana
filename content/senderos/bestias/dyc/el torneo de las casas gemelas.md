@@ -23,4 +23,4 @@ Su producto `C = A × B` es un polinomio de grado `2n-2`.
 | Karatsuba            | `O(n^1.585)` | División y Conquista              |
 | FFT / NTT            | `O(n log n)` | División y Conquista + matemática |
 
-> **Reflexión final** Este ejercicio muestra el poder real de división y conquista: no solo ordena arreglos, sino que puede reducir el número de _operaciones fundamentales_ (multiplicaciones) de 4 a 3, lo cual parece trivial hasta que se eleva a escala logarítmica. Esa es la magia del método.
+> **Reflexión final:** Este ejercicio muestra el poder real de división y conquista: no solo ordena arreglos, sino que puede reducir el número de _operaciones fundamentales_ (multiplicaciones) de 4 a 3, lo cual parece trivial hasta que se eleva a escala logarítmica. Esa es la magia del método.

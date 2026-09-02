@@ -3,7 +3,8 @@ title: El Archivo Roto del Archiduque
 tags:
   - dyc
 ---
-El Archiduque Vorn custodia el Gran Archivo: una lista de n pergaminos ordenados por fecha. Un aprendiz los mezcló y ahora están en desorden. El Archiduque necesita reordenarlos, pero el archivo es enorme y los métodos simples de los escribas son demasiado lentos. Un antiguo grimorio describe un método llamado Merge Sort: *"divide la pila en dos, ordena cada mitad, y luego combínalas"*. El aprendiz copió el código... pero dejó tres partes sin terminar.
+El Archiduque Vorn custodia el Gran Archivo: una lista de `n` pergaminos ordenados por fecha. Un aprendiz los mezcló y ahora están en desorden. El Archiduque necesita reordenarlos, pero el archivo es enorme y los métodos simples de los escribas son demasiado lentos. Un antiguo grimorio describe el Método del Espejo Partido: *"divide la pila en dos, ordena cada mitad, y luego combínalas"*. Según el Sabio Ermitage, esto se conoce como Merge Sort.
+El aprendiz copió el código... pero dejó tres partes sin terminar.
 
 ## Enunciado
 Completá la función `merge_sort` y su auxiliar `merge`. Los fragmentos marcados con `# ???` son los que debes implementar.
@@ -38,6 +39,6 @@ print(merge_sort(pergaminos))
 # Esperado: [3, 9, 10, 27, 38, 43, 82]
 ```
 
-> **Guía del Maestro.** Para merge: cuando termina el while, al menos una lista está vacía. Puedes extender `result` con la cola de cada una. Para `mid`: el punto medio es `len(arr) // 2`.
+> **Guía del Sabio Ermitage:** Para merge: cuando termina el while, al menos una lista está vacía. Puedes extender `result` con la cola de cada una. Para `mid`: el punto medio es `len(arr) // 2`.
 
 Una vez que funcione, respondé: ¿cuál es la complejidad temporal y espacial de Merge Sort? ¿Qué aporta el paso de combinar comparado con el de dividir?

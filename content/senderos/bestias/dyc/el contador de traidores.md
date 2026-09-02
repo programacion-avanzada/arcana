@@ -9,7 +9,7 @@ Implementar una función `contar_inversiones(arr)` que devuelva el número de 
 
 **Restricción:** debe hacerse en $O(n \log{n})$, no en $O(n^2)$.
 
-**Pista clave:** modificar Merge Sort. Durante el paso de _merge_, cuando se toma un elemento de la mitad derecha antes que uno de la izquierda, ¿cuántas inversiones se estan "descubriendo" en ese momento?
+**Pista del Sabio Ermitage:** modificar Merge Sort. Durante el paso de _merge_, cuando se toma un elemento de la mitad derecha antes que uno de la izquierda, ¿cuántas inversiones se estan "descubriendo" en ese momento?
 
 ```python
 def merge_contar(left, right):

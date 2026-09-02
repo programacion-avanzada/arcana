@@ -1,5 +1,5 @@
 ---
-title: División y Conquista
+title: "División y Conquista: El Martillo y la Trampa"
 tags:
   - hub
   - sendero
@@ -15,5 +15,5 @@ Aprendé a reconocer cuándo usar el martillo... y cuándo buscar otra herramien
 2. ![[el archivo roto del archiduque]]
 3. ![[la profecía de los mercaderes]]
 4. ![[el contador de traidores]]
-5. ![[la torre de fibonacci y el engaño del oráculo]]
+5. ![[la torre de los ecos infinitos]]
 6. ![[el torneo de las casas gemelas]]
