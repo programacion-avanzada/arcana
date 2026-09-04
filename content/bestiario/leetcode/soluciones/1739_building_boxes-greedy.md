@@ -110,7 +110,7 @@ Como `cajas_totales == 10 == n`, no hay Fase 2. **Respuesta: 6.**
 
 ---
 
-## Solución 2: Greedy en forma cerrada O(1)
+## Solución 2: Greedy en forma cerrada $O(1)$
 
 **Técnicas utilizadas.** *Greedy (voraz).* Misma estrategia que la Solución 1 (pirámide
 completa más grande que entre, y después rellenar con lo que sobra), pero cada paso no se

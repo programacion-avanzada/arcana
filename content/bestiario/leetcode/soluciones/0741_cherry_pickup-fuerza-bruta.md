@@ -75,7 +75,7 @@ Nótese que estados como `(2,1 | 2,1)` se alcanzan por **muchas** ramas distinta
 ### Complejidad
 
 - **Temporal:** $O(4^{2N})$ El árbol de recursión tiene profundidad `2(N-1)` pasos (lo que tarda un recolector en cruzar la grilla) y un **factor de ramificación de 4** en cada nivel. Sin memoización, no se reaprovecha ningún subproblema repetido, de modo que el número de llamadas es exponencial. Para `N = 50` esto es astronómico.
-- **Espacial:** $O(N)$ No se almacenan resultados; sólo se consume la pila de recursión, cuya profundidad es proporcional a la longitud de un camino, `2(N-1) = O(N)`.
+- **Espacial:** $O(N)$ No se almacenan resultados; sólo se consume la pila de recursión, cuya profundidad es proporcional a la longitud de un camino, `2(N-1)`, es decir $O(N)$.
 
 ### Cuándo usar esta técnica
 

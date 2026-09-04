@@ -9,15 +9,15 @@ help:
 	@echo "Usage: make <target>"
 	@echo
 	@echo "Targets:"
-	@echo "  start    Run: npx quartz build --serve"
+	@echo "  start    Run: npm run quartz -- build --serve"
 	@echo "  lint     Run markdown linter (fails if issues found)"
 	@echo "  lint-fix Run markdown linter with auto-fix where possible"
 	@echo "  help     Show this help"
 
 start:
-	@command -v npx >/dev/null 2>&1 || { echo >&2 "npx not found. Install Node.js/npm."; exit 1; }
-	@echo "Running: npx quartz build --serve"
-	@npx quartz build --serve
+	@command -v npm >/dev/null 2>&1 || { echo >&2 "npm not found. Install Node.js/npm."; exit 1; }
+	@echo "Running: npm run quartz -- build --serve"
+	@npm run quartz -- build --serve
 
 lint:
 	@command -v npx >/dev/null 2>&1 || { echo >&2 "npx not found. Install Node.js/npm."; exit 1; }

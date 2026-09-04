@@ -16,6 +16,6 @@ Todo el contenido está en la carpeta `content/`, en formato Markdown. Para edit
 make start
 ```
 
-Esto ejecuta `npx quartz build --serve` y levanta el sitio localmente con recarga automática para ver los cambios renderizados con un navegador.
+Esto ejecuta `npm run quartz -- build --serve` y levanta el sitio localmente con recarga automática para ver los cambios renderizados con un navegador.
 
 ![Sitio de Arcana](content/attachments/README-arcana.png)
