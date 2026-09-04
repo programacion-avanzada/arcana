@@ -99,7 +99,7 @@ def cherry_pickup(grid):
 
 La **recursión** (el caso base, las 4 transiciones y el `max`) es la misma que la de la [[0741_cherry_pickup-fuerza-bruta]]: no cambia *qué* se calcula ni el resultado. Pero el **cuerpo no es idéntico**: la PD agrega dos operaciones que la fuerza bruta no tiene: la **consulta** a la memoria antes de computar (paso 3) y la **escritura** del resultado antes de retornar (paso 4). Esas dos líneas son exactamente lo que convierte el algoritmo de inviable a eficiente: sin ellas no hay reutilización de subproblemas y no hay PD.
 
-> En Python, el decorador `@lru_cache(maxsize=None)` sobre `explorar` produce el mismo efecto escondiendo los pasos 1–4 en una sola línea. Lo escribimos con el diccionario a la vista porque el mecanismo (y no el azúcar sintáctico) es el que explica el cambio de complejidad.
+> En Python, el decorador `@lru_cache(maxsize=None)` sobre `explorar` produce el mismo efecto escondiendo los pasos 1–4 en una sola línea. Lo escribimos con el [[map]] a la vista porque el mecanismo (y no el azúcar sintáctico) es el que explica el cambio de complejidad.
 
 ### Traza de ejemplo
 

@@ -6,14 +6,14 @@ tags:
 ---
 
 ## Técnicas utilizadas
-División y conquista sobre el arreglo de edificios. El problema se parte recursivamente en mitades hasta llegar a edificios individuales (cuyo skyline es trivial) y luego se **combinan** los contornos de a pares. El paso de combinación es un merge de dos skylines, análogo al merge del merge sort, que recorre ambos contornos en paralelo con dos punteros en tiempo lineal.
+División y conquista sobre el [[array]] de edificios. El problema se parte recursivamente en mitades hasta llegar a edificios individuales (cuyo skyline es trivial) y luego se **combinan** los contornos de a pares. El paso de combinación es un merge de dos skylines, análogo al merge del merge sort, que recorre ambos contornos en paralelo con dos punteros en tiempo lineal.
 
 ## Idea de la solución
 La clave es que el skyline es **combinable**: el contorno de dos grupos de edificios juntos es el máximo, punto a punto, de los dos contornos individuales. No hace falta volver a mirar los edificios uno por uno, alcanza con los dos contornos ya armados.
 
 Esto permite aplicar los tres pasos de división y conquista:
 
-1. **Dividir.** Partir el arreglo de `n` edificios en dos mitades de `n/2`. No se hace ningún cálculo, solo se corta la lista.
+1. **Dividir.** Partir el [[array]] de `n` edificios en dos mitades de `n/2`. No se hace ningún cálculo, solo se corta la lista.
 2. **Resolver.** Llamar recursivamente a cada mitad. Cada llamada devuelve el skyline de esa mitad. La recursión baja hasta el caso base: un solo edificio `(ini, fin, altura)`, cuyo skyline es `[[ini, altura], [fin, 0]]`.
 3. **Combinar.** Fusionar los dos skylines en uno solo. Se recorren en paralelo avanzando siempre el punto con menor `x`; se mantiene la altura actual de cada lado (`h_izq`, `h_der`) y en cada posición la altura del contorno es `max(h_izq, h_der)`. Solo se emite un punto nuevo cuando ese máximo cambia respecto al último insertado (esto respeta la NOTA del enunciado de no repetir alturas). Si las dos `x` coinciden, se actualizan ambos lados antes de tomar el máximo.
 

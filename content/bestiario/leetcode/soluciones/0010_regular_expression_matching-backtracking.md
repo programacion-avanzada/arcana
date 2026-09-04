@@ -10,7 +10,7 @@ Búsqueda de coincidencias exhaustivas mediante **backtracking**. Vamos a realiz
 Si es necesario ramificar, primero se ramificará el caso donde sea necesario ignorar `x*`. Luego, si es necesario, se remificará el caso donde se necesita consumir al menos un carácter del tipo `x*`.
 
 ## Idea de la solución
-El problema pide verificar si una cadena `s` matchea un patrón `p` que puede contener `.` (cualquier carácter) y `*` (cero o más del carácter anterior).
+El problema pide verificar si una [[string]] `s` matchea un patrón `p` que puede contener `.` (cualquier carácter) y `*` (cero o más del carácter anterior).
 
 La recursión avanza consumiendo un carácter a la vez de `s` y `p`. El backtracking aparece en el operador `*`: no se sabe de antemano cuántas veces repetir, entonces se prueban ambas ramas y se retrocede si ninguna lleva a una solución:
 
@@ -57,7 +57,7 @@ def is_match(s: str, p: str) -> bool:
 
 ## Traza de ejemplo
 Buscamos la solución para
-- **String:** addbzc
+- **[[string]]:** addbzc
 - **Patrón:** ad\*ba\*.c
 
 | Llamada | p | s | index_p | index_s | Acción |
@@ -90,11 +90,11 @@ La primera ramificación ocurre ignorando `x*`. Esta, a su vez, realiza ambas ra
 Una vez que la primera ramificación retorna, si retornó falso, se ejecutará la segunda rama. Es así como las llamadas crecen exponencialmente en base 2.
 
 ### Espacial
-$O(m + n)$ es la complejidad espacial, lo que corresponde a la cantidad de llamadas que ocurren y se almacenan en el [[stack]] a lo sumo $n + m$ veces. Esto se ve cuando el patrón coincide con la cadena, ya que si se consumió todo el patrón, la cadena tiene que estar completamente consumida para retornar verdadero.
+$O(m + n)$ es la complejidad espacial, lo que corresponde a la cantidad de llamadas que ocurren y se almacenan en el [[stack]] a lo sumo $n + m$ veces. Esto se ve cuando el patrón coincide con la [[string]], ya que si se consumió todo el patrón, la [[string]] tiene que estar completamente consumida para retornar verdadero.
 
 ## Cuándo usar esta técnica
 ### Favorable cuando
-- La longitud de la cadena y el patrón es acotado. En este caso, el peor caso teórico es $O(2^{40})$ dado por las restricciones de longitud impuestos en el problema.
+- La longitud de la [[string]] y el patrón es acotado. En este caso, el peor caso teórico es $O(2^{40})$ dado por las restricciones de longitud impuestos en el problema.
 - La poda por cortocircuito es efectiva en el caso promedio. En el caso de los lenguajes como Python, el `or` y el `and` de son lazy, es decir, en cuanto conocen el resultado, no evalúan el resto.
 
 ### Limitaciones

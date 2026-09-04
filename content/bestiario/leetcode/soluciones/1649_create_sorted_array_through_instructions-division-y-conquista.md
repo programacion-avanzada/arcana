@@ -13,12 +13,12 @@ tags:
 
 Se mantiene la división recursiva por la mitad y la fusión lineal de dos mitades ordenadas. Lo que se agrega respecto al Merge Sort clásico:
 - Se ordena por **índices** (`list(range(n))`) en lugar de valores, para poder acumular el conteo en la posición original.
-- Un arreglo auxiliar `greater_count`, persistente entre llamadas, que se completa durante las fusiones: cuando un elemento de `left` supera al actual de `right`, se suma de una sola vez `len(left) - i` a `greater_count[right[j]]` (aprovechando que `left` ya está ordenado, en vez de comparar uno por uno).
+- Un [[array]] auxiliar `greater_count`, persistente entre llamadas, que se completa durante las fusiones: cuando un elemento de `left` supera al actual de `right`, se suma de una sola vez `len(left) - i` a `greater_count[right[j]]` (aprovechando que `left` ya está ordenado, en vez de comparar uno por uno).
 - La comparación usa `<=` y no `<`, para no contar los elementos iguales como "mayores".
 
 ## Idea de la solución
 
-El enunciado describe construir `nums` insertando elementos uno por uno, pero no hace falta simular esas inserciones. El costo de insertar `instructions[i]` depende solo de dos cantidades sobre los elementos anteriores: cuántos son menores y cuántos son mayores. Si conseguimos esos dos números para cada posición, el problema se resuelve sin mantener ningún arreglo ordenado.
+El enunciado describe construir `nums` insertando elementos uno por uno, pero no hace falta simular esas inserciones. El costo de insertar `instructions[i]` depende solo de dos cantidades sobre los elementos anteriores: cuántos son menores y cuántos son mayores. Si conseguimos esos dos números para cada posición, el problema se resuelve sin mantener ningún [[array]] ordenado.
 
 Para obtenerlos usamos Merge Sort sobre los índices $[0, ..., n-1]$ (comparando por `instructions`). Durante cada fusión, cuando un elemento de `left` resulta mayor que el actual de `right`, sabemos (por estar `left` ordenado) que todo el resto de `left` desde ahí en adelante también es mayor que ese elemento de `right`. Eso permite sumar de una sola vez:
 
@@ -26,7 +26,7 @@ $$\text{greaterCount}[\text{right}[j]] \mathrel{+}= |\text{left}| - i$$
 
 En vez de comparar elemento por elemento. Como cada par de posiciones queda en mitades distintas exactamente una vez durante toda la recursión, cada relación "mayor que" se cuenta una única vez.
 
-Se elige acumular `greater_count[i]` (mayores) y derivar `less(i)` algebraicamente. Con `greater_count[i]` calculado, se recorre el arreglo una vez más:
+Se elige acumular `greater_count[i]` (mayores) y derivar `less(i)` algebraicamente. Con `greater_count[i]` calculado, se recorre el [[array]] una vez más:
 
 $$
 \begin{aligned}
@@ -122,7 +122,7 @@ Con $n = 10^5$, esto equivale a $\sim 1.7 \times 10^6$ operaciones → viable de
 
 ### Espacial
 
-$O(n)$. Por `greater_count` y los arreglos temporales de cada fusión, más $O(\log n)$ de pila de recursión.
+$O(n)$. Por `greater_count` y los [[array]] temporales de cada fusión, más $O(\log n)$ de pila de recursión.
 
 ## Cuándo usar esta técnica
 

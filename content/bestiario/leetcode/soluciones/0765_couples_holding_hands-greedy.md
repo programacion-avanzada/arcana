@@ -54,7 +54,7 @@ def greedy(row):
 
 ## Traza de ejemplo
 
-Con el vector: row = $[0, 2, 5, 1, 4, 3]$
+Con el [[dynamic array]]: row = $[0, 2, 5, 1, 4, 3]$
 
 Las parejas son: $(0, 1)$, $(2, 3)$ y $(4, 5)$.
 
@@ -72,13 +72,13 @@ Al finalizar el recorrido, todas las parejas quedaron juntas: $(0,1)$, $(5,4)$, 
 
 ### Temporal
 
-El algoritmo recorre la fila una sola vez, avanzando de a dos posiciones. Para cada banco, verificar si la pareja está bien ubicada es $O(1)$, y encontrar la posición del compañero también es $O(1)$ gracias al diccionario de posiciones.
+El algoritmo recorre la fila una sola vez, avanzando de a dos posiciones. Para cada banco, verificar si la pareja está bien ubicada es $O(1)$, y encontrar la posición del compañero también es $O(1)$ gracias al [[map]] de posiciones.
 
-Por lo tanto, la complejidad temporal total es $O(m)$, donde $m = 2n$ es la longitud del arreglo. Como $m$ es lineal en $n$, también puede expresarse como $O(n)$ si $n$ representa la cantidad de parejas.
+Por lo tanto, la complejidad temporal total es $O(m)$, donde $m = 2n$ es la longitud del [[array]]. Como $m$ es lineal en $n$, también puede expresarse como $O(n)$ si $n$ representa la cantidad de parejas.
 
 ### Espacial
 
-$O(m)$ porque se almacena un diccionario con la posición actual de cada persona en la fila. Como $m = 2n$, también es lineal respecto de la cantidad de parejas.
+$O(m)$ porque se almacena un [[map]] con la posición actual de cada persona en la fila. Como $m = 2n$, también es lineal respecto de la cantidad de parejas.
 
 ## Cuándo usar esta técnica
 

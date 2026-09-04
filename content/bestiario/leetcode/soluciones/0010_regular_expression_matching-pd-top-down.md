@@ -8,7 +8,7 @@ tags:
 En su variante **top-down**, el problema se resuelve de forma recursiva, y cada resultado se guarda en una estructura de memoria (memo) para ser reutilizado si el mismo subproblema aparece nuevamente. Esto transforma una recursión exponencial en una solución polinomial.
 
 ## Idea de la solución
-El problema consiste en determinar si una cadena `s` es completamente cubierta por un patrón `p` que puede contener dos caracteres especiales:
+El problema consiste en determinar si una [[string]] `s` es completamente cubierta por un patrón `p` que puede contener dos caracteres especiales:
 - `.` → coincide con cualquier carácter.
 - `*` → indica cero o más repeticiones del carácter anterior.
 
@@ -23,7 +23,7 @@ Esto da lugar a los siguientes casos:
     - _**Una o más ocurrencias:**_ si hay coincidencia actual, avanzar `index_s` y mantener `index_p` para seguir consumiendo el mismo `x*`.
 - **Caso sin `*`:** debe haber coincidencia actual y avanzar ambos índices.
 
-Cada par `(index_s, index_p)` es un subproblema único. Se usa un diccionario `memo` para almacenar su resultado y no recalcularlo.
+Cada par `(index_s, index_p)` es un subproblema único. Se usa un [[map]] `memo` para almacenar su resultado y no recalcularlo.
 
 ## Código
 ```python
@@ -66,7 +66,7 @@ def is_match(s: str, p: str) -> bool:
     return helper(0, 0)
 ```
 ## Traza de ejemplo
-Armemos un caso donde el resultado sea falso con la siguiente cadena (`s`) y patrón (`p`):
+Armemos un caso donde el resultado sea falso con la siguiente [[string]] (`s`) y patrón (`p`):
 - `s`:  aab
 - `p`: .\*c
 
@@ -101,7 +101,7 @@ Obtenemos una complejidad $O(m \times n)$, siendo `m = len(s)` y `n = len(p)`. L
 Gracias a la memoización, cada uno se calcula exactamente una vez, y el trabajo por subproblema es $O(1)$.
 
 ### Espacial
-El diccionario `memo` almacena como máximo $(m + 1) \times (n + 1)$ entradas. A esto se suma el espacio de la [[stack]] de recursión, que en el peor caso tiene profundidad $O(m + n)$ cuando no hay `*` y se avanza un índice por llamada.
+El [[map]] `memo` almacena como máximo $(m + 1) \times (n + 1)$ entradas. A esto se suma el espacio de la [[stack]] de recursión, que en el peor caso tiene profundidad $O(m + n)$ cuando no hay `*` y se avanza un índice por llamada.
 
 Dado $O(m + n) + O(m \times n)$ con $n, m \ge 1$, se cumple que $m + n \le 2mn$, lo que lleva a que $O(m + n) \subseteq O(m \times n)$. Entonces, podemos concluir que la complejidad espacial dominante es $O(m \times n)$.
 
@@ -113,17 +113,17 @@ Dado $O(m + n) + O(m \times n)$ con $n, m \ge 1$, se cumple que $m + n \le 2mn$,
 
 ### Limitaciones
 - La recursión implica overhead de llamadas a función y uso de [[stack]]. En lenguajes sin optimización de tail-call (como Python), instancias muy grandes pueden provocar `RecursionError`.
-- El acceso al diccionario `memo` tiene un costo constante pero no despreciable frente a un acceso directo a una tabla (array 2D) como en el enfoque bottom-up.
+- El acceso al [[map]] `memo` tiene un costo constante pero no despreciable frente a un acceso directo a una tabla ([[array]] 2D) como en el enfoque bottom-up.
 
 ## Comparaciones
 ### Solución buttom-up
-El enfoque top-down, que es el desarrollado en este trabajo, parte de la pregunta original `helper(0, 0)` y se apoya en la recursión para descomponerla en subproblemas más pequeños, memoizando cada resultado en un diccionario a medida que se resuelve por primera vez. Solo se calculan los estados `(i, j)` que efectivamente se necesitan para responder la pregunta inicial.
+El enfoque top-down, que es el desarrollado en este trabajo, parte de la pregunta original `helper(0, 0)` y se apoya en la recursión para descomponerla en subproblemas más pequeños, memoizando cada resultado en un [[map]] a medida que se resuelve por primera vez. Solo se calculan los estados `(i, j)` que efectivamente se necesitan para responder la pregunta inicial.
 
 El enfoque bottom-up, en cambio, invierte el orden de razonamiente ya que, en lugar de partir de la pregunta y descender hacia los casos base, parte de los casos base (`dp(m, n) = True`, y en general la fila `i = m`) y construye la tabla iterativamente. Esto exige que el orden de llenado de la tabla respete las dependencias de la recurrencia explícita (por ejemplo, llenar de derecha a izquierda y de abajo hacia arriba, ya que `dp(i,j)` depende de `dp(i+1,j)`, `dp(i,j+2)` y `dp(i+1,j+1)`), algo que en el top-down se resuelve automáticamente gracias a la [[stack]] de llamadas.
 
 En cuanto a la complejidad temporal, ambas soluciones son asintóticamente equivalentes: $O(m \times n)$, donde $m = |s| \land n = |p|$. Esto se debe a que se realiza de todas maneras el cálculo del conjunto de pares `(i, j)` con $0 \le i \le m \land 0 \le j \le n$. Sin embargo, en la práctica el **bottom-up** suele ejecutarse más rápido por un factor constante, ya que evita el overhead de las llamadas a función recursivas y el costo de hashing del diccionario memo.
 
-Para la complejidad espacial, sigue siendo la misma $O(m \times n)$ ya que ambas pueden almacenar en el peor caso $(m + 1) \times (n + 1)$ resultados. En top-down se almacenan menos en el caso promedio, ya que se usa un diccionario. Caso contrario en buttom-up debido a que se crea una matriz de tamaño $(m + 1) \times (n + 1)$
+Para la complejidad espacial, sigue siendo la misma $O(m \times n)$ ya que ambas pueden almacenar en el peor caso $(m + 1) \times (n + 1)$ resultados. En top-down se almacenan menos en el caso promedio, ya que se usa un [[map]]. Caso contrario en buttom-up debido a que se crea una matriz de tamaño $(m + 1) \times (n + 1)$
 
 ### Solución backtracking
-Ambas soluciones comparten exactamente la misma estructura recursiva, descomponiendo el problema según el par `(index_s, index_p)` y ramificando según si hay un `*` después del carácter actual del patrón, pero el backtracking puro no recuerda resultados previos y recalcula desde cero cualquier subproblema al que llegue por una rama distinta, mientras que la versión top-down agrega una tabla `memo` que intercepta cada llamada y devuelve en $O(1)$ el valor ya resuelto. Esta única diferencia tiene un impacto enorme en la complejidad temporal, ya que el backtracking puede volverse exponencial en el peor caso debido a las bifurcaciones que introduce cada `*`, mientras que la memoización garantiza que cada estado se calcule una sola vez, acotando el tiempo a $O(m \times n)$ polinomial, a cambio de un costo adicional en espacio (de $O(m + n)$ a $O(m \times n)$) por tener que almacenar los resultados intermedios en el diccionario. Esto se resume en un trade-off de espacio por tiempo que es precisamente lo que distingue a la programación dinámica del backtracking simple.
+Ambas soluciones comparten exactamente la misma estructura recursiva, descomponiendo el problema según el par `(index_s, index_p)` y ramificando según si hay un `*` después del carácter actual del patrón, pero el backtracking puro no recuerda resultados previos y recalcula desde cero cualquier subproblema al que llegue por una rama distinta, mientras que la versión top-down agrega una tabla `memo` que intercepta cada llamada y devuelve en $O(1)$ el valor ya resuelto. Esta única diferencia tiene un impacto enorme en la complejidad temporal, ya que el backtracking puede volverse exponencial en el peor caso debido a las bifurcaciones que introduce cada `*`, mientras que la memoización garantiza que cada estado se calcule una sola vez, acotando el tiempo a $O(m \times n)$ polinomial, a cambio de un costo adicional en espacio (de $O(m + n)$ a $O(m \times n)$) por tener que almacenar los resultados intermedios en el [[map]]. Esto se resume en un trade-off de espacio por tiempo que es precisamente lo que distingue a la programación dinámica del backtracking simple.

@@ -17,7 +17,7 @@ En lugar de calcular la vida mínima desde la celda inicial hacia el destino, se
 
 La vida mínima necesaria en una celda depende de la vida requerida en las celdas a las que se puede avanzar (derecha o abajo), es decir, de celdas que ya deben estar resueltas. Por eso conviene procesar la matriz de abajo hacia arriba y de derecha a izquierda: cada celda se resuelve exactamente una vez, con sus dependencias ya calculadas.
 
-Como cada fila solo depende de la fila inmediatamente inferior, alcanza con mantener un único vector `dp` de tamaño `n` que se va sobrescribiendo fila por fila, en lugar de guardar la matriz completa.
+Como cada fila solo depende de la fila inmediatamente inferior, alcanza con mantener un único [[dynamic array]] `dp` de tamaño `n` que se va sobrescribiendo fila por fila, en lugar de guardar la matriz completa.
 
 ![](/attachments/bestiario/leetcode/0174-grafo-dependencias.svg)
 
@@ -79,7 +79,7 @@ def calculateMinimumHP(dungeon):
 [10, 30, -5]
 ```
 
-El vector `dp` se actualiza fila por fila, de derecha a izquierda:
+El [[dynamic array]] `dp` se actualiza fila por fila, de derecha a izquierda:
 
 ```text
 Destino (2,2): dp[2] = max(1, 1-(-5)) = 6                          → dp = [0, 0, 6]
@@ -101,9 +101,9 @@ Fila 0:
 
 ![](/attachments/bestiario/leetcode/0174-bottom-up-celda-cualquiera.svg)
 
-Evolución del vector `dp`:
+Evolución del [[dynamic array]] `dp`:
 
-| Paso              | Fila procesada  | Estado del vector `dp` |
+| Paso              | Fila procesada  | Estado del [[dynamic array]] `dp` |
 | ------------------ | --------------- | ----------------------- |
 | Inicialización     | Destino         | `[0, 0, 6]`              |
 | Fin de la Fila 2   | Fila inferior   | `[1, 1, 6]`              |
@@ -116,7 +116,7 @@ Evolución del vector `dp`:
 
 Una implementación clásica usa una matriz `dp[m][n]`. Pero recorriendo la matriz desde la esquina inferior derecha hacia la superior izquierda, cada celda únicamente necesita conocer el valor inmediatamente debajo y el valor inmediatamente a la derecha: no hace falta conservar todas las filas ya calculadas.
 
-Por eso alcanza con reutilizar un único arreglo de longitud `n`, actualizándolo fila por fila, lo que reduce la complejidad espacial de $O(m \times n)$ a $O(n)$ sin modificar la complejidad temporal.
+Por eso alcanza con reutilizar un único [[dynamic array]] de longitud `n`, actualizándolo fila por fila, lo que reduce la complejidad espacial de $O(m \times n)$ a $O(n)$ sin modificar la complejidad temporal.
 
 ## Complejidad
 
@@ -124,7 +124,7 @@ Por eso alcanza con reutilizar un único arreglo de longitud `n`, actualizándol
 $O(m \times n)$: cada celda se calcula exactamente una vez.
 
 ### Espacial
-$O(n)$: un único vector auxiliar de tamaño `n`, reutilizado fila por fila.
+$O(n)$: un único [[dynamic array]] auxiliar de tamaño `n`, reutilizado fila por fila.
 
 ## Cuándo usar esta técnica
 
@@ -139,7 +139,7 @@ $O(n)$: un único vector auxiliar de tamaño `n`, reutilizado fila por fila.
 
 ## Comparación con Top-Down
 
-Ambas versiones comparten la misma complejidad temporal ($O(m \times n)$), por lo que no es lo que las diferencia. La ventaja del bottom-up es de memoria y de constantes prácticas: evita el $O(m \times n)$ del memo y la pila de recursión del top-down, reemplazándolos por un único vector $O(n)$, y evita el overhead de las llamadas a función y el hashing de claves en cada acceso al memo.
+Ambas versiones comparten la misma complejidad temporal ($O(m \times n)$), por lo que no es lo que las diferencia. La ventaja del bottom-up es de memoria y de constantes prácticas: evita el $O(m \times n)$ del memo y la pila de recursión del top-down, reemplazándolos por un único [[dynamic array]] $O(n)$, y evita el overhead de las llamadas a función y el hashing de claves en cada acceso al memo.
 
 Con las restricciones de este problema ($m, n \le 200$, profundidad de recursión máxima $m+n-2 = 398$) el top-down no corre un riesgo real de stack overflow. Esa no es la razón para preferir bottom-up aquí.
 
@@ -148,7 +148,7 @@ Con las restricciones de este problema ($m, n \le 200$, profundidad de recursió
 | Complejidad temporal         | $O(m \times n)$                                  | $O(m \times n)$          |
 | Complejidad espacial         | $O(m \times n)$ + stack                          | $O(n)$                   |
 | Riesgo de stack overflow     | Bajo/nulo dado $m, n \le 200$ (profundidad $\le 398$) | Nulo (no aplica)    |
-| Overhead de llamada/hashing  | Presente (call stack + memo dict)                | Ausente                  |
+| Overhead de llamada/hashing  | Presente (call stack + memo [[map]])                | Ausente                  |
 | Reconstrucción del camino    | Directa (memo completo disponible)               | Requiere guardar la matriz completa |
 | Facilidad para depurar       | Media                                            | Alta                     |
 

@@ -117,11 +117,11 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
 ## Complejidad
 
 ### Temporal
-- **Análisis:** En el peor de los casos (cadenas completamente anidadas como `"111000"` o bloques repetidos), el algoritmo se ejecuta en tiempo cuadrático respecto a la longitud del [[string]] $N$.
+- **Análisis:** En el peor de los casos ([[string]] completamente anidados como `"111000"` o bloques repetidos), el algoritmo se ejecuta en tiempo cuadrático respecto a la longitud del [[string]] $N$.
 - **Justificación:**
   1. En cada nivel de recursión, el recorrido del [[string]] para identificar componentes toma $O(N)$ pasos.
   2. La profundidad máxima del árbol de recursión es $N/2$ (cuando el [[string]] está totalmente anidado).
-  3. En cada nivel de la recursión, el ordenamiento de los componentes puede tomar $O(M \log M)$ comparaciones, donde cada comparación entre cadenas de longitud $L$ toma $O(L)$ tiempo. La suma de longitudes de las cadenas a ordenar es a lo sumo $N$, por lo que la fase de ordenamiento está acotada por $O(N \log N)$ o $O(N^2)$ en el peor de los casos.
+  3. En cada nivel de la recursión, el ordenamiento de los componentes puede tomar $O(M \log M)$ comparaciones, donde cada comparación entre [[string]] de longitud $L$ toma $O(L)$ tiempo. La suma de longitudes de los [[string]] a ordenar es a lo sumo $N$, por lo que la fase de ordenamiento está acotada por $O(N \log N)$ o $O(N^2)$ en el peor de los casos.
 - Por ende, la complejidad temporal total en el peor de los casos es de:
   
   $$O(N^2)$$

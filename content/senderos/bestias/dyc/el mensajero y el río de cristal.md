@@ -25,7 +25,7 @@ Dado un arreglo de $n$ enteros que representa las alturas de corriente de cada s
 ## 1. Caso base y paso recursivo
 
 - **Caso base:** una sección de un solo elemento; ese elemento es el máximo.
-- **Paso recursivo:** dividir el arreglo en dos mitades, calcular el máximo de cada una por separado, y combinar quedándose con el mayor de los dos.
+- **Paso recursivo:** dividir el [[array]] en dos mitades, calcular el máximo de cada una por separado, y combinar quedándose con el mayor de los dos.
 
 Esto funciona porque el máximo global siempre coincide con el máximo de alguna de las dos mitades.
 
@@ -43,7 +43,7 @@ def encontrar_maximo(alturas, izq, der):
     return max(max_izq, max_der)   # combinar: O(1)
 ```
 
-> Nota: se pasan índices (`izq`, `der`) en vez de hacer slicing (`arr[:medio]`). Si se hiciera slicing, cada división copiaría el arreglo y costaría $O(n)$, cambiando la recurrencia.
+> Nota: se pasan índices (`izq`, `der`) en vez de hacer slicing (`arr[:medio]`). Si se hiciera slicing, cada división copiaría el [[array]] y costaría $O(n)$, cambiando la recurrencia.
 
 ## 3. Recurrencia y Teorema Maestro
 

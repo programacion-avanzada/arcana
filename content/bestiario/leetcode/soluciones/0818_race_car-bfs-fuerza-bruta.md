@@ -46,7 +46,7 @@ def racecar(target):
 
 Buscamos el objetivo `target = 3`.
 
-| Cola (`ops`, `pos`, `speed`) | Estado actual sacado | &nbsp;&nbsp;¿Es `target`?&nbsp;&nbsp; | Acción evaluada | ¿Pasa el filtro/poda? | Nuevos elementos a la cola |
+| [[queue]] (`ops`, `pos`, `speed`) | Estado actual sacado | &nbsp;&nbsp;¿Es `target`?&nbsp;&nbsp; | Acción evaluada | ¿Pasa el filtro/poda? | Nuevos elementos a la [[queue]] |
 |---|---|---|---|---|---|
 | [(0, 0, 1)] | (0, 0, 1) | No (0 != 3) | `A` | Sí | (1, 1, 2) |
 | | | | `R` | No (pos+speed no supera 3) | - |
@@ -62,7 +62,7 @@ Resultado final: 2 operaciones (secuencia: `AA`).
 La complejidad es $O(T\log{T})$, esto es debido a que, con las condiciones de poda tenemos un espacio de $[0, 2T]$ de busqueda, es decir T, y sabemos que `speed` se mueve logaritmicamente $(\log_2)$ positiva y negativamente $(2 \times \log_2{T})$. Dejando una cantidad de estados *unicos* de $O(T\log{T})$
 
 ### Espacial
-$O(T\log{T})$ también, ya que sabemos que habrá $T\log{T}$ estados nuevos en el peor caso. Esos estados se almacenarán en un Set de visitados.
+$O(T\log{T})$ también, ya que sabemos que habrá $T\log{T}$ estados nuevos en el peor caso. Esos estados se almacenarán en un [[set]] de visitados.
 
 ## Cuándo usar esta técnica
 

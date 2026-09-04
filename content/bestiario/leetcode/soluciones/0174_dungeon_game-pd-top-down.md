@@ -119,7 +119,7 @@ Sabemos que solo se puede ir hacia la derecha o hacia abajo, entonces podemos pr
 
 **Temporal:** $O(m \times n)$: cada celda se computa exactamente una vez y se guarda en `memo`.
 
-**Espacial:** $O(m \times n)$: el diccionario `memo` almacena como máximo `m×n` entradas, más $O(m+n)$ de profundidad de la pila de recursión.
+**Espacial:** $O(m \times n)$: el [[hash table]] `memo` almacena como máximo `m×n` entradas, más $O(m+n)$ de profundidad de la pila de recursión.
 
 ## Cuándo usar esta técnica
 

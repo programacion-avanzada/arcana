@@ -6,14 +6,14 @@ tags:
 ---
 
 ## Técnicas utilizadas
-- **Greedy con análisis de casos por longitud:** la técnica consiste en tomar decisiones óptimas locales en cada paso basándose únicamente en el tamaño actual de la cadena. En lugar de realizar una búsqueda exhaustiva, el algoritmo aplica un conjunto de reglas fijas y prioridades matemáticas que garantizan alcanzar el estado de "contraseña fuerte" con el menor gasto posible de operaciones básicas.
+- **Greedy con análisis de casos por longitud:** la técnica consiste en tomar decisiones óptimas locales en cada paso basándose únicamente en el tamaño actual de la [[string]]. En lugar de realizar una búsqueda exhaustiva, el algoritmo aplica un conjunto de reglas fijas y prioridades matemáticas que garantizan alcanzar el estado de "contraseña fuerte" con el menor gasto posible de operaciones básicas.
 
 ## Idea de la solución
 La solución clasifica la contraseña en tres casos excluyentes según su tamaño ($n$), aplicando la acción local más eficiente para cada escenario:
 
 1. **Contraseñas cortas ($n < 6$):** Se soluciona usando solo inserciones. El resultado es el valor máximo entre los caracteres que faltan para llegar a 6 y los tipos de caracteres obligatorios (mayúscula, minúscula o número) ausentes.
 2. **Contraseñas medianas ($6 \le n \le 20$):** Se soluciona usando solo reemplazos. Se calculan las sustituciones necesarias para romper las rachas ($\lfloor L / 3 \rfloor$). El total de pasos es el máximo entre la suma de estos reemplazos y los tipos faltantes.
-3. **Contraseñas largas ($n > 20$):** Se calculan los borrados obligatorios para bajar el tamaño de la cadena a 20. Para ahorrar pasos futuros, se eliminan caracteres dando prioridad a las rachas según su residuo matemático (primero las de longitud múltiplo de 3, luego resto 1 y al final resto 2). Una vez completados los borrados y optimizadas las rachas, el resultado final es la suma de esos **borrados obligatorios** más el **máximo entre los reemplazos necesarios y los tipos faltantes**.
+3. **Contraseñas largas ($n > 20$):** Se calculan los borrados obligatorios para bajar el tamaño de la [[string]] a 20. Para ahorrar pasos futuros, se eliminan caracteres dando prioridad a las rachas según su residuo matemático (primero las de longitud múltiplo de 3, luego resto 1 y al final resto 2). Una vez completados los borrados y optimizadas las rachas, el resultado final es la suma de esos **borrados obligatorios** más el **máximo entre los reemplazos necesarios y los tipos faltantes**.
 
 ## Código
 
@@ -123,10 +123,10 @@ Como tamaño es 11, NO entra al Caso 1 (tamaño < 6).
 
 ### Temporal:
 En el algoritmo destacan dos iteraciones.<br>
-1. Se delega a la función auxiliar `obtenerTiposFaltantes(password)`. Por detrás, esta función requiere realizar una pasada lineal sobre el string de longitud $N$ para verificar la presencia de minúsculas, mayúsculas y dígitos. Esto representa un costo temporal de **$\mathcal{O}(N)$**.
+1. Se delega a la función auxiliar `obtenerTiposFaltantes(password)`. Por detrás, esta función requiere realizar una pasada lineal sobre el [[string]] de longitud $N$ para verificar la presencia de minúsculas, mayúsculas y dígitos. Esto representa un costo temporal de **$\mathcal{O}(N)$**.
 2. Se procesan las rachas utilizando un mecanismo de punteros con dos bucles anidados (un bucle externo $A$ y un bucle interno $B$). Aunque están anidados, el puntero `i` avanza de forma estrictamente incremental y lineal de $0$ a $N-1$:
    - **Si todos los caracteres son diferentes:** El bucle externo $A$ realiza $N$ iteraciones, mientras que el bucle interno $B$ nunca avanza (0 pasos). Esto se simplifica asintóticamente a $\mathcal{O}(N)$.
-   - **Si todos los caracteres son iguales:** El bucle interno $B$ realiza $N-1$ pasos en la primera iteración consumiendo toda la cadena, y el bucle externo $A$ termina inmediatamente en su siguiente control. Esto se simplifica asintóticamente a $\mathcal{O}(N)$.
+   - **Si todos los caracteres son iguales:** El bucle interno $B$ realiza $N-1$ pasos en la primera iteración consumiendo toda la [[string]], y el bucle externo $A$ termina inmediatamente en su siguiente control. Esto se simplifica asintóticamente a $\mathcal{O}(N)$.
 
 En cualquier combinación intermedia, la suma de las iteraciones de ambos bucles esta acotada por un factor lineal de $N$. Por eso la complejidad temporal se simplifica directamente a **$\mathcal{O}(N)$**.
 

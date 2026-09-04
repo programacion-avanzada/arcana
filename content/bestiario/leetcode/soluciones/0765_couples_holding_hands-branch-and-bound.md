@@ -90,7 +90,7 @@ def branch_and_bound(row, upper=None):
 
 ## Traza de ejemplo
 
-Con el vector: `row = [0, 2, 1, 3]`
+Con el [[dynamic array]]: `row = [0, 2, 1, 3]`
 
 Las parejas son $(0, 1)$ y $(2, 3)$. Como `malas_parejas(row) = 2`, la cota inicial es:
 
@@ -112,7 +112,7 @@ Resultado: `1`
 
 ### Temporal
 
-Sea `m = 2n` la longitud del arreglo. En el peor caso (cuando la cota inferior no logra distinguir tempranamente las ramas subóptimas) el algoritmo puede llegar a explorar un número de estados del mismo orden que la fuerza bruta, ya que la cota basada en `malas_parejas` no siempre es ajustada. Por lo tanto, la cota superior teórica sigue siendo $O(m! \cdot m^2)$.
+Sea `m = 2n` la longitud del [[array]]. En el peor caso (cuando la cota inferior no logra distinguir tempranamente las ramas subóptimas) el algoritmo puede llegar a explorar un número de estados del mismo orden que la fuerza bruta, ya que la cota basada en `malas_parejas` no siempre es ajustada. Por lo tanto, la cota superior teórica sigue siendo $O(m! \cdot m^2)$.
 
 Sin embargo, en la práctica la poda por cota inferior elimina subárboles completos apenas se calculan (sin necesidad de generarlos), lo que reduce drásticamente el trabajo respecto a la fuerza bruta.
 

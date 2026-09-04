@@ -8,7 +8,7 @@ tags:
 Búsqueda por fuerza bruta: se explora exhaustivamente el espacio de edificios sin aplicar poda ni aprovechar subestructura óptima, confiando en revisar todas las combinaciones posibles en lugar de en una estrategia más fina. En esta solución, para cada edificio se lo compara contra todos los demás para decidir si sus dos puntos característicos, la esquina superior izquierda `(ini, alt)` y el punto de su pared derecha `(fin, altura_resultante)`, forman parte del contorno final.
 
 ## Idea de la solución
-Cada edificio puede llegar a aportar un punto en su esquina superior izquierda `[ini, altura]` o en algún lugar de su pared lateral derecha `[fin, altura_resultante]` dependiendo de los otros edificios; si está aislado, ese segundo punto sería `[fin, 0]`. Para cada edificio se recorre el arreglo de edificios para ver si esos puntos quedan tapados por otro edificio o pueden sumarse a la solución. A fines prácticos vamos a llamar a estos puntos punto1 y punto2.
+Cada edificio puede llegar a aportar un punto en su esquina superior izquierda `[ini, altura]` o en algún lugar de su pared lateral derecha `[fin, altura_resultante]` dependiendo de los otros edificios; si está aislado, ese segundo punto sería `[fin, 0]`. Para cada edificio se recorre el [[array]] de edificios para ver si esos puntos quedan tapados por otro edificio o pueden sumarse a la solución. A fines prácticos vamos a llamar a estos puntos punto1 y punto2.
 
 Se utilizan dos flags para decidir, al final del proceso, si cada punto posible se agrega o no.
 
@@ -100,7 +100,7 @@ Al terminar, flag1 quedó en True, así que se agrega a la solución el punto `(
 ## Complejidad
 
 ### Temporal
-$O(N^2)$ donde $N$ es la cantidad de edificios del arreglo. Para cada N se compara hasta con N edificios. La condición de no analizar edificios que comienzan después del inicio del edificio actual puede reducir la complejidad en la práctica, pero en el peor de los casos no.
+$O(N^2)$ donde $N$ es la cantidad de edificios del [[array]]. Para cada N se compara hasta con N edificios. La condición de no analizar edificios que comienzan después del inicio del edificio actual puede reducir la complejidad en la práctica, pero en el peor de los casos no.
 
 
 ### Espacial

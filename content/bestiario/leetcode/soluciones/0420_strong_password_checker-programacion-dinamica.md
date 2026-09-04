@@ -185,16 +185,16 @@ Como los $2$ reemplazos que quedaron pendientes tras optimizar los borrados son 
 
 ## Complejidad
 ### Temporal
-$\mathcal{O}(R \times B \times L)$, donde $R$ es la cantidad de rachas, $B$ son los borrados obligatorios ($n - 20$) y $L$ es la longitud máxima de una racha. El espacio de estados del mapa está estrictamente acotado por $R \times B$. Para resolver cada estado de forma única, el bucle for realiza a lo sumo $L$ iteraciones.
+$\mathcal{O}(R \times B \times L)$, donde $R$ es la cantidad de rachas, $B$ son los borrados obligatorios ($n - 20$) y $L$ es la longitud máxima de una racha. El espacio de estados del [[map]] está estrictamente acotado por $R \times B$. Para resolver cada estado de forma única, el bucle for realiza a lo sumo $L$ iteraciones.
 ### Espacial
-$\mathcal{O}(R \times B) + \mathcal{O}(R)$. Requiere memoria para almacenar el mapa memo con las combinaciones únicas de estados. Adicionalmente, el stack de llamadas de la recursividad consume espacio proporcional a la cantidad de rachas ($R$).
+$\mathcal{O}(R \times B) + \mathcal{O}(R)$. Requiere memoria para almacenar el [[map]] memo con las combinaciones únicas de estados. Adicionalmente, el stack de llamadas de la recursividad consume espacio proporcional a la cantidad de rachas ($R$).
 
 ## Cuándo usar esta técnica
 ### Favorable cuando
 - El espacio de estados de las variables es acotado (idx y borrados tienen límites máximos pequeños debido a las restricciones físicas del problema), lo que evita que la estructura de memorización crezca descontroladamente.
 - Se busca un código altamente mantenible y adaptativo, donde cambiar las reglas básicas (como el tamaño máximo de la contraseña o la longitud de las rachas toleradas) no requiera rediseñar la lógica matemática desde cero.
 ### Limitaciones
-- No escala bien si las restricciones del problema cambian a longitudes extremadamente grandes (ej. $n \ge 10^5$), ya que la creación dinámica de cadenas de texto para las keys del Map y el almacenamiento masivo de estados provocarían un consumo de memoria excesivo.
+- No escala bien si las restricciones del problema cambian a longitudes extremadamente grandes (ej. $n \ge 10^5$), ya que la creación dinámica de texto tipo [[string]] para las keys del [[map]] y el almacenamiento masivo de estados provocarían un consumo de memoria excesivo.
 - Esta solución realiza trabajo redundante al explorar y evaluar ramificaciones de borrado ineficientes que el enfoque Greedy descarta de antemano mediante reglas de prioridad fijas.
 
 ### Comparación con la solución Greedy

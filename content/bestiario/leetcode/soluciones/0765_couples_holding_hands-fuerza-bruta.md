@@ -60,7 +60,7 @@ def fuerza_bruta(row):
 
 ## Traza de ejemplo
 
-Con el vector: `row = [0, 2, 1, 3]`
+Con el [[dynamic array]]: `row = [0, 2, 1, 3]`
 
 Las parejas son $(0, 1)$ y $(2, 3)$.
 
@@ -83,7 +83,7 @@ Resultado: 1
 
 ### Temporal
 
-Sea $m = 2n$ la longitud del arreglo, donde $n$ es la cantidad de parejas. El algoritmo explora por niveles las distintas configuraciones posibles de la fila. Para evitar recorrer indefinidamente los mismos estados, cada configuración visitada se almacena en un [[set]] y no vuelve a explorarse.
+Sea $m = 2n$ la longitud del [[array]], donde $n$ es la cantidad de parejas. El algoritmo explora por niveles las distintas configuraciones posibles de la fila. Para evitar recorrer indefinidamente los mismos estados, cada configuración visitada se almacena en un [[set]] y no vuelve a explorarse.
 
 En el peor caso pueden visitarse hasta $m!$ configuraciones distintas, ya que cada una corresponde a una permutación de las personas en la fila. Desde cada estado pueden intentarse hasta $\binom{m}{2}=O(m^2)$ intercambios posibles.
 
@@ -91,7 +91,7 @@ Por lo tanto, una cota superior para la complejidad temporal es $O(m!\cdot m^2)$
 
 ### Espacial
 
-El conjunto de estados visitados puede llegar a almacenar hasta $m!$ configuraciones distintas, cada una de longitud $m$ (todas las configuraciones pendientes de explorar).
+El [[set]] de estados visitados puede llegar a almacenar hasta $m!$ configuraciones distintas, cada una de longitud $m$ (todas las configuraciones pendientes de explorar).
 
 Por lo tanto, una cota superior para la complejidad espacial es $O(m!\cdot m)$.
 

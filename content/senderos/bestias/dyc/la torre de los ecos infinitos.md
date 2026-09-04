@@ -83,7 +83,7 @@ def fib_dp(n):
 
 El `for` corre $n - 1$ veces, cada iteración es $O(1)$ → $T(n) = O(n)$, y $O(1)$ de memoria extra.
 
-_(Alternativa equivalente en espíritu: memoización top-down, guardando cada `fib(k)` calculado en un diccionario para no repetirlo. También $O(n)$, porque cada subproblema se resuelve una sola vez.)_
+_(Alternativa equivalente en espíritu: memoización top-down, guardando cada `fib(k)` calculado en un [[map]] para no repetirlo. También $O(n)$, porque cada subproblema se resuelve una sola vez.)_
 
 ## 4. División y conquista vs. programación dinámica
 
