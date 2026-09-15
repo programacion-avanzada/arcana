@@ -1,5 +1,7 @@
 # Arcana - Material de Programación Avanzada
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/programacion-avanzada/arcana)
+
 Arcana es un recurso de estudio complementario para la cátedra de **Programación Avanzada de la Universidad Nacional de La Matanza**. Reúne definiciones, técnicas y resultados centrales de la materia en un único lugar pensado tanto para el estudio secuencial como para la consulta puntual.
 
 El proyecto es mantenido por la cátedra y sus alumnos: es un documento vivo que crece con cada ciclo lectivo y se corrige cuando alguien detecta un error. Nuestro objetivo es conservar la rigurosidad y, a la vez, la claridad: estudiar algoritmos puede ser serio y disfrutable.
