@@ -1,0 +1,5 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
+  "runArgs": ["--name", "arcana_devcontainer"],
+  "postCreateCommand": "npm install"
+}
