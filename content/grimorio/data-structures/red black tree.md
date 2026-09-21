@@ -4,12 +4,7 @@ tags:
   - data-structures
 alias:
   - árbol rojo-negro
-  - árbol de búsqueda binaria
-  - árbol binario
-  - árbol
-  - binary seach tree
-  - BST
-aliases:
+  - red-black tree
 ---
 ## 1. Qué es y cómo funciona
 
@@ -55,7 +50,7 @@ Internamente, está compuesto por nodos que poseen un valor (o clave), un boolea
 - Una implementación clásica utiliza nodos centinela NIL de color negro, a fin de evitar verificaciones especiales de bordes como `if (nodo != NULL)`. Todos los punteros vacíos apuntan a un único objeto `NIL` global, reduciendo líneas de código y condicionales.
 - Una implementación alternativa que utilice NULL ahorra más memoria, pero modifica la estructura del código al tener que realizar más verificaciones.
 - A diferencia de otros árboles de búsqueda binario, los árboles rojo-negro almacenan un puntero al padre en cada nodo.
-- Si los claves almacenadas son strings, y se desea buscar un elemento, la comparación en cada nodo cuesta $O(k)$, por lo que una operación de búsqueda realmente puede costar $O(k log n)$
+- Si las claves almacenadas son strings, y se desea buscar un elemento, la comparación en cada nodo cuesta $O(k)$, por lo que una operación de búsqueda realmente puede costar $O(k log n)$
 
 ---
 ## 3. Implementación
