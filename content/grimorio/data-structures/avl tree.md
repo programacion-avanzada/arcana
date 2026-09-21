@@ -134,14 +134,14 @@ class ArbolAVL:
         self.actualizar(y)
         return y
 
-    def insertar(self, raiz, clave):
+    def insertar(self, raiz, clave, comparacion):
         # 1. Inserción normal de un BST
         if not raiz:
             return NodoAVL(clave)
-        if clave < raiz.clave:
-            raiz.izq = self.insertar(raiz.izq, clave)
-        elif clave > raiz.clave:
-            raiz.der = self.insertar(raiz.der, clave)
+        if comparacion(clave, raiz.clave) < 0:
+            raiz.izq = self.insertar(raiz.izq, clave, comparacion)
+        elif comparacion(clave, raiz.clave) > 0:
+            raiz.der = self.insertar(raiz.der, clave, comparacion)
         else:
             return raiz         # no se permiten claves duplicadas
 
@@ -149,12 +149,12 @@ class ArbolAVL:
         self.actualizar(raiz)
         balance = self.balance(raiz)
         if balance > 1:                             # pesa a la izquierda
-            if clave > raiz.izq.clave:
+            if comparacion(clave, raiz.izq.clave) > 0:
                 raiz.izq = self.rotar_izquierda(raiz.izq)   # caso LR
             return self.rotar_derecha(raiz)                 # caso LL
 
         if balance < -1:                            # pesa a la derecha
-            if clave < raiz.der.clave:
+            if comparacion(clave, raiz.der.clave) < 0:
                 raiz.der = self.rotar_derecha(raiz.der)     # caso RL
             return self.rotar_izquierda(raiz)               # caso RR
         return raiz
@@ -257,7 +257,4 @@ Un árbol AVL suele ser adecuado cuando en el problema se menciona:
 - **W3Schools** - *DSA AVL Trees*: [https://www.w3schools.com/dsa/dsa_data_avltrees.php](https://www.w3schools.com/dsa/dsa_data_avltrees.php)
 - **EnjoyAlgorithms** - *AVL Tree Data Structure*: [https://www.enjoyalgorithms.com/blog/avl-tree-data-structure](https://www.enjoyalgorithms.com/blog/avl-tree-data-structure)
 - **DataCamp** - *AVL Tree*: [https://www.datacamp.com/tutorial/avl-tree](https://www.datacamp.com/tutorial/avl-tree)
-- **Con Clase** - *Árboles rojo-negro*: [https://conclase.net/c/edd/cap11](https://conclase.net/c/edd/cap11)
-- **GeeksforGeeks** - *Complexity of different operations in Binary tree, Binary Search Tree and AVL tree*: [https://www.geeksforgeeks.org/dsa/complexity-different-operations-binary-tree-binary-search-tree-avl-tree/](https://www.geeksforgeeks.org/dsa/complexity-different-operations-binary-tree-binary-search-tree-avl-tree/)
-- **WSCube Tech** - *AVL Tree in Data Structure: Rotations, Operations, and Examples*: [https://www.wscubetech.com/resources/dsa/avl-tree](https://www.wscubetech.com/resources/dsa/avl-tree)
 - **Larsen, K. S. (2000)** - *AVL Trees with Relaxed Balance*. Journal of Computer and System Sciences, 61(3), 508-522. [https://doi.org/10.1006/jcss.2000.1705](https://doi.org/10.1006/jcss.2000.1705)
