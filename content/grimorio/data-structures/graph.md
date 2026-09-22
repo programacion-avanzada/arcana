@@ -31,7 +31,9 @@ Un Grafo se define formalmente como un par $G = (V, E)$, donde:
 - **Conectividad:** un grafo es conexo si existe un camino entre cualquier par de vértices. Un DAG (*Directed Acyclic Graph*) es un grafo dirigido sin ciclos.
 - **Densidad:** un grafo es *disperso* (sparse) si $|E|$ es cercano a $|V|$, y *denso* si se acerca a $|V|^2$.
 
-![](/attachments/grimorio/data-structures/denso-disperso.svg)
+![Comparación entre un grafo disperso y uno denso, ambos con 6 vértices](/attachments/grimorio/data-structures/denso-disperso.svg)
+
+*El grafo disperso tiene 6 aristas (una cantidad cercana a $|V|$); el denso tiene las 15 aristas posibles entre esos mismos 6 vértices (cercana a $|V|^2$).*
 
 ### Representación
 
@@ -39,11 +41,15 @@ Hay dos formas principales de representar un grafo en memoria:
 
 **Lista de adyacencia:** cada vértice guarda una lista con sus vecinos.
 
-![](/attachments/grimorio/data-structures/lista-adyacencia.svg)
+![Diagrama de un grafo dirigido junto a su representación como lista de adyacencia](/attachments/grimorio/data-structures/lista-adyacencia.svg)
+
+*Grafo dirigido con vértices A, B, C, D: cada vértice guarda únicamente la lista de sus vecinos de salida (A → [B, C], B → [A, C], C → [D], D → [C]).*
 
 **Matriz de adyacencia:** una matriz $|V| \times |V|$ donde la celda $(i, j)$ indica si existe (o el peso de) la arista entre $i$ y $j$.
 
-![](/attachments/grimorio/data-structures/matriz-adyacencia.svg)
+![Matriz de adyacencia 4x4 para los vértices A, B, C, D](/attachments/grimorio/data-structures/matriz-adyacencia.svg)
+
+*Matriz $|V| \times |V|$ para los vértices A, B, C, D: la celda $(i, j)$ vale 1 si existe la arista de $i$ a $j$, y 0 si no, reservando espacio para todos los pares posibles exista o no la arista.*
 
 La diferencia está en **qué guardan**. La lista almacena solo las aristas que existen: su memoria crece con $|E|$ y pedir los vecinos de un vértice cuesta lo que ese vértice tenga. La matriz reserva una celda para **cada par posible**, exista la arista o no: ocupa siempre $|V|^2$, pero responder "¿hay arista de $u$ a $v$?" es un acceso por índice, en $O(1)$.
 
@@ -63,7 +69,9 @@ Como los grafos reales suelen ser dispersos, **la lista es la opción por defect
 - **`existe_arista(u, v)`:** indica si hay conexión directa entre `u` y `v`.
 - **`recorrer()`:** visita todos los vértices alcanzables, típicamente con BFS (en anchura) o DFS (en profundidad).
 
-![](/attachments/grimorio/data-structures/bfs-dfs.svg)
+![Comparación del orden de recorrido entre BFS y DFS sobre el mismo grafo](/attachments/grimorio/data-structures/bfs-dfs.svg)
+
+*Sobre el mismo grafo de 6 vértices partiendo de A: BFS lo recorre en el orden A, B, C, D, E, F, agotando cada nivel (con una cola FIFO) antes de bajar al siguiente; DFS se interna en profundidad por una rama antes de retroceder a explorar las demás.*
 
 ### Complejidad
 
