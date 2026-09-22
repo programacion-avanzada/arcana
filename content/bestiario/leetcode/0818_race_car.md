@@ -65,7 +65,7 @@ La primera aproximación es fuerza bruta, donde se prueban las opciones (`A` y `
 
 Luego podés descubrir que hay ciertas condiciones que delimitan la búsqueda como, la posición nunca va a ser menor a 0 y la posición nunca va a ser más que el doble del target: `Pos >= 0`, `Pos < target * 2`.
 
-Finalmente para buscar una solución eficiente, se debe buscar la relación de recurrencia y dejar de pensar el problema como una simulación del movimiento del auto en un [[graph]] infinito.
+Finalmente para buscar una solución eficiente, se debe buscar la relación de recurrencia y dejar de pensar el problema como una simulación del movimiento del auto en un grafo infinito.
 
 ---
 
