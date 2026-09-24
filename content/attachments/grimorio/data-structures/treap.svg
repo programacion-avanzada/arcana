@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="510" viewBox="0 0 900 510">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .edge { stroke: #9baec8; stroke-width: 1.8; }
+    .node { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .root { stroke: #c0742a; }
+    .key { font-size: 20px; font-weight: 700; fill: #1a1a2e; }
+    .priority { font-size: 13px; fill: #777777; }
+    .note { font-size: 13px; font-weight: 700; fill: #777777; }
+    @media (prefers-color-scheme: dark) {
+      .edge { stroke: #4a6fa5; }
+      .node { fill: #1e2330; stroke: #4a6fa5; }
+      .root { stroke: #d4884a; }
+      .key { fill: #e2e8f0; }
+      .priority, .note { fill: #8899aa; }
+    }
+  </style>
+  <line x1="450" y1="128" x2="260" y2="235" class="edge"/>
+  <line x1="450" y1="128" x2="640" y2="235" class="edge"/>
+  <line x1="260" y1="295" x2="150" y2="390" class="edge"/>
+  <line x1="260" y1="295" x2="370" y2="390" class="edge"/>
+  <line x1="640" y1="295" x2="555" y2="390" class="edge"/>
+  <g transform="translate(370 70)"><rect width="160" height="88" rx="14" class="node root"/><text x="80" y="36" text-anchor="middle" class="key">clave: 50</text><text x="80" y="65" text-anchor="middle" class="priority">prioridad: 90</text></g>
+  <g transform="translate(180 235)"><rect width="160" height="88" rx="14" class="node"/><text x="80" y="36" text-anchor="middle" class="key">clave: 20</text><text x="80" y="65" text-anchor="middle" class="priority">prioridad: 70</text></g>
+  <g transform="translate(560 235)"><rect width="160" height="88" rx="14" class="node"/><text x="80" y="36" text-anchor="middle" class="key">clave: 80</text><text x="80" y="65" text-anchor="middle" class="priority">prioridad: 60</text></g>
+  <g transform="translate(70 390)"><rect width="160" height="88" rx="14" class="node"/><text x="80" y="36" text-anchor="middle" class="key">clave: 10</text><text x="80" y="65" text-anchor="middle" class="priority">prioridad: 40</text></g>
+  <g transform="translate(290 390)"><rect width="160" height="88" rx="14" class="node"/><text x="80" y="36" text-anchor="middle" class="key">clave: 30</text><text x="80" y="65" text-anchor="middle" class="priority">prioridad: 50</text></g>
+  <g transform="translate(475 390)"><rect width="160" height="88" rx="14" class="node"/><text x="80" y="36" text-anchor="middle" class="key">clave: 65</text><text x="80" y="65" text-anchor="middle" class="priority">prioridad: 20</text></g>
+  <text x="95" y="185" class="note">claves menores</text>
+  <text x="674" y="185" class="note">claves mayores</text>
+</svg>
