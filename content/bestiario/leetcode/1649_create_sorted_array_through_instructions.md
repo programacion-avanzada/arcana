@@ -3,8 +3,6 @@ title: LeetCode1649 - Create Sorted Array through Instructions
 tags:
   - leetcode
   - bestia
-  - merge-sort
-  - division-y-conquista
 ---
 
 ## Nombre y enunciado

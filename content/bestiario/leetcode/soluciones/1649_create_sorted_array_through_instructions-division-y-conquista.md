@@ -3,8 +3,6 @@ title: 'LeetCode1649 - Create Sorted Array through Instructions - División y Co
 tags:
   - leetcode
   - solucion
-  - division-y-conquista
-  - merge-sort
 ---
 
 ## Técnicas utilizadas
