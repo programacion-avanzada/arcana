@@ -132,7 +132,7 @@ Esta identidad vale **gracias a la memoización**: como cada estado se computa u
 - **Cantidad de estados:** $O(N^3)$, por las tres coordenadas libres `(r1, c1, r2)` justificadas más arriba.
 - **Trabajo por estado:** $O(1)$. Al resolver un estado se hace una cantidad **constante** de operaciones: deducir `c2`, chequear límites y espinas, sumar a lo sumo dos celdas, y tomar el `max` de **exactamente 4** valores. Ese 4 es una constante fija (no depende de `N`), y cada una de esas 4 llamadas cuesta $O(1)$ porque devuelve un valor ya cacheado o inicia el cómputo de *otro* estado, que se cuenta aparte.
 
-- **Temporal:** $O(N^3) \times O(1) = O(N^3)$. Para `N = 50` son a lo sumo `50³ = 125 000` estados, cada uno con trabajo constante: trivial para una computadora.
+- **Temporal:** $O(N^3) \times O(1) = O(N^3)$. Para `N = 50` son a lo sumo $50^3 = 125\,000$ estados, cada uno con trabajo constante: trivial para una computadora.
 
   Es útil ver **dónde se fue el exponencial**: la fuerza bruta también hace $O(1)$ de trabajo por llamada, pero realiza $O(4^{2N})$ **llamadas** porque revisita los mismos estados una y otra vez. La memoización no acelera cada paso; lo que hace es **acotar la cantidad de llamadas que hacen trabajo real** al número de estados distintos. El tiempo deja de depender de la *forma del árbol de recursión* y pasa a depender del *tamaño del espacio de estados*.
 

@@ -4,7 +4,7 @@ tags:
   - leetcode
   - bestia
 ---
-### Enunciado
+## Enunciado
 
 Tenemos una grilla cuadrada `grid` de tamaño `N × N` donde cada celda contiene uno de tres valores:
 
@@ -18,7 +18,7 @@ El objetivo es **maximizar la cantidad total de cerezas recolectadas** en el via
 
 > Enunciado original: [LeetCode 741 - Cherry Pickup](https://leetcode.com/problems/cherry-pickup/)
 
-### Intuición
+## Intuición
 
 Lo que vuelve al problema interesante es que **no se puede resolver optimizando cada viaje por separado**. La tentación natural es: "busco el mejor camino de ida, recolecto, y luego el mejor camino de vuelta". Pero ese enfoque codicioso **falla**: el mejor camino de ida puede agotar las cerezas que necesitaba la vuelta, dejando un resultado subóptimo. Las dos trayectorias están **acopladas** porque comparten un mismo tablero que se va vaciando.
 
@@ -26,7 +26,7 @@ La observación clave que destraba el problema es de **simetría**: un viaje de 
 
 ![Reformulación: dos recolectores simultáneos](0741-dos-recolectores.svg)
 
-### Definición formal
+## Definición formal
 
 - **Entrada:** una matriz `grid` de `N × N` con `grid[i][j] ∈ {-1, 0, 1}`. Se garantiza `grid[0][0] != -1` y `grid[N-1][N-1] != -1`.
 - **Salida:** un entero, la máxima cantidad de cerezas recolectables en el recorrido ida + vuelta. `0` si el camino está bloqueado.
@@ -34,7 +34,7 @@ La observación clave que destraba el problema es de **simetría**: un viaje de 
 
 La estructura subyacente es un [[array]] bidimensional (grilla) sobre el que se definen caminos monótonos.
 
-### Ejemplo concreto
+## Ejemplo concreto
 
 ```
 grid = [[ 0,  1, -1],
@@ -57,7 +57,7 @@ Total: `5` cerezas. Es el máximo posible, ya que entre ambos recogen **todas** 
 
 **Respuesta esperada: `5`.**
 
-### Por dónde empezar
+## Por dónde empezar
 
 1. Convencerse de que el enfoque codicioso (optimizar ida y vuelta por separado) es incorrecto con un contraejemplo.
 2. Adoptar la reformulación de **dos recolectores que caminan en paralelo** de `(0,0)` a `(N-1,N-1)`.
@@ -66,7 +66,7 @@ Total: `5` cerezas. Es el máximo posible, ya que entre ambos recogen **todas** 
 
 ![Reducción del estado de 4 a 3 coordenadas](0741-estado.svg)
 
-### Soluciones disponibles
+## Soluciones disponibles
 
 - [[0741_cherry_pickup-fuerza-bruta]]
 - [[0741_cherry_pickup-programacion-dinamica]]

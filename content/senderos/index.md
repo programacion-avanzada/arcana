@@ -4,7 +4,7 @@ tags:
   - meta-hub
 ---
 
-![](/attachments/senderos-cover.png)
+![](senderos-cover.png)
 
 Acá se abren los Senderos principales: recorridos ya trazados para quienes prefieren avanzar con una lógica afinada y un propósito claro. Cada uno propone una secuencia de desafíos donde nada es casual y cada encuentro deja herramientas para el siguiente.
 

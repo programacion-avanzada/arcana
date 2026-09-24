@@ -1,7 +1,7 @@
 ---
 title: El Reinicio del Núcleo
 tags:
-  - topológico
+  - topologico
   - desafio
 ---
 

@@ -15,7 +15,7 @@ El Registro es un montículo binario de máximos (*max-heap*), representado como
 1. Explicar cómo se representa un montículo binario en un arreglo: dar las fórmulas para calcular el padre y los hijos de una posición `i`, y justificar por qué esta representación implícita ahorra memoria frente a un árbol con nodos y punteros.
 2. Describir en palabras el algoritmo de inserción con ascenso (*sift-up* / *bubble-up*): dónde se coloca el nuevo elemento y cómo se restaura la propiedad de montículo.
 3. Trazar a mano la inserción secuencial de los presagios `[15, 8, 21, 4, 30]` en un montículo inicialmente vacío, mostrando el arreglo completo después de cada inserción.
-4. Determinar la complejidad de una única inserción en función de la altura del árbol, y justificar por qué esa altura es `O(log n)` para un árbol binario completo.
+4. Determinar la complejidad de una única inserción en función de la altura del árbol, y justificar por qué esa altura es $O(\log n)$ para un árbol binario completo.
 
 > **Susurro del Archivista Insomne.** Pensá el arreglo como si fuera el árbol recorrido nivel por nivel, de izquierda a derecha. Si una amenaza está en la posición `i` (contando desde 0), sus hijos están en `2i+1` y `2i+2`, y su padre en `(i-1)//2`. El ascenso compara la nueva amenaza con su padre: mientras sea más terrible que él, intercambian de lugar.
 

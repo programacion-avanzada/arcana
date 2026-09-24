@@ -244,7 +244,7 @@ $O(T)$. El algoritmo utiliza un [[array]] `dp` de tamaño `t + 1`, donde almacen
 ---
 
 ## Diferencia entre los enfoques de programación dinámica
-Aunque ambos enfoques de DP son superiores a BFS en promedio, en el peor caso todos son $O(T log T)$.
+Aunque ambos enfoques de DP son superiores a BFS en promedio, en el peor caso todos son $O(T \log T)$.
 
 ## Comparación con Búsqueda en Anchura (BFS)
 A diferencia de [[0818_race_car-bfs-fuerza-bruta]] que explora paso a paso el árbol de posibilidades teniendo en cuenta posición y velocidad, la programación dinámica reduce el problema a solo la distancia absoluta. Esto permite que se reemplace la "simulación" con saltos matemáticos directos entre posiciones de referencia. Como resultado, la técnica de programación dinámica es superior en espacio ($O(T)$ frente a $O(T\log{T})$ de BFS) y en promedio mejor en velocidad. Como dificultad, la lógica matemática que plantea el problema es más difícil de deducir que en BFS.

@@ -80,7 +80,7 @@ Tomemos el primer par: h = 6, N = 8.
 - Casas a la izquierda: 1, 2, 3, 4, 5 → suma = 15
 - Casas a la derecha: 7, 8 → suma = 15
 
-Verificación con la fórmula: 2 × 6² = 72 y 8 × 9 = 72
+Verificación con la fórmula: $2 \times 6^2 = 72$ y $8 \times 9 = 72$
 
 ![Calle 1 a 8 con equilibrio en h igual a 6](138-street-numbers-ejemplo.svg)
 
