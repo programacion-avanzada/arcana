@@ -22,16 +22,7 @@ start:
 
 lint:
 	@command -v npx >/dev/null 2>&1 || { echo >&2 "npx not found. Install Node.js/npm."; exit 1; }
-	@echo "Running: npm run lint:md"
-	@# Run the linter and capture output
-	@npx -y markdownlint-cli2 "content/**/*.md" --config .markdownlint.json 2>&1 | tee md-lint-output.txt || true
-	@if [ -s md-lint-output.txt ]; then \
-		echo "Markdown lint issues found:"; \
-		head -n 200 md-lint-output.txt; \
-		exit 1; \
-	else \
-		echo "No markdownlint issues."; \
-	fi
+	@npx -y markdownlint-cli2 "content/**/*.md" --config .markdownlint.json && echo "No markdownlint issues."
 
 lint-fix:
 	@command -v npx >/dev/null 2>&1 || { echo >&2 "npx not found. Install Node.js/npm."; exit 1; }
