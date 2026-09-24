@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs>
+    <style>
+      .bg { fill:#121212; }
+      .panel { fill:#090909; stroke:#2f4f78; stroke-width:2; }
+      .node { fill:#0f0f0f; stroke:#6f91bd; stroke-width:3; }
+      .edge { fill:none; stroke:#6f91bd; stroke-width:2.5; }
+      .txt { fill:#d7e5f6; font-family: Consolas, 'Courier New', monospace; }
+      .title { font-size:28px; font-weight:700; }
+      .label { font-size:26px; font-weight:700; }
+      .small { font-size:19px; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="620"/>
+  <rect class="panel" x="30" y="30" rx="10" ry="10" width="555" height="560"/>
+  <rect class="panel" x="615" y="30" rx="10" ry="10" width="555" height="560"/>
+
+  <text class="txt title" x="307" y="82" text-anchor="middle">Grafo disperso</text>
+  <text class="txt title" x="897" y="82" text-anchor="middle">Grafo denso</text>
+
+  <!-- ================= DISPERSO: 6 vertices, 6 aristas ================= -->
+  <path class="edge" d="M336.4 167 L407.6 208"/>
+  <path class="edge" d="M437 259 L437 341"/>
+  <path class="edge" d="M407.6 392 L336.4 433"/>
+  <path class="edge" d="M277.6 433 L206.4 392"/>
+  <path class="edge" d="M177 341 L177 259"/>
+  <path class="edge" d="M206.4 208 L277.6 167"/>
+
+  <circle class="node" cx="307" cy="150" r="34"/>
+  <circle class="node" cx="437" cy="225" r="34"/>
+  <circle class="node" cx="437" cy="375" r="34"/>
+  <circle class="node" cx="307" cy="450" r="34"/>
+  <circle class="node" cx="177" cy="375" r="34"/>
+  <circle class="node" cx="177" cy="225" r="34"/>
+
+  <text class="txt label" x="307" y="159" text-anchor="middle">A</text>
+  <text class="txt label" x="437" y="234" text-anchor="middle">B</text>
+  <text class="txt label" x="437" y="384" text-anchor="middle">C</text>
+  <text class="txt label" x="307" y="459" text-anchor="middle">D</text>
+  <text class="txt label" x="177" y="384" text-anchor="middle">E</text>
+  <text class="txt label" x="177" y="234" text-anchor="middle">F</text>
+
+  <text class="txt small" x="307" y="528" text-anchor="middle">6 vertices, 6 aristas</text>
+  <text class="txt small" x="307" y="558" text-anchor="middle">|E| se parece a |V|</text>
+
+  <!-- ================= DENSO: 6 vertices, 15 aristas ================= -->
+  <!-- lados -->
+  <path class="edge" d="M926.4 167 L997.6 208"/>
+  <path class="edge" d="M1027 259 L1027 341"/>
+  <path class="edge" d="M997.6 392 L926.4 433"/>
+  <path class="edge" d="M867.6 433 L796.4 392"/>
+  <path class="edge" d="M767 341 L767 259"/>
+  <path class="edge" d="M796.4 208 L867.6 167"/>
+  <!-- diagonales cortas -->
+  <path class="edge" d="M914 179.4 L1010 345.6"/>
+  <path class="edge" d="M880 179.4 L784 345.6"/>
+  <path class="edge" d="M1010 254.4 L914 420.6"/>
+  <path class="edge" d="M993 225 L801 225"/>
+  <path class="edge" d="M993 375 L801 375"/>
+  <path class="edge" d="M880 420.6 L784 254.4"/>
+  <!-- diagonales largas -->
+  <path class="edge" d="M897 184 L897 416"/>
+  <path class="edge" d="M997.5 242 L796.5 358"/>
+  <path class="edge" d="M997.5 358 L796.5 242"/>
+
+  <circle class="node" cx="897" cy="150" r="34"/>
+  <circle class="node" cx="1027" cy="225" r="34"/>
+  <circle class="node" cx="1027" cy="375" r="34"/>
+  <circle class="node" cx="897" cy="450" r="34"/>
+  <circle class="node" cx="767" cy="375" r="34"/>
+  <circle class="node" cx="767" cy="225" r="34"/>
+
+  <text class="txt label" x="897" y="159" text-anchor="middle">A</text>
+  <text class="txt label" x="1027" y="234" text-anchor="middle">B</text>
+  <text class="txt label" x="1027" y="384" text-anchor="middle">C</text>
+  <text class="txt label" x="897" y="459" text-anchor="middle">D</text>
+  <text class="txt label" x="767" y="384" text-anchor="middle">E</text>
+  <text class="txt label" x="767" y="234" text-anchor="middle">F</text>
+
+  <text class="txt small" x="897" y="528" text-anchor="middle">6 vertices, 15 aristas (todas las posibles)</text>
+  <text class="txt small" x="897" y="558" text-anchor="middle">|E| se parece a |V|<tspan baseline-shift="super" font-size="13px">2</tspan></text>
+</svg>
