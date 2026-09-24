@@ -7,7 +7,7 @@ tags:
 ---
 El mensajero Aldric debe cruzar el Río de Cristal, dividido en $n$ secciones. Cada sección tiene una altura de corriente. Aldric necesita encontrar la sección con la corriente más alta para evitarla. No tiene tiempo de recorrer todo el río: debe hacerlo en el menor tiempo posible.
 
-## Enunciado
+### Enunciado
 Dado un arreglo de $n$ enteros que representa las alturas de corriente de cada sección del río, plantea un algoritmo de división y conquista para encontrar el valor máximo.
 
 1. Describir el caso base y el paso recursivo en palabras.
@@ -22,14 +22,14 @@ Dado un arreglo de $n$ enteros que representa las alturas de corriente de cada s
 <details>
     <summary>Ver solución</summary>
 
-## 1. Caso base y paso recursivo
+### 1. Caso base y paso recursivo
 
 - **Caso base:** una sección de un solo elemento; ese elemento es el máximo.
 - **Paso recursivo:** dividir el [[array]] en dos mitades, calcular el máximo de cada una por separado, y combinar quedándose con el mayor de los dos.
 
 Esto funciona porque el máximo global siempre coincide con el máximo de alguna de las dos mitades.
 
-## 2. Algoritmo
+### 2. Algoritmo
 
 ```python
 def encontrar_maximo(alturas, izq, der):
@@ -45,7 +45,7 @@ def encontrar_maximo(alturas, izq, der):
 
 > Nota: se pasan índices (`izq`, `der`) en vez de hacer slicing (`arr[:medio]`). Si se hiciera slicing, cada división copiaría el [[array]] y costaría $O(n)$, cambiando la recurrencia.
 
-## 3. Recurrencia y Teorema Maestro
+### 3. Recurrencia y Teorema Maestro
 
 Dividir es $O(1)$, hay 2 subproblemas de tamaño $n/2$, y combinar (una comparación) es $O(1)$:
 
@@ -55,7 +55,7 @@ Con $a = 2, b = 2, f(n) = O(1)$: el exponente crítico es $n^{log_2 2} = n$. Com
 
 $$ T(n) = \Theta(n) $$
 
-## 4. ¿Es una mejora respecto a la búsqueda lineal?
+### 4. ¿Es una mejora respecto a la búsqueda lineal?
 
 **No.** Un recorrido lineal simple también es $Θ(n)$: dividir y combinar acá no elimina trabajo, solo lo reorganiza. La ventaja de D&C no es automática, sino que solo mejora la complejidad cuando el paso de dividir/combinar ahorra algo real (como en Merge Sort). Acá no hay ahorro, por eso ambos enfoques quedan en la misma clase asintótica.
 

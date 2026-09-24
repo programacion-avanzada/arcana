@@ -6,7 +6,7 @@ tags:
   - resuelto
 ---
 En la Torre de los Ecos Infinitos, también conocida como Torre de Fibonacci, un oráculo falso convence a los aprendices de que todo puede resolverse con división y conquista. "¡Divide el problema!", grita. Pero el sabio Ermitage sabe que algunos problemas tienen una estructura donde dividir y reconquistar crea más trabajo del que ahorra. El oráculo presenta el cálculo del n-ésimo número de Fibonacci como candidato perfecto para división y conquista recursivo. Ermitage sonríe… y deja que los aprendices descubran el error por sí mismos.
-## Enunciado: Fibonacci Recursivo Ingenuo
+### Enunciado: Fibonacci Recursivo Ingenuo
 
 Considerar esta implementación "división y conquista" de Fibonacci:
 
@@ -28,14 +28,14 @@ Responder las siguientes preguntas:
 
 <details>
     <summary>Ver solución</summary>
-    
-## 1. ¿Es esto realmente división y conquista?
+
+### 1. ¿Es esto realmente división y conquista?
 
 **No, no en el sentido que importa.** Tiene la forma superficial de D&C (caso base + dos llamadas recursivas + combinar sumando), pero le falta la condición fundamental: **que los subproblemas sean independientes**.
 
 `fib_dc(n-1)` internamente vuelve a calcular `fib_dc(n-2)`, `fib_dc(n-3)`, etc. que son los mismos subproblemas que ya se están calculando por otro lado, en la rama de `fib_dc(n-2)`. No son subproblemas disjuntos que se resuelven una única vez: se **solapan** y se recalculan una y otra vez. Ese solapamiento es lo que rompe la premisa de D&C.
 
-## 2. Complejidad
+### 2. Complejidad
 
 Árbol de llamadas para `fib(6)` (abreviado; los subárboles idénticos se repiten):
 
@@ -67,7 +67,7 @@ $$ T(n) = T(n-1) + T(n-2) + O(1) $$
 
 > **Dato extra para quien quiera precisión:** la cota ajustada es en realidad $\Theta(\varphi^n)$, con $\varphi \approx 1.618$ el número áureo, más lento que lineal, pero algo menor que $2^n$. $O(2^n)$ sigue siendo una cota superior válida y mucho más simple de demostrar.
 
-## 3. Solución correcta: $O(n)$
+### 3. Solución correcta: $O(n)$
 
 Con programación dinámica (versión iterativa, sin recalcular nada):
 
@@ -85,7 +85,7 @@ El `for` corre $n - 1$ veces, cada iteración es $O(1)$ → $T(n) = O(n)$, y $O(
 
 _(Alternativa equivalente en espíritu: memoización top-down, guardando cada `fib(k)` calculado en un [[map]] para no repetirlo. También $O(n)$, porque cada subproblema se resuelve una sola vez.)_
 
-## 4. División y conquista vs. programación dinámica
+### 4. División y conquista vs. programación dinámica
 
 - **D&C:** los subproblemas son **independientes**: no se solapan entre sí. Se resuelven una vez cada uno y se combinan. Ejemplos: Merge Sort, búsqueda binaria, Karatsuba.
 - **Programación dinámica:** los subproblemas **se solapan** (el mismo subproblema aparece en múltiples ramas de la recursión). La clave es **guardar** cada resultado la primera vez que se calcula, para no repetir trabajo. Ejemplos: Fibonacci, camino mínimo, mochila.
