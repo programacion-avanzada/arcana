@@ -164,16 +164,26 @@ class Grafo:
 Grados de separación: la cadena más corta de compañeros de equipo entre dos Pokémon (dos Pokémon están conectados si compartieron equipo en alguna partida).
 
 ```python
-red = Grafo()  #no dirigido: si A fue compañero de B, B lo fue de A
+red = Grafo()  # no dirigido: si A fue compañero de B, B lo fue de A
 for a, b in [("Pikachu", "Charmander"), ("Charmander", "Bulbasaur"), ("Bulbasaur", "Squirtle"),
              ("Pikachu", "Eevee"), ("Eevee", "Squirtle")]:
     red.agregar_arista(a, b)
 
 camino = red.camino_mas_corto("Pikachu", "Squirtle")
-print(camino)           #['Pikachu', 'Eevee', 'Squirtle'] (no pasa por Charmander y Bulbasaur)
-print(len(camino) - 1)  #2 grados de separación
-print(red.camino_mas_corto("Pikachu", "Mewtwo"))  #None: no está en la red
+print("Camino:", " -> ".join(camino))
+print("Grados de separación:", len(camino) - 1)
+print("Camino a Mewtwo:", red.camino_mas_corto("Pikachu", "Mewtwo"))
 ```
+
+Salida esperada:
+
+```text
+Camino: Pikachu -> Eevee -> Squirtle
+Grados de separación: 2
+Camino a Mewtwo: None
+```
+
+Hay dos caminos de Pikachu a Squirtle: uno por Eevee (2 aristas) y otro por Charmander y Bulbasaur (3 aristas). BFS devuelve el más corto porque explora por niveles. Mewtwo nunca se agregó a la red, así que no hay camino y el método devuelve `None`.
 
 ---
 
