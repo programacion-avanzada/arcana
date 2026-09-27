@@ -144,13 +144,15 @@ class ArbolRojoNegro:
                         break
                     else:
                         nodo_actual = nodo_actual.izquierdo
-                else:
+                elif valor > nodo_actual.valor:
                     if nodo_actual.derecho is None:
                         nodo_actual.derecho = nuevo_nodo
                         nuevo_nodo.padre = nodo_actual
                         break
                     else:
                         nodo_actual = nodo_actual.derecho
+                else:
+	                return
         self.reparar_insercion(nuevo_nodo)
   
     def rotar_izquierda(self, nodo):
