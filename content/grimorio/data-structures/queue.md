@@ -70,6 +70,18 @@ Hay dos estrategias típicas. Sobre [[linked list]] basta mantener dos punteros:
 ### Ejemplo de código
 
 ```python
+class QueueError(Exception):
+    pass
+
+
+class QueueOverflowError(QueueError):
+    pass
+
+
+class QueueUnderflowError(QueueError):
+    pass
+
+
 class Queue:
     def __init__(self, capacidad):
         self.data = [None] * capacidad
@@ -79,17 +91,20 @@ class Queue:
 
     def enqueue(self, x):
         if self.size == self.capacidad:
-            raise Exception("Queue overflow")
+            raise QueueOverflowError("Queue overflow")
+
         rear = (self.front + self.size) % self.capacidad
         self.data[rear] = x
         self.size += 1
 
     def dequeue(self):
         if self.size == 0:
-            raise Exception("Queue underflow")
+            raise QueueUnderflowError("Queue underflow")
+
         x = self.data[self.front]
         self.front = (self.front + 1) % self.capacidad
         self.size -= 1
+
         return x
 ```
 
