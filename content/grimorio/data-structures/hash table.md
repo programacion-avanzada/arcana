@@ -53,9 +53,10 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 #### ¿Qué son las *colisiones*?
 Una **colisión** ocurre cuando dos claves distintas generan el mismo índice en la tabla hash. Es inevitable y debe resolverse con técnicas específicas.
 
-Para resolver este problema, existen dos estrategias principales que administran la memoria de forma muy distinta *(estos métodos se desarrollan en detalle más adelante en la sección **5. Relaciones y extensiones > Variantes**)*:
+Para resolver este problema, existen dos estrategias principales que administran la memoria de forma muy distinta:
 1. **Separate Chaining (Encadenamiento):** Utiliza estructuras dinámicas auxiliares (como listas enlazadas) fuera del vector principal.
 2. **Open Addressing (Direccionamiento Abierto):** Busca el siguiente espacio libre dentro del mismo vector (ej. *Linear Probing*), lo que ahorra punteros pero puede generar *clustering* (amontonamiento).
+*(estos métodos se desarrollan en detalle más adelante en la sección **5. Relaciones y extensiones > Variantes**)*
 
 A continuación, una comparativa visual de cómo ambas técnicas manejan la inserción y búsqueda frente a una colisión:
 
