@@ -23,7 +23,7 @@ Estructura que almacena datos de manera contigua y ajusta su capacidad en tiempo
 - **Memoria contigua**: posiciones consecutivas garantizan localidad de caché.
 - **Capacidad flexible**: al llenarse, se redimensiona asignando un bloque más grande.
 - **Invariante**: elementos contiguos desde índice 0 hasta `size-1`, sin huecos; `size` nunca supera `capacidad`.
-- **Costo variable en inserción/eliminación**: al final, insertar es $O(1)$ amortizado y eliminar $O(1)$; al principio o en el medio, $O(n)$.
+- **Costo variable en inserción/eliminación**: al final, insertar es $O(1)$ amortizado y eliminar $O(1)$; al principio o en el medio, ambas son $O(n)$ en el array simple.
 
 ### Representación
 
@@ -46,7 +46,7 @@ El simple redimensiona al llenarse y es óptimo para agregar al final, pero inse
 - `append(elem)` agrega al final.
 - `prepend(elem)` agrega al principio.
 - `insert_at(i, elem)` inserta en posición específica.
-- `pop_back()` \ `pop_front()` elimina del final/inicio
+- `pop_back()` / `pop_front()` elimina del final/inicio
 - `delete_at(i)` elimina en posición específica.
 - `get_at(índice)` / `set_at(índice, elem)` acceso/modificación por índice.
 - `find(elem)` búsqueda lineal.
@@ -70,13 +70,13 @@ El simple redimensiona al llenarse y es óptimo para agregar al final, pero inse
 
 \*depende de si hay destructores o se necesita copiar.
 
-†sin _shrinking_ automático: extraer solo decrementa `size` (o avanza `inicio`). Con _shrinking_ ([Variantes](#variantes)) pasa a $O(1)$ amortizado, $O(n)$ peor caso.
+†vale sin _shrinking_ automático: extraer no redimensiona ni copia elementos, solo decrementa `size` (en el circular, además avanza `inicio`). Con _shrinking_ ([Variantes](#variantes)), una extracción puede disparar una copia, y pasa a $O(1)$ amortizado, $O(n)$ peor caso.
 
 **Espacio:** $O(n)$ en ambos casos.
 
 ### Detalles operativos
 
-La redimensión ocurre cuando `size == capacidad` y cuesta $O(n)$ → por eso se duplica la capacidad en vez de crecer de a uno, lo que amortiza el costo a $O(1)$ por inserción. Insertar o eliminar en posición `i` desplaza `n-i` elementos. La memoria reservada pero no usada nunca se libera sola: es responsabilidad del programador reducir la capacidad explícitamente.
+La redimensión ocurre cuando `size == capacidad` y cuesta $O(n)$ → por eso se duplica la capacidad en vez de crecer de a uno, lo que amortiza el costo a $O(1)$ por inserción. Insertar o eliminar en posición `i` desplaza `n-i` elementos. La memoria reservada pero no usada nunca se libera sola (salvo con _shrinking_): es responsabilidad del programador reducir la capacidad explícitamente.
 
 El array circular evita desplazamientos en los extremos con aritmética modular: el índice físico de la posición lógica `i` es `(inicio + i) % capacidad`. El precio es un problema de ambigüedad: si `inicio == fin`, ¿el array está vacío o lleno? La solución estándar es sacrificar una celda o mantener un contador separado.
 
@@ -131,25 +131,6 @@ class ArrayDinamico:
         for i in range(pos, self.size - 1):
             self.array[i] = self.array[i + 1]
         self.size -= 1
-
-    def pop_back(self):
-        if self.size == 0:
-            raise IndexError("Array vacío")
-        self.size -= 1
-        elem = self.array[self.size]
-        self.array[self.size] = None  # no retener la referencia
-        return elem
-```
-
-```python title="pop_front en array circular"
-    def pop_front(self):
-        if self.size == 0:
-            raise IndexError("Array vacío")
-        elem = self.array[self.inicio]
-        self.array[self.inicio] = None
-        self.inicio = (self.inicio + 1) % self.capacidad
-        self.size -= 1
-        return elem
 ```
 
 > [!note] Nota
@@ -213,7 +194,7 @@ for i in range(arr.size):
 ### Variantes
 
 - Factor de crecimiento variable (×1.5 o ×2): balancea uso de memoria vs. frecuencia de copias; con ×2 el total de copias no supera 2n para n inserciones.
-- _Shrinking_: reduce la capacidad a la mitad al bajar del 25% de ocupación. Con umbral de 50%, alternar `append` y `pop_back` en el límite copiaría en cada operación; con 25%, tras reducir queda medio lleno y hacen falta $\Theta(n)$ operaciones hasta otra copia.
+- _Shrinking_: cuando la ocupación baja del 25%, la capacidad se reduce a la mitad. El umbral no es 50% porque, justo en el límite, alternar `append` y `pop_back` dispararía una copia en cada operación: el `append` duplica la capacidad y el `pop_back` siguiente la vuelve a reducir. Con 25%, tras reducir el array queda ocupado a la mitad, así que hacen falta $\Theta(n)$ operaciones antes de la próxima copia y el costo sigue siendo $O(1)$ amortizado.
 - Buffer circular sobre array dinámico: base de implementaciones eficientes de [[deque]].
 
 ### Relación con otras estructuras
