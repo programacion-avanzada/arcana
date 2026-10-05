@@ -9,8 +9,8 @@ tags:
 
 ## Técnicas utilizadas
 
-- **Fuerza Bruta / Backtracking:** Modelamos el problema como la búsqueda de un camino en un grafo de estados. Cada estado es un [[string]] binario especial válido. Desde cada estado, generamos todas las posibles transiciones válidas (intercambios de subcadenas especiales consecutivas) y exploramos recursivamente cada una de ellas empleando una búsqueda en profundidad (DFS).
-- **Control de Ciclos (Visitados):** Dado que la operación de intercambio es simétrica (si podemos pasar del [[string]] $X$ al [[string]] $Y$, también podemos regresar de $Y$ a $X$), la estructura del espacio de búsqueda es un grafo no dirigido con ciclos. Para evitar bucles infinitos de recursión, utilizamos un [[set]] de estados visitados.
+- **Fuerza Bruta / Backtracking:** Modelamos el problema como la búsqueda de un camino en un [[graph]] de estados. Cada estado es un [[string]] binario especial válido. Desde cada estado, generamos todas las posibles transiciones válidas (intercambios de subcadenas especiales consecutivas) y exploramos recursivamente cada una de ellas empleando una búsqueda en profundidad (DFS).
+- **Control de Ciclos (Visitados):** Dado que la operación de intercambio es simétrica (si podemos pasar del [[string]] $X$ al [[string]] $Y$, también podemos regresar de $Y$ a $X$), la estructura del espacio de búsqueda es un [[graph]] no dirigido con ciclos. Para evitar bucles infinitos de recursión, utilizamos un [[set]] de estados visitados.
 
 ---
 
@@ -162,14 +162,14 @@ Evaluemos la función con la entrada del archivo de descripción: $S = \text{"11
 ### Favorable cuando
 - El tamaño de la entrada $N$ es muy pequeño ($N \le 12$), donde el número de Catalan correspondiente es manejable (ej. para $N=12$, $C_6 = 132$).
 - No se conoce una propiedad matemática o de optimalidad local (como la descomposición recursiva jerárquica) y se necesita verificar exhaustivamente todas las posibilidades para garantizar la corrección.
-- Queremos obtener todos los [[string]] binarios especiales válidos alcanzables (es decir, el grafo completo de transiciones), no únicamente el elemento máximo.
+- Queremos obtener todos los [[string]] binarios especiales válidos alcanzables (es decir, el [[graph]] completo de transiciones), no únicamente el elemento máximo.
 
 ### Limitaciones
 - **Inviable para [[string]] medianos o largos:** Para $N = 50$, el programa excederá el límite de tiempo y memoria debido al tamaño colosal del espacio de estados.
 - No utiliza la información estructural de que los intercambios consecutivos respetan una estructura de anidamiento jerárquica de árbol.
 
 ### Comparación con la solución de División y Conquista + Greedy
-- La solución por División y Conquista + Greedy explota la estructura recursiva del problema para resolverlo en $O(N^2)$ tiempo y $O(N)$ espacio de forma determinista y sin explorar estados no óptimos. El Backtracking explora el grafo completo de estados de forma ciega y sufre de explosión combinatoria.
+- La solución por División y Conquista + Greedy explota la estructura recursiva del problema para resolverlo en $O(N^2)$ tiempo y $O(N)$ espacio de forma determinista y sin explorar estados no óptimos. El Backtracking explora el [[graph]] completo de estados de forma ciega y sufre de explosión combinatoria.
 
 ---
 

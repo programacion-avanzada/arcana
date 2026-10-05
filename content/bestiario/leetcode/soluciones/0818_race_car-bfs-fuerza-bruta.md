@@ -8,7 +8,7 @@ tags:
 Búsqueda en Anchura BFS: Exploración nivel por nivel con una [[queue]], para encontrar la ruta más corta en un espacio de estados.
 
 ## Idea de la solución
-El problema se modela como un grafo dirigido donde cada nodo es un estado definido por `(posición, velocidad)` y las aristas son las decisiones `A` o `R`. Como se busca la secuencia mínima de instrucciones, aplicar BFS garantiza que la primera vez que la posición actual coincida con el `target`, se encontró la solución óptima.
+El problema se modela como un [[graph]] dirigido donde cada nodo es un estado definido por `(posición, velocidad)` y las aristas son las decisiones `A` o `R`. Como se busca la secuencia mínima de instrucciones, aplicar BFS garantiza que la primera vez que la posición actual coincida con el `target`, se encontró la solución óptima.
 
 Para que la búsqueda por fuerza bruta sea (masomenos) viable, se aplican dos optimizaciones:
 
