@@ -14,16 +14,17 @@
   "scripts": {
     "quartz": "./quartz/bootstrap-cli.mjs",
     "docs": "npx quartz build --serve -d docs",
-  "check": "tsc --noEmit && npx prettier . --check",
-  "lint:md": "npx -y markdownlint-cli2 \"content/**/*.md\" --config .markdownlint.json",
-  "lint:md:fix": "npx -y markdownlint-cli2 \"content/**/*.md\" --config .markdownlint.json --fix",
+    "check": "tsc --noEmit && npx prettier . --check",
+    "lint:md": "markdownlint-cli2 \"content/**/*.md\" --config .markdownlint.json",
+    "lint:md:fix": "markdownlint-cli2 \"content/**/*.md\" --config .markdownlint.json --fix",
+    "prepare": "husky",
     "format": "npx prettier . --write",
     "test": "tsx --test",
     "profile": "0x -D prof ./quartz/bootstrap-cli.mjs build --concurrency=1"
   },
   "engines": {
     "npm": ">=10.9.2",
-    "node": ">=22"
+    "node": ">=24"
   },
   "keywords": [
     "site generator",
@@ -35,6 +36,9 @@
   ],
   "bin": {
     "quartz": "./quartz/bootstrap-cli.mjs"
+  },
+  "lint-staged": {
+    "content/**/*.md": "markdownlint-cli2 --config .markdownlint.json --no-globs"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
@@ -109,6 +113,9 @@
     "@types/ws": "^8.18.1",
     "@types/yargs": "^17.0.35",
     "esbuild": "^0.27.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "markdownlint-cli2": "^0.23.3",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

@@ -16,38 +16,33 @@ permissions:
 jobs:
   markdownlint:
     name: markdownlint
-    if: github.event_name != 'pull_request' || !github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 20
+      - name: Use project Node.js version
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: .node-version
       - name: Install dependencies
-        run: npm ci --prefer-offline --no-audit --no-fund || true
+        run: npm ci --prefer-offline --no-audit --no-fund
       - name: Run markdownlint
         id: lint
         run: |
-          # Run linter but don't fail the job; capture output to a file
-          npx -y markdownlint-cli2 "content/**/*.md" --config .markdownlint.json 2>&1 | tee md-lint-output.txt || true
-          if [ -s md-lint-output.txt ]; then
-            echo "had_errors=true" >> $GITHUB_OUTPUT
-            # store a truncated summary (first 200 lines) as an output
-            echo "summary<<EOF" >> $GITHUB_OUTPUT
-            head -n 200 md-lint-output.txt >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+          if npm run lint:md > md-lint-output.txt 2>&1; then
+            echo "had_errors=false" >> "$GITHUB_OUTPUT"
           else
-            echo "had_errors=false" >> $GITHUB_OUTPUT
+            echo "had_errors=true" >> "$GITHUB_OUTPUT"
           fi
+          cat md-lint-output.txt
 
       - name: Post or update PR comment when lint errors exist
-        if: ${{ github.event_name == 'pull_request' && steps.lint.outputs.had_errors == 'true' }}
+        if: ${{ github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && steps.lint.outputs.had_errors == 'true' }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const summary = `${{ steps.lint.outputs.summary }}`;
+            const fs = require('fs');
+            const summary = fs.readFileSync('md-lint-output.txt', 'utf8');
             const maxLen = 6500;
             const trimmed = summary.length > maxLen ? summary.slice(0, maxLen) + '\n\n_(truncated)_': summary;
             const body = `:warning: **markdownlint** found issues in the repository content files. Here are the first lines (truncated if long):\n\n${trimmed}\n\n---\nRun locally: \`npm run lint:md\` or \`npm run lint:md:fix\` to attempt automatic fixes.`;
@@ -77,3 +72,7 @@ jobs:
                 body: fullBody,
               });
             }
+
+      - name: Fail on Markdown errors
+        if: ${{ steps.lint.outputs.had_errors == 'true' }}
+        run: exit 1
