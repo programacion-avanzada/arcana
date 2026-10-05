@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 370" width="100%" height="100%" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <style>
+      .node-circle { fill: #f4f7fa; stroke: #85a3c2; stroke-width: 2.5; }
+      .path-node { fill: #fdf3e7; stroke: #c16922; stroke-width: 2.5; }
+      .target-node { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2.5; stroke-dasharray: 4 3; }
+      .edge { stroke: #85a3c2; stroke-width: 2; stroke-linecap: round; }
+      .active-edge { stroke: #c16922; stroke-width: 2.5; stroke-linecap: round; }
+      .label-node { font-size: 15px; font-weight: bold; fill: #1e293b; text-anchor: middle; dominant-baseline: central; }
+      .step-dot { fill: #c16922; }
+      .step-dot-target { fill: #0284c7; }
+      .legend-box { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; rx: 8px; }
+      .legend-text { font-size: 13px; fill: #475569; font-weight: 500; }
+      .fb-label { font-size: 12px; font-weight: 600; fill: #64748b; }
+      .fb-line { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 2 2; }
+    </style>
+  </defs>
+
+  <!-- Aristas normales -->
+  <line x1="310" y1="75" x2="430" y2="150" class="edge"/>
+  <line x1="200" y1="150" x2="250" y2="225" class="edge"/>
+  <line x1="430" y1="150" x2="480" y2="225" class="edge"/>
+
+  <!-- Aristas de la ruta de traza / inserción (30 -> 20 -> 10) -->
+  <line x1="310" y1="75" x2="200" y2="150" class="active-edge"/>
+  <line x1="200" y1="150" x2="140" y2="225" class="active-edge"/>
+
+  <!-- Nivel 0: Raíz 30 (Paso 1) -->
+  <line x1="330" y1="75" x2="360" y2="75" class="fb-line"/>
+  <circle cx="310" cy="75" r="22" class="path-node"/>
+  <text x="310" y="75" class="label-node">30</text>
+  <circle cx="327" cy="60" r="7" class="step-dot"/>
+  <text x="368" y="79" class="fb-label" text-anchor="start">FB: +1</text>
+
+  <!-- Nivel 1: Hijo izquierdo 20 (Paso 2) -->
+  <line x1="120" y1="150" x2="175" y2="150" class="fb-line"/>
+  <text x="110" y="154" class="fb-label" text-anchor="end">FB: +1</text>
+  <circle cx="200" cy="150" r="22" class="path-node"/>
+  <text x="200" y="150" class="label-node">20</text>
+  <circle cx="217" cy="135" r="7" class="step-dot"/>
+
+  <!-- Nivel 1: Hijo derecho 40 -->
+  <circle cx="430" cy="150" r="20" class="node-circle"/>
+  <text x="430" y="150" class="label-node">40</text>
+  <line x1="450" y1="150" x2="475" y2="150" class="fb-line"/>
+  <text x="483" y="154" class="fb-label" text-anchor="start">FB: -1</text>
+
+  <!-- Nivel 2: Nodo 10 (Insertado / Objetivo, Paso 3) -->
+  <line x1="60" y1="225" x2="115" y2="225" class="fb-line"/>
+  <text x="50" y="229" class="fb-label" fill="#0284c7" text-anchor="end">FB: 0</text>
+  <circle cx="140" cy="225" r="20" class="target-node"/>
+  <text x="140" y="225" class="label-node" fill="#0284c7">10</text>
+  <circle cx="157" cy="210" r="7" class="step-dot-target"/>
+
+  <!-- Nivel 2: Nodo 25 -->
+  <circle cx="250" cy="225" r="18" class="node-circle"/>
+  <text x="250" y="225" class="label-node">25</text>
+  <line x1="270" y1="225" x2="295" y2="225" class="fb-line"/>
+  <text x="303" y="229" class="fb-label" text-anchor="start">FB: 0</text>
+
+  <!-- Nivel 2: Nodo 50 -->
+  <circle cx="480" cy="225" r="18" class="node-circle"/>
+  <text x="480" y="225" class="label-node">50</text>
+  <line x1="500" y1="225" x2="525" y2="225" class="fb-line"/>
+  <text x="533" y="229" class="fb-label" text-anchor="start">FB: 0</text>
+
+  <!-- Caja de Leyenda -->
+  <rect x="330" y="270" width="250" height="75" class="legend-box"/>
+  <circle cx="355" cy="292" r="7" class="step-dot"/>
+  <text x="375" y="296" class="legend-text">Ruta de descenso (30 → 20)</text>
+  <circle cx="355" cy="322" r="7" class="step-dot-target"/>
+  <text x="375" y="326" class="legend-text">Nodo insertado (10)</text>
+</svg>

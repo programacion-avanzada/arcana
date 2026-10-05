@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" width="100%" height="100%" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#c16922"/>
+    </marker>
+    <style>
+      .node-circle { fill: #f4f7fa; stroke: #85a3c2; stroke-width: 2.5; }
+      .unbalanced-node { fill: #fdf3e7; stroke: #c16922; stroke-width: 2.5; }
+      .pivot-node { fill: #e8f0fe; stroke: #3b82f6; stroke-width: 2.5; }
+      .edge { stroke: #85a3c2; stroke-width: 2.5; stroke-linecap: round; }
+      .transfer-edge { stroke: #c16922; stroke-width: 2; stroke-dasharray: 4 4; }
+      .label-node { font-size: 15px; font-weight: bold; fill: #2d3748; text-anchor: middle; dominant-baseline: central; }
+      .label-fb { font-size: 12px; font-weight: 600; text-anchor: middle; }
+      .fb-bad { fill: #c16922; }
+      .fb-ok { fill: #64748b; }
+      .title { font-size: 16px; font-weight: bold; fill: #334155; text-anchor: middle; }
+      .badge { font-size: 12px; fill: #64748b; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- LADO IZQUIERDO: ANTES (DESBALANCE LL) -->
+  <text x="210" y="35" class="title">Desbalance LL</text>
+
+  <!-- Aristas Antes -->
+  <line x1="280" y1="100" x2="190" y2="170" class="edge"/>
+  <line x1="280" y1="100" x2="350" y2="170" class="edge"/>
+  <line x1="190" y1="170" x2="110" y2="240" class="edge"/>
+  <line x1="190" y1="170" x2="230" y2="240" class="transfer-edge"/>
+  <line x1="110" y1="240" x2="70" y2="310" class="edge"/>
+  <line x1="110" y1="240" x2="150" y2="310" class="edge"/>
+
+  <!-- Nodos Antes -->
+  <circle cx="280" cy="100" r="22" class="unbalanced-node"/>
+  <text x="280" y="100" class="label-node" fill="#c16922">Z</text>
+  <text x="325" y="90" class="label-fb fb-bad">FB = +2</text>
+
+  <circle cx="190" cy="170" r="22" class="pivot-node"/>
+  <text x="190" y="170" class="label-node" fill="#1d4ed8">Y</text>
+  <text x="145" y="160" class="label-fb fb-bad">FB = +1</text>
+
+  <circle cx="350" cy="170" r="18" class="node-circle"/>
+  <text x="350" y="170" class="label-node">T4</text>
+
+  <circle cx="110" cy="240" r="20" class="node-circle"/>
+  <text x="110" y="240" class="label-node">X</text>
+
+  <!-- Subárbol T3 que se reubica -->
+  <circle cx="230" cy="240" r="18" class="node-circle" stroke="#c16922"/>
+  <text x="230" y="240" class="label-node" fill="#c16922">T3</text>
+  <text x="230" y="275" class="badge" fill="#c16922">pasa a Z</text>
+
+  <circle cx="70" cy="310" r="16" class="node-circle"/>
+  <text x="70" y="310" class="label-node">T1</text>
+  <circle cx="150" cy="310" r="16" class="node-circle"/>
+  <text x="150" y="310" class="label-node">T2</text>
+
+  <!-- FLECHA CENTRAL: ROTACIÓN DERECHA -->
+  <path d="M 390 190 Q 420 160 450 190" fill="none" stroke="#c16922" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="420" y="150" class="title" fill="#c16922" font-size="13">Rotación</text>
+  <text x="420" y="168" class="title" fill="#c16922" font-size="13">Derecha</text>
+
+  <!-- LADO DERECHO: DESPUÉS (BALANCEADO) -->
+  <text x="630" y="35" class="title">Árbol Balanceado</text>
+
+  <!-- Aristas Después -->
+  <line x1="630" y1="100" x2="550" y2="170" class="edge"/>
+  <line x1="630" y1="100" x2="710" y2="170" class="edge"/>
+  <line x1="550" y1="170" x2="510" y2="240" class="edge"/>
+  <line x1="550" y1="170" x2="590" y2="240" class="edge"/>
+  <line x1="710" y1="170" x2="670" y2="240" class="transfer-edge"/>
+  <line x1="710" y1="170" x2="750" y2="240" class="edge"/>
+
+  <!-- Nodos Después -->
+  <circle cx="630" cy="100" r="22" class="pivot-node"/>
+  <text x="630" y="100" class="label-node" fill="#1d4ed8">Y</text>
+  <text x="670" y="90" class="label-fb fb-ok">FB = 0</text>
+
+  <circle cx="550" cy="170" r="20" class="node-circle"/>
+  <text x="550" y="170" class="label-node">X</text>
+  <text x="510" y="160" class="label-fb fb-ok">FB = 0</text>
+
+  <circle cx="710" cy="170" r="20" class="node-circle"/>
+  <text x="710" y="170" class="label-node">Z</text>
+  <text x="750" y="160" class="label-fb fb-ok">FB = 0</text>
+
+  <circle cx="510" cy="240" r="16" class="node-circle"/>
+  <text x="510" y="240" class="label-node">T1</text>
+  <circle cx="590" cy="240" r="16" class="node-circle"/>
+  <text x="590" y="240" class="label-node">T2</text>
+
+  <circle cx="670" cy="240" r="16" class="node-circle" stroke="#c16922"/>
+  <text x="670" y="240" class="label-node" fill="#c16922">T3</text>
+  <text x="670" y="275" class="badge" fill="#c16922">reubicado</text>
+
+  <circle cx="750" cy="240" r="16" class="node-circle"/>
+  <text x="750" y="240" class="label-node">T4</text>
+</svg>

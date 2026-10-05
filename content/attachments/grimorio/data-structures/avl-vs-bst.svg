@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="100%" height="100%" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <style>
+      .node-circle { fill: #f4f7fa; stroke: #85a3c2; stroke-width: 2.5; }
+      .root-node { fill: #fdf3e7; stroke: #c16922; stroke-width: 2.5; }
+      .edge { stroke: #85a3c2; stroke-width: 2.5; stroke-linecap: round; }
+      .guide-line { stroke: #e2e8f0; stroke-width: 1.5; stroke-dasharray: 4 4; }
+      .level-label { font-size: 12px; fill: #94a3b8; font-weight: 500; }
+      .node-label { font-size: 14px; font-weight: bold; fill: #1e293b; text-anchor: middle; dominant-baseline: central; }
+      .card { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; rx: 8px; }
+      .card-title { font-size: 13px; font-weight: 700; }
+      .card-stat { font-size: 14px; font-weight: bold; }
+    </style>
+  </defs>
+
+  <!-- Líneas guía de niveles de altura -->
+  <line x1="60" y1="70" x2="700" y2="70" class="guide-line"/>
+  <text x="45" y="74" class="level-label">h = 0</text>
+  <line x1="60" y1="120" x2="700" y2="120" class="guide-line"/>
+  <text x="45" y="124" class="level-label">h = 1</text>
+  <line x1="60" y1="170" x2="700" y2="170" class="guide-line"/>
+  <text x="45" y="174" class="level-label">h = 2</text>
+  <line x1="60" y1="220" x2="700" y2="220" class="guide-line"/>
+  <text x="45" y="224" class="level-label">h = 3</text>
+  <line x1="60" y1="270" x2="700" y2="270" class="guide-line"/>
+  <text x="45" y="274" class="level-label">h = 4</text>
+
+  <!-- LADO IZQUIERDO: BST DEGENERADO {10, 20, 30, 40, 50} -->
+  <!-- Aristas BST -->
+  <line x1="130" y1="70" x2="170" y2="120" class="edge"/>
+  <line x1="170" y1="120" x2="210" y2="170" class="edge"/>
+  <line x1="210" y1="170" x2="250" y2="220" class="edge"/>
+  <line x1="250" y1="220" x2="290" y2="270" class="edge"/>
+
+  <!-- Nodos BST -->
+  <circle cx="130" cy="70" r="18" class="root-node"/>
+  <text x="130" y="70" class="node-label">10</text>
+  <circle cx="170" cy="120" r="18" class="node-circle"/>
+  <text x="170" y="120" class="node-label">20</text>
+  <circle cx="210" cy="170" r="18" class="node-circle"/>
+  <text x="210" y="170" class="node-label">30</text>
+  <circle cx="250" cy="220" r="18" class="node-circle"/>
+  <text x="250" y="220" class="node-label">40</text>
+  <circle cx="290" cy="270" r="18" class="node-circle"/>
+  <text x="290" y="270" class="node-label">50</text>
+
+  <!-- Tarjeta resumen BST -->
+  <rect x="90" y="305" width="240" height="58" class="card"/>
+  <text x="105" y="326" class="card-title" fill="#b91c1c">BST: h = n - 1 (4)</text>
+  <text x="105" y="347" class="card-stat" fill="#475569">Búsqueda: <tspan fill="#b91c1c">O(n)</tspan></text>
+
+  <!-- LADO DERECHO: AVL BALANCEADO {10, 20, 30, 40, 50} -->
+  <!-- Aristas AVL -->
+  <line x1="560" y1="70" x2="490" y2="120" class="edge"/>
+  <line x1="560" y1="70" x2="630" y2="120" class="edge"/>
+  <line x1="490" y1="120" x2="450" y2="170" class="edge"/>
+  <line x1="630" y1="120" x2="670" y2="170" class="edge"/>
+
+  <!-- Nodos AVL -->
+  <!-- Raíz: 30 -->
+  <circle cx="560" cy="70" r="18" class="root-node"/>
+  <text x="560" y="70" class="node-label">30</text>
+  <!-- Nivel 1: 20 y 40 -->
+  <circle cx="490" cy="120" r="18" class="node-circle"/>
+  <text x="490" y="120" class="node-label">20</text>
+  <circle cx="630" cy="120" r="18" class="node-circle"/>
+  <text x="630" y="120" class="node-label">40</text>
+  <!-- Nivel 2: 10 y 50 -->
+  <circle cx="450" cy="170" r="18" class="node-circle"/>
+  <text x="450" y="170" class="node-label">10</text>
+  <circle cx="670" cy="170" r="18" class="node-circle"/>
+  <text x="670" y="170" class="node-label">50</text>
+
+  <!-- Tarjeta resumen AVL -->
+  <rect x="440" y="305" width="240" height="58" class="card"/>
+  <text x="455" y="326" class="card-title" fill="#047857">AVL: h = ⌊log₂ n⌋ (2)</text>
+  <text x="455" y="347" class="card-stat" fill="#475569">Búsqueda: <tspan fill="#047857">O(log n)</tspan></text>
+</svg>
