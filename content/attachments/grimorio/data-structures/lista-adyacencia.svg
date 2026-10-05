@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#6f91bd"/>
+    </marker>
+    <style>
+      .bg { fill:#121212; }
+      .panel { fill:#090909; stroke:#2f4f78; stroke-width:2; }
+      .node { fill:#0f0f0f; stroke:#6f91bd; stroke-width:3; }
+      .edge { fill:none; stroke:#6f91bd; stroke-width:3; marker-end:url(#arrow); }
+      .txt { fill:#d7e5f6; font-family: Consolas, 'Courier New', monospace; }
+      .label { font-size:30px; font-weight:700; }
+      .list { font-size:30px; }
+      .small { font-size:18px; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="620"/>
+  <rect class="panel" x="30" y="30" rx="10" ry="10" width="1140" height="560"/>
+
+  <!-- Grafo -->
+  <circle class="node" cx="170" cy="190" r="48"/>
+  <circle class="node" cx="430" cy="190" r="48"/>
+  <circle class="node" cx="170" cy="410" r="48"/>
+  <circle class="node" cx="430" cy="410" r="48"/>
+
+  <text class="txt label" x="170" y="200" text-anchor="middle">A</text>
+  <text class="txt label" x="430" y="200" text-anchor="middle">B</text>
+  <text class="txt label" x="170" y="420" text-anchor="middle">C</text>
+  <text class="txt label" x="430" y="420" text-anchor="middle">D</text>
+
+  <!-- A -> B -->
+  <path class="edge" d="M218 190 L372 190"/>
+  <!-- B -> A curva -->
+  <path class="edge" d="M392 150 C330 95, 250 95, 208 150"/>
+  <!-- A -> C -->
+  <path class="edge" d="M170 238 L170 352"/>
+  <!-- B -> C -->
+  <path class="edge" d="M396 224 L204 376"/>
+  <!-- C -> D -->
+  <path class="edge" d="M218 410 L372 410"/>
+  <!-- D -> C curva -->
+  <path class="edge" d="M392 450 C330 505, 250 505, 208 450"/>
+
+  <!-- Lista -->
+  <g transform="translate(620,120)">
+    <text class="txt list" x="0" y="0">A</text>
+    <line x1="50" y1="-9" x2="120" y2="-9" stroke="#6f91bd" stroke-width="2" marker-end="url(#arrow)"/>
+    <text class="txt list" x="145" y="0">[B, C]</text>
+
+    <text class="txt list" x="0" y="95">B</text>
+    <line x1="50" y1="86" x2="120" y2="86" stroke="#6f91bd" stroke-width="2" marker-end="url(#arrow)"/>
+    <text class="txt list" x="145" y="95">[A, C]</text>
+
+    <text class="txt list" x="0" y="190">C</text>
+    <line x1="50" y1="181" x2="120" y2="181" stroke="#6f91bd" stroke-width="2" marker-end="url(#arrow)"/>
+    <text class="txt list" x="145" y="190">[D]</text>
+
+    <text class="txt list" x="0" y="285">D</text>
+    <line x1="50" y1="276" x2="120" y2="276" stroke="#6f91bd" stroke-width="2" marker-end="url(#arrow)"/>
+    <text class="txt list" x="145" y="285">[C]</text>
+  </g>
+
+  <text class="txt small" x="600" y="558" text-anchor="middle">Grafo dirigido: cada vertice guarda solo sus vecinos de salida.</text>
+</svg>
