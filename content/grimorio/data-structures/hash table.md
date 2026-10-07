@@ -33,7 +33,7 @@ Permite búsquedas, inserciones y eliminaciones eficientes usando una función h
   Distintas claves pueden generar el mismo índice (colisión), por lo que la estructura debe implementar un mecanismo de resolución (por ejemplo, encadenamiento o direccionamiento abierto)
 
 - **Factor de carga controlado**:  
-  La relación entre la cantidad de elementos almacenados y el tamaño de la tabla (load factor) debe mantenerse dentro de ciertos límites para preservar la eficiencia. Si se supera, se realiza un *rehashing*
+  La relación entre la cantidad de elementos almacenados y el tamaño de la tabla (load factor) debe mantenerse dentro de ciertos límites para preservar la eficiencia. Si se supera, se realiza un *rehashing*. En direccionamiento abierto siempre es menor a 1 y en encadenamiento puede superar 1
 
 #### ¿Qué son las *colisiones*?
 Una **colisión** ocurre cuando dos claves distintas generan el mismo índice en la tabla hash. Es inevitable y debe resolverse con técnicas específicas.
@@ -41,7 +41,7 @@ Una **colisión** ocurre cuando dos claves distintas generan el mismo índice en
 ### Representación
 ![Muestra](hashtable.svg)
 
-Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez sobre matrices (dependiendo de la cantidad de componentes de la clave). La función hash, a partir de la clave en formato String que le demos, en este caso “abel”, nos dará el índice del vector en el que se guardará el valor. En caso de colisión, se usan listas, árboles o direccionamiento abierto.
+Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez sobre matrices (dependiendo de la cantidad de componentes de la clave). La función hash, a partir de la clave en formato String que le demos, en este caso “abel”, nos dará el índice del vector en el que se guardará el valor. En caso de colisión, se usa encadenamiento (listas o árboles balanceados) o direccionamiento abierto.
 
 #### Componentes
 - **Vector (Bucket Array)**  
@@ -64,12 +64,12 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 ### Complejidad
 
 #### Complejidad temporal
-| Métodos | Promedio<sup>1</sup> | Peor caso / Con colisiones<br>Resolución: Lista enlazada | Peor caso / Con colisiones<br>Resolución: Árbol binario |
-| :--- | :--- | :--- | :--- |
-| `hash(clave)` | $O(m)$<sup>2</sup> | - | - |
-| `insertar(clave, valor)` | $O(1)$ | $O(n)$<sup>3</sup> | $O(\log n)$ |
-| `buscar(clave)` | $O(1)$ | $O(n)$ | $O(\log n)$ |
-| `eliminar(clave)` | $O(1)$ | $O(n)$ | $O(\log n)$ |
+| Métodos | Promedio<sup>1</sup> | Peor caso / Con colisiones<br>Resolución: Lista enlazada | Peor caso / Con colisiones<br>Resolución: Árbol balanceado<sup>4</sup> | Peor caso / Con colisiones<br>Resolución: Direccionamiento abierto<sup>5</sup> |
+| :--- | :--- | :--- | :--- | :--- |
+| `hash(clave)` | $O(m)$<sup>2</sup> | - | - | - |
+| `insertar(clave, valor)` | $O(1)$ | $O(n)$<sup>3</sup> | $O(\log n)$ | $O(n)$ |
+| `buscar(clave)` | $O(1)$ | $O(n)$ | $O(\log n)$ | $O(n)$ |
+| `eliminar(clave)` | $O(1)$ | $O(n)$ | $O(\log n)$ | $O(n)$ |
 
 **Notas:**
 
@@ -78,6 +78,10 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 <sup>2</sup>Siendo *m* la cantidad de caracteres de la clave.
 
 <sup>3</sup>Para cada *n* en las celdas, se hace referencia a la cantidad de elementos de la subestructura de resolución.
+
+<sup>4</sup>Es $O(\log n)$ si y solo si el árbol está balanceado. Sin balanceo, insertar claves en orden (ejemplo: 10, 20, 30, 40) genera una [[linked list]] y el costo pasa a $O(n)$.
+
+<sup>5</sup>El factor de carga $\alpha$ es la cantidad de elementos sobre la capacidad. En promedio, una búsqueda fallida revisa aproximadamente $\frac{1}{1-\alpha}$ posiciones.
 
 #### Complejidad espacial
 Esta complejidad puede verse afectada en gran parte por la función de Hash, debido a que según cómo sea de precisa y manejada podemos evitar **colisiones**, variando así las posibilidades de tener un mayor o menor uso de la complejidad espacial, en normas generales podemos deducir que ganamos “velocidad” en cuánto a complejidad computacional, sin embargo perdemos en complejidad espacial, ya que requerimos más estructuras dinámicas o un mayor uso de la memoria para guardar los elementos en caso de tener colisiones, lo que desencadena en que vamos a tener estructuras auxiliares (listas nodos, etc) o también es común que tengamos ciertos espacios vacíos en el array.
@@ -103,7 +107,8 @@ Cada clave se transforma en un índice del arreglo interno (bucket), permitiendo
 - Toda clave válida debe poder ubicarse mediante la misma función hash.
 - Cada elemento debe encontrarse en el bucket correspondiente a su hash.
 - La estructura debe manejar correctamente las colisiones sin perder información.
-- La cantidad de elementos almacenados nunca supera la capacidad lógica definida.
+- En direccionamiento abierto, la cantidad de elementos nunca supera la capacidad (factor de carga menor a 1).
+- En encadenamiento, puede superarla (factor de carga mayor a 1).
 
 ### Ejemplo de código
 
@@ -236,11 +241,12 @@ En lugar de usar listas, todo se guarda en el mismo arreglo.
 - Linear Probing: busca la siguiente posición libre secuencialmente. Simple, pero sufre de clustering
 - Quadratic Probing: salta en intervalos cuadráticos. Reduce clustering, pero puede no cubrir toda la tabla
 - Double Hashing: usa una segunda función hash para el salto. Mucho mejor distribución, menos colisiones
+- Eliminación: no se puede vaciar la celda, porque cortaría la búsqueda de otras claves. Por ejemplo, si se borra "seth" y su celda queda vacía, al buscar "cain" se para ahí y no lo encuentra. Se usa una marca de borrado (*tombstone*) y la búsqueda pasa por encima y sigue con la siguiente posición
 
 #### Separate Chaining
 Cada índice apunta a una lista (o estructura).
 - Listas enlazadas (clásico)
-- Árboles balanceados (como en Java desde Java 8)
+- Árboles balanceados rojo-negro (como en Java desde Java 8, solo si el bucket supera 8 elementos y la tabla tiene al menos 64 posiciones)
 
 Más flexible, pero usa más memoria
 
