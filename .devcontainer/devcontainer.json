@@ -1,0 +1,10 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24-bookworm",
+  "postCreateCommand": "npm ci",
+  "forwardPorts": [8080, 3001],
+  "customizations": {
+    "vscode": {
+      "extensions": ["DavidAnson.vscode-markdownlint", "esbenp.prettier-vscode"]
+    }
+  }
+}

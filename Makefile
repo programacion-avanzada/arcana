@@ -21,16 +21,14 @@ start:
 	@npm run quartz -- build --serve
 
 lint:
-	@command -v npx >/dev/null 2>&1 || { echo >&2 "npx not found. Install Node.js/npm."; exit 1; }
-	@npx -y markdownlint-cli2 "content/**/*.md" --config .markdownlint.json && echo "No markdownlint issues."
+	@command -v npm >/dev/null 2>&1 || { echo >&2 "npm not found. Install Node.js/npm."; exit 1; }
+	@echo "Running: npm run lint:md"
+	@npm run lint:md
 
 lint-fix:
-	@command -v npx >/dev/null 2>&1 || { echo >&2 "npx not found. Install Node.js/npm."; exit 1; }
+	@command -v npm >/dev/null 2>&1 || { echo >&2 "npm not found. Install Node.js/npm."; exit 1; }
 	@echo "Running: npm run lint:md:fix (this will modify files)"
-	@npx -y markdownlint-cli2 "content/**/*.md" --config .markdownlint.json --fix
+	@npm run lint:md:fix
 	@echo "Done. Review and commit changes if acceptable."
 
 
-
-deploy:
-	git push
