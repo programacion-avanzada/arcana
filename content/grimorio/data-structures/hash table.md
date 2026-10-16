@@ -26,6 +26,9 @@ Permite búsquedas, inserciones y eliminaciones eficientes usando una función h
 - **Determinismo del hash**:  
   Para la misma clave, se obtiene siempre el mismo índice
 
+- **Compatibilidad entre igualdad y hash**:  
+  Si `a == b`, entonces `hash(a) == hash(b)`. En Java, este contrato se expresa mediante `equals`/`hashCode`; en Python, mediante `__eq__`/`__hash__`. Si se rompe, dos objetos iguales pueden terminar en buckets distintos, generando duplicados en un `HashSet` o búsquedas fallidas. Nótese que la implicación inversa, dos claves distintas que producen el mismo hash, constituye una colisión.
+
 - **Consistencia entre inserción y búsqueda**:  
   Si un elemento fue insertado usando `h(k)`, la búsqueda debe usar la misma función para garantizar su recuperación
 
@@ -41,7 +44,7 @@ Una **colisión** ocurre cuando dos claves distintas generan el mismo índice en
 ### Representación
 ![Muestra](hashtable.svg)
 
-Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez sobre matrices (dependiendo de la cantidad de componentes de la clave). La función hash, a partir de la clave en formato String que le demos, en este caso “abel”, nos dará el índice del vector en el que se guardará el valor. En caso de colisión, se usan listas, árboles o direccionamiento abierto.
+Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez sobre matrices (dependiendo de la cantidad de componentes de la clave). La función hash recibe la clave, en este caso “abel”, y calcula un valor hash que nos dará el índice del vector en el que se guardará el valor. En caso de colisión, se usan listas, árboles o direccionamiento abierto.
 
 #### Componentes
 - **Vector (Bucket Array)**  
@@ -56,7 +59,7 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 ## 2. Operaciones y complejidad
 
 ### Operaciones principales
-- `hash(clave)` → convierte la clave string en un numero índice del vector  
+- `hash(clave)` → convierte la clave en un valor hash que permite determinar el índice del vector  
 - `insertar(clave, valor)` → guarda el valor en la posición del vector dado por la función hash
 - `buscar(clave)` → busca y devuelve el valor en base a la clave dada calculando su hash
 - `eliminar(clave)` → busca y elimina el valor en base a la clave dada calculando su hash
@@ -75,11 +78,13 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 
 <sup>1</sup>El promedio aplica para cada subestructura de resolución.
 
-<sup>2</sup>Siendo *m* la cantidad de caracteres de la clave.
+<sup>2</sup>Siendo *m* el tamaño de la representación de la clave que procesa la función: caracteres, bytes, componentes de una tupla o campos de un objeto.
 
 <sup>3</sup>Para cada *n* en las celdas, se hace referencia a la cantidad de elementos de la subestructura de resolución.
 
-#### Complejidad espacial
+El costo promedio O(1) de `insertar`, `buscar` y `eliminar` supone que calcular el hash y comparar claves cuesta `O(1)`, o que *m* está acotado. Si el tamaño de la clave no está acotado, el cálculo del hash y las operaciones tienen costo promedio `O(m)`, y en una colisión pueden llegar a `O(nm)` con listas o `O(m log(n))` con árboles.
+
+#### Complejidad Espacial
 Esta complejidad puede verse afectada en gran parte por la función de Hash, debido a que según cómo sea de precisa y manejada podemos evitar **colisiones**, variando así las posibilidades de tener un mayor o menor uso de la complejidad espacial, en normas generales podemos deducir que ganamos “velocidad” en cuánto a complejidad computacional, sin embargo perdemos en complejidad espacial, ya que requerimos más estructuras dinámicas o un mayor uso de la memoria para guardar los elementos en caso de tener colisiones, lo que desencadena en que vamos a tener estructuras auxiliares (listas nodos, etc) o también es común que tengamos ciertos espacios vacíos en el array.
 
 - Espacio total: $O(n)$
@@ -147,9 +152,12 @@ class HashTable:
                     return
 ```
 
+<u>Aclaración</u>: Esta implementación de ejemplo está diseñada únicamente para claves de tipo `String`. El algoritmo utilizado es una variante de **djb2**, atribuida a Dan Bernstein.
 
 #### Ejemplo de uso típico
 Memoización con tabla hash (Ackermann)
+
+Para este ejemplo, se utiliza el diccionario incorporado de Python, `dict`.
 
 ```python
 def ackermann(m, n, hashtable):
