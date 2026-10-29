@@ -82,9 +82,9 @@ Se implementa generalmente sobre **vectores unidimensionales**, aunque rara vez 
 
 <sup>3</sup>Para cada *n* en las celdas, se hace referencia a la cantidad de elementos de la subestructura de resolución.
 
-El costo promedio O(1) de `insertar`, `buscar` y `eliminar` supone que calcular el hash y comparar claves cuesta `O(1)`, o que *m* está acotado. Si el tamaño de la clave no está acotado, el cálculo del hash y las operaciones tienen costo promedio `O(m)`, y en una colisión pueden llegar a `O(nm)` con listas o `O(m log(n))` con árboles.
+El costo promedio $O(1)$ de $\texttt{insertar}$, $\texttt{buscar}$ y $\texttt{eliminar}$ supone que calcular el hash y comparar claves cuesta $O(1)$, o que $m$ está acotado. Si el tamaño de la clave no está acotado, el cálculo del hash y las operaciones tienen costo promedio $O(m)$, y en el peor caso puede llegar a $O(nm)$ con listas o $O(m \log n)$ con árboles.
 
-#### Complejidad Espacial
+#### Complejidad espacial
 Esta complejidad puede verse afectada en gran parte por la función de Hash, debido a que según cómo sea de precisa y manejada podemos evitar **colisiones**, variando así las posibilidades de tener un mayor o menor uso de la complejidad espacial, en normas generales podemos deducir que ganamos “velocidad” en cuánto a complejidad computacional, sin embargo perdemos en complejidad espacial, ya que requerimos más estructuras dinámicas o un mayor uso de la memoria para guardar los elementos en caso de tener colisiones, lo que desencadena en que vamos a tener estructuras auxiliares (listas nodos, etc) o también es común que tengamos ciertos espacios vacíos en el array.
 
 - Espacio total: $O(n)$
@@ -152,7 +152,7 @@ class HashTable:
                     return
 ```
 
-<u>Aclaración</u>: Esta implementación de ejemplo está diseñada únicamente para claves de tipo `String`. El algoritmo utilizado es una variante de **djb2**, atribuida a Dan Bernstein.
+*Aclaración*: Esta implementación de ejemplo está diseñada únicamente para claves de tipo `str`. El algoritmo utilizado es una variante de **djb2**, atribuida a Dan Bernstein.
 
 #### Ejemplo de uso típico
 Memoización con tabla hash (Ackermann)
