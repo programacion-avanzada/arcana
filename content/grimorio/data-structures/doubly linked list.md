@@ -264,9 +264,17 @@ Una lista doblemente enlazada suele ser adecuada cuando el problema menciona:
 
 - ### Persistencia
 
-  Las listas doblemente enlazadas son adecuadas para modelar estructuras persistentes porque su organización basada en nodos permite compartir gran parte de la estructura entre distintas versiones, copiando únicamente los nodos que se ven afectados por una modificación.
-  Esto resulta más eficiente que estructuras basadas en arreglos, donde una modificación suele requerir la copia de grandes bloques de memoria.
-  Además, la existencia de enlaces hacia el nodo anterior y siguiente facilita la reconstrucción de estados previos y el recorrido bidireccional entre versiones, lo cual es especialmente útil en escenarios de backtracking, historiales y sistemas de versiones.
+  Una estructura es **persistente** cuando, al modificarla, la versión anterior sigue disponible sin cambios. La forma habitual de lograrlo es no tocar los nodos existentes: se crean copias de los nodos que cambian y se reutilizan (comparten) los demás.
+
+  La lista doblemente enlazada es un mal caso para esta técnica. Por ejemplo, al insertar `0` al inicio de la lista `1 ⇄ 2 ⇄ 3`:
+  - En una [[linked list]] simple alcanza con crear el nodo `0` apuntando a `1`. La versión nueva comparte los tres nodos de la anterior, igual que un push en una [[stack]] persistente.
+  - En la lista doble, el nodo `1` tendría que pasar a tener `prev = 0`, pero modificarlo alteraría la versión anterior, así que hay que copiarlo (`1'`). Ahora `2.prev` tiene que apuntar a `1'`, así que también hay que copiar `2`, y lo mismo pasa con `3`. La copia se propaga hasta el final de la lista.
+
+  ![Insertar al inicio en versiones persistentes: lista simple vs. lista doble](lista-doble-persistencia.svg)
+
+  Como cada nodo es apuntado desde ambos lados, cualquier modificación termina copiando la lista completa: $O(n)$ en tiempo y en memoria por operación, sin ningún nodo compartido entre versiones. Por eso, cuando se necesita persistencia, se prefiere la lista simple.
+
+  Los punteros `prev` permiten recorrer hacia atrás **dentro de una misma versión**; no sirven para volver a versiones anteriores.
 
 - ### Ordenamientos y reorganización
 
