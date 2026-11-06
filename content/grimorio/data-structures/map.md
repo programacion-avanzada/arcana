@@ -65,7 +65,7 @@ la de gestionar asociaciones **clave→valor**.
 ### Operaciones principales
 
 - **`insert(key, value)`:** Agrega un nuevo par clave→valor. Si la clave ya existe, reemplaza el valor anterior.
-- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, retorna un valor nulo o centinela según la implementación (no necesariamente lanza una excepción).
+- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, retorna un valor nulo, centinela o excepción, según la implementación.
 - **`delete(key)`:** Elimina un par clave→valor. Si la clave no existe, no tiene efecto.
 - **`update(key, value)`:** Reemplaza el valor asociado a una clave existente. En muchas implementaciones es equivalente a `insert`: si la clave no existe, el comportamiento depende del contrato definido (puede insertar, ignorar o lanzar error).
 
@@ -73,20 +73,20 @@ la de gestionar asociaciones **clave→valor**.
 
 La complejidad de un Map depende de su implementación concreta.
 
-| Implementación | Inserción                      | Búsqueda                       | Eliminación                    |
-| -------------- | ------------------------------ | ------------------------------ | ------------------------------ |
+| Implementación | Inserción                          | Búsqueda                           | Eliminación                        |
+| -------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | HashMap        | $O(1)$ promedio / $O(n)$ peor caso | $O(1)$ promedio / $O(n)$ peor caso | $O(1)$ promedio / $O(n)$ peor caso |
-| TreeMap        | $O(\log n)$                       | $O(\log n)$                       | $O(\log n)$                       |
-| Lista / Array  | $O(1)$ / $O(n)$ según estrategia   | $O(n)$                           | $O(n)$                           |
+| TreeMap        | $O(\log n)$                        | $O(\log n)$                        | $O(\log n)$                        |
+| Lista / Array  | $O(n)$                             | $O(n)$                             | $O(n)$                             |
 
-> **Nota sobre Lista/Array:** la inserción es $O(1)$ si siempre se agrega al final sin verificar duplicados; es $O(n)$ si primero se busca la clave para evitarlos. La elección depende del contrato: un Map que garantiza unicidad de claves debe hacer la búsqueda previa.
+> **Nota sobre Lista/Array:** la inserción es $O(n)$ porque se debe hacer una búsqueda previa de la clave para garantizar su unicidad.
 
 > No existe una única complejidad para los Maps. El rendimiento depende de cómo se implemente internamente.
 
 ### Detalles operativos
 
 - **Clave duplicada:** `insert`/`update` sobrescriben el valor existente; nunca coexisten dos entradas con la misma clave.
-- **Clave inexistente:** `find` retorna un valor nulo o centinela (no lanza excepción); `delete` no tiene efecto.
+- **Clave inexistente:** `find` retorna un valor nulo, centinela o excepción; `delete` no tiene efecto.
 - **Orden:** no garantizado salvo que la implementación lo provea explícitamente (ej. `TreeMap` ordena por clave, `HashMap` no garantiza orden).
 - **Costo oculto:** en implementaciones basadas en tabla hash, superar el factor de carga dispara un rehash que reinserta todas las claves, rompiendo puntualmente la complejidad amortizada.
 
@@ -112,7 +112,7 @@ Independientemente de la implementación elegida, el flujo conceptual de las ope
 - **find(key):**
   1. Buscar la clave.
   2. Si existe → retornar valor asociado.
-  3. Si no → retornar valor nulo o centinela (el contrato exacto depende de la implementación).
+  3. Si no → retornar valor nulo, centinela o excepción (el contrato exacto depende de la implementación).
 
 - **delete(key):**
   1. Buscar la clave.
@@ -158,6 +158,8 @@ class Map:
         for k, v in self.data:
             if k == key:
                 return v
+        # Si no encuentra, devuelve nulo, centinela o excepción.
+        # En este ejemplo es una excepción.
         raise KeyError("Clave no encontrada")
 
 
@@ -173,6 +175,8 @@ class Map:
             if k == key:
                 self.data[i] = (key, value)
                 return
+        # Si no encuentra, devuelve nulo, centinela o excepción.
+        # En este ejemplo es una excepción.
         raise KeyError("Clave no encontrada")
 ```
 
