@@ -17,7 +17,6 @@
     "check": "tsc --noEmit && npx prettier . --check",
     "lint:md": "markdownlint-cli2 \"content/**/*.md\" --config .markdownlint.json",
     "lint:md:fix": "markdownlint-cli2 \"content/**/*.md\" --config .markdownlint.json --fix",
-    "prepare": "husky",
     "format": "npx prettier . --write",
     "test": "tsx --test",
     "profile": "0x -D prof ./quartz/bootstrap-cli.mjs build --concurrency=1"
@@ -36,9 +35,6 @@
   ],
   "bin": {
     "quartz": "./quartz/bootstrap-cli.mjs"
-  },
-  "lint-staged": {
-    "content/**/*.md": "markdownlint-cli2 --config .markdownlint.json --no-globs"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
@@ -113,8 +109,6 @@
     "@types/ws": "^8.18.1",
     "@types/yargs": "^17.0.35",
     "esbuild": "^0.27.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^17.6.0",
     "markdownlint-cli2": "^0.23.3",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
