@@ -4,76 +4,40 @@ on:
   push:
     paths:
       - 'content/**'
+      - '.markdownlint.json'
+      - '.github/workflows/lint-markdown.yml'
   pull_request:
     paths:
       - 'content/**'
+      - '.markdownlint.json'
+      - '.github/workflows/lint-markdown.yml'
 
 permissions:
   contents: read
-  issues: write
-  pull-requests: write
 
 jobs:
   markdownlint:
     name: markdownlint
-    if: github.event_name != 'pull_request' || !github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm ci --prefer-offline --no-audit --no-fund || true
-      - name: Run markdownlint
-        id: lint
+          node-version: '22'
+      - name: Run markdownlint (no bloqueante)
         run: |
-          # Run linter but don't fail the job; capture output to a file
-          npx -y markdownlint-cli2 "content/**/*.md" --config .markdownlint.json 2>&1 | tee md-lint-output.txt || true
-          if [ -s md-lint-output.txt ]; then
-            echo "had_errors=true" >> $GITHUB_OUTPUT
-            # store a truncated summary (first 200 lines) as an output
-            echo "summary<<EOF" >> $GITHUB_OUTPUT
-            head -n 200 md-lint-output.txt >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+          # No falla el job: los errores se muestran como warnings inline en el PR.
+          # Anotaciones en vez de comentario: funcionan en PRs de forks sin permisos de escritura.
+          if npx -y markdownlint-cli2@0.24.1 "content/**/*.md" --config .markdownlint.json > lint.txt 2>&1; then
+            echo "### markdownlint: sin errores :white_check_mark:" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "had_errors=false" >> $GITHUB_OUTPUT
+            sed -nE 's/^(.+\.md):([0-9]+)(:[0-9]+)? error (.*)$/::warning file=\1,line=\2::\4/p' lint.txt
+            {
+              echo "### markdownlint: hay errores :warning:"
+              echo '```'
+              grep ' error ' lint.txt
+              echo '```'
+              echo 'Para corregir localmente: `make lint-fix`'
+            } >> "$GITHUB_STEP_SUMMARY"
           fi
-
-      - name: Post or update PR comment when lint errors exist
-        if: ${{ github.event_name == 'pull_request' && steps.lint.outputs.had_errors == 'true' }}
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const summary = `${{ steps.lint.outputs.summary }}`;
-            const maxLen = 6500;
-            const trimmed = summary.length > maxLen ? summary.slice(0, maxLen) + '\n\n_(truncated)_': summary;
-            const body = `:warning: **markdownlint** found issues in the repository content files. Here are the first lines (truncated if long):\n\n${trimmed}\n\n---\nRun locally: \`npm run lint:md\` or \`npm run lint:md:fix\` to attempt automatic fixes.`;
-            const prNumber = context.payload.pull_request.number;
-            const marker = '<!-- markdownlint-bot-comment -->';
-            const fullBody = `${marker}\n${body}`;
-
-            // Search for an existing bot comment with the marker
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-            });
-            const existing = comments.find(c => c.body && c.body.includes(marker));
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body: fullBody,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: fullBody,
-              });
-            }
+          cat lint.txt
