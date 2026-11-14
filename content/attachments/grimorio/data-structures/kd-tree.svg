@@ -1,0 +1,57 @@
+<svg width="690" height="240" viewBox="0 0 690 240" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .link-fill    { fill: #9baec8; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .link         { stroke: #4a6fa5; }
+      .link-fill    { fill: #4a6fa5; }
+      .accent-label { fill: #d4884a; }
+    }
+  </style>
+
+  <text x="330" y="26" class="op">K = 2</text>
+
+  <!-- niveles y eje de corte de cada uno -->
+  <text x="50" y="74" class="op">Nivel 0</text>
+  <text x="620" y="74" class="accent-label">corta por X</text>
+  <text x="50" y="144" class="op">Nivel 1</text>
+  <text x="620" y="144" class="accent-label">corta por Y</text>
+  <text x="50" y="214" class="op">Nivel 2</text>
+  <text x="620" y="214" class="accent-label">corta por X</text>
+
+  <!-- aristas -->
+  <line x1="300" y1="85" x2="221" y2="120.1" class="link"/>
+  <path d="M218.9,115.6 L211.8,124.2 L223,124.7 Z" class="link-fill"/>
+  <line x1="360" y1="85" x2="439" y2="120.1" class="link"/>
+  <path d="M437,124.7 L448.2,124.2 L441.1,115.6 Z" class="link-fill"/>
+  <line x1="195" y1="155" x2="159" y2="187" class="link"/>
+  <path d="M155.6,183.3 L151.5,193.7 L162.3,190.8 Z" class="link-fill"/>
+  <line x1="225" y1="155" x2="261" y2="187" class="link"/>
+  <path d="M257.7,190.8 L268.5,193.7 L264.4,183.3 Z" class="link-fill"/>
+  <line x1="435" y1="155" x2="399" y2="187" class="link"/>
+  <path d="M395.6,183.3 L391.5,193.7 L402.3,190.8 Z" class="link-fill"/>
+  <line x1="465" y1="155" x2="501" y2="187" class="link"/>
+  <path d="M497.7,190.8 L508.5,193.7 L504.4,183.3 Z" class="link-fill"/>
+
+  <!-- nodos: el eje de corte va resaltado -->
+  <rect x="296" y="55" width="68" height="30" rx="6" class="frame"/>
+  <text x="330" y="74" class="op">[<tspan class="accent-label">X</tspan>, Y]</text>
+  <rect x="176" y="125" width="68" height="30" rx="6" class="frame"/>
+  <text x="210" y="144" class="op">[X, <tspan class="accent-label">Y</tspan>]</text>
+  <rect x="416" y="125" width="68" height="30" rx="6" class="frame"/>
+  <text x="450" y="144" class="op">[X, <tspan class="accent-label">Y</tspan>]</text>
+  <rect x="116" y="195" width="68" height="30" rx="6" class="frame"/>
+  <text x="150" y="214" class="op">[<tspan class="accent-label">X</tspan>, Y]</text>
+  <rect x="236" y="195" width="68" height="30" rx="6" class="frame"/>
+  <text x="270" y="214" class="op">[<tspan class="accent-label">X</tspan>, Y]</text>
+  <rect x="356" y="195" width="68" height="30" rx="6" class="frame"/>
+  <text x="390" y="214" class="op">[<tspan class="accent-label">X</tspan>, Y]</text>
+  <rect x="476" y="195" width="68" height="30" rx="6" class="frame"/>
+  <text x="510" y="214" class="op">[<tspan class="accent-label">X</tspan>, Y]</text>
+</svg>

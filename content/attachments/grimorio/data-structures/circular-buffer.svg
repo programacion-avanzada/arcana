@@ -1,0 +1,55 @@
+<svg width="520" height="410" viewBox="0 0 520 410" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx          { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .top-label    { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .top-arrow    { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .top-arrow-fill { fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .idx          { fill: #8899aa; }
+      .op           { fill: #8899aa; }
+      .top-label    { fill: #d4884a; }
+      .top-arrow    { stroke: #d4884a; }
+      .top-arrow-fill { fill: #d4884a; }
+    }
+  </style>
+
+  <!-- 8 slots; ocupados 0 y 1 -->
+  <path d="M260,70 A160,160 0 0 1 373.1,116.9 L337.8,152.2 A110,110 0 0 0 260,120 Z" class="frame"/>
+  <text x="311.7" y="112.3" class="val">A</text>
+  <text x="296" y="147.2" class="idx">0</text>
+  <path d="M373.1,116.9 A160,160 0 0 1 420,230 L370,230 A110,110 0 0 0 337.8,152.2 Z" class="frame"/>
+  <text x="384.7" y="185.3" class="val">B</text>
+  <text x="346.8" y="198" class="idx">1</text>
+  <path d="M420,230 A160,160 0 0 1 373.1,343.1 L337.8,307.8 A110,110 0 0 0 370,230 Z" class="frame"/>
+  <text x="346.8" y="270" class="idx">2</text>
+  <path d="M373.1,343.1 A160,160 0 0 1 260,390 L260,340 A110,110 0 0 0 337.8,307.8 Z" class="frame"/>
+  <text x="296" y="320.8" class="idx">3</text>
+  <path d="M260,390 A160,160 0 0 1 146.9,343.1 L182.2,307.8 A110,110 0 0 0 260,340 Z" class="frame"/>
+  <text x="224" y="320.8" class="idx">4</text>
+  <path d="M146.9,343.1 A160,160 0 0 1 100,230 L150,230 A110,110 0 0 0 182.2,307.8 Z" class="frame"/>
+  <text x="173.2" y="270" class="idx">5</text>
+  <path d="M100,230 A160,160 0 0 1 146.9,116.9 L182.2,152.2 A110,110 0 0 0 150,230 Z" class="frame"/>
+  <text x="173.2" y="198" class="idx">6</text>
+  <path d="M146.9,116.9 A160,160 0 0 1 260,70 L260,120 A110,110 0 0 0 182.2,152.2 Z" class="frame"/>
+  <text x="224" y="147.2" class="idx">7</text>
+
+  <!-- tail: próximo a leer, head: próximo a escribir -->
+  <line x1="338.8" y1="39.7" x2="326.6" y2="69.2" class="top-arrow"/>
+  <path d="M322,67.3 L322.8,78.5 L331.2,71.2 Z" class="top-arrow-fill"/>
+  <text x="344.2" y="30.7" class="top-label">tail</text>
+  <line x1="450.3" y1="308.8" x2="420.8" y2="296.6" class="top-arrow"/>
+  <path d="M422.7,292 L411.5,292.8 L418.8,301.2 Z" class="top-arrow-fill"/>
+  <text x="463.3" y="318.2" class="top-label">head</text>
+
+  <!-- estado -->
+  <text x="260" y="207" class="op">buffer[8]</text>
+  <text x="260" y="225" class="op">length = 2</text>
+  <text x="260" y="243" class="op">head = 2</text>
+  <text x="260" y="261" class="op">tail = 0</text>
+</svg>

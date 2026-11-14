@@ -40,7 +40,7 @@ una colección de pares **clave→valor** bajo ciertas reglas fundamentales:
 
 ### Representación
 
-![](/attachments/grimorio/data-structures/map.svg)
+![Map de pares clave-valor con las operaciones find, insert y delete](map.svg)
 
 Un Map es una abstracción lógica, por lo que puede implementarse de diferentes maneras:
 
@@ -290,8 +290,8 @@ Esto los convierte en una especie de “estructura compuesta”, que reutiliza i
 
 ### Libros
 
-- [[COR2011]] - Cap. 11: Hash Tables _(implementación concreta del Map mediante hashing)_.
-- [[SED2011]] - Cap. 3: Searching _(Maps con hashing y árboles balanceados; independiente del lenguaje)_.
+- [[COR2011]] - Chapter 11.
+- [[SED2011]] - Chapter 3.
 
 ### Visualizaciones
 

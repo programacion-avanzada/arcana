@@ -1,0 +1,59 @@
+<svg width="680" height="190" viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .op-arrow     { stroke: #777777; stroke-width: 1.5; fill: none; }
+    .op-arrow-fill { fill: #777777; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .op-arrow     { stroke: #8899aa; }
+      .op-arrow-fill { fill: #8899aa; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+    }
+  </style>
+
+  <!-- paso 0 -->
+  <line x1="57.1" y1="40.3" x2="122.9" y2="79.7" class="link"/>
+  <line x1="127.2" y1="105.4" x2="102.8" y2="134.6" class="link"/>
+  <circle cx="40" cy="30" r="20" class="frame"/>
+  <text x="40" y="35" class="val-sm">z</text>
+  <circle cx="140" cy="90" r="20" class="frame"/>
+  <text x="140" y="95" class="val-sm">y</text>
+  <circle cx="90" cy="150" r="20" class="query"/>
+  <text x="90" y="155" class="val-sm">x</text>
+  <line x1="175" y1="70" x2="245" y2="70" class="op-arrow"/>
+  <path d="M245,75 L255,70 L245,65 Z" class="op-arrow-fill"/>
+  <text x="215" y="42" class="op">rota y</text>
+  <text x="215" y="58" class="op">a derecha</text>
+
+  <!-- paso 1 -->
+  <line x1="302.8" y1="45.4" x2="327.2" y2="74.6" class="link"/>
+  <line x1="352.8" y1="105.4" x2="377.2" y2="134.6" class="link"/>
+  <circle cx="290" cy="30" r="20" class="frame"/>
+  <text x="290" y="35" class="val-sm">z</text>
+  <circle cx="340" cy="90" r="20" class="query"/>
+  <text x="340" y="95" class="val-sm">x</text>
+  <circle cx="390" cy="150" r="20" class="frame"/>
+  <text x="390" y="155" class="val-sm">y</text>
+  <line x1="425" y1="70" x2="495" y2="70" class="op-arrow"/>
+  <path d="M495,75 L505,70 L495,65 Z" class="op-arrow-fill"/>
+  <text x="465" y="42" class="op">rota z</text>
+  <text x="465" y="58" class="op">a izquierda</text>
+
+  <!-- paso 2 -->
+  <line x1="577.2" y1="45.4" x2="552.8" y2="74.6" class="link"/>
+  <line x1="602.8" y1="45.4" x2="627.2" y2="74.6" class="link"/>
+  <circle cx="590" cy="30" r="20" class="query"/>
+  <text x="590" y="35" class="val-sm">x</text>
+  <circle cx="540" cy="90" r="20" class="frame"/>
+  <text x="540" y="95" class="val-sm">z</text>
+  <circle cx="640" cy="90" r="20" class="frame"/>
+  <text x="640" y="95" class="val-sm">y</text>
+</svg>

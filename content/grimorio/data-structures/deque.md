@@ -220,7 +220,7 @@ print("La palabra: "+palabra+" "+ "si es un palindromo"if palindromo else "no es
 
 
 ## 6. Referencias y recursos
-- [[COR2011]] - Capítulo 10.1: Stacks and queues.
+- [[COR2011]] - Chapter 10.1.
 - Python Software Foundation. collections - Container datatypes: deque. Recuperado de [Python](https://docs.python.org/3/)
 - Python Wiki. Recuperado de [Wiki](https://wiki.python.org/python/FrontPage.html)
 - Geek for Geeks. Deque in Python. Recuperado de: [Deque in Python - GeeksforGeeks](https://www.geeksforgeeks.org/python/deque-in-python/)

@@ -1,0 +1,52 @@
+<svg width="540" height="260" viewBox="0 0 540 260" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .divider      { stroke: #9baec8; stroke-width: 1; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .divider      { stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .op           { fill: #8899aa; }
+    }
+  </style>
+
+  <!-- encabezados -->
+  <text x="186" y="38" class="op">A</text>
+  <text x="142" y="75" class="op">A</text>
+  <text x="242" y="38" class="op">B</text>
+  <text x="142" y="115" class="op">B</text>
+  <text x="298" y="38" class="op">C</text>
+  <text x="142" y="155" class="op">C</text>
+  <text x="354" y="38" class="op">D</text>
+  <text x="142" y="195" class="op">D</text>
+
+  <!-- matriz -->
+  <rect x="158" y="50" width="224" height="160" rx="6" class="frame"/>
+  <line x1="214" y1="50" x2="214" y2="210" class="divider"/>
+  <line x1="158" y1="90" x2="382" y2="90" class="divider"/>
+  <line x1="270" y1="50" x2="270" y2="210" class="divider"/>
+  <line x1="158" y1="130" x2="382" y2="130" class="divider"/>
+  <line x1="326" y1="50" x2="326" y2="210" class="divider"/>
+  <line x1="158" y1="170" x2="382" y2="170" class="divider"/>
+  <text x="186" y="75" class="val-sm">0</text>
+  <text x="242" y="75" class="val-sm">1</text>
+  <text x="298" y="75" class="val-sm">1</text>
+  <text x="354" y="75" class="val-sm">0</text>
+  <text x="186" y="115" class="val-sm">1</text>
+  <text x="242" y="115" class="val-sm">0</text>
+  <text x="298" y="115" class="val-sm">1</text>
+  <text x="354" y="115" class="val-sm">0</text>
+  <text x="186" y="155" class="val-sm">0</text>
+  <text x="242" y="155" class="val-sm">0</text>
+  <text x="298" y="155" class="val-sm">0</text>
+  <text x="354" y="155" class="val-sm">1</text>
+  <text x="186" y="195" class="val-sm">0</text>
+  <text x="242" y="195" class="val-sm">0</text>
+  <text x="298" y="195" class="val-sm">1</text>
+  <text x="354" y="195" class="val-sm">0</text>
+
+  <text x="270" y="245" class="op">M[i, j] = 1 si hay una arista de i a j, 0 si no.</text>
+</svg>

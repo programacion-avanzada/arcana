@@ -23,11 +23,11 @@ Un Struct / Record es un tipo de dato compuesto que agrupa un número fijo de ca
 
 Esta es una representación sencilla de estructura:
 
-![](estructura-cuadro.svg)
+![Struct Punto3D con los campos x, y, z de tipo float](estructura-cuadro.svg)
 
 En Python, los objetos por defecto usan un diccionario interno dinámico para guardar atributos. Para lograr la representación real de un Struct en Python, se utiliza el campo `slots`. Internamente, la estructura se convierte en un arreglo estricto de referencias (punteros) a los valores en memoria, eliminando el diccionario.
 
-![](estructura-python.svg)
+![Instancia de Punto3D en Python con __slots__: header y referencias a x, y, z](estructura-python.svg)
 
 ---
 
@@ -147,4 +147,4 @@ La serialización de estos objetos para guardarlos en disco o enviarlos por red 
 - Documentación oficial de Python - *dataclasses*: <https://docs.python.org/3/library/dataclasses.html>
 - Documentación oficial de Python - *collections.namedtuple*: <https://docs.python.org/3/library/collections.html#collections.namedtuple>
 - Record (en inglés) - <https://en.wikipedia.org/wiki/Record_(computer_science)>
-- [[KER1988]] - Capítulo 6: “Estructuras”.
+- [[KER1988]] - Chapter 6.

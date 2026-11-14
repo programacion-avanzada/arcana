@@ -79,7 +79,7 @@ En x=5, por ejemplo, hay tres edificios activos simultáneamente (alturas 10, 15
 
 ## Representación visual del ejemplo
 
-![](0218-ejemplo.svg)
+![Edificios del ejemplo (A) y el skyline resultante (B)](0218-ejemplo.svg)
 ## Por dónde empezar
 
 Una primera aproximación razonable es **fuerza bruta**: reunir todas las coordenadas x relevantes (los bordes de todos los edificios) y, para cada una, recorrer todos los edificios calculando $H(x)$ directamente. Emitir un punto solo cuando la altura cambia. Esto encuentra el contorno correcto pero a costa cuadrático, $O(n^2)$.

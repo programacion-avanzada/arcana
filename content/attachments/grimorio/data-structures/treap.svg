@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="510" viewBox="0 0 900 510">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx          { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .idx          { fill: #8899aa; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+    }
+  </style>
+
+  <!-- aristas -->
+  <line x1="450" y1="128" x2="260" y2="235" class="link"/>
+  <line x1="450" y1="128" x2="640" y2="235" class="link"/>
+  <line x1="260" y1="295" x2="150" y2="390" class="link"/>
+  <line x1="260" y1="295" x2="370" y2="390" class="link"/>
+  <line x1="640" y1="295" x2="555" y2="390" class="link"/>
+
+  <!-- nodos: clave arriba, prioridad abajo; la raíz tiene la mayor prioridad -->
+  <g transform="translate(370 70)"><rect width="160" height="88" rx="14" class="query"/><text x="80" y="36" class="val">clave: 50</text><text x="80" y="65" class="idx">prioridad: 90</text></g>
+  <g transform="translate(180 235)"><rect width="160" height="88" rx="14" class="frame"/><text x="80" y="36" class="val">clave: 20</text><text x="80" y="65" class="idx">prioridad: 70</text></g>
+  <g transform="translate(560 235)"><rect width="160" height="88" rx="14" class="frame"/><text x="80" y="36" class="val">clave: 80</text><text x="80" y="65" class="idx">prioridad: 60</text></g>
+  <g transform="translate(70 390)"><rect width="160" height="88" rx="14" class="frame"/><text x="80" y="36" class="val">clave: 10</text><text x="80" y="65" class="idx">prioridad: 40</text></g>
+  <g transform="translate(290 390)"><rect width="160" height="88" rx="14" class="frame"/><text x="80" y="36" class="val">clave: 30</text><text x="80" y="65" class="idx">prioridad: 50</text></g>
+  <g transform="translate(475 390)"><rect width="160" height="88" rx="14" class="frame"/><text x="80" y="36" class="val">clave: 65</text><text x="80" y="65" class="idx">prioridad: 20</text></g>
+
+  <!-- orden de BST por clave -->
+  <text x="150" y="185" class="op">claves menores</text>
+  <text x="729" y="185" class="op">claves mayores</text>
+</svg>

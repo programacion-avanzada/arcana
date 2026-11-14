@@ -1,0 +1,69 @@
+<svg width="640" height="340" viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .link-fill    { fill: #9baec8; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .top-label    { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .top-arrow    { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .top-arrow-fill { fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .link-fill    { fill: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .top-label    { fill: #d4884a; }
+      .top-arrow    { stroke: #d4884a; }
+      .top-arrow-fill { fill: #d4884a; }
+    }
+  </style>
+
+  <!-- hash map: clave -> nodo de la lista -->
+  <text x="320" y="24" class="op">hash map: clave → nodo, acceso O(1)</text>
+  <rect x="160" y="38" width="80" height="32" rx="6" class="frame"/>
+  <text x="200" y="59" class="val-sm">clave C</text>
+  <circle cx="200" cy="78" r="4" class="link-fill"/>
+  <rect x="280" y="38" width="80" height="32" rx="6" class="frame"/>
+  <text x="320" y="59" class="val-sm">clave A</text>
+  <circle cx="320" cy="78" r="4" class="link-fill"/>
+  <rect x="400" y="38" width="80" height="32" rx="6" class="frame"/>
+  <text x="440" y="59" class="val-sm">clave B</text>
+  <circle cx="440" cy="78" r="4" class="link-fill"/>
+
+  <!-- punteros del hash a cada nodo -->
+  <path d="M200,82 C200,150 500,140 500,200" class="link"/>
+  <path d="M495,200 L500,210 L505,200 Z" class="link-fill"/>
+  <path d="M320,82 C320,150 140,140 140,200" class="link"/>
+  <path d="M135,200 L140,210 L145,200 Z" class="link-fill"/>
+  <path d="M440,82 C440,150 320,140 320,200" class="link"/>
+  <path d="M315,200 L320,210 L325,200 Z" class="link-fill"/>
+
+  <!-- lista doblemente enlazada: de más reciente a menos reciente -->
+  <rect x="90" y="210" width="100" height="40" rx="6" class="frame"/>
+  <text x="140" y="235" class="val-sm">valor A</text>
+  <rect x="270" y="210" width="100" height="40" rx="6" class="frame"/>
+  <text x="320" y="235" class="val-sm">valor B</text>
+  <rect x="450" y="210" width="100" height="40" rx="6" class="frame"/>
+  <text x="500" y="235" class="val-sm">valor C</text>
+  <line x1="192" y1="224" x2="260" y2="224" class="link"/>
+  <path d="M258,229 L268,224 L258,219 Z" class="link-fill"/>
+  <line x1="268" y1="236" x2="200" y2="236" class="link"/>
+  <path d="M202,231 L192,236 L202,241 Z" class="link-fill"/>
+  <line x1="372" y1="224" x2="440" y2="224" class="link"/>
+  <path d="M438,229 L448,224 L438,219 Z" class="link-fill"/>
+  <line x1="448" y1="236" x2="380" y2="236" class="link"/>
+  <path d="M382,231 L372,236 L382,241 Z" class="link-fill"/>
+
+  <!-- extremos -->
+  <text x="140" y="296" class="top-label">head (más reciente)</text>
+  <line x1="140" y1="284" x2="140" y2="264" class="top-arrow"/>
+  <path d="M145,264 L140,254 L135,264 Z" class="top-arrow-fill"/>
+  <text x="500" y="296" class="top-label">tail (próximo a salir)</text>
+  <line x1="500" y1="284" x2="500" y2="264" class="top-arrow"/>
+  <path d="M505,264 L500,254 L495,264 Z" class="top-arrow-fill"/>
+
+  <text x="320" y="326" class="op">lista doblemente enlazada: orden de uso</text>
+</svg>

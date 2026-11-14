@@ -1,0 +1,75 @@
+<svg width="600" height="305" viewBox="0 0 600 305" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .divider      { stroke: #9baec8; stroke-width: 1; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .link-fill    { fill: #9baec8; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .divider      { stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .link-fill    { fill: #4a6fa5; }
+      .op           { fill: #8899aa; }
+    }
+  </style>
+
+  <!-- grafo dirigido -->
+  <line x1="92" y1="64" x2="196" y2="64" class="link"/>
+  <path d="M196,69 L206,64 L196,59 Z" class="link-fill"/>
+  <line x1="208" y1="76" x2="104" y2="76" class="link"/>
+  <path d="M104,71 L94,76 L104,81 Z" class="link-fill"/>
+  <line x1="70" y1="92" x2="70" y2="176" class="link"/>
+  <path d="M65,176 L70,186 L75,176 Z" class="link-fill"/>
+  <line x1="213.4" y1="84.5" x2="95.6" y2="187.6" class="link"/>
+  <path d="M92.3,183.8 L88.1,194.2 L98.9,191.4 Z" class="link-fill"/>
+  <line x1="92" y1="204" x2="196" y2="204" class="link"/>
+  <path d="M196,209 L206,204 L196,199 Z" class="link-fill"/>
+  <line x1="208" y1="216" x2="104" y2="216" class="link"/>
+  <path d="M104,211 L94,216 L104,221 Z" class="link-fill"/>
+  <circle cx="70" cy="70" r="22" class="frame"/>
+  <text x="70" y="77" class="val">A</text>
+  <circle cx="230" cy="70" r="22" class="frame"/>
+  <text x="230" y="77" class="val">B</text>
+  <circle cx="70" cy="210" r="22" class="frame"/>
+  <text x="70" y="217" class="val">C</text>
+  <circle cx="230" cy="210" r="22" class="frame"/>
+  <text x="230" y="217" class="val">D</text>
+
+  <!-- lista de adyacencia -->
+  <rect x="330" y="40" width="40" height="36" rx="6" class="frame"/>
+  <text x="350" y="65" class="val">A</text>
+  <line x1="372" y1="58" x2="400" y2="58" class="link"/>
+  <path d="M400,63 L410,58 L400,53 Z" class="link-fill"/>
+  <rect x="412" y="40" width="80" height="36" rx="6" class="frame"/>
+  <text x="432" y="63" class="val-sm">B</text>
+  <line x1="452" y1="40" x2="452" y2="76" class="divider"/>
+  <text x="472" y="63" class="val-sm">C</text>
+  <rect x="330" y="100" width="40" height="36" rx="6" class="frame"/>
+  <text x="350" y="125" class="val">B</text>
+  <line x1="372" y1="118" x2="400" y2="118" class="link"/>
+  <path d="M400,123 L410,118 L400,113 Z" class="link-fill"/>
+  <rect x="412" y="100" width="80" height="36" rx="6" class="frame"/>
+  <text x="432" y="123" class="val-sm">A</text>
+  <line x1="452" y1="100" x2="452" y2="136" class="divider"/>
+  <text x="472" y="123" class="val-sm">C</text>
+  <rect x="330" y="160" width="40" height="36" rx="6" class="frame"/>
+  <text x="350" y="185" class="val">C</text>
+  <line x1="372" y1="178" x2="400" y2="178" class="link"/>
+  <path d="M400,183 L410,178 L400,173 Z" class="link-fill"/>
+  <rect x="412" y="160" width="40" height="36" rx="6" class="frame"/>
+  <text x="432" y="183" class="val-sm">D</text>
+  <rect x="330" y="220" width="40" height="36" rx="6" class="frame"/>
+  <text x="350" y="245" class="val">D</text>
+  <line x1="372" y1="238" x2="400" y2="238" class="link"/>
+  <path d="M400,243 L410,238 L400,233 Z" class="link-fill"/>
+  <rect x="412" y="220" width="40" height="36" rx="6" class="frame"/>
+  <text x="432" y="243" class="val-sm">C</text>
+
+  <text x="300" y="290" class="op">Grafo dirigido: cada vértice guarda solo sus vecinos de salida.</text>
+</svg>
