@@ -65,7 +65,7 @@ la de gestionar asociaciones **clave→valor**.
 ### Operaciones principales
 
 - **`insert(key, value)`:** Agrega un nuevo par clave→valor. Si la clave ya existe, reemplaza el valor anterior.
-- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, retorna un valor nulo, centinela o excepción, según la implementación.
+- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, retorna un valor nulo o centinela, o lanza una excepción, según la implementación.
 - **`delete(key)`:** Elimina un par clave→valor. Si la clave no existe, no tiene efecto.
 - **`update(key, value)`:** Reemplaza el valor asociado a una clave existente. En muchas implementaciones es equivalente a `insert`: si la clave no existe, el comportamiento depende del contrato definido (puede insertar, ignorar o lanzar error).
 
@@ -86,7 +86,7 @@ La complejidad de un Map depende de su implementación concreta.
 ### Detalles operativos
 
 - **Clave duplicada:** `insert`/`update` sobrescriben el valor existente; nunca coexisten dos entradas con la misma clave.
-- **Clave inexistente:** `find` retorna un valor nulo, centinela o excepción; `delete` no tiene efecto.
+- **Clave inexistente:** `find` retorna un valor nulo o centinela, o lanza una excepción; `delete` no tiene efecto.
 - **Orden:** no garantizado salvo que la implementación lo provea explícitamente (ej. `TreeMap` ordena por clave, `HashMap` no garantiza orden).
 - **Costo oculto:** en implementaciones basadas en tabla hash, superar el factor de carga dispara un rehash que reinserta todas las claves, rompiendo puntualmente la complejidad amortizada.
 
@@ -112,7 +112,7 @@ Independientemente de la implementación elegida, el flujo conceptual de las ope
 - **find(key):**
   1. Buscar la clave.
   2. Si existe → retornar valor asociado.
-  3. Si no → retornar valor nulo, centinela o excepción (el contrato exacto depende de la implementación).
+  3. Si no → retornar valor nulo o centinela, o lanzar excepción (el contrato exacto depende de la implementación).
 
 - **delete(key):**
   1. Buscar la clave.
@@ -158,8 +158,8 @@ class Map:
         for k, v in self.data:
             if k == key:
                 return v
-        # Si no encuentra, devuelve nulo, centinela o excepción.
-        # En este ejemplo es una excepción.
+        # Si no encuentra, devuelve nulo o centinela, o lanza excepción.
+        # En este ejemplo lanza una excepción.
         raise KeyError("Clave no encontrada")
 
 
@@ -175,8 +175,9 @@ class Map:
             if k == key:
                 self.data[i] = (key, value)
                 return
-        # Si no encuentra, devuelve nulo, centinela o excepción.
-        # En este ejemplo es una excepción.
+        # Si la clave no existiera,
+        # puede insertar, ignorar o lanzar error, según el contrato.
+        # En este ejemplo, lanza una excepción.
         raise KeyError("Clave no encontrada")
 ```
 
