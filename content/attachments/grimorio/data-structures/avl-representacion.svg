@@ -1,0 +1,75 @@
+<svg width="720" height="420" viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .idx          { font-size: 12px; fill: #777777; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .idx          { fill: #8899aa; }
+    }
+  </style>
+
+  <text x="360" y="30" class="op">Estructura interna: el árbol es un puntero a la raíz y cada nodo enlaza a sus hijos</text>
+
+  <!-- aristas -->
+  <line x1="339.1" y1="103.8" x2="220.9" y2="170.2" class="link"/>
+  <line x1="380.9" y1="103.8" x2="499.1" y2="170.2" class="link"/>
+  <line x1="184.1" y1="199.9" x2="135.9" y2="254.1" class="link"/>
+  <line x1="215.9" y1="199.9" x2="264.1" y2="254.1" class="link"/>
+  <line x1="535.9" y1="199.9" x2="584.1" y2="254.1" class="link"/>
+
+  <!-- punteros nulos -->
+  <line x1="505.8" y1="201.3" x2="470" y2="250" class="link"/>
+  <text x="470" y="264" class="idx">null</text>
+  <line x1="106.2" y1="291.7" x2="85" y2="322" class="link"/>
+  <text x="85" y="336" class="idx">null</text>
+  <line x1="133.8" y1="291.7" x2="155" y2="322" class="link"/>
+  <text x="155" y="336" class="idx">null</text>
+  <line x1="266.2" y1="291.7" x2="245" y2="322" class="link"/>
+  <text x="245" y="336" class="idx">null</text>
+  <line x1="293.8" y1="291.7" x2="315" y2="322" class="link"/>
+  <text x="315" y="336" class="idx">null</text>
+  <line x1="586.2" y1="291.7" x2="565" y2="322" class="link"/>
+  <text x="565" y="336" class="idx">null</text>
+  <line x1="613.8" y1="291.7" x2="635" y2="322" class="link"/>
+  <text x="635" y="336" class="idx">null</text>
+
+  <!-- nodos -->
+  <circle cx="360" cy="92" r="24" class="frame"/>
+  <text x="360" y="97" class="val-sm">30</text>
+  <text x="420" y="88" class="idx">altura 3</text>
+  <text x="420" y="103" class="idx">FB 0</text>
+  <circle cx="200" cy="182" r="24" class="frame"/>
+  <text x="200" y="187" class="val-sm">20</text>
+  <text x="260" y="178" class="idx">altura 2</text>
+  <text x="260" y="193" class="idx">FB 0</text>
+  <circle cx="520" cy="182" r="24" class="frame"/>
+  <text x="520" y="187" class="val-sm">40</text>
+  <text x="580" y="178" class="idx">altura 2</text>
+  <text x="580" y="193" class="idx">FB -1</text>
+  <circle cx="120" cy="272" r="24" class="frame"/>
+  <text x="120" y="277" class="val-sm">10</text>
+  <text x="180" y="268" class="idx">altura 1</text>
+  <text x="180" y="283" class="idx">FB 0</text>
+  <circle cx="280" cy="272" r="24" class="frame"/>
+  <text x="280" y="277" class="val-sm">25</text>
+  <text x="340" y="268" class="idx">altura 1</text>
+  <text x="340" y="283" class="idx">FB 0</text>
+  <circle cx="600" cy="272" r="24" class="frame"/>
+  <text x="600" y="277" class="val-sm">50</text>
+  <text x="660" y="268" class="idx">altura 1</text>
+  <text x="660" y="283" class="idx">FB 0</text>
+
+  <!-- detalle de un nodo -->
+  <rect x="30" y="352" width="400" height="56" rx="6" class="frame"/>
+  <text x="230" y="372" class="op">el nodo 40 por dentro</text>
+  <text x="230" y="396" class="val-sm">clave 40 | altura 2 | izq null | der → 50</text>
+  <text x="570" y="372" class="op">FB = altura(izq) - altura(der)</text>
+  <text x="570" y="396" class="op">invariante: FB ∈ {-1, 0, 1}</text>
+</svg>

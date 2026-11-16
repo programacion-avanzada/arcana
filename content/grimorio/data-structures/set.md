@@ -38,7 +38,7 @@ Python implementa su `set` sobre una [[hash table]] de direccionamiento abierto.
 
 **Diagrama de una tabla hash con 8 slots:**
 
-![](hashset.svg)
+![Hash set de 8 slots donde cada string cae en la posición de su hash](hashset.svg)
 
 `hash("ab") % 8 = 1` | `hash("xy") % 8 = 3` | `hash("cd") % 8 = 5` | `hash("hi") % 8 = 7`
 
@@ -48,7 +48,7 @@ Python no incluye un `TreeSet` en su librería estándar; `sortedcontainers.Sort
 
 **Diagrama de un árbol binario de búsqueda balanceado:**
 
-![](/attachments/grimorio/data-structures/tree-set.svg)
+![Tree set como árbol binario de búsqueda balanceado con la búsqueda de 40](tree-set.svg)
 
 
 ---

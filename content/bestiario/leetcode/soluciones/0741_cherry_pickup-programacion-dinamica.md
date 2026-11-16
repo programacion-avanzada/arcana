@@ -150,5 +150,5 @@ Comparada con la [[0741_cherry_pickup-fuerza-bruta]], es **estrictamente superio
 
 ### Referencias
 
-- [[COR2011]] - Cap. 15: Dynamic Programming.
+- [[COR2011]] - Chapter 15.
 - Documentación de Python - `functools.lru_cache`: https://docs.python.org/3/library/functools.html#functools.lru_cache

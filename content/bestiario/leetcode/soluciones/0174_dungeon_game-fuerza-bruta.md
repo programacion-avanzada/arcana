@@ -82,7 +82,7 @@ Existen $C(4,2)=6$ caminos posibles (dos movimientos a la derecha y dos hacia ab
 
 Mínimo: **7** (camino R→R→D→D).
 
-![](0174-fuerza-bruta-arbol.svg)
+![Árbol de exploración de la fuerza bruta sobre el ejemplo 3x3, con la vida necesaria en cada camino](0174-fuerza-bruta-arbol.svg)
 
 El árbol de exploración completo para este ejemplo: cada hoja es uno de los 6 caminos, con la vida final requerida. Las celdas con borde grueso (`(1,1)`, `(1,2)`, `(2,1)`) se recalculan varias veces por distintos caminos, sin reutilizar ningún resultado. Esa es la raíz del problema que resuelve Programación Dinámica.
 

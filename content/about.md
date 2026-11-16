@@ -2,7 +2,7 @@
 title: Acerca de Arcana
 ---
 
-![](/attachments/about-cover.png)
+![Portada de Acerca de Arcana](about-cover.png)
 
 **Arcana** es un recurso de estudio complementario para la materia **Programación Avanzada** (UNLaM). Su objetivo es reunir en un único lugar las definiciones, técnicas y resultados centrales de la materia, organizados de forma que permitan tanto el estudio secuencial como la consulta puntual. No reemplaza la bibliografía obligatoria ni las clases: la referencia y amplía.
 

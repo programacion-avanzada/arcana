@@ -143,5 +143,5 @@ La fuerza bruta mantiene `nums` explícitamente e inserta cada elemento contando
 
 ## Referencias
 
-- [[COR2011]] - Sección 2.3 (Merge Sort) y Problema 2-4 (conteo de inversiones).
+- [[COR2011]] - Chapter 2.3.
 - [LeetCode315 - Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)

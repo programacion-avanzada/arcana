@@ -19,7 +19,7 @@ Resuelve problemas donde el orden de procesamiento debe invertirse o deshacerse 
 - Invariante clave: el tope siempre representa el último elemento insertado
 
 ### Representación
-![](/attachments/grimorio/data-structures/stack.svg)
+![Pila con top en el último elemento, operaciones push y pop sobre el tope](stack.svg)
 
 Puede implementarse sobre [[array]], [[linked list]] o [[doubly linked list]]. La elección importa según el contexto: el array tiene mejor localidad de caché y es simple de implementar, pero requiere redimensionamiento si el tamaño no es fijo; la lista enlazada evita ese problema y hace push/pop en $O(1)$ sin amortizar, a costa de overhead por punteros y peor localidad de memoria. La lista doblemente enlazada no aporta ventaja real para una pila, ya que solo se opera en un extremo.
 
@@ -181,4 +181,4 @@ Implicancias:
 - Alternativa común: pilas thread-local para evitar compartir estado cuando es posible.
 
 ## 6. Referencias y recursos
-- [[COR2011]] - Chapter 10.1 Stacks and queues
+- [[COR2011]] - Chapter 10.1.

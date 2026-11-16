@@ -102,5 +102,5 @@ Frente a [[0765_couples_holding_hands-branch-and-bound]], la ventaja también es
 ## Referencias
 
 - Estructura de datos: [[map]]
-- [[KLE2005]]
+- [[KLE2005]] - Chapter 4.
 - [Artículo de referencia](https://repovive.com/roadmaps/greedy-algorithms/greedy-optimization/problem-couples-holding-hands)

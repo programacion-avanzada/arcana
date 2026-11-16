@@ -66,7 +66,7 @@ def _resolver(target: int, map: dict) -> int:
 
 ### Traza de ejemplo
 
-![](0818-arbol-top-down.svg)
+![Árbol de llamadas top-down de resolver(6), pasándose o quedándose corto](0818-arbol-top-down.svg)
 La imagen ilustra el árbol de recursividad generado al ejecutar el algoritmo para `target = 6`.
 
 **Explicación del árbol de recursividad:**

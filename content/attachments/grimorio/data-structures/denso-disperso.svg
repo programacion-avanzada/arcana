@@ -1,0 +1,70 @@
+<svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+    }
+  </style>
+
+  <!-- Grafo disperso -->
+  <text x="150" y="28" class="op">Grafo disperso</text>
+  <line x1="165.6" y1="69" x2="203.7" y2="91" class="link"/>
+  <line x1="219.3" y1="118" x2="219.3" y2="162" class="link"/>
+  <line x1="203.7" y1="189" x2="165.6" y2="211" class="link"/>
+  <line x1="134.4" y1="211" x2="96.3" y2="189" class="link"/>
+  <line x1="80.7" y1="162" x2="80.7" y2="118" class="link"/>
+  <line x1="96.3" y1="91" x2="134.4" y2="69" class="link"/>
+  <circle cx="150" cy="60" r="18" class="frame"/>
+  <text x="150" y="65" class="val-sm">A</text>
+  <circle cx="219.3" cy="100" r="18" class="frame"/>
+  <text x="219.3" y="105" class="val-sm">B</text>
+  <circle cx="219.3" cy="180" r="18" class="frame"/>
+  <text x="219.3" y="185" class="val-sm">C</text>
+  <circle cx="150" cy="220" r="18" class="frame"/>
+  <text x="150" y="225" class="val-sm">D</text>
+  <circle cx="80.7" cy="180" r="18" class="frame"/>
+  <text x="80.7" y="185" class="val-sm">E</text>
+  <circle cx="80.7" cy="100" r="18" class="frame"/>
+  <text x="80.7" y="105" class="val-sm">F</text>
+  <text x="150" y="262" class="op">6 vértices, 6 aristas</text>
+  <text x="150" y="280" class="op">|E| se parece a |V|</text>
+
+  <!-- Grafo denso -->
+  <text x="450" y="28" class="op">Grafo denso</text>
+  <line x1="465.6" y1="69" x2="503.7" y2="91" class="link"/>
+  <line x1="459" y1="75.6" x2="510.3" y2="164.4" class="link"/>
+  <line x1="450" y1="78" x2="450" y2="202" class="link"/>
+  <line x1="441" y1="75.6" x2="389.7" y2="164.4" class="link"/>
+  <line x1="434.4" y1="69" x2="396.3" y2="91" class="link"/>
+  <line x1="519.3" y1="118" x2="519.3" y2="162" class="link"/>
+  <line x1="510.3" y1="115.6" x2="459" y2="204.4" class="link"/>
+  <line x1="503.7" y1="109" x2="396.3" y2="171" class="link"/>
+  <line x1="501.3" y1="100" x2="398.7" y2="100" class="link"/>
+  <line x1="503.7" y1="189" x2="465.6" y2="211" class="link"/>
+  <line x1="501.3" y1="180" x2="398.7" y2="180" class="link"/>
+  <line x1="503.7" y1="171" x2="396.3" y2="109" class="link"/>
+  <line x1="434.4" y1="211" x2="396.3" y2="189" class="link"/>
+  <line x1="441" y1="204.4" x2="389.7" y2="115.6" class="link"/>
+  <line x1="380.7" y1="162" x2="380.7" y2="118" class="link"/>
+  <circle cx="450" cy="60" r="18" class="frame"/>
+  <text x="450" y="65" class="val-sm">A</text>
+  <circle cx="519.3" cy="100" r="18" class="frame"/>
+  <text x="519.3" y="105" class="val-sm">B</text>
+  <circle cx="519.3" cy="180" r="18" class="frame"/>
+  <text x="519.3" y="185" class="val-sm">C</text>
+  <circle cx="450" cy="220" r="18" class="frame"/>
+  <text x="450" y="225" class="val-sm">D</text>
+  <circle cx="380.7" cy="180" r="18" class="frame"/>
+  <text x="380.7" y="185" class="val-sm">E</text>
+  <circle cx="380.7" cy="100" r="18" class="frame"/>
+  <text x="380.7" y="105" class="val-sm">F</text>
+  <text x="450" y="262" class="op">6 vértices, 15 aristas (todas)</text>
+  <text x="450" y="280" class="op">|E| se parece a |V|²</text>
+</svg>

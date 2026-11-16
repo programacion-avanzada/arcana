@@ -1,0 +1,22 @@
+<svg width="300" height="180" viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+    }
+  </style>
+
+  <line x1="135.1" y1="61.3" x2="94.9" y2="118.7" class="link"/>
+  <line x1="164.9" y1="61.3" x2="205.1" y2="118.7" class="link"/>
+  <circle cx="150" cy="40" r="26" class="frame"/>
+  <text x="150" y="47" class="val">8</text>
+  <circle cx="80" cy="140" r="26" class="frame"/>
+  <text x="80" y="147" class="val">3</text>
+  <circle cx="220" cy="140" r="26" class="frame"/>
+  <text x="220" y="147" class="val">10</text>
+</svg>

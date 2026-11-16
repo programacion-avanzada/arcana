@@ -1,0 +1,23 @@
+<svg width="260" height="150" viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+    }
+  </style>
+
+  <!-- un nodo solo guarda su clave y los punteros a sus hijos -->
+  <line x1="115.5" y1="56.6" x2="74.5" y2="103.4" class="link"/>
+  <line x1="144.5" y1="56.6" x2="185.5" y2="103.4" class="link"/>
+  <rect x="80" y="22" width="100" height="36" rx="6" class="frame"/>
+  <text x="130" y="45" class="val-sm">padre</text>
+  <rect x="10" y="102" width="110" height="36" rx="6" class="frame"/>
+  <text x="65" y="125" class="val-sm">hijo izq.</text>
+  <rect x="140" y="102" width="110" height="36" rx="6" class="frame"/>
+  <text x="195" y="125" class="val-sm">hijo der.</text>
+</svg>

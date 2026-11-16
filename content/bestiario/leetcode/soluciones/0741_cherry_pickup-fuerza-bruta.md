@@ -87,4 +87,4 @@ Comparada con [[0741_cherry_pickup-programacion-dinamica]], comparte **exactamen
 
 ### Referencias
 
-- [[COR2011]] - Cap. 15 (motivación de PD a partir de recursión exhaustiva).
+- [[COR2011]] - Chapter 15.

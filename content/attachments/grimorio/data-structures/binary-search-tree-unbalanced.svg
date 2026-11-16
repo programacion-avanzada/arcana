@@ -1,0 +1,37 @@
+<svg width="313" height="330" viewBox="0 0 313 330" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .idx          { font-size: 12px; fill: #777777; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .idx          { fill: #8899aa; }
+    }
+  </style>
+
+  <line x1="90.1" y1="58.4" x2="119.9" y2="95.6" class="link"/>
+  <line x1="145.7" y1="128.7" x2="175.3" y2="167.3" class="link"/>
+  <line x1="202.1" y1="199.5" x2="234.9" y2="235.5" class="link"/>
+  <line x1="64.3" y1="58.8" x2="37" y2="95" class="link"/>
+  <text x="37" y="110" class="idx">null</text>
+  <line x1="120.6" y1="128.9" x2="94" y2="165" class="link"/>
+  <text x="94" y="180" class="idx">null</text>
+  <line x1="175.9" y1="201.2" x2="152" y2="235" class="link"/>
+  <text x="152" y="250" class="idx">null</text>
+  <line x1="235.7" y1="267.2" x2="208" y2="301" class="link"/>
+  <text x="208" y="316" class="idx">null</text>
+  <line x1="262.3" y1="267.2" x2="290" y2="301" class="link"/>
+  <text x="290" y="316" class="idx">null</text>
+  <circle cx="77" cy="42" r="21" class="frame"/>
+  <text x="77" y="49" class="val">1</text>
+  <circle cx="133" cy="112" r="21" class="frame"/>
+  <text x="133" y="119" class="val">2</text>
+  <circle cx="188" cy="184" r="21" class="frame"/>
+  <text x="188" y="191" class="val">3</text>
+  <circle cx="249" cy="251" r="21" class="frame"/>
+  <text x="249" y="258" class="val">4</text>
+</svg>
