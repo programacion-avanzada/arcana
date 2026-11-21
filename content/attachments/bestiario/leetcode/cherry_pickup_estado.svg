@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="480" height="480" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="240" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Reducción del estado: 4 → 3 coordenadas</text>
+  <text x="240" y="58" text-anchor="middle" font-size="13" fill="#57606a">Tras t pasos ambos están sobre la misma anti-diagonal r + c = t</text>
+
+  <!-- grid 5x5 cells 56, origin 90,80 -->
+  <g stroke="#333" stroke-width="1.4" fill="none">
+    <rect x="90" y="80" width="280" height="280"/>
+    <line x1="146" y1="80" x2="146" y2="360"/>
+    <line x1="202" y1="80" x2="202" y2="360"/>
+    <line x1="258" y1="80" x2="258" y2="360"/>
+    <line x1="314" y1="80" x2="314" y2="360"/>
+    <line x1="90" y1="136" x2="370" y2="136"/>
+    <line x1="90" y1="192" x2="370" y2="192"/>
+    <line x1="90" y1="248" x2="370" y2="248"/>
+    <line x1="90" y1="304" x2="370" y2="304"/>
+  </g>
+
+  <!-- anti-diagonal t=3: (0,3)(1,2)(2,1)(3,0) — cell top-left = 90+c*56 , 80+r*56 -->
+  <g fill="#F5D5B8" stroke="#333" stroke-width="1.4">
+    <rect x="258" y="80"  width="56" height="56"/>  <!-- (0,3) -->
+    <rect x="202" y="136" width="56" height="56"/>  <!-- (1,2) -->
+    <rect x="146" y="192" width="56" height="56"/>  <!-- (2,1) -->
+    <rect x="90"  y="248" width="56" height="56"/>  <!-- (3,0) -->
+  </g>
+  <text x="330" y="112" font-family="Consolas, Menlo, monospace" font-size="13" fill="#5B2C91" font-weight="700">t = 3</text>
+
+  <!-- walkers A (1,2) and B (3,0) -->
+  <circle cx="230" cy="164" r="13" fill="#5B2C91"/>
+  <text x="230" y="169" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">A</text>
+  <circle cx="118" cy="276" r="13" fill="#A9CE9E" stroke="#333"/>
+  <text x="118" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">B</text>
+
+  <text x="240" y="388" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="13" fill="#1f2328">A=(r1,c1)=(1,2)   B=(r2,c2)=(3,0)</text>
+
+  <!-- formula box (violet) -->
+  <rect x="60" y="408" width="360" height="52" rx="8" fill="#F3E9F5" stroke="#5B2C91" stroke-width="1.6"/>
+  <text x="240" y="431" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="15" fill="#5B2C91" font-weight="700">c2 = r1 + c1 − r2</text>
+  <text x="240" y="450" text-anchor="middle" font-size="12.5" fill="#57606a">⇒ estado = (r1, c1, r2)   ·   O(N³) estados</text>
+</svg>

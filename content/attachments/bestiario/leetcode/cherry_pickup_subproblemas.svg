@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="720" height="420" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="360" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Problemas Solapados</text>
+  <text x="360" y="56" text-anchor="middle" font-size="13" fill="#57606a">El estado explorar(1,1,1) se alcanza por dos ramas distintas: la PD lo calcula una sola vez</text>
+
+  <!-- edges root -> level2 -->
+  <g stroke="#333" stroke-width="1.5" fill="none">
+    <line x1="350" y1="102" x2="120" y2="158"/>
+    <line x1="350" y1="102" x2="270" y2="158"/>
+    <line x1="350" y1="102" x2="430" y2="158"/>
+    <line x1="350" y1="102" x2="580" y2="158"/>
+  </g>
+  <g font-family="Consolas, Menlo, monospace" font-size="12" fill="#1f2328" text-anchor="middle">
+    <text x="205" y="126">+1</text>
+    <text x="296" y="126">+2</text>
+    <text x="404" y="126">+2</text>
+    <text x="495" y="126">+1</text>
+  </g>
+
+  <!-- edges level2 -> level3 -->
+  <g stroke="#333" stroke-width="1.5" fill="none">
+    <line x1="270" y1="192" x2="150" y2="248"/>
+    <line x1="270" y1="192" x2="300" y2="248"/>
+    <line x1="430" y1="192" x2="440" y2="248"/>
+    <line x1="430" y1="192" x2="590" y2="248"/>
+  </g>
+  <g font-family="Consolas, Menlo, monospace" font-size="12" fill="#1f2328" text-anchor="middle">
+    <text x="196" y="222">+1</text>
+    <text x="298" y="222">+0</text>
+    <text x="450" y="222">+0</text>
+    <text x="522" y="222">+1</text>
+  </g>
+
+  <!-- root (violeta) -->
+  <g font-family="Consolas, Menlo, monospace" font-size="13" text-anchor="middle" font-weight="600">
+    <rect x="292" y="70" width="116" height="32" fill="#C9B3DC" stroke="#5B2C91" stroke-width="2"/>
+    <text x="350" y="91" fill="#1f2328">(0,0,0)</text>
+
+    <!-- level 2 -->
+    <rect x="66" y="158" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="120" y="179" fill="#1f2328">(1,0,1)</text>
+    <rect x="216" y="158" width="108" height="32" fill="#C9B3DC" stroke="#5B2C91" stroke-width="2"/><text x="270" y="179" fill="#1f2328">(1,0,0)</text>
+    <rect x="376" y="158" width="108" height="32" fill="#C9B3DC" stroke="#5B2C91" stroke-width="2"/><text x="430" y="179" fill="#1f2328">(0,1,1)</text>
+    <rect x="526" y="158" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="580" y="179" fill="#1f2328">(0,1,0)</text>
+
+    <!-- level 3 : (1,1,1) repetido -> NARANJA -->
+    <rect x="96" y="248" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="150" y="269" fill="#1f2328">(2,0,1)</text>
+    <rect x="246" y="248" width="108" height="32" fill="#FFE599" stroke="#E8912D" stroke-width="2.4"/><text x="300" y="269" fill="#1f2328">(1,1,1)</text>
+    <rect x="386" y="248" width="108" height="32" fill="#FFE599" stroke="#E8912D" stroke-width="2.4"/><text x="440" y="269" fill="#1f2328">(1,1,1)</text>
+    <rect x="536" y="248" width="108" height="32" fill="#BFBFBF" stroke="#333" stroke-width="1.6"/><text x="590" y="269" fill="#1f2328">(1,1,2)</text>
+  </g>
+
+  <!-- callout -->
+  <rect x="150" y="310" width="420" height="88" rx="8" fill="#FFF8E8" stroke="#E8912D" stroke-width="1.5"/>
+  <rect x="170" y="328" width="16" height="16" fill="#FFE599" stroke="#E8912D" stroke-width="1.8"/>
+  <text x="196" y="341" font-size="12.5" font-weight="700" fill="#B26A12">= mismo subproblema, alcanzado dos veces</text>
+  <text x="170" y="364" font-size="12" fill="#57606a">Fuerza bruta: expande el subárbol de (1,1,1) las dos veces.</text>
+  <text x="170" y="384" font-size="12" fill="#B26A12" font-weight="700">PD: lo computa una vez, lo cachea y lo reutiliza en O(1).</text>
+</svg>

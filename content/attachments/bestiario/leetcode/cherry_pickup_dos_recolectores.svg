@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="440" viewBox="0 0 760 440" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="760" height="440" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="380" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Reformulación clave: dos recolectores simultáneos</text>
+  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#57606a">Ida + vuelta  ≡  dos recorridos en paralelo de (0,0) a (N-1,N-1)</text>
+
+  <!-- LEFT -->
+  <text x="190" y="92" text-anchor="middle" font-size="15" font-weight="600" fill="#1f2328">Ida y vuelta (un recolector)</text>
+  <g stroke="#333" stroke-width="1.4" fill="none">
+    <rect x="70" y="110" width="240" height="240"/>
+    <line x1="150" y1="110" x2="150" y2="350"/>
+    <line x1="230" y1="110" x2="230" y2="350"/>
+    <line x1="70" y1="190" x2="310" y2="190"/>
+    <line x1="70" y1="270" x2="310" y2="270"/>
+  </g>
+  <polyline points="110,150 110,230 110,310 190,310 270,310" fill="none" stroke="#5B2C91" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="270,310 270,230 190,230 190,150 110,150" fill="none" stroke="#2E9E5B" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 10"/>
+  <circle cx="110" cy="150" r="8" fill="#1f2328"/>
+  <circle cx="270" cy="310" r="8" fill="#C74E9B"/>
+  <text x="190" y="380" text-anchor="middle" font-size="12.5" fill="#5B2C91">▬ ida (abajo/derecha)</text>
+  <text x="190" y="398" text-anchor="middle" font-size="12.5" fill="#2E9E5B">┄ vuelta (arriba/izq)</text>
+
+  <!-- equivalence -->
+  <text x="380" y="238" text-anchor="middle" font-size="44" fill="#5B2C91" font-weight="700">≡</text>
+
+  <!-- RIGHT -->
+  <text x="570" y="92" text-anchor="middle" font-size="15" font-weight="600" fill="#1f2328">Dos recolectores (ambos bajan/derecha)</text>
+  <g stroke="#333" stroke-width="1.4" fill="none">
+    <rect x="450" y="110" width="240" height="240"/>
+    <line x1="530" y1="110" x2="530" y2="350"/>
+    <line x1="610" y1="110" x2="610" y2="350"/>
+    <line x1="450" y1="190" x2="690" y2="190"/>
+    <line x1="450" y1="270" x2="690" y2="270"/>
+  </g>
+  <polyline points="490,150 490,230 490,310 570,310 650,310" fill="none" stroke="#5B2C91" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="490,150 570,150 570,230 650,230 650,310" fill="none" stroke="#2E9E5B" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="490" cy="150" r="8" fill="#1f2328"/>
+  <circle cx="650" cy="310" r="8" fill="#C74E9B"/>
+  <text x="570" y="380" text-anchor="middle" font-size="12.5" fill="#5B2C91">▬ recolector A</text>
+  <text x="570" y="398" text-anchor="middle" font-size="12.5" fill="#2E9E5B">▬ recolector B</text>
+
+  <text x="380" y="426" text-anchor="middle" font-size="12.5" fill="#57606a">Un camino recorrido al revés tiene la misma forma que uno recorrido hacia adelante.</text>
+</svg>

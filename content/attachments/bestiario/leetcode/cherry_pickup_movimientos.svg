@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="720" height="360" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="360" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Las 4 transiciones en cada paso</text>
+  <text x="360" y="58" text-anchor="middle" font-size="13" fill="#57606a">Cada recolector elige abajo o derecha: 2 × 2 = 4 ramas. La recursión toma el máximo.</text>
+
+  <!-- root box (green = nodo actual) -->
+  <rect x="255" y="82" width="210" height="40" fill="#A9CE9E" stroke="#333" stroke-width="2"/>
+  <text x="360" y="108" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="15" fill="#1f2328">explorar(r1, c1, r2)</text>
+
+  <!-- elbow connectors (right-angle) from root bottom (360,122) to each child top -->
+  <g stroke="#333" stroke-width="2" fill="none">
+    <path d="M360,122 L360,150 L110,150 L110,180"/>
+    <path d="M360,122 L360,150 L270,150 L270,180"/>
+    <path d="M360,122 L360,150 L450,150 L450,180"/>
+    <path d="M360,122 L360,150 L610,150 L610,180"/>
+  </g>
+
+  <!-- child boxes -->
+  <g font-family="Consolas, Menlo, monospace" font-size="13.5" text-anchor="middle">
+    <rect x="30" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="110" y="207" fill="#1f2328">explorar(</text>
+    <text x="110" y="225" fill="#1f2328">r1+1, c1, r2+1)</text>
+    <text x="110" y="266" fill="#5B2C91" font-weight="700">A ↓ · B ↓</text>
+
+    <rect x="190" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="270" y="207" fill="#1f2328">explorar(</text>
+    <text x="270" y="225" fill="#1f2328">r1+1, c1, r2)</text>
+    <text x="270" y="266" fill="#5B2C91" font-weight="700">A ↓ · B →</text>
+
+    <rect x="370" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="450" y="207" fill="#1f2328">explorar(</text>
+    <text x="450" y="225" fill="#1f2328">r1, c1+1, r2+1)</text>
+    <text x="450" y="266" fill="#5B2C91" font-weight="700">A → · B ↓</text>
+
+    <rect x="530" y="180" width="160" height="66" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="610" y="207" fill="#1f2328">explorar(</text>
+    <text x="610" y="225" fill="#1f2328">r1, c1+1, r2)</text>
+    <text x="610" y="266" fill="#5B2C91" font-weight="700">A → · B →</text>
+  </g>
+
+  <text x="360" y="312" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="15" fill="#1f2328">explorar(...) = cerezas + max( rama₁, rama₂, rama₃, rama₄ )</text>
+  <text x="360" y="338" text-anchor="middle" font-size="12.5" fill="#57606a">c2 = r1 + c1 − r2  se deduce en cada rama</text>
+</svg>

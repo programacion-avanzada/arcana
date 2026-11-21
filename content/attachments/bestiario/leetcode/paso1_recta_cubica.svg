@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 100 640 200" width="640" height="200"
+    font-family="ui-sans-serif,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" role="img">
+    <line x1="40" y1="170" x2="600" y2="170" stroke="#7b97aa" stroke-width="2" />
+    <line x1="63.5" y1="163" x2="63.5" y2="177" stroke="#7b97aa" stroke-width="2" /><text x="63.5" y="196" font-size="14"
+        fill="#7b97aa" font-weight="700" text-anchor="middle">1</text><text x="63.5" y="156" font-size="11" fill="#6d8cc0"
+        font-weight="600" text-anchor="middle">Tet(1)</text>
+    <line x1="104.0" y1="163" x2="104.0" y2="177" stroke="#7b97aa" stroke-width="2" /><text x="104.0" y="196"
+        font-size="14" fill="#7b97aa" font-weight="700" text-anchor="middle">4</text><text x="104.0" y="156" font-size="11"
+        fill="#6d8cc0" font-weight="600" text-anchor="middle">Tet(2)</text>
+    <line x1="185.0" y1="163" x2="185.0" y2="177" stroke="#7b97aa" stroke-width="2" /><text x="185.0" y="196"
+        font-size="14" fill="#7b97aa" font-weight="700" text-anchor="middle">10</text><text x="185.0" y="156"
+        font-size="11" fill="#6d8cc0" font-weight="600" text-anchor="middle">Tet(3)</text>
+    <line x1="320.0" y1="163" x2="320.0" y2="177" stroke="#7b97aa" stroke-width="2" /><text x="320.0" y="196"
+        font-size="14" fill="#7b97aa" font-weight="700" text-anchor="middle">20</text><text x="320.0" y="156"
+        font-size="11" fill="#6d8cc0" font-weight="600" text-anchor="middle">Tet(4)</text>
+    <line x1="522.5" y1="163" x2="522.5" y2="177" stroke="#7b97aa" stroke-width="2" /><text x="522.5" y="196"
+        font-size="14" fill="#7b97aa" font-weight="700" text-anchor="middle">35</text><text x="522.5" y="156"
+        font-size="11" fill="#6d8cc0" font-weight="600" text-anchor="middle">Tet(5)</text>
+    <polygon points="217.5,130 233.5,130 225.5,146" fill="#d98a1f" /><text x="225.5" y="124" font-size="14"
+        fill="#d98a1f" font-weight="700" text-anchor="middle">n = 13</text>
+    <path d="M 225.5 210 Q 205.25 240 185.0 214" fill="none" stroke="#194c9a" stroke-width="2" marker-end="url(#ar)" />
+    <text x="205.25" y="262" font-size="14" fill="#194c9a" font-weight="700" text-anchor="middle">floor: 10 ≤ 13 &lt; 20
+        → r = 3</text><text x="50" y="290" font-size="12" fill="#555" font-weight="400" text-anchor="start">ida
+        (fórmula): r → Tet(r)</text><text x="590" y="290" font-size="12" fill="#555" font-weight="400"
+        text-anchor="end">vuelta (raíz cúbica): n → r</text>
+    <defs>
+        <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#194c9a" />
+        </marker>
+    </defs>
+</svg>

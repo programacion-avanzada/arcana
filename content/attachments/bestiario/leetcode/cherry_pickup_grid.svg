@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="450" viewBox="0 0 420 450" font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="420" height="450" rx="14" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="210" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Instancia de ejemplo (N = 3)</text>
+  <text x="210" y="62" text-anchor="middle" font-size="13" fill="#57606a">grid[i][j] ∈ {-1 espina, 0 vacía, 1 cereza}</text>
+
+  <!-- column indices -->
+  <g font-family="Consolas, Menlo, monospace" font-size="16" fill="#8a8a8a" text-anchor="middle">
+    <text x="150" y="94">0</text>
+    <text x="230" y="94">1</text>
+    <text x="310" y="94">2</text>
+  </g>
+  <!-- row indices -->
+  <g font-family="Consolas, Menlo, monospace" font-size="16" fill="#8a8a8a" text-anchor="middle">
+    <text x="92" y="150">0</text>
+    <text x="92" y="230">1</text>
+    <text x="92" y="310">2</text>
+  </g>
+
+  <!-- cells -->
+  <g font-family="Consolas, Menlo, monospace" font-size="24" text-anchor="middle" fill="#1f2328">
+    <!-- row 0: 0 1 -1 -->
+    <rect x="110" y="104" width="80" height="80" fill="#ffffff" stroke="#333" stroke-width="2"/><text x="150" y="154">0</text>
+    <rect x="190" y="104" width="80" height="80" fill="#F5D5B8" stroke="#333" stroke-width="2"/><text x="230" y="154">1</text>
+    <rect x="270" y="104" width="80" height="80" fill="#7f7f7f" stroke="#333" stroke-width="2"/><text x="310" y="154" fill="#ffffff">-1</text>
+    <!-- row 1: 1 0 -1 -->
+    <rect x="110" y="184" width="80" height="80" fill="#F5D5B8" stroke="#333" stroke-width="2"/><text x="150" y="234">1</text>
+    <rect x="190" y="184" width="80" height="80" fill="#ffffff" stroke="#333" stroke-width="2"/><text x="230" y="234">0</text>
+    <rect x="270" y="184" width="80" height="80" fill="#7f7f7f" stroke="#333" stroke-width="2"/><text x="310" y="234" fill="#ffffff">-1</text>
+    <!-- row 2: 1 1 1 -->
+    <rect x="110" y="264" width="80" height="80" fill="#F5D5B8" stroke="#333" stroke-width="2"/><text x="150" y="314">1</text>
+    <rect x="190" y="264" width="80" height="80" fill="#F5D5B8" stroke="#333" stroke-width="2"/><text x="230" y="314">1</text>
+    <rect x="270" y="264" width="80" height="80" fill="#F5D5B8" stroke="#333" stroke-width="2"/><text x="310" y="314">1</text>
+  </g>
+
+  <!-- inicio / fin, fuera de la grilla -->
+  <text x="150" y="368" text-anchor="middle" font-size="11.5" fill="#5B2C91" font-weight="700">inicio (0,0)</text>
+  <text x="310" y="368" text-anchor="middle" font-size="11.5" fill="#5B2C91" font-weight="700">fin (2,2)</text>
+
+  <!-- legend -->
+  <g font-size="14" fill="#1f2328">
+    <rect x="70" y="388" width="20" height="20" fill="#F5D5B8" stroke="#333" stroke-width="1.5"/>
+    <text x="98" y="403">1 = cereza</text>
+    <rect x="215" y="388" width="20" height="20" fill="#7f7f7f" stroke="#333" stroke-width="1.5"/>
+    <text x="243" y="403">-1 = espina</text>
+    <rect x="70" y="416" width="20" height="20" fill="#ffffff" stroke="#333" stroke-width="1.5"/>
+    <text x="98" y="431">0 = vacía transitable</text>
+  </g>
+</svg>
