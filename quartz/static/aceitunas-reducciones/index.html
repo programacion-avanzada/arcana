@@ -49,6 +49,7 @@
       a:focus-visible,
       button:focus-visible,
       select:focus-visible,
+      input:focus-visible,
       textarea:focus-visible,
       .scene-scroll:focus-visible {
         outline: 2px solid var(--focus);
@@ -89,6 +90,7 @@
       }
       .stack {
         display: grid;
+        grid-template-columns: minmax(0, 1fr);
         gap: 0.75rem;
       }
       .quiet {
@@ -163,6 +165,21 @@
       .mode-tools {
         margin-left: auto;
       }
+      .zoom-tools {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .zoom-tools button {
+        min-width: 2.75rem;
+      }
+      .zoom-tools output {
+        min-width: 4.5ch;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.84rem;
+        font-variant-numeric: tabular-nums;
+      }
       .error {
         color: #a33223;
         font-size: 0.84rem;
@@ -183,10 +200,17 @@
         margin: 0;
         list-style: none;
       }
-      .stages li {
+      .stages button {
+        width: 100%;
+        height: 100%;
+        min-height: 2.5rem;
+        border: 0;
         border-top: 2px solid var(--line);
+        border-radius: 0;
         color: var(--muted);
-        padding-top: 0.35rem;
+        background: transparent;
+        padding: 0.35rem 0.2rem;
+        text-align: left;
         font-size: 0.83rem;
       }
       .stages [aria-current="step"] {
@@ -220,7 +244,7 @@
       }
       .scene {
         --tile: 3.6rem;
-        --row-label: 4.65rem;
+        --row-label: 5.6rem;
         position: relative;
       }
       canvas {
@@ -358,6 +382,23 @@
         padding: 0.72rem 0.8rem;
         background: var(--surface);
       }
+      .speed-control {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) 3.5ch;
+        align-items: center;
+        gap: 0.65rem;
+        width: min(100%, 22rem);
+      }
+      .speed-control input {
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        accent-color: var(--olive);
+      }
+      .speed-control output {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
       .trace-grid {
         display: grid;
         grid-template-columns: var(--row-label) repeat(var(--length), var(--tile));
@@ -403,6 +444,10 @@
       .summary {
         font-weight: 700;
         overflow-wrap: anywhere;
+        border-left: 3px solid var(--olive);
+        border-radius: 0.35rem;
+        padding: 0.6rem 0.75rem;
+        background: var(--wash);
       }
       .matrix-scroll {
         width: max-content;
@@ -411,6 +456,18 @@
         max-height: 23rem;
         border: 1px solid var(--line);
         border-radius: 0.45rem;
+      }
+      #matrix-pages input {
+        width: 5rem;
+        padding: 0.3rem;
+        font: inherit;
+        color: var(--ink);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 0.35rem;
+      }
+      #trace-detail {
+        white-space: pre-line;
       }
       #matrix {
         font:
@@ -495,7 +552,7 @@
         .stages {
           gap: 0.35rem;
         }
-        .stages li {
+        .stages button {
           font-size: 0.75rem;
         }
       }
@@ -503,8 +560,10 @@
   </head>
   <body>
     <main>
-      <a id="article-link" href="../../bestiario/oia/lanzamiento-de-aceitunas#visualizaciones"
-        >← Volver al artículo</a
+      <a
+        id="article-link"
+        href="../../bestiario/oia/soluciones/lanzamiento-de-aceitunas-fuerza-bruta#visualizacion-reducciones"
+        >← Volver a la resolución</a
       >
       <header>
         <h1>De los tiros al mapa</h1>
@@ -526,7 +585,7 @@
             <p class="quiet" id="input-help">Un par x y por renglón.</p>
             <button class="primary" type="submit">Procesar coordenadas</button>
             <div class="row">
-              <button id="load-example" type="button">Cargar ejemplo</button>
+              <button id="load-example" type="button">Restablecer ejemplo de la OIA</button>
               <button id="clear-input" type="button">Limpiar</button>
             </div>
             <p class="error" id="input-error" role="alert"></p>
@@ -536,11 +595,11 @@
         </section>
         <figure class="panel stack" aria-labelledby="stage-title">
           <ol class="stages" id="stages" aria-label="Pasos de la reducción">
-            <li>Plano</li>
-            <li>Recta y = 0</li>
-            <li>Aportes</li>
-            <li>Tabla</li>
-            <li>Rango</li>
+            <li><button type="button">Plano</button></li>
+            <li><button type="button">Recta y = 0</button></li>
+            <li><button type="button">Aportes</button></li>
+            <li><button type="button">Tabla</button></li>
+            <li><button type="button">Rango</button></li>
           </ol>
           <div class="row between">
             <div>
@@ -548,6 +607,11 @@
               <p class="quiet" id="stage-description"></p>
             </div>
             <div class="row mode-tools" id="plan-tools">
+              <div class="zoom-tools" role="group" aria-label="Zoom del plano">
+                <button id="zoom-out" type="button" aria-label="Alejar plano">−</button>
+                <output id="zoom-level" aria-label="Escala del plano">100%</output>
+                <button id="zoom-in" type="button" aria-label="Acercar plano">+</button>
+              </div>
               <button id="center-plot" type="button">Centrar</button>
               <label for="plot-mode">Modo</label>
               <select id="plot-mode">
@@ -573,16 +637,23 @@
                 <option value="brute">Fuerza bruta</option>
                 <option value="kadane">Kadane</option>
               </select>
-              <button class="primary" id="trace-optimum" type="button">Mostrar rango óptimo</button>
+              <button class="primary" id="trace-optimum" type="button">
+                Mostrar resultado final
+              </button>
             </div>
             <div class="row">
               <button id="trace-play" type="button">▶ Reproducir</button>
               <button id="trace-pause" type="button">Pausa</button>
-              <button id="trace-step" type="button">Paso</button>
+              <button id="trace-back" type="button">Paso atrás</button>
+              <button id="trace-step" type="button">Paso adelante</button>
               <button id="trace-reset" type="button">Reiniciar</button>
             </div>
+            <div class="speed-control">
+              <label for="trace-speed">Velocidad</label>
+              <input id="trace-speed" type="range" min="0.5" max="4" step="0.5" value="1" />
+              <output id="trace-speed-value" for="trace-speed">1×</output>
+            </div>
             <div role="status">
-              <p class="summary" id="trace-result"></p>
               <p class="quiet" id="trace-progress"></p>
               <p class="quiet" id="trace-detail"></p>
             </div>
@@ -598,11 +669,12 @@
               <div class="groups" id="groups" hidden></div>
               <div class="table-area" id="table-area" hidden>
                 <div class="trace-grid" id="trace-pointer" aria-hidden="true" hidden></div>
-                <table id="map-table" aria-label="Mapa ordenado por radio"></table>
+                <table id="map-table" aria-label="Mapa ordenado por distancia"></table>
                 <div id="trace-ranges" hidden></div>
               </div>
             </div>
           </div>
+          <p class="summary" id="trace-result" role="status" hidden></p>
           <div class="row group-nav" id="group-nav" hidden>
             <button id="prev-group-page" type="button" aria-label="Grupos anteriores">←</button>
             <span class="quiet" id="group-page"></span>
@@ -617,8 +689,15 @@
             <div>
               <h2>Intervalos probados</h2>
               <p class="quiet" id="matrix-caption">
-                Usá la fila para el inicio y la columna para el final.
+                Cada fila fija un inicio. La suma crece o disminuye al avanzar por sus finales.
               </p>
+            </div>
+            <div class="row" id="matrix-pages" hidden>
+              <label for="matrix-row-page">Página de inicios</label>
+              <input id="matrix-row-page" type="number" min="1" step="1" />
+              <label for="matrix-column-page">Página de finales</label>
+              <input id="matrix-column-page" type="number" min="1" step="1" />
+              <p class="quiet" id="matrix-page-count"></p>
             </div>
             <div
               class="matrix-scroll"
@@ -657,10 +736,12 @@
       const coordinateLimit = 2_000_000_000
       const drawingLimit = 5_000
       const pageSize = 16
+      const stepMilliseconds = 480
       const stageText = [
         {
           title: "La distancia de cada tiro",
-          description: "Los tiros a la misma distancia comparten una circunferencia.",
+          description:
+            "El rival tira a x < 0 y Olivares a x > 0. Los tiros a la misma distancia comparten una circunferencia.",
           caption:
             "Arrastrá el plano para desplazarte o hacé clic sobre un tiro para ver su radio.",
           action: "Girar hacia y = 0",
@@ -680,14 +761,15 @@
         },
         {
           title: "El mapa ordenado",
-          description: "La tabla reúne los radios de menor a mayor y conserva sus aportes.",
+          description:
+            "Los cuadrados de los radios son las claves del mapa. Cada columna conserva su aporte.",
           caption:
             "Pasá el mouse o enfocá una celda para resaltar su columna y el bloque que le dio origen.",
           action: "Buscar rango óptimo",
         },
         {
           title: "El rango de mayor puntaje",
-          description: "Elegí un algoritmo para recorrer los aportes de la tabla.",
+          description: "Elegí un algoritmo para recorrer los valores en orden de clave.",
           caption:
             "Los índices empiezan en 0. La salida muestra los cuadrados de los bordes del aro.",
           action: "Volver al plano",
@@ -705,13 +787,16 @@
       const inputError = byId("input-error")
       const plotMode = byId("plot-mode")
       const algorithm = byId("algorithm")
+      const speed = byId("trace-speed")
       const next = byId("next")
       const previous = byId("previous")
+      const stages = [...byId("stages").querySelectorAll("button")]
+      const matrixPageFields = [byId("matrix-row-page"), byId("matrix-column-page")]
       const motion = matchMedia("(prefers-reduced-motion: reduce)")
       const format = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 3 })
       const styles = getComputedStyle(document.documentElement)
       const colors = Object.fromEntries(
-        ["grid", "axis", "muted", "guide", "selected", "olive", "rival"].map((name) => [
+        ["grid", "axis", "muted", "guide", "selected", "olive", "rival", "plot"].map((name) => [
           name,
           styles.getPropertyValue("--" + name).trim(),
         ]),
@@ -732,15 +817,37 @@
       let movingPairs = []
       let joinRevision = 0
       let pan = { x: 0, y: 0 }
+      let zoomStep = 0
       let drag
       let ignorePlotClick = false
       let search
-      let directBest
+      let matrixPages
+      let matrixPrefixes
       let playback
+      const emptyRange = { start: -1, end: -1, sum: 0 }
 
-      if (location.protocol === "file:") {
-        byId("article-link").href = "../../../content/bestiario/oia/lanzamiento-de-aceitunas.md"
-      }
+      const minZoomStep = -3
+      const maxZoomStep = 6
+      const zoomFactor = () => 2 ** (zoomStep / 2)
+      const entry = location.hash.slice(1)
+      const method = entry.replace(/-visualizaciones$/, "")
+      const fromProblem = method === "enunciado"
+      const fromKadane = method === "kadane"
+      const articlePath = fromProblem
+        ? "bestiario/oia/lanzamiento-de-aceitunas"
+        : "bestiario/oia/soluciones/lanzamiento-de-aceitunas-" +
+          (fromKadane ? "greedy" : "fuerza-bruta")
+      const section =
+        fromProblem || entry.endsWith("-visualizaciones")
+          ? "visualizaciones"
+          : "visualizacion-reducciones"
+      const back = byId("article-link")
+      back.href =
+        location.protocol === "file:"
+          ? "../../../content/" + articlePath + ".md"
+          : "../../" + articlePath + "#" + section
+      if (fromProblem) back.textContent = "← Volver al enunciado"
+      if (fromKadane) algorithm.value = "kadane"
 
       function inputLines(text) {
         return text
@@ -786,8 +893,8 @@
           if (!map.has(shot.d)) {
             const radius = Math.sqrt(Number(shot.d))
             const whole = BigInt(Math.round(radius))
-            const key = whole ** 2n === shot.d ? String(whole) : "√" + shot.d
-            map.set(shot.d, { d: shot.d, radius, key, oli: 0, rival: 0 })
+            const radioLabel = whole ** 2n === shot.d ? String(whole) : "√" + shot.d
+            map.set(shot.d, { d: shot.d, radius, radioLabel, oli: 0, rival: 0 })
           }
           const group = map.get(shot.d)
           if (shot.x > 0) group.oli++
@@ -803,6 +910,8 @@
         if (resetSelection) {
           selected = undefined
           pan = { x: 0, y: 0 }
+          zoomStep = 0
+          showZoom()
           scroll.scrollLeft = 0
         }
         inputError.textContent = ""
@@ -828,7 +937,7 @@
             ", " +
             selected.y +
             ") · r = " +
-            group.key +
+            group.radioLabel +
             " · r² = " +
             group.d +
             " · Aporte " +
@@ -897,11 +1006,14 @@
         }
       }
 
-      function tile(group, isValue, interactive = false) {
+      function tile(group, row, interactive = false) {
+        const isValue = row === "value"
         const net = group.oli - group.rival
         const element = interactive ? "button" : "span"
-        const content = isValue ? net : group.key
-        const kind = isValue ? "Aporte " + net + " del radio " + group.key : "Radio " + group.key
+        const content = isValue ? net : row === "key" ? group.d : group.radioLabel
+        const kind = isValue
+          ? "Aporte " + net + " de la clave " + group.d
+          : (row === "key" ? "Radio al cuadrado " : "Radio ") + content
         const attributes = interactive
           ? ' type="button" data-key="' + group.d + '" aria-label="' + kind + '"'
           : ""
@@ -933,8 +1045,8 @@
               '<div class="group"><div class="pair" data-block="' +
               group.d +
               '">' +
-              tile(group, false) +
-              tile(group, true) +
+              tile(group, "radio") +
+              tile(group, "value") +
               '</div><p class="calculation">' +
               group.oli +
               " − " +
@@ -944,17 +1056,22 @@
               "</p></div>",
           )
           .join("")
+        const rows = [
+          ...(stage === 4 ? [] : [["radio", "Radio"]]),
+          ["key", "Radio² / Claves"],
+          ["value", "Valores"],
+        ]
         table.innerHTML =
           "<tbody>" +
-          [false, true]
+          rows
             .map(
-              (isValue) =>
-                '<tr><th scope="row">' +
-                (isValue ? "Valores" : "Claves") +
+              ([row, label]) =>
+                '<tr data-row="' +
+                row +
+                '"><th scope="row">' +
+                label +
                 "</th>" +
-                visibleGroups
-                  .map((group) => "<td>" + tile(group, isValue, true) + "</td>")
-                  .join("") +
+                visibleGroups.map((group) => "<td>" + tile(group, row, true) + "</td>").join("") +
                 "</tr>",
             )
             .join("") +
@@ -985,13 +1102,17 @@
         const revision = joinRevision
         tableArea.setAttribute("data-merging", "")
         const sceneRect = scene.getBoundingClientRect()
-        const firstRow = table.rows[0]
+        const radioRow = table.querySelector('[data-row="radio"]')
+        const valueRow = table.querySelector('[data-row="value"]')
         const groupRect = groupGrid.getBoundingClientRect()
         scene.style.minHeight =
           Math.ceil(groupRect.bottom - sceneRect.top + groupRect.height + 8) + "px"
         const animations = [...groupGrid.querySelectorAll(".pair")].map((block, i) => {
           const source = block.getBoundingClientRect()
-          const target = firstRow.cells[i + 1].getBoundingClientRect()
+          const target = radioRow.cells[i + 1].getBoundingClientRect()
+          const value = valueRow.cells[i + 1].getBoundingClientRect()
+          const startGap = getComputedStyle(block).rowGap
+          const endGap = value.top - target.bottom + "px"
           const startX = source.left - sceneRect.left
           const startY = groupRect.bottom + source.top - groupRect.top - sceneRect.top + 8
           const endX = target.left - sceneRect.left
@@ -1006,7 +1127,11 @@
           const finish = "translate(" + endX + "px," + endY + "px)"
           return copy
             .animate(
-              [{ transform: start }, { transform: start, offset: 0.23 }, { transform: finish }],
+              [
+                { transform: start, rowGap: startGap },
+                { transform: start, rowGap: startGap, offset: 0.23 },
+                { transform: finish, rowGap: endGap },
+              ],
               { duration: 680, fill: "both", easing: "ease-in-out" },
             )
             .finished.catch(() => {})
@@ -1040,6 +1165,7 @@
         byId("plan-tools").hidden = stage === 4
         byId("legend").hidden = stage >= 2
         byId("search-panel").hidden = stage !== 4
+        byId("trace-result").hidden = stage !== 4
         byId("matrix-panel").hidden = stage !== 4 || algorithm.value !== "brute"
         byId("trace-pointer").hidden = true
         byId("trace-ranges").hidden = stage !== 4
@@ -1054,9 +1180,10 @@
               format.format(model.shots.length) +
               "."
             : ""
-        for (const [index, element] of [...byId("stages").children].entries()) {
-          if (index === stage) element.setAttribute("aria-current", "step")
-          else element.removeAttribute("aria-current")
+        for (const [index, button] of stages.entries()) {
+          if (index === stage) button.setAttribute("aria-current", "step")
+          else button.removeAttribute("aria-current")
+          button.disabled = index !== 0 && model.shots.length === 0
         }
       }
 
@@ -1101,7 +1228,7 @@
         scene.toggleAttribute("data-search", tracing)
         canvas.hidden = tracing
         if (tracing) {
-          const width = Math.max(normalWidth, Math.ceil(92 + visibleGroups.length * 57.6))
+          const width = Math.max(normalWidth, Math.ceil(108 + visibleGroups.length * 57.6))
           scene.style.width = width + "px"
           groupGrid.hidden = true
           byId("group-nav").hidden = model.groups.length <= pageSize
@@ -1109,16 +1236,19 @@
           return
         }
         const alignment = clamp(position)
-        const zoom = clamp(position - 1)
+        const transition = clamp(position - 1)
         const planeHeight = Math.max(300, Math.min(445, normalWidth * 0.6))
-        const height = Math.round(mix(planeHeight, 64, zoom))
-        const wideWidth = Math.max(normalWidth, 128 + visibleGroups.length * 72)
-        const width = Math.round(mix(normalWidth, wideWidth, zoom))
-        scene.style.width = zoom > 0 ? width + "px" : ""
+        const height = Math.round(mix(planeHeight, 64, transition))
+        const scaleFactor = zoomFactor()
+        const baseWidth = Math.max(normalWidth, 128 + visibleGroups.length * 72)
+        const focusWidth = (baseWidth - 128) * scaleFactor
+        const wideWidth = Math.max(normalWidth, Math.ceil(128 + focusWidth))
+        const width = Math.round(mix(normalWidth, wideWidth, transition))
+        scene.style.width = transition > 0 ? width + "px" : ""
         canvas.style.height = height + "px"
-        groupGrid.hidden = zoom < 1
-        byId("group-nav").hidden = zoom < 1 || model.groups.length <= pageSize
-        scroll.tabIndex = zoom === 1 && wideWidth > normalWidth ? 0 : -1
+        groupGrid.hidden = transition < 1
+        byId("group-nav").hidden = transition < 1 || model.groups.length <= pageSize
+        scroll.tabIndex = transition === 1 && wideWidth > normalWidth ? 0 : -1
 
         const ratio = Math.min(devicePixelRatio || 1, 2)
         const pixelWidth = Math.round(width * ratio)
@@ -1130,12 +1260,13 @@
         context.setTransform(ratio, 0, 0, ratio, 0, 0)
         context.clearRect(0, 0, width, height)
         const cx = normalWidth / 2 + pan.x
-        const cy = height / 2 + pan.y * (1 - zoom)
+        const cy = height / 2 + pan.y * (1 - transition)
         const extent = Math.max(4, model.groups.at(-1)?.radius ?? 0)
-        const scale = Math.max(8, Math.min(normalWidth, planeHeight) / 2 - 32) / extent
+        const scale =
+          (Math.max(8, Math.min(normalWidth, planeHeight) / 2 - 32) / extent) * scaleFactor
         view = { cx, cy, scale }
-        if (zoom < 1) {
-          context.globalAlpha = 1 - zoom
+        if (transition < 1) {
+          context.globalAlpha = 1 - transition
           drawGrid(normalWidth, height, cx, cy, scale)
           drawCircles(cx, cy, scale)
           context.globalAlpha = 1
@@ -1153,19 +1284,42 @@
 
         if (alignment < 1) drawShots(cx, cy, scale, alignment)
         else {
-          const shown = zoom > 0 ? visibleGroups : model.guides
+          const shown = transition > 0 ? visibleGroups : model.guides
           const first = shown[0]
           const span = first ? radiusDifference(shown.at(-1), first) : 0
-          const focusScale = span > 0 ? (wideWidth - 128) / span : scale
+          const focusScale = span > 0 ? focusWidth / span : scale
           const positions = shown.map((group) => {
             const x = cx + group.radius * scale
             const focused =
-              span > 0 ? 64 + radiusDifference(group, first) * focusScale : wideWidth / 2
-            return mix(x, focused, zoom)
+              span > 0
+                ? (wideWidth - focusWidth) / 2 + radiusDifference(group, first) * focusScale
+                : wideWidth / 2
+            return mix(x, focused, transition)
           })
-          drawAxisGroups(shown, positions, cy, zoom)
-          if (zoom === 1) placeGroups(positions, height - cy)
+          drawAxisGroups(shown, positions, cy, transition)
+          if (transition === 1) placeGroups(positions, height - cy)
         }
+        if (position === 0) drawTeamLabels(width, cx)
+      }
+
+      function drawTeamLabels(width, cx) {
+        const divider = Math.max(0, Math.min(width, cx))
+        context.save()
+        context.font = "bold 11px system-ui"
+        context.textAlign = "center"
+        context.lineWidth = 3
+        context.strokeStyle = colors.plot
+        for (const [label, color, left, right] of [
+          ["RIVAL", colors.rival, 0, divider],
+          ["OLIVARES", colors.olive, divider, width],
+        ]) {
+          if (right - left < context.measureText(label).width + 12) continue
+          const center = (left + right) / 2
+          context.strokeText(label, center, 17)
+          context.fillStyle = color
+          context.fillText(label, center, 17)
+        }
+        context.restore()
       }
 
       function radiusDifference(group, first) {
@@ -1303,21 +1457,17 @@
       }
 
       function createSearch(method, weights) {
-        const prefix = [0]
-        if (method === "brute") {
-          for (const weight of weights) prefix.push(prefix.at(-1) + weight)
-        }
         const count = weights.length
         return {
           method,
           weights,
-          prefix,
           steps: 0,
           total: method === "brute" ? (count * (count + 1)) / 2 : count,
           start: 0,
           end: 0,
           current: null,
-          best: { start: -1, end: -1, sum: 0 },
+          best: emptyRange,
+          history: method === "kadane" ? [] : undefined,
         }
       }
 
@@ -1325,36 +1475,108 @@
         if (state.steps === state.total) return
         const end = state.end
         let start
-        let sum
         let base = 0
         let restarted = false
         if (state.method === "brute") {
           start = state.start
-          sum = state.prefix[end + 1] - state.prefix[start]
-          if (start === end) {
-            state.start = 0
-            state.end++
-          } else {
+          base = start === end ? 0 : state.current.sum
+          if (end === state.weights.length - 1) {
             state.start++
-          }
+            state.end = state.start
+          } else state.end++
         } else {
           const previous = state.current
+          state.history.push({ current: previous, best: state.best })
           restarted = previous !== null && previous.sum < 0
           const extend = previous !== null && !restarted
           start = extend ? previous.start : end
           base = extend ? previous.sum : 0
-          sum = base + state.weights[end]
           state.end++
         }
+        const sum = base + state.weights[end]
         const improved = sum > state.best.sum
         state.current = { start, end, sum, base, restarted, improved }
         if (improved) state.best = state.current
         state.steps++
       }
 
+      function bestBeforeEachRow(weights) {
+        const rows = new Array(weights.length)
+        let sum = 0
+        let end = weights.length - 1
+        // De derecha a izquierda, encuentra el mejor final para cada inicio.
+        for (let start = weights.length - 1; start >= 0; start--) {
+          if (sum <= 0) {
+            sum = 0
+            end = start
+          }
+          sum += weights[start]
+          rows[start] = { start, end, sum }
+        }
+        let best = emptyRange
+        for (const [start, candidate] of rows.entries()) {
+          rows[start] = best
+          if (candidate.sum > best.sum) best = candidate
+        }
+        return rows
+      }
+
+      function seekBruteStep(state, step, start, end) {
+        state.bestBeforeRow ??= bestBeforeEachRow(state.weights)
+        state.steps = step - (end - start + 1)
+        state.start = start
+        state.end = start
+        state.current = null
+        state.best = state.bestBeforeRow[start]
+        // Recorre solo el tramo de la fila que corresponde al paso elegido.
+        while (state.steps < step) advanceSearch(state)
+      }
+
+      function rewindSearch(state) {
+        if (state.steps === 0) return
+        if (state.method === "kadane") {
+          const { current, best } = state.history.pop()
+          state.current = current
+          state.best = best
+          state.end--
+          state.steps--
+          return
+        }
+        if (state.steps === 1) {
+          Object.assign(state, { steps: 0, start: 0, end: 0, current: null, best: emptyRange })
+          return
+        }
+        const { start, end } = state.current
+        if (start === end)
+          seekBruteStep(state, state.steps - 1, start - 1, state.weights.length - 1)
+        else seekBruteStep(state, state.steps - 1, start, end - 1)
+      }
+
+      function finishSearch(state) {
+        if (state.steps === state.total) return
+        if (state.method === "brute") {
+          const last = state.weights.length - 1
+          seekBruteStep(state, state.total, last, last)
+        } else {
+          while (state.steps < state.total) advanceSearch(state)
+        }
+      }
+
       function stopPlayback() {
         clearInterval(playback)
         playback = undefined
+      }
+
+      function schedulePlayback() {
+        stopPlayback()
+        playback = setInterval(stepSearch, stepMilliseconds / Number(speed.value))
+      }
+
+      function updateSpeed() {
+        const multiplier = format.format(Number(speed.value))
+        byId("trace-speed-value").value = multiplier + "×"
+        speed.setAttribute("aria-valuetext", multiplier + " veces")
+        if (playback !== undefined) schedulePlayback()
       }
 
       function resetSearch() {
@@ -1363,23 +1585,17 @@
           algorithm.value,
           model.groups.map((group) => group.oli - group.rival),
         )
-        directBest = undefined
+        matrixPages = [0, 0]
+        matrixPrefixes = [0]
+        if (search.method === "brute") {
+          // La matriz permite consultar cualquier página de intervalos ya visitados.
+          for (const weight of search.weights) matrixPrefixes.push(matrixPrefixes.at(-1) + weight)
+        }
         page = 0
         scroll.scrollLeft = 0
         fillGroups()
         draw()
         renderSearch()
-      }
-
-      function showOptimum() {
-        stopPlayback()
-        // El resultado directo se calcula en tiempo lineal, también al explorar fuerza bruta.
-        const solution = createSearch("kadane", search.weights)
-        while (solution.steps < solution.total) advanceSearch(solution)
-        directBest = solution.best
-        followIndex(Math.max(0, directBest.start))
-        renderSearch()
-        revealTableIndex(directBest.start)
       }
 
       function followIndex(index) {
@@ -1392,18 +1608,28 @@
       }
 
       function stepSearch() {
-        directBest = undefined
         advanceSearch(search)
-        if (search.current) followIndex(search.current.end)
         if (search.steps === search.total) stopPlayback()
+        showStep()
+      }
+
+      function showStep() {
+        const { current } = search
+        matrixPages = [
+          Math.floor((current?.start ?? 0) / pageSize),
+          Math.floor((current?.end ?? 0) / pageSize),
+        ]
+        followIndex(current?.end ?? 0)
         renderSearch()
-        if (search.current) revealTableIndex(search.current.end)
+        if (current) revealTableIndex(current.end)
       }
 
       function revealTableIndex(index) {
         const local = index - page * pageSize
         if (local < 0 || local >= visibleGroups.length) return
-        const cell = table.rows[1].cells[local + 1].getBoundingClientRect()
+        const cell = table
+          .querySelector('[data-row="value"]')
+          .cells[local + 1].getBoundingClientRect()
         const viewport = scroll.getBoundingClientRect()
         if (cell.right > viewport.right - 8) scroll.scrollLeft += cell.right - viewport.right + 8
         else if (cell.left < viewport.left + 8) scroll.scrollLeft += cell.left - viewport.left - 8
@@ -1429,44 +1655,22 @@
       }
 
       function currentDetail(current) {
-        if (directBest) return "Resultado directo. Podés recorrer los pasos del algoritmo elegido."
         if (!current)
           return search.method === "brute"
-            ? "Las sumas de prefijos permiten evaluar cada intervalo en tiempo constante."
+            ? "Fijá un inicio y extendé el final sumando un aporte por paso."
             : "Kadane conserva la mejor suma de un intervalo que termina en cada índice."
         const { start, end, sum, base, restarted, improved } = current
-        const detail =
-          search.method === "brute"
-            ? "Inicio " +
-              start +
-              " · final " +
-              end +
-              " · P[" +
-              (end + 1) +
-              "] − P[" +
-              start +
-              "] = " +
-              search.prefix[end + 1] +
-              " − (" +
-              search.prefix[start] +
-              ") = " +
-              sum +
-              "."
-            : "i = " +
-              end +
-              " · actual [" +
-              start +
-              ", " +
-              end +
-              "] · " +
-              (restarted ? "Se descarta la suma anterior por ser negativa. " : "") +
-              base +
-              " + (" +
-              search.weights[end] +
-              ") = " +
-              sum +
-              "."
-        return detail + (improved ? " Este intervalo pasa a ser el mejor." : "")
+        const addition = `${base} + (${search.weights[end]}) = ${sum}.`
+        const update = improved ? "Este intervalo pasa a ser el mejor." : ""
+        if (search.method === "brute") {
+          const reset = start === end ? "La suma arranca en cero. " : ""
+          return `Inicio ${start} · final ${end} · ${reset}${addition} ${update}`.trimEnd()
+        }
+        const lines = [`i = ${end}`, `Rango actual [${start}, ${end}]`]
+        if (restarted) lines.push("Se descarta la suma anterior por ser negativa.")
+        lines.push(addition)
+        if (update) lines.push(update)
+        return lines.join("\n")
       }
 
       function track(name, range, best) {
@@ -1510,22 +1714,28 @@
         pointer.innerHTML = showPointer
           ? '<span class="trace-pointer" style="grid-column:' + (local + 2) + '">↓</span>'
           : ""
-        for (const [index, cell] of [...table.rows[1].cells].slice(1).entries()) {
+        const values = table.querySelector('[data-row="value"]').cells
+        for (const [index, cell] of [...values].slice(1).entries()) {
           cell.firstElementChild.toggleAttribute("data-cursor", showPointer && index === local)
         }
         byId("trace-ranges").innerHTML =
-          (directBest ? "" : track("Actual", current, false)) + track("Mejor", best, true)
+          track("Actual", current, false) + track("Mejor", best, true)
       }
 
       function renderMatrix(current, best) {
         const matrix = byId("matrix")
-        const focus = current ?? directBest ?? search.current
-        const rowBase = Math.floor(Math.max(0, focus?.start ?? 0) / pageSize) * pageSize
-        const colBase = Math.floor(Math.max(0, focus?.end ?? 0) / pageSize) * pageSize
+        const rowBase = matrixPages[0] * pageSize
+        const colBase = matrixPages[1] * pageSize
         const count = search.weights.length
+        const pages = Math.ceil(count / pageSize)
+        byId("matrix-pages").hidden = pages <= 1
+        byId("matrix-page-count").textContent = `De 1 a ${format.format(pages)}`
+        for (const [index, field] of matrixPageFields.entries()) {
+          field.max = String(pages)
+          field.value = String(matrixPages[index] + 1)
+        }
         const cols = Math.min(pageSize, count - colBase)
         const rows = Math.min(pageSize, count - rowBase)
-        const tested = search.current
         const headers = Array.from(
           { length: cols },
           (_, j) => '<th scope="col">' + (colBase + j) + "</th>",
@@ -1538,8 +1748,8 @@
             const active = current?.start === start && current.end === end
             const wins = best.start === start && best.end === end
             const visited =
-              tested && (end < tested.end || (end === tested.end && start <= tested.start))
-            const score = visited || wins ? search.prefix[end + 1] - search.prefix[start] : "·"
+              current && (start < current.start || (start === current.start && end <= current.end))
+            const score = visited ? matrixPrefixes[end + 1] - matrixPrefixes[start] : "·"
             return (
               "<td" +
               (active ? ' data-current aria-current="true"' : "") +
@@ -1574,17 +1784,18 @@
       }
 
       function renderSearch() {
-        const current = directBest ? null : search.current
-        const best = directBest ?? search.best
+        const { current, best } = search
         const finished = search.steps === search.total
-        byId("trace-result").textContent = resultText(best, finished || directBest)
+        byId("trace-result").textContent = resultText(best, finished)
         byId("trace-progress").textContent =
           "Paso " + format.format(search.steps) + " de " + format.format(search.total)
         byId("trace-detail").textContent = currentDetail(current)
         byId("trace-play").disabled = finished || playback !== undefined
         byId("trace-pause").disabled = playback === undefined
+        byId("trace-back").disabled = search.steps === 0
         byId("trace-step").disabled = finished
-        byId("trace-reset").disabled = search.steps === 0 && !directBest
+        byId("trace-optimum").disabled = finished
+        byId("trace-reset").disabled = search.steps === 0
         byId("matrix-panel").hidden = search.method !== "brute"
         renderRanges(current, best)
         if (search.method === "brute") renderMatrix(current, best)
@@ -1647,16 +1858,42 @@
         if (plotMode.value !== "move" && stage !== 0) goTo(0, true)
         else showPlotMode()
       })
+      function showZoom() {
+        byId("zoom-level").value = Math.round(zoomFactor() * 100) + "%"
+        byId("zoom-out").disabled = zoomStep === minZoomStep
+        byId("zoom-in").disabled = zoomStep === maxZoomStep
+      }
+      function changeZoom(step) {
+        const before = zoomFactor()
+        const expanded = position === 2 && stage < 4
+        const windowCenter = scroll.clientWidth / 2
+        const offset = scroll.scrollLeft + windowCenter - scene.clientWidth / 2
+        zoomStep = Math.max(minZoomStep, Math.min(maxZoomStep, zoomStep + step))
+        const ratio = zoomFactor() / before
+        pan = { x: pan.x * ratio, y: pan.y * ratio }
+        showZoom()
+        draw()
+        if (expanded) scroll.scrollLeft = scene.clientWidth / 2 + offset * ratio - windowCenter
+      }
+      byId("zoom-out").addEventListener("click", () => changeZoom(-1))
+      byId("zoom-in").addEventListener("click", () => changeZoom(1))
       byId("center-plot").addEventListener("click", () => {
         pan = { x: 0, y: 0 }
+        zoomStep = 0
+        showZoom()
         scroll.scrollLeft = 0
         draw()
       })
 
       algorithm.addEventListener("change", resetSearch)
-      byId("trace-optimum").addEventListener("click", showOptimum)
+      speed.addEventListener("input", updateSpeed)
+      byId("trace-optimum").addEventListener("click", () => {
+        stopPlayback()
+        finishSearch(search)
+        showStep()
+      })
       byId("trace-play").addEventListener("click", () => {
-        playback = setInterval(stepSearch, 480)
+        schedulePlayback()
         stepSearch()
       })
       byId("trace-pause").addEventListener("click", () => {
@@ -1667,9 +1904,34 @@
         stopPlayback()
         stepSearch()
       })
+      byId("trace-back").addEventListener("click", () => {
+        stopPlayback()
+        rewindSearch(search)
+        showStep()
+      })
       byId("trace-reset").addEventListener("click", resetSearch)
+      for (const [index, field] of matrixPageFields.entries()) {
+        field.addEventListener("focus", () => {
+          if (playback === undefined) return
+          stopPlayback()
+          renderSearch()
+        })
+        field.addEventListener("change", () => {
+          if (Number.isFinite(field.valueAsNumber)) {
+            matrixPages[index] =
+              Math.max(1, Math.min(Number(field.max), Math.round(field.valueAsNumber))) - 1
+          }
+          byId("matrix-scroll").scrollTo(0, 0)
+          renderMatrix(search.current, search.best)
+        })
+      }
       previous.addEventListener("click", () => goTo(stage - 1))
       next.addEventListener("click", () => goTo((stage + 1) % stageText.length))
+      for (const [index, button] of stages.entries()) {
+        button.addEventListener("click", () => {
+          if (index !== stage) goTo(index)
+        })
+      }
       for (const [id, delta] of [
         ["prev-group-page", -1],
         ["next-group-page", 1],
@@ -1703,6 +1965,7 @@
         coordinates.focus()
       })
       new ResizeObserver(draw).observe(scroll)
+      updateSpeed()
       coordinates.value = example
       loadText()
     </script>

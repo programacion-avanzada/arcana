@@ -112,6 +112,21 @@
         flex-wrap: wrap;
         gap: 0.4rem;
       }
+      .zoom-tools {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .zoom-tools button {
+        min-width: 2.75rem;
+      }
+      .zoom-tools output {
+        min-width: 4.5ch;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.84rem;
+        font-variant-numeric: tabular-nums;
+      }
       select {
         min-height: 2.55rem;
         border: 1px solid var(--line);
@@ -309,6 +324,11 @@
         padding-inline: 0.4rem;
         font-size: 1rem;
       }
+      .square-control {
+        margin-top: 0.85rem;
+        padding-top: 0.7rem;
+        border-top: 1px solid var(--line);
+      }
       .counts {
         margin: 0;
         display: grid;
@@ -403,8 +423,8 @@
       <a
         class="back"
         id="article-link"
-        href="../../bestiario/oia/lanzamiento-de-aceitunas#visualizaciones"
-        >← Volver al artículo</a
+        href="../../bestiario/oia/soluciones/lanzamiento-de-aceitunas-fuerza-bruta#visualizacion-aro"
+        >← Volver a la resolución</a
       >
       <header>
         <div>
@@ -438,7 +458,7 @@
             </p>
             <button class="primary" type="submit">Procesar coordenadas</button>
             <div class="actions">
-              <button id="load-example" type="button">Cargar ejemplo</button>
+              <button id="load-example" type="button">Restablecer ejemplo de la OIA</button>
               <button id="clear-input" type="button">Limpiar</button>
             </div>
             <div>
@@ -455,6 +475,11 @@
             <div class="field-tools">
               <h2 id="field-heading">La cancha</h2>
               <div class="plan-tools">
+                <div class="zoom-tools" role="group" aria-label="Zoom del plano">
+                  <button id="zoom-out" type="button" aria-label="Alejar plano">−</button>
+                  <output id="zoom-level" aria-label="Escala del plano">100%</output>
+                  <button id="zoom-in" type="button" aria-label="Acercar plano">+</button>
+                </div>
                 <button id="center-plot" type="button">Centrar</button>
                 <label for="plot-mode">Modo</label>
                 <select id="plot-mode">
@@ -472,7 +497,7 @@
             <canvas
               id="field"
               role="img"
-              aria-label="Plano de los tiros y el aro centrado en el origen"
+              aria-label="Plano del aro, con el rival en x negativo y Olivares en x positivo"
               aria-describedby="field-help"
             ></canvas>
             <figcaption class="quiet">
@@ -484,7 +509,11 @@
           <div class="controls">
             <fieldset class="panel" data-border="inner">
               <legend>Radio interior · R₁</legend>
-              <output class="radius" id="inner-radius" for="inner-slider inner-input"></output>
+              <output
+                class="radius"
+                id="inner-radius"
+                for="inner-slider inner-input inner-square-slider inner-square-input"
+              ></output>
               <input
                 type="range"
                 id="inner-slider"
@@ -516,10 +545,30 @@
                   +
                 </button>
               </div>
+              <div class="square-control">
+                <label for="inner-square-input">R₁²</label>
+                <input
+                  type="range"
+                  id="inner-square-slider"
+                  min="0"
+                  aria-label="Mover el cuadrado del radio interior"
+                />
+                <input
+                  type="text"
+                  id="inner-square-input"
+                  inputmode="decimal"
+                  maxlength="128"
+                  spellcheck="false"
+                />
+              </div>
             </fieldset>
             <fieldset class="panel" data-border="outer">
               <legend>Radio exterior · R₂</legend>
-              <output class="radius" id="outer-radius" for="outer-slider outer-input"></output>
+              <output
+                class="radius"
+                id="outer-radius"
+                for="outer-slider outer-input outer-square-slider outer-square-input"
+              ></output>
               <input
                 type="range"
                 id="outer-slider"
@@ -551,11 +600,27 @@
                   +
                 </button>
               </div>
+              <div class="square-control">
+                <label for="outer-square-input">R₂²</label>
+                <input
+                  type="range"
+                  id="outer-square-slider"
+                  min="0"
+                  aria-label="Mover el cuadrado del radio exterior"
+                />
+                <input
+                  type="text"
+                  id="outer-square-input"
+                  inputmode="decimal"
+                  maxlength="128"
+                  spellcheck="false"
+                />
+              </div>
             </fieldset>
           </div>
           <p class="quiet">
             Al arrastrar un borde cerca del radio de un tiro, se ajusta a ese radio. Podés escribir
-            un radio decimal y confirmarlo con Enter. Los botones − y + saltan entre radios de
+            un radio o su cuadrado y confirmarlo con Enter. Los botones − y + saltan entre radios de
             tiros. Si los bordes se cruzan, ambos quedan en el radio elegido.
           </p>
           <p class="error" id="radius-error" role="alert"></p>
@@ -610,6 +675,7 @@
 -1 -10`
       const coordinateLimit = 2_000_000_000n
       const maxSquare = 2n * coordinateLimit ** 2n
+      const squareSliderSteps = 1_000n
       const drawingLimit = 5_000
       const intFormat = new Intl.NumberFormat("es-AR")
       const radiusFormat = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 3 })
@@ -629,28 +695,57 @@
         slider: byId(`${name}-slider`),
         input: byId(`${name}-input`),
         radius: byId(`${name}-radius`),
+        squareSlider: byId(`${name}-square-slider`),
+        squareInput: byId(`${name}-square-input`),
         steps: [...document.querySelectorAll(`[data-border="${name}"] [data-step]`)],
       }))
       const styles = getComputedStyle(document.documentElement)
       const colors = Object.fromEntries(
-        ["grid", "axis", "ink", "muted", "olive", "rival", "inner", "outer", "ring", "surface"].map(
-          (name) => [name, styles.getPropertyValue(`--${name}`).trim()],
-        ),
+        [
+          "grid",
+          "axis",
+          "ink",
+          "muted",
+          "olive",
+          "rival",
+          "inner",
+          "outer",
+          "ring",
+          "surface",
+          "plot",
+        ].map((name) => [name, styles.getPropertyValue(`--${name}`).trim()]),
       )
 
       let model
       let ring
       let integerBounds
+      let squareLimit
       let view
       let drag
       let pan = { x: 0, y: 0 }
+      let zoomStep = 0
       let drawingFrame = 0
       let inputRevision = 0
       let appliedText = ""
 
-      if (location.protocol === "file:") {
-        byId("article-link").href = "../../../content/bestiario/oia/lanzamiento-de-aceitunas.md"
-      }
+      const minZoomStep = -3
+      const maxZoomStep = 6
+      const zoomFactor = () => 2 ** (zoomStep / 2)
+      const entry = location.hash.slice(1)
+      const method = entry.replace(/-visualizaciones$/, "")
+      const fromProblem = method === "enunciado"
+      const articlePath = fromProblem
+        ? "bestiario/oia/lanzamiento-de-aceitunas"
+        : "bestiario/oia/soluciones/lanzamiento-de-aceitunas-" +
+          (method === "kadane" ? "greedy" : "fuerza-bruta")
+      const section =
+        fromProblem || entry.endsWith("-visualizaciones") ? "visualizaciones" : "visualizacion-aro"
+      const back = byId("article-link")
+      back.href =
+        location.protocol === "file:"
+          ? "../../../content/" + articlePath + ".md"
+          : "../../" + articlePath + "#" + section
+      if (fromProblem) back.textContent = "← Volver al enunciado"
 
       function inputLines(text) {
         return text
@@ -688,35 +783,66 @@
         })
       }
 
-      function integerBorder(square) {
-        const radius = Math.sqrt(Number(square))
+      function parseDecimal(text, maxExponent = 400) {
+        const value = text.trim().replace(",", ".")
+        const match = /^\+?(\d*)(?:\.(\d*))?(?:e([+-]?\d+))?$/i.exec(value)
+        if (!match || !(match[1] || match[2])) return null
+        const exponent = Number(match[3] ?? 0)
+        if (Math.abs(exponent) > maxExponent) return null
+        const fraction = match[2] ?? ""
+        const power = exponent - fraction.length
+        const digits = BigInt(match[1] + fraction)
         return {
-          radius,
-          numerator: square,
-          denominator: 1n,
-          text: String(radius).replace(".", ","),
-          approximate: BigInt(Math.round(radius)) ** 2n !== square,
+          number: Number(value),
+          numerator: digits * 10n ** BigInt(Math.max(0, power)),
+          denominator: 10n ** BigInt(Math.max(0, -power)),
+          text: value.replace(".", ","),
         }
       }
 
-      // A decimal has an exact rational square. Only drawing uses a floating-point radius.
       function decimalBorder(text) {
-        const value = text.trim().replace(",", ".")
-        const match = /^\+?(\d*)(?:\.(\d*))?(?:e([+-]?\d+))?$/i.exec(value)
-        const radius = Number(value)
-        if (!match || !(match[1] || match[2]) || !Number.isFinite(radius)) return null
-        const exponent = Number(match[3] ?? 0)
-        if (Math.abs(exponent) > 400) return null
-        const fraction = match[2] ?? ""
-        const power = 2 * (exponent - fraction.length)
-        const digits = BigInt(match[1] + fraction)
+        const decimal = parseDecimal(text)
+        if (!decimal || !Number.isFinite(decimal.number)) return null
         return {
-          radius,
-          numerator: digits ** 2n * 10n ** BigInt(Math.max(0, power)),
-          denominator: 10n ** BigInt(Math.max(0, -power)),
-          text: value.replace(".", ","),
+          radius: decimal.number,
+          numerator: decimal.numerator ** 2n,
+          denominator: decimal.denominator ** 2n,
+          text: decimal.text,
           approximate: false,
         }
+      }
+
+      function squareBorder(numerator, denominator = 1n) {
+        // Normaliza el cuadrado antes de tomar la raíz para que solo la raíz use punto flotante.
+        const digits = String(numerator)
+        const exponent = digits.length - String(denominator).length
+        const rootExponent = Math.floor(exponent / 2)
+        const scaled = Number(`${digits[0]}.${digits.slice(1, 17)}e${exponent - 2 * rootExponent}`)
+        const radius = Number(`${Math.sqrt(scaled)}e${rootExponent}`)
+        if (!Number.isFinite(radius)) return null
+        const shown = decimalBorder(String(radius))
+        return {
+          radius,
+          numerator,
+          denominator,
+          text: shown.text,
+          approximate: shown.numerator * denominator !== numerator * shown.denominator,
+        }
+      }
+
+      function formatSquare({ numerator, denominator }) {
+        if (numerator === 0n) return "0"
+        const digits = String(numerator)
+        const point = digits.length - (String(denominator).length - 1)
+        const significant = digits.replace(/0+$/, "")
+        if (point > 22 || point <= -6) {
+          const mantissa =
+            significant.length === 1 ? significant : significant[0] + "," + significant.slice(1)
+          return `${mantissa}e${point - 1}`
+        }
+        if (point <= 0) return "0," + "0".repeat(-point) + significant
+        if (significant.length <= point) return significant.padEnd(point, "0")
+        return significant.slice(0, point) + "," + significant.slice(point)
       }
 
       function floorSquare(border) {
@@ -806,7 +932,7 @@
             ? next
             : previous
         if (Math.abs(model.radii[nearest] - radius) * scale <= 6) {
-          return integerBorder(model.distances[nearest])
+          return squareBorder(model.distances[nearest])
         }
         return decimalBorder(String(radius))
       }
@@ -814,8 +940,10 @@
       function setShots(shots, keepBorders = false) {
         model = prepareModel(shots)
         if (!keepBorders) {
-          ring = [0n, model.farthest].map(integerBorder)
+          ring = [squareBorder(0n), squareBorder(model.farthest)]
           pan = { x: 0, y: 0 }
+          zoomStep = 0
+          showZoom()
         }
         appliedText = coordinates.value
         byId("input-error").textContent = ""
@@ -839,23 +967,36 @@
         }
       }
 
-      function setBorder(index, value) {
+      function setBorder(index, value, rescaleSquares = true) {
         ring[index] = value
         if (ring[0].numerator * ring[1].denominator > ring[1].numerator * ring[0].denominator) {
           ring[1 - index] = value
         }
         radiusError.textContent = ""
-        refresh()
+        refresh(rescaleSquares)
       }
 
-      function applyRadius(index) {
+      function applyRadius(index, squared) {
         const control = controls[index]
-        const text = control.input.value.trim()
-        if (text === ring[index].text) return
-        const value = decimalBorder(text)
+        const input = squared ? control.squareInput : control.input
+        const text = input.value.trim()
+        const previous = squared ? formatSquare(ring[index]) : ring[index].text
+        if (text === previous) {
+          if (input.hasAttribute("aria-invalid")) {
+            input.removeAttribute("aria-invalid")
+            radiusError.textContent = ""
+          }
+          return
+        }
+        const square = squared ? parseDecimal(text, 1_000) : null
+        const value = squared
+          ? square && squareBorder(square.numerator, square.denominator)
+          : decimalBorder(text)
         if (!value) {
-          radiusError.textContent = "Ingresá un radio no negativo, por ejemplo 2,5."
-          control.input.setAttribute("aria-invalid", "true")
+          radiusError.textContent = squared
+            ? "Ingresá un cuadrado no negativo, por ejemplo 6,25."
+            : "Ingresá un radio no negativo, por ejemplo 2,5."
+          input.setAttribute("aria-invalid", "true")
           return
         }
         setBorder(index, value)
@@ -865,7 +1006,7 @@
         return value > 0 ? `+${intFormat.format(value)}` : intFormat.format(value)
       }
 
-      function refresh() {
+      function refresh(rescaleSquares = true) {
         integerBounds = [ceilSquare(ring[0]), floorSquare(ring[1])]
         const start = firstBound(model.distances, integerBounds[0])
         const end = firstBound(model.distances, integerBounds[1], true)
@@ -888,6 +1029,12 @@
         output.value = end === start ? "0 0" : `${integerBounds[0]} ${upper}`
         copyStatus.textContent = ""
 
+        if (rescaleSquares) {
+          const dataLimit = (36n * model.farthest + 24n) / 25n
+          squareLimit = dataLimit > 25n ? dataLimit : 25n
+          const outerLimit = ceilSquare(ring[1])
+          if (outerLimit > squareLimit) squareLimit = outerLimit
+        }
         for (const [index, control] of controls.entries()) {
           const border = ring[index]
           const format = border.radius >= 1e6 ? compactFormat : radiusFormat
@@ -897,6 +1044,14 @@
           control.slider.max = String(Math.max(5, (model.radii.at(-1) ?? 0) * 1.2, ring[1].radius))
           control.slider.value = String(border.radius)
           control.slider.setAttribute("aria-valuetext", `Radio ${border.text}`)
+          const square = formatSquare(border)
+          control.squareInput.value = square
+          control.squareInput.removeAttribute("aria-invalid")
+          const divisor = border.denominator * squareLimit
+          control.squareSlider.value = String(
+            (border.numerator * squareSliderSteps + divisor / 2n) / divisor,
+          )
+          control.squareSlider.setAttribute("aria-valuetext", `Radio al cuadrado ${square}`)
           control.steps[0].disabled = firstBound(model.distances, ceilSquare(border)) === 0
           control.steps[1].disabled =
             firstBound(model.distances, floorSquare(border), true) === model.distances.length
@@ -928,7 +1083,8 @@
         const cx = width / 2 + pan.x
         const cy = height / 2 + pan.y
         const extent = Math.max(2, ring[1].radius, model.radii.at(-1) ?? 0)
-        const scale = drag?.scale ?? (Math.min(width, height) / 2 - 19) / extent / 1.08
+        const scale =
+          drag?.scale ?? ((Math.min(width, height) / 2 - 19) / extent / 1.08) * zoomFactor()
         const radii = ring.map((border) => border.radius * scale)
         drawGrid(width, height, cx, cy, scale)
 
@@ -978,7 +1134,28 @@
           context.fillText(index === 0 ? "R₁" : "R₂", x, cy - 12)
           return x
         })
+        drawTeamLabels(width, cx)
         view = { cx, cy, scale, handles }
+      }
+
+      function drawTeamLabels(width, cx) {
+        const divider = Math.max(0, Math.min(width, cx))
+        context.save()
+        context.font = "bold 11px system-ui"
+        context.textAlign = "center"
+        context.lineWidth = 3
+        context.strokeStyle = colors.plot
+        for (const [label, color, left, right] of [
+          ["RIVAL", colors.rival, 0, divider],
+          ["OLIVARES", colors.olive, divider, width],
+        ]) {
+          if (right - left < context.measureText(label).width + 12) continue
+          const center = (left + right) / 2
+          context.strokeText(label, center, 17)
+          context.fillStyle = color
+          context.fillText(label, center, 17)
+        }
+        context.restore()
       }
 
       function drawGrid(width, height, cx, cy, scale) {
@@ -1168,8 +1345,25 @@
         }[plotMode.value]
       }
       plotMode.addEventListener("change", showPlotMode)
+      function showZoom() {
+        byId("zoom-level").value = Math.round(zoomFactor() * 100) + "%"
+        byId("zoom-out").disabled = zoomStep === minZoomStep
+        byId("zoom-in").disabled = zoomStep === maxZoomStep
+      }
+      function changeZoom(step) {
+        const before = zoomFactor()
+        zoomStep = Math.max(minZoomStep, Math.min(maxZoomStep, zoomStep + step))
+        const ratio = zoomFactor() / before
+        pan = { x: pan.x * ratio, y: pan.y * ratio }
+        showZoom()
+        scheduleDrawing()
+      }
+      byId("zoom-out").addEventListener("click", () => changeZoom(-1))
+      byId("zoom-in").addEventListener("click", () => changeZoom(1))
       byId("center-plot").addEventListener("click", () => {
         pan = { x: 0, y: 0 }
+        zoomStep = 0
+        showZoom()
         scheduleDrawing()
       })
 
@@ -1177,17 +1371,28 @@
         control.slider.addEventListener("input", () =>
           setBorder(index, decimalBorder(control.slider.value)),
         )
-        control.input.addEventListener("change", () => applyRadius(index))
-        control.input.addEventListener("keydown", (event) => {
-          if (event.key === "Enter") applyRadius(index)
+        control.squareSlider.max = String(squareSliderSteps)
+        control.squareSlider.addEventListener("input", () => {
+          const numerator = squareLimit * BigInt(control.squareSlider.value)
+          const value = squareBorder(numerator, squareSliderSteps)
+          if (value) setBorder(index, value, false)
         })
+        for (const [input, squared] of [
+          [control.input, false],
+          [control.squareInput, true],
+        ]) {
+          input.addEventListener("change", () => applyRadius(index, squared))
+          input.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") applyRadius(index, squared)
+          })
+        }
         for (const button of control.steps) {
           button.addEventListener("click", () => {
             const forward = Number(button.dataset.step) === 1
             const stop = forward
               ? firstBound(model.distances, floorSquare(ring[index]), true)
               : firstBound(model.distances, ceilSquare(ring[index])) - 1
-            setBorder(index, integerBorder(model.distances[stop]))
+            setBorder(index, squareBorder(model.distances[stop]))
           })
         }
       }
@@ -1231,7 +1436,7 @@
         }
       })
       byId("best-ring").addEventListener("click", () => {
-        ring = model.best.bounds.map(integerBorder)
+        ring = model.best.bounds.map((square) => squareBorder(square))
         radiusError.textContent = ""
         refresh()
       })
