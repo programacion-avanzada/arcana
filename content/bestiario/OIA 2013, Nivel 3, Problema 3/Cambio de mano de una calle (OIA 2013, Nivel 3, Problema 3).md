@@ -13,15 +13,48 @@ Con el objetivo de reducir el tiempo de viaje matutino, el intendente ofrece cam
 
 [Problema original](https://www.oia.unsam.edu.ar/_media/prob/c3a13n3p3.pdf)
 
----
 ## Intuición
+El problema se puede interpretar a partir del caso de prueba dibujandolo para entender los caminos que se tienen en cuenta. Se considera que al invertir una calle, solo se puede reducir la distnacia si el camino más corto luego de esa operación, pasa por esa calle invertida. Cualquier camino que no la use ya existía antes del cambio, así que no puede ser más corto que el recorrido original. Entonces, si la calle original es $u \to v$ y la invertimos a $v \to u$, el camino mejorado tiene 3 tramos:
 
+- El tramo $S \rightsquigarrow v$ se puede calcular en el grafo **original**.
+- El tramo $u \rightsquigarrow T$ también se puede calcular en el grafo **original**.
+- En el medio se agrega la calle invertida, con el mismo costo $\mathbf{w}$, en esta parte está lo relevante. ¿Vale la pena usar esa calle para obtener un camino mínimo mejor?
 
-### OEIS
+Además, el camino nuevo nunca necesita usar la calle original $u \to v$ en esos tramos: si lo hiciera, el camino pasaría dos veces por $u$ *(formaría un ciclo)* y, como las distancias son positivas, no sería más corto que el recorrido original. La idea es que el camino invertido me otorgue alternativas para analizar otras posibilidades de encontrar un camino aún *más pequeño* en su costo.
 
----
+Por eso alcanza con conocer, para **toda** esquina $x$:
+
+- $d_S(x)$: distancia mínima de $S$ a $x$ *(Dijkstra desde S en G)*.
+- $d_T(x)$: distancia mínima de $x$ a $T$ *(Dijkstra desde T en el grafo con todas las calles invertidas G^T)*.
+
+Con esas dos tablas, probar una calle cuesta $O(1)$. En el caso de prueba, para la calle 6 (`7 5 3`) el camino nuevo es $2 \to 3 \to 1 \to 5 \to 7$ y su costo es $d_S(5) + 3 + d_T(7) = 8 + 3 + 0 = 11$.
+
+## OEIS
+No aplica. Este problema trabaja con distancias en un grafo y no define una secuencia de enteros que dependa de un parámetro $n$, por lo que no hay una entrada de la OEIS asociada.
+
 ## Definición formal
+Sea $G = (V, A)$ un grafo dirigido y ponderado, con $V = \{1, \dots, E\}$ las esquinas y $A = \{a_1, \dots, a_C\}$ las calles. Cada calle es $a_i = (u_i, v_i, w_i)$, que va de $u_i$ a $v_i$ con distancia $w_i$, con $1 \le w_i \le 50$. Dadas la esquina de partida $S$ y la esquina de la escuela $T$:
 
+- $d_G(x, y)$ es la longitud del camino más corto de $x$ a $y$ en $G$.
+- Para cada $i \in \{1, \dots, C\}$, el grafo $G_i$ es $G$ con la calle $a_i$ reemplazada por $(v_i, u_i, w_i)$.
+
+**Entrada:** 
+- Se recibe el número de esquinas, el número de esquina donde parte el colectivo, y con el número de la esquina donde se ubica la escuela.
+- Hay C lineas _(correspondientes a la cantidad de calles)_ que describen el número de esquina de salida de la calle, la correspondiente a la llegada y la asignación de distancia entre ambas.
+
+**Salida:**
+
+1. $D_0 = d_G(S, T)$. -> La distancia **antes** de cambiar o invertir el sentido de una calle
+2. $D_1 = \min_{1 \le i \le C} d_{G_i}(S, T)$. -> La distancia **después** de cambiar o invertir el sentido de una calle
+3. Un índice $i^*$ que alcance ese mínimo. -> ¿En qué calle se invirtió el sentido?
+
+Si $D_1 \ge D_0$, significa que no se consiguió un camino mínimo más pequeño que el original luego de invertir un camino. Como alternativa, se devuelve la respuesta `NO ES POSIBLE MEJORAR`.
+
+**Resultado clave** (para $d_S$ y $d_T$ definidas en la intuición):
+
+Hay mejora **si y solo si** el segundo término es estrictamente menor que $D_0$. Los términos con $d_S(v_i)$ o $d_T(u_i)$ infinitos _(esquina inalcanzable)_ se descartan.
+
+**Restricciones:** $1 \le E \le 80\,000$, $1 \le C \le 250\,000$, $1 \le w_i \le 50$.
 ---
 ## Ejemplo concreto
 Consideremos una ciudad con $E = 8$ esquinas, partida en $S = 2$, escuela en $T = 7$ y $C = 13$ calles:
