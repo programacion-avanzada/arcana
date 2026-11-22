@@ -162,7 +162,7 @@ for i in range(arr.size):
 ### Cuándo NO usarlo
 
 - Tamaño conocido de antemano → usar array estático (sin costo de redimensión).
-- Si insertás o eliminás con frecuencia en el medio, conviene una lista simplemente enlazada cuando ya tenés la referencia al nodo anterior. Por ejemplo, al insertar mientras recorrés la lista, podés usar el nodo actual como anterior.
+- Inserciones o eliminaciones frecuentes en el medio → es preferible una lista simplemente enlazada si ya se dispone de la referencia al nodo anterior. Por ejemplo, durante un recorrido se puede insertar después del nodo actual.
 - Memoria muy fragmentada → es preferible lista enlazada (no requiere bloque contiguo).
 
 ### Comparaciones
