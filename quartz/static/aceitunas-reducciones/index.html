@@ -1,0 +1,1710 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lanzamiento de aceitunas · De los tiros al mapa</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --background: #f3f5ef;
+        --surface: #fffefa;
+        --plot: #f8f9f4;
+        --ink: #172e2a;
+        --muted: #50645d;
+        --line: #d6dfd4;
+        --grid: #e3e9df;
+        --axis: #869c91;
+        --guide: #a5aea8;
+        --selected: #56605a;
+        --olive: #176554;
+        --rival: #a04921;
+        --wash: #dceee4;
+        --focus: #305b9c;
+        --current: #305b9c;
+        --current-fill: #e5edf9;
+        font:
+          16px / 1.45 system-ui,
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--ink);
+      }
+      main {
+        width: min(1260px, 100% - 2.5rem);
+        margin: 0 auto;
+        padding: 1.6rem 0 2.4rem;
+      }
+      a {
+        color: var(--olive);
+        font-weight: 650;
+        font-size: 0.88rem;
+        text-underline-offset: 0.2em;
+      }
+      a:focus-visible,
+      button:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible,
+      .scene-scroll:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
+      }
+      header {
+        margin: 1rem 0 1.35rem;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: clamp(1.75rem, 4vw, 2.65rem);
+        line-height: 1.13;
+        letter-spacing: -0.04em;
+      }
+      h2 {
+        font-size: 1.03rem;
+      }
+      .intro {
+        margin-top: 0.35rem;
+        color: var(--muted);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(210px, 0.85fr) minmax(0, 3fr);
+        gap: 1rem;
+        align-items: start;
+      }
+      .panel {
+        min-width: 0;
+        padding: 1rem;
+        border: 1px solid var(--line);
+        border-radius: 0.8rem;
+        background: var(--surface);
+      }
+      .stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+      .quiet {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .row {
+        display: flex;
+        gap: 0.45rem 0.65rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .between {
+        justify-content: space-between;
+      }
+      label {
+        font-size: 0.86rem;
+        font-weight: 650;
+      }
+      textarea {
+        display: block;
+        width: 100%;
+        resize: vertical;
+        min-height: 9rem;
+        white-space: pre;
+        border: 1px solid var(--axis);
+        border-radius: 0.45rem;
+        padding: 0.5rem 0.65rem;
+        color: var(--ink);
+        background: var(--plot);
+        font:
+          0.9rem / 1.45 ui-monospace,
+          Consolas,
+          monospace;
+      }
+      button {
+        min-height: 2.55rem;
+        padding: 0.4rem 0.65rem;
+        border: 1px solid var(--line);
+        border-radius: 0.45rem;
+        background: var(--surface);
+        color: var(--ink);
+        font:
+          650 0.86rem / 1.2 system-ui,
+          sans-serif;
+        cursor: pointer;
+      }
+      button:hover:not(:disabled) {
+        background: var(--wash);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .primary {
+        border-color: var(--olive);
+        background: var(--olive);
+        color: #fff;
+      }
+      .primary:hover:not(:disabled) {
+        background: #0e4f41;
+      }
+      select {
+        min-height: 2.55rem;
+        border: 1px solid var(--line);
+        border-radius: 0.45rem;
+        padding: 0.35rem 0.5rem;
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+      }
+      .mode-tools {
+        margin-left: auto;
+      }
+      .error {
+        color: #a33223;
+        font-size: 0.84rem;
+        overflow-wrap: anywhere;
+      }
+      .error:empty,
+      .quiet:empty {
+        display: none;
+      }
+      figure {
+        margin: 0;
+      }
+      .stages {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0.65rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .stages li {
+        border-top: 2px solid var(--line);
+        color: var(--muted);
+        padding-top: 0.35rem;
+        font-size: 0.83rem;
+      }
+      .stages [aria-current="step"] {
+        color: var(--olive);
+        font-weight: 730;
+        border-color: var(--olive);
+      }
+      .oli {
+        color: var(--olive);
+      }
+      .rival {
+        color: var(--rival);
+      }
+      .legend {
+        gap: 0.25rem 0.85rem;
+      }
+      .legend b {
+        margin-right: 0.2rem;
+      }
+      .selection {
+        padding: 0.6rem 0.72rem;
+        background: var(--wash);
+        border-radius: 0.5rem;
+        font-size: 0.85rem;
+        overflow-wrap: anywhere;
+      }
+      .scene-scroll {
+        overflow: auto;
+        background: var(--plot);
+        border-radius: 0.55rem;
+      }
+      .scene {
+        --tile: 3.6rem;
+        --row-label: 4.65rem;
+        position: relative;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 340px;
+      }
+      canvas[data-mode="add"],
+      canvas[data-mode="erase"] {
+        cursor: crosshair;
+        touch-action: pan-y;
+      }
+      canvas[data-mode="move"] {
+        cursor: grab;
+        touch-action: none;
+      }
+      canvas[data-dragging] {
+        cursor: grabbing;
+      }
+      .groups {
+        position: relative;
+      }
+      .group {
+        position: absolute;
+        display: grid;
+        justify-items: center;
+        gap: 0.4rem;
+        width: 110px;
+      }
+      .group::before {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        height: var(--leader);
+        border-left: 1px solid var(--axis);
+        pointer-events: none;
+      }
+      .pair {
+        display: grid;
+        gap: 2px;
+        position: relative;
+        z-index: 1;
+      }
+      .tile {
+        display: grid;
+        place-items: center;
+        width: var(--tile);
+        height: var(--tile);
+        min-height: 0;
+        padding: 0.12rem;
+        text-align: center;
+        line-height: 1.05;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 0.35rem;
+        font:
+          650 0.85rem / 1.1 ui-monospace,
+          Consolas,
+          monospace;
+        font-variant-numeric: tabular-nums;
+      }
+      .tile span {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+      .tile[data-long] {
+        font-size: 0.71rem;
+      }
+      .tile.value {
+        color: var(--olive);
+        font-size: 0.95rem;
+      }
+      .tile.value[data-negative] {
+        color: var(--rival);
+      }
+      .pair[data-highlighted] .tile,
+      .tile[data-highlighted] {
+        background: var(--wash);
+        border-color: var(--olive);
+        color: var(--ink);
+      }
+      .calculation {
+        padding: 0 0.15rem;
+        text-align: center;
+        color: var(--muted);
+        background: var(--plot);
+        position: relative;
+        z-index: 1;
+        font:
+          0.8rem / 1.4 ui-monospace,
+          Consolas,
+          monospace;
+      }
+      .table-area {
+        width: max-content;
+        max-width: 100%;
+        margin: 2.5rem auto 0;
+        padding: 0 0.5rem 1rem;
+      }
+      .scene[data-search] .table-area {
+        margin-top: 0;
+        padding-top: 0.75rem;
+      }
+      .table-area[data-merging] {
+        visibility: hidden;
+      }
+      table {
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      td {
+        padding: 0;
+      }
+      td .tile {
+        border-radius: 0;
+      }
+      td .tile:focus-visible {
+        position: relative;
+        z-index: 1;
+        outline-offset: -3px;
+      }
+      #map-table th {
+        width: var(--row-label);
+        min-width: var(--row-label);
+        padding: 0 0.65rem 0 0;
+        text-align: left;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+      .search-tools {
+        border: 1px solid var(--line);
+        border-radius: 0.55rem;
+        padding: 0.72rem 0.8rem;
+        background: var(--surface);
+      }
+      .trace-grid {
+        display: grid;
+        grid-template-columns: var(--row-label) repeat(var(--length), var(--tile));
+        align-items: start;
+      }
+      .trace-pointer {
+        color: var(--current);
+        line-height: 1.35;
+        font-size: 1.2rem;
+        font-weight: 750;
+        text-align: center;
+      }
+      .track {
+        margin-top: 0.42rem;
+        font-size: 0.78rem;
+        color: var(--current);
+      }
+      .track.best {
+        color: var(--olive);
+      }
+      .track-name {
+        grid-column: 1;
+        font-weight: 700;
+      }
+      .track-mark {
+        min-width: 0;
+        text-align: center;
+        padding: 0 2px;
+        overflow-wrap: anywhere;
+      }
+      .track-mark[data-range]::before {
+        content: "";
+        display: block;
+        height: 5px;
+        margin-bottom: 0.2rem;
+        border-radius: 6px;
+        background: currentColor;
+      }
+      #map-table .tile[data-cursor] {
+        background: var(--current-fill);
+        border-color: var(--current);
+      }
+      .summary {
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+      .matrix-scroll {
+        width: max-content;
+        max-width: 100%;
+        overflow: auto;
+        max-height: 23rem;
+        border: 1px solid var(--line);
+        border-radius: 0.45rem;
+      }
+      #matrix {
+        font:
+          0.82rem / 1.3 ui-monospace,
+          Consolas,
+          monospace;
+        font-variant-numeric: tabular-nums;
+      }
+      #matrix td,
+      #matrix th {
+        min-width: 2.8rem;
+        height: 2.12rem;
+        padding: 0.28rem 0.45rem;
+        text-align: center;
+        border-right: 1px solid var(--grid);
+        border-bottom: 1px solid var(--grid);
+      }
+      #matrix th {
+        color: var(--muted);
+        background: var(--plot);
+        white-space: nowrap;
+      }
+      #matrix thead th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+      #matrix tr > th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+      }
+      #matrix thead tr > th:first-child {
+        z-index: 3;
+      }
+      #matrix td[data-invalid] {
+        color: var(--muted);
+        background: var(--plot);
+      }
+      #matrix td[data-current] {
+        color: var(--current);
+        background: var(--current-fill);
+        font-weight: 750;
+      }
+      #matrix td[data-best] {
+        box-shadow: inset 0 -3px var(--olive);
+      }
+      .moving-pair {
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 2;
+      }
+      .group-nav {
+        justify-content: center;
+      }
+      .group-nav[hidden] {
+        display: none;
+      }
+      [hidden] {
+        display: none;
+      }
+      @media (max-width: 720px) {
+        main {
+          width: calc(100% - 1.25rem);
+          padding-top: 1rem;
+        }
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 0.8rem;
+        }
+        .panel {
+          padding: 0.75rem;
+        }
+        textarea {
+          font-size: 1rem;
+        }
+        button {
+          min-height: 2.75rem;
+        }
+        .stages {
+          gap: 0.35rem;
+        }
+        .stages li {
+          font-size: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a id="article-link" href="../../bestiario/oia/lanzamiento-de-aceitunas#visualizaciones"
+        >← Volver al artículo</a
+      >
+      <header>
+        <h1>De los tiros al mapa</h1>
+        <p class="intro">Agrupá los tiros por radio y reuní sus aportes en una tabla ordenada.</p>
+      </header>
+      <div class="layout">
+        <section class="panel stack" aria-labelledby="input-heading">
+          <h2 id="input-heading">Coordenadas</h2>
+          <form class="stack" id="input-form">
+            <div>
+              <label for="coordinates">Entrada de tiros</label>
+              <textarea
+                id="coordinates"
+                rows="10"
+                spellcheck="false"
+                aria-describedby="input-help"
+              ></textarea>
+            </div>
+            <p class="quiet" id="input-help">Un par x y por renglón.</p>
+            <button class="primary" type="submit">Procesar coordenadas</button>
+            <div class="row">
+              <button id="load-example" type="button">Cargar ejemplo</button>
+              <button id="clear-input" type="button">Limpiar</button>
+            </div>
+            <p class="error" id="input-error" role="alert"></p>
+            <p class="quiet" id="input-count" role="status"></p>
+          </form>
+          <p class="selection" id="selection" aria-live="polite" hidden></p>
+        </section>
+        <figure class="panel stack" aria-labelledby="stage-title">
+          <ol class="stages" id="stages" aria-label="Pasos de la reducción">
+            <li>Plano</li>
+            <li>Recta y = 0</li>
+            <li>Aportes</li>
+            <li>Tabla</li>
+            <li>Rango</li>
+          </ol>
+          <div class="row between">
+            <div>
+              <h2 id="stage-title" aria-live="polite"></h2>
+              <p class="quiet" id="stage-description"></p>
+            </div>
+            <div class="row mode-tools" id="plan-tools">
+              <button id="center-plot" type="button">Centrar</button>
+              <label for="plot-mode">Modo</label>
+              <select id="plot-mode">
+                <option value="move">Moverse</option>
+                <option value="add">Agregar tiros</option>
+                <option value="erase">Borrar tiros</option>
+              </select>
+            </div>
+          </div>
+          <div class="row legend quiet" id="legend">
+            <span class="oli"><b aria-hidden="true">×</b>Oli (+1)</span>
+            <span class="rival"><b aria-hidden="true">○</b>Rival (−1)</span>
+          </div>
+          <section
+            class="search-tools stack"
+            id="search-panel"
+            aria-label="Controles del algoritmo"
+            hidden
+          >
+            <div class="row">
+              <label for="algorithm">Algoritmo</label>
+              <select id="algorithm">
+                <option value="brute">Fuerza bruta</option>
+                <option value="kadane">Kadane</option>
+              </select>
+              <button class="primary" id="trace-optimum" type="button">Mostrar rango óptimo</button>
+            </div>
+            <div class="row">
+              <button id="trace-play" type="button">▶ Reproducir</button>
+              <button id="trace-pause" type="button">Pausa</button>
+              <button id="trace-step" type="button">Paso</button>
+              <button id="trace-reset" type="button">Reiniciar</button>
+            </div>
+            <div role="status">
+              <p class="summary" id="trace-result"></p>
+              <p class="quiet" id="trace-progress"></p>
+              <p class="quiet" id="trace-detail"></p>
+            </div>
+          </section>
+          <div
+            class="scene-scroll"
+            id="scene-scroll"
+            role="region"
+            aria-label="Plano y grupos por radio"
+          >
+            <div class="scene" id="scene">
+              <canvas id="plot" role="img" aria-describedby="stage-description"></canvas>
+              <div class="groups" id="groups" hidden></div>
+              <div class="table-area" id="table-area" hidden>
+                <div class="trace-grid" id="trace-pointer" aria-hidden="true" hidden></div>
+                <table id="map-table" aria-label="Mapa ordenado por radio"></table>
+                <div id="trace-ranges" hidden></div>
+              </div>
+            </div>
+          </div>
+          <div class="row group-nav" id="group-nav" hidden>
+            <button id="prev-group-page" type="button" aria-label="Grupos anteriores">←</button>
+            <span class="quiet" id="group-page"></span>
+            <button id="next-group-page" type="button" aria-label="Grupos siguientes">→</button>
+          </div>
+          <section
+            class="stack"
+            id="matrix-panel"
+            aria-label="Intervalos probados por fuerza bruta"
+            hidden
+          >
+            <div>
+              <h2>Intervalos probados</h2>
+              <p class="quiet" id="matrix-caption">
+                Usá la fila para el inicio y la columna para el final.
+              </p>
+            </div>
+            <div
+              class="matrix-scroll"
+              id="matrix-scroll"
+              role="region"
+              aria-label="Matriz de intervalos"
+              tabindex="0"
+            >
+              <table id="matrix" aria-label="Sumas por inicio y final"></table>
+            </div>
+          </section>
+          <p class="quiet" id="sample-note"></p>
+          <figcaption class="stack">
+            <p class="quiet" id="stage-caption"></p>
+            <div class="row">
+              <button id="previous" type="button">Anterior</button>
+              <button class="primary" id="next" type="button"></button>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </main>
+    <script>
+      const example = [
+        "9 3",
+        "6 1",
+        "9 8",
+        "-1 -2",
+        "8 -9",
+        "-2 10",
+        "5 -8",
+        "-5 8",
+        "-10 9",
+        "-1 -10",
+      ].join("\n")
+      const coordinateLimit = 2_000_000_000
+      const drawingLimit = 5_000
+      const pageSize = 16
+      const stageText = [
+        {
+          title: "La distancia de cada tiro",
+          description: "Los tiros a la misma distancia comparten una circunferencia.",
+          caption:
+            "Arrastrá el plano para desplazarte o hacé clic sobre un tiro para ver su radio.",
+          action: "Girar hacia y = 0",
+        },
+        {
+          title: "Los tiros se reúnen en y = 0",
+          description: "Cada tiro gira sin cambiar su radio hasta llegar al semieje x positivo.",
+          caption: "El equipo de cada tiro se conserva según el signo de su x original.",
+          action: "Mostrar aportes por radio",
+        },
+        {
+          title: "Un aporte por cada radio",
+          description: "Cada bloque tiene el radio arriba y su aporte neto abajo.",
+          caption:
+            "El zoom mantiene la escala de distancias en y = 0. Los bloques cercanos se leen en distintos niveles.",
+          action: "Juntar en una tabla",
+        },
+        {
+          title: "El mapa ordenado",
+          description: "La tabla reúne los radios de menor a mayor y conserva sus aportes.",
+          caption:
+            "Pasá el mouse o enfocá una celda para resaltar su columna y el bloque que le dio origen.",
+          action: "Buscar rango óptimo",
+        },
+        {
+          title: "El rango de mayor puntaje",
+          description: "Elegí un algoritmo para recorrer los aportes de la tabla.",
+          caption:
+            "Los índices empiezan en 0. La salida muestra los cuadrados de los bordes del aro.",
+          action: "Volver al plano",
+        },
+      ]
+      const byId = (id) => document.getElementById(id)
+      const canvas = byId("plot")
+      const context = canvas.getContext("2d")
+      const scroll = byId("scene-scroll")
+      const scene = byId("scene")
+      const groupGrid = byId("groups")
+      const tableArea = byId("table-area")
+      const table = byId("map-table")
+      const coordinates = byId("coordinates")
+      const inputError = byId("input-error")
+      const plotMode = byId("plot-mode")
+      const algorithm = byId("algorithm")
+      const next = byId("next")
+      const previous = byId("previous")
+      const motion = matchMedia("(prefers-reduced-motion: reduce)")
+      const format = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 3 })
+      const styles = getComputedStyle(document.documentElement)
+      const colors = Object.fromEntries(
+        ["grid", "axis", "muted", "guide", "selected", "olive", "rival"].map((name) => [
+          name,
+          styles.getPropertyValue("--" + name).trim(),
+        ]),
+      )
+      const clamp = (n) => Math.max(0, Math.min(1, n))
+      const mix = (start, end, amount) => start + (end - start) * amount
+
+      let model
+      let appliedText = ""
+      let selected
+      let highlighted
+      let stage = 0
+      let position = 0
+      let frame = 0
+      let page = 0
+      let visibleGroups = []
+      let view
+      let movingPairs = []
+      let joinRevision = 0
+      let pan = { x: 0, y: 0 }
+      let drag
+      let ignorePlotClick = false
+      let search
+      let directBest
+      let playback
+
+      if (location.protocol === "file:") {
+        byId("article-link").href = "../../../content/bestiario/oia/lanzamiento-de-aceitunas.md"
+      }
+
+      function inputLines(text) {
+        return text
+          .split(/\r?\n/)
+          .map((line) => line.trim())
+          .filter(Boolean)
+      }
+
+      function makeShot(x, y) {
+        return { x, y, d: BigInt(x) ** 2n + BigInt(y) ** 2n, theta: Math.atan2(y, x) }
+      }
+
+      function parseShots(text) {
+        const lines = inputLines(text)
+        if (lines.length > 100_000) throw new Error("Ingresá hasta 100.000 tiros.")
+        return lines.map((line, index) => {
+          const match = /^([+-]?\d+)(?:\s*,\s*|\s+)([+-]?\d+)$/.exec(line)
+          if (!match) throw new Error("Tiro " + (index + 1) + ". Ingresá dos coordenadas enteras.")
+          const x = Number(match[1])
+          const y = Number(match[2])
+          if (x === 0 || Math.max(Math.abs(x), Math.abs(y)) > coordinateLimit) {
+            throw new Error(
+              "Tiro " +
+                (index + 1) +
+                ". Usá coordenadas de hasta 2.000.000.000 en valor absoluto, con x distinto de 0.",
+            )
+          }
+          return makeShot(x, y)
+        })
+      }
+
+      function sample(values) {
+        if (values.length <= drawingLimit) return values
+        return Array.from(
+          { length: drawingLimit },
+          (_, i) => values[Math.floor((i * values.length) / drawingLimit)],
+        )
+      }
+
+      function prepare(shots) {
+        const map = new Map()
+        for (const shot of shots) {
+          if (!map.has(shot.d)) {
+            const radius = Math.sqrt(Number(shot.d))
+            const whole = BigInt(Math.round(radius))
+            const key = whole ** 2n === shot.d ? String(whole) : "√" + shot.d
+            map.set(shot.d, { d: shot.d, radius, key, oli: 0, rival: 0 })
+          }
+          const group = map.get(shot.d)
+          if (shot.x > 0) group.oli++
+          else group.rival++
+        }
+        const groups = [...map.values()].sort((a, b) => (a.d === b.d ? 0 : a.d < b.d ? -1 : 1))
+        return { shots, map, groups, plotted: sample(shots), guides: sample(groups) }
+      }
+
+      function setShots(shots, resetSelection = true) {
+        model = prepare(shots)
+        appliedText = coordinates.value
+        if (resetSelection) {
+          selected = undefined
+          pan = { x: 0, y: 0 }
+          scroll.scrollLeft = 0
+        }
+        inputError.textContent = ""
+        byId("input-count").textContent =
+          "N = " +
+          format.format(shots.length) +
+          " · " +
+          format.format(model.groups.length) +
+          " radios distintos"
+        showSelection()
+        page = 0
+        goTo(0, true)
+      }
+
+      function showSelection() {
+        const target = byId("selection")
+        const group = selected && model.map.get(selected.d)
+        target.hidden = !group
+        if (group) {
+          target.textContent =
+            "(" +
+            selected.x +
+            ", " +
+            selected.y +
+            ") · r = " +
+            group.key +
+            " · r² = " +
+            group.d +
+            " · Aporte " +
+            (group.oli - group.rival)
+        }
+      }
+
+      function loadText() {
+        try {
+          setShots(parseShots(coordinates.value))
+        } catch (error) {
+          inputError.textContent = error.message
+        }
+      }
+
+      function editPlot(event) {
+        if (stage !== 0 || position !== 0 || !view || ignorePlotClick) return
+        const rect = canvas.getBoundingClientRect()
+        const px = event.clientX - rect.left
+        const py = event.clientY - rect.top
+        let closest = 9
+        let hit
+        for (const shot of model.plotted) {
+          const distance = Math.hypot(
+            px - view.cx - shot.x * view.scale,
+            py - view.cy + shot.y * view.scale,
+          )
+          if (distance <= closest) {
+            closest = distance
+            hit = shot
+          }
+        }
+        if (hit && plotMode.value !== "erase") {
+          selected = selected === hit ? undefined : hit
+          showSelection()
+          draw()
+          return
+        }
+        if (plotMode.value === "move" || (plotMode.value === "erase" && !hit)) return
+
+        try {
+          const shots = [
+            ...(coordinates.value === appliedText ? model.shots : parseShots(coordinates.value)),
+          ]
+          if (hit) {
+            const index = shots.findIndex((shot) => shot.x === hit.x && shot.y === hit.y)
+            if (index < 0)
+              throw new Error(
+                "Ese tiro ya se quitó del texto. Procesá las coordenadas para actualizar el plano.",
+              )
+            shots.splice(index, 1)
+            if (selected?.x === hit.x && selected.y === hit.y) selected = undefined
+          } else {
+            if (shots.length === 100_000) throw new Error("Ya hay 100.000 tiros.")
+            const x = Math.round((px - view.cx) / view.scale)
+            const y = Math.round((view.cy - py) / view.scale)
+            if (x === 0) throw new Error("No hay tiros sobre la red en x = 0.")
+            if (Math.max(Math.abs(x), Math.abs(y)) > coordinateLimit)
+              throw new Error("Ese punto queda fuera del rango de coordenadas permitido.")
+            shots.push(makeShot(x, y))
+          }
+          coordinates.value = shots.map(({ x, y }) => x + " " + y).join("\n")
+          setShots(shots, false)
+        } catch (error) {
+          inputError.textContent = error.message
+        }
+      }
+
+      function tile(group, isValue, interactive = false) {
+        const net = group.oli - group.rival
+        const element = interactive ? "button" : "span"
+        const content = isValue ? net : group.key
+        const kind = isValue ? "Aporte " + net + " del radio " + group.key : "Radio " + group.key
+        const attributes = interactive
+          ? ' type="button" data-key="' + group.d + '" aria-label="' + kind + '"'
+          : ""
+        return (
+          "<" +
+          element +
+          ' class="tile' +
+          (isValue ? " value" : "") +
+          '"' +
+          attributes +
+          (String(content).length > 8 ? " data-long" : "") +
+          (isValue && net < 0 ? " data-negative" : "") +
+          ' title="' +
+          kind +
+          '"><span>' +
+          content +
+          "</span></" +
+          element +
+          ">"
+        )
+      }
+
+      function fillGroups() {
+        visibleGroups = model.groups.slice(page * pageSize, (page + 1) * pageSize)
+        highlighted = undefined
+        groupGrid.innerHTML = visibleGroups
+          .map(
+            (group) =>
+              '<div class="group"><div class="pair" data-block="' +
+              group.d +
+              '">' +
+              tile(group, false) +
+              tile(group, true) +
+              '</div><p class="calculation">' +
+              group.oli +
+              " − " +
+              group.rival +
+              " = " +
+              (group.oli - group.rival) +
+              "</p></div>",
+          )
+          .join("")
+        table.innerHTML =
+          "<tbody>" +
+          [false, true]
+            .map(
+              (isValue) =>
+                '<tr><th scope="row">' +
+                (isValue ? "Valores" : "Claves") +
+                "</th>" +
+                visibleGroups
+                  .map((group) => "<td>" + tile(group, isValue, true) + "</td>")
+                  .join("") +
+                "</tr>",
+            )
+            .join("") +
+          "</tbody>"
+        byId("group-page").textContent =
+          page * pageSize +
+          1 +
+          "–" +
+          (page * pageSize + visibleGroups.length) +
+          " de " +
+          model.groups.length
+        byId("prev-group-page").disabled = page === 0
+        byId("next-group-page").disabled = (page + 1) * pageSize >= model.groups.length
+      }
+
+      function clearJoin() {
+        joinRevision++
+        for (const pair of movingPairs) pair.remove()
+        movingPairs = []
+        tableArea.removeAttribute("data-merging")
+        tableArea.hidden = true
+        scene.style.minHeight = ""
+      }
+
+      function joinGroups() {
+        tableArea.hidden = false
+        if (motion.matches) return
+        const revision = joinRevision
+        tableArea.setAttribute("data-merging", "")
+        const sceneRect = scene.getBoundingClientRect()
+        const firstRow = table.rows[0]
+        const groupRect = groupGrid.getBoundingClientRect()
+        scene.style.minHeight =
+          Math.ceil(groupRect.bottom - sceneRect.top + groupRect.height + 8) + "px"
+        const animations = [...groupGrid.querySelectorAll(".pair")].map((block, i) => {
+          const source = block.getBoundingClientRect()
+          const target = firstRow.cells[i + 1].getBoundingClientRect()
+          const startX = source.left - sceneRect.left
+          const startY = groupRect.bottom + source.top - groupRect.top - sceneRect.top + 8
+          const endX = target.left - sceneRect.left
+          const endY = target.top - sceneRect.top
+          const copy = block.cloneNode(true)
+          copy.classList.add("moving-pair")
+          copy.removeAttribute("data-block")
+          copy.setAttribute("aria-hidden", "true")
+          scene.append(copy)
+          movingPairs.push(copy)
+          const start = "translate(" + startX + "px," + startY + "px)"
+          const finish = "translate(" + endX + "px," + endY + "px)"
+          return copy
+            .animate(
+              [{ transform: start }, { transform: start, offset: 0.23 }, { transform: finish }],
+              { duration: 680, fill: "both", easing: "ease-in-out" },
+            )
+            .finished.catch(() => {})
+        })
+        Promise.all(animations).then(() => {
+          if (revision !== joinRevision) return
+          for (const pair of movingPairs) pair.remove()
+          movingPairs = []
+          tableArea.removeAttribute("data-merging")
+          scene.style.minHeight = ""
+        })
+      }
+
+      function showPlotMode() {
+        canvas.dataset.mode = plotMode.value
+        byId("stage-caption").textContent =
+          stage === 0 && plotMode.value !== "move"
+            ? plotMode.value === "add"
+              ? "Hacé clic en un lugar libre para agregar un tiro."
+              : "Hacé clic sobre un tiro para quitarlo."
+            : stageText[stage].caption
+      }
+
+      function showStage() {
+        const current = stageText[stage]
+        byId("stage-title").textContent = current.title
+        byId("stage-description").textContent = current.description
+        next.textContent = current.action
+        next.disabled = model.shots.length === 0
+        previous.disabled = stage === 0
+        byId("plan-tools").hidden = stage === 4
+        byId("legend").hidden = stage >= 2
+        byId("search-panel").hidden = stage !== 4
+        byId("matrix-panel").hidden = stage !== 4 || algorithm.value !== "brute"
+        byId("trace-pointer").hidden = true
+        byId("trace-ranges").hidden = stage !== 4
+        if (stage !== 0) plotMode.value = "move"
+        showPlotMode()
+        canvas.setAttribute("aria-label", current.title)
+        byId("sample-note").textContent =
+          stage < 2 && model.shots.length > drawingLimit
+            ? "El plano dibuja " +
+              format.format(drawingLimit) +
+              " tiros. El mapa incluye los " +
+              format.format(model.shots.length) +
+              "."
+            : ""
+        for (const [index, element] of [...byId("stages").children].entries()) {
+          if (index === stage) element.setAttribute("aria-current", "step")
+          else element.removeAttribute("aria-current")
+        }
+      }
+
+      function goTo(target, immediate = false) {
+        cancelAnimationFrame(frame)
+        stopPlayback()
+        clearJoin()
+        const fromStage = stage
+        stage = target
+        showStage()
+        if (target === 4) {
+          resetSearch()
+          tableArea.hidden = false
+          return
+        }
+        if (target >= 2) fillGroups()
+        const end = Math.min(target, 2)
+        if (immediate || motion.matches || target === 3 || (target === 0 && position > 1)) {
+          position = end
+          draw()
+          if (target === 3) {
+            if (fromStage === 2) joinGroups()
+            else tableArea.hidden = false
+          }
+          return
+        }
+        const from = position
+        const start = performance.now()
+        function animate(now) {
+          const t = clamp((now - start) / (700 * Math.abs(end - from) || 1))
+          position = t === 1 ? end : mix(from, end, t * t * (3 - 2 * t))
+          draw()
+          if (t < 1) frame = requestAnimationFrame(animate)
+        }
+        frame = requestAnimationFrame(animate)
+      }
+
+      function draw() {
+        const normalWidth = scroll.clientWidth
+        if (!normalWidth) return
+        const tracing = stage === 4
+        scene.toggleAttribute("data-search", tracing)
+        canvas.hidden = tracing
+        if (tracing) {
+          const width = Math.max(normalWidth, Math.ceil(92 + visibleGroups.length * 57.6))
+          scene.style.width = width + "px"
+          groupGrid.hidden = true
+          byId("group-nav").hidden = model.groups.length <= pageSize
+          scroll.tabIndex = width > normalWidth ? 0 : -1
+          return
+        }
+        const alignment = clamp(position)
+        const zoom = clamp(position - 1)
+        const planeHeight = Math.max(300, Math.min(445, normalWidth * 0.6))
+        const height = Math.round(mix(planeHeight, 64, zoom))
+        const wideWidth = Math.max(normalWidth, 128 + visibleGroups.length * 72)
+        const width = Math.round(mix(normalWidth, wideWidth, zoom))
+        scene.style.width = zoom > 0 ? width + "px" : ""
+        canvas.style.height = height + "px"
+        groupGrid.hidden = zoom < 1
+        byId("group-nav").hidden = zoom < 1 || model.groups.length <= pageSize
+        scroll.tabIndex = zoom === 1 && wideWidth > normalWidth ? 0 : -1
+
+        const ratio = Math.min(devicePixelRatio || 1, 2)
+        const pixelWidth = Math.round(width * ratio)
+        const pixelHeight = Math.round(height * ratio)
+        if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+          canvas.width = pixelWidth
+          canvas.height = pixelHeight
+        }
+        context.setTransform(ratio, 0, 0, ratio, 0, 0)
+        context.clearRect(0, 0, width, height)
+        const cx = normalWidth / 2 + pan.x
+        const cy = height / 2 + pan.y * (1 - zoom)
+        const extent = Math.max(4, model.groups.at(-1)?.radius ?? 0)
+        const scale = Math.max(8, Math.min(normalWidth, planeHeight) / 2 - 32) / extent
+        view = { cx, cy, scale }
+        if (zoom < 1) {
+          context.globalAlpha = 1 - zoom
+          drawGrid(normalWidth, height, cx, cy, scale)
+          drawCircles(cx, cy, scale)
+          context.globalAlpha = 1
+        }
+        context.beginPath()
+        context.moveTo(12, cy)
+        context.lineTo(width - 12, cy)
+        context.strokeStyle = colors.axis
+        context.lineWidth = 1.4
+        context.stroke()
+        context.fillStyle = colors.muted
+        context.font = "12px system-ui"
+        context.textAlign = "left"
+        context.fillText("y = 0", 15, cy - 10)
+
+        if (alignment < 1) drawShots(cx, cy, scale, alignment)
+        else {
+          const shown = zoom > 0 ? visibleGroups : model.guides
+          const first = shown[0]
+          const span = first ? radiusDifference(shown.at(-1), first) : 0
+          const focusScale = span > 0 ? (wideWidth - 128) / span : scale
+          const positions = shown.map((group) => {
+            const x = cx + group.radius * scale
+            const focused =
+              span > 0 ? 64 + radiusDifference(group, first) * focusScale : wideWidth / 2
+            return mix(x, focused, zoom)
+          })
+          drawAxisGroups(shown, positions, cy, zoom)
+          if (zoom === 1) placeGroups(positions, height - cy)
+        }
+      }
+
+      function radiusDifference(group, first) {
+        // Una resta de raíces convertidas a Number puede redondear la separación a cero.
+        return Number(group.d - first.d) / (group.radius + first.radius)
+      }
+
+      function placeGroups(positions, axisOffset) {
+        const laneEnds = []
+        for (const [index, x] of positions.entries()) {
+          let lane = laneEnds.findIndex((end) => x - end >= 112)
+          if (lane < 0) lane = laneEnds.length
+          laneEnds[lane] = x
+          const block = groupGrid.children[index]
+          const top = 8 + lane * 164
+          block.style.left = x - 55 + "px"
+          block.style.top = top + "px"
+          block.style.setProperty("--leader", axisOffset + top - 5 + "px")
+        }
+        groupGrid.style.height = laneEnds.length * 164 + "px"
+      }
+
+      function drawGrid(width, height, cx, cy, scale) {
+        const power = 10 ** Math.floor(Math.log10(50 / scale))
+        const interval = Math.ceil(50 / scale / power) * power * scale
+        context.beginPath()
+        context.strokeStyle = colors.grid
+        context.lineWidth = 1
+        for (
+          let i = Math.ceil((12 - cx) / interval);
+          i <= Math.floor((width - 12 - cx) / interval);
+          i++
+        ) {
+          if (i === 0) continue
+          const x = cx + i * interval
+          context.moveTo(x, 12)
+          context.lineTo(x, height - 12)
+        }
+        for (
+          let i = Math.ceil((12 - cy) / interval);
+          i <= Math.floor((height - 12 - cy) / interval);
+          i++
+        ) {
+          if (i === 0) continue
+          const y = cy + i * interval
+          context.moveTo(12, y)
+          context.lineTo(width - 12, y)
+        }
+        context.stroke()
+        context.beginPath()
+        context.moveTo(cx, 10)
+        context.lineTo(cx, height - 10)
+        context.strokeStyle = colors.axis
+        context.setLineDash([4, 4])
+        context.stroke()
+        context.setLineDash([])
+        context.fillStyle = colors.muted
+        context.textAlign = "left"
+        context.font = "12px system-ui"
+        if (height > 135) {
+          context.fillText("x = 0", cx + 7, 18)
+          context.fillText("0", cx + 5, cy + 15)
+        }
+      }
+
+      function drawCircles(cx, cy, scale) {
+        context.beginPath()
+        for (const group of model.guides) {
+          if (group.d === selected?.d) continue
+          const radius = group.radius * scale
+          context.moveTo(cx + radius, cy)
+          context.arc(cx, cy, radius, 0, 2 * Math.PI)
+        }
+        context.strokeStyle = colors.guide
+        context.lineWidth = 1
+        context.setLineDash([3, 4])
+        context.stroke()
+        context.setLineDash([])
+        const group = selected && model.map.get(selected.d)
+        if (group) {
+          context.beginPath()
+          context.arc(cx, cy, group.radius * scale, 0, 2 * Math.PI)
+          context.strokeStyle = colors.selected
+          context.lineWidth = 2
+          context.stroke()
+        }
+      }
+
+      function shotPosition(shot, alignment) {
+        const angle = shot.theta * (1 - alignment)
+        const radius = model.map.get(shot.d).radius
+        return { x: radius * Math.cos(angle), y: radius * Math.sin(angle) }
+      }
+
+      function drawShots(cx, cy, scale, alignment) {
+        const paths = [new Path2D(), new Path2D()]
+        const size = model.plotted.length > 250 ? 2.5 : 4
+        for (const shot of model.plotted) {
+          const { x, y } = alignment === 0 ? shot : shotPosition(shot, alignment)
+          const px = cx + x * scale
+          const py = cy - y * scale
+          const path = paths[shot.x > 0 ? 0 : 1]
+          if (shot.x > 0) {
+            path.moveTo(px - size, py - size)
+            path.lineTo(px + size, py + size)
+            path.moveTo(px - size, py + size)
+            path.lineTo(px + size, py - size)
+          } else {
+            path.moveTo(px + size, py)
+            path.arc(px, py, size, 0, 2 * Math.PI)
+          }
+        }
+        context.lineWidth = 1.9
+        for (const [index, path] of paths.entries()) {
+          context.strokeStyle = index === 0 ? colors.olive : colors.rival
+          context.stroke(path)
+        }
+      }
+
+      function drawAxisGroups(shown, positions, cy, zoom) {
+        for (const [index, group] of shown.entries()) {
+          const x = positions[index]
+          const active = String(group.d) === highlighted || (zoom === 0 && group.d === selected?.d)
+          context.fillStyle = active
+            ? colors.selected
+            : group.oli > group.rival
+              ? colors.olive
+              : group.rival > group.oli
+                ? colors.rival
+                : colors.axis
+          context.beginPath()
+          context.arc(x, cy, active ? 6 : 3.5, 0, 2 * Math.PI)
+          context.fill()
+        }
+      }
+
+      function createSearch(method, weights) {
+        const prefix = [0]
+        if (method === "brute") {
+          for (const weight of weights) prefix.push(prefix.at(-1) + weight)
+        }
+        const count = weights.length
+        return {
+          method,
+          weights,
+          prefix,
+          steps: 0,
+          total: method === "brute" ? (count * (count + 1)) / 2 : count,
+          start: 0,
+          end: 0,
+          current: null,
+          best: { start: -1, end: -1, sum: 0 },
+        }
+      }
+
+      function advanceSearch(state) {
+        if (state.steps === state.total) return
+        const end = state.end
+        let start
+        let sum
+        let base = 0
+        let restarted = false
+        if (state.method === "brute") {
+          start = state.start
+          sum = state.prefix[end + 1] - state.prefix[start]
+          if (start === end) {
+            state.start = 0
+            state.end++
+          } else {
+            state.start++
+          }
+        } else {
+          const previous = state.current
+          restarted = previous !== null && previous.sum < 0
+          const extend = previous !== null && !restarted
+          start = extend ? previous.start : end
+          base = extend ? previous.sum : 0
+          sum = base + state.weights[end]
+          state.end++
+        }
+        const improved = sum > state.best.sum
+        state.current = { start, end, sum, base, restarted, improved }
+        if (improved) state.best = state.current
+        state.steps++
+      }
+
+      function stopPlayback() {
+        clearInterval(playback)
+        playback = undefined
+      }
+
+      function resetSearch() {
+        stopPlayback()
+        search = createSearch(
+          algorithm.value,
+          model.groups.map((group) => group.oli - group.rival),
+        )
+        directBest = undefined
+        page = 0
+        scroll.scrollLeft = 0
+        fillGroups()
+        draw()
+        renderSearch()
+      }
+
+      function showOptimum() {
+        stopPlayback()
+        // El resultado directo se calcula en tiempo lineal, también al explorar fuerza bruta.
+        const solution = createSearch("kadane", search.weights)
+        while (solution.steps < solution.total) advanceSearch(solution)
+        directBest = solution.best
+        followIndex(Math.max(0, directBest.start))
+        renderSearch()
+        revealTableIndex(directBest.start)
+      }
+
+      function followIndex(index) {
+        const target = Math.floor(index / pageSize)
+        if (target === page) return
+        page = target
+        scroll.scrollLeft = 0
+        fillGroups()
+        draw()
+      }
+
+      function stepSearch() {
+        directBest = undefined
+        advanceSearch(search)
+        if (search.current) followIndex(search.current.end)
+        if (search.steps === search.total) stopPlayback()
+        renderSearch()
+        if (search.current) revealTableIndex(search.current.end)
+      }
+
+      function revealTableIndex(index) {
+        const local = index - page * pageSize
+        if (local < 0 || local >= visibleGroups.length) return
+        const cell = table.rows[1].cells[local + 1].getBoundingClientRect()
+        const viewport = scroll.getBoundingClientRect()
+        if (cell.right > viewport.right - 8) scroll.scrollLeft += cell.right - viewport.right + 8
+        else if (cell.left < viewport.left + 8) scroll.scrollLeft += cell.left - viewport.left - 8
+      }
+
+      function resultText(best, finished) {
+        const label = finished ? "Óptimo" : "Mejor hasta ahora"
+        if (best.start < 0) return label + " · rango vacío · suma 0 · salida 0 0"
+        const inner = best.start === 0 ? 0n : model.groups[best.start - 1].d + 1n
+        return (
+          label +
+          " · [" +
+          best.start +
+          ", " +
+          best.end +
+          "] · suma " +
+          best.sum +
+          " · salida " +
+          inner +
+          " " +
+          model.groups[best.end].d
+        )
+      }
+
+      function currentDetail(current) {
+        if (directBest) return "Resultado directo. Podés recorrer los pasos del algoritmo elegido."
+        if (!current)
+          return search.method === "brute"
+            ? "Las sumas de prefijos permiten evaluar cada intervalo en tiempo constante."
+            : "Kadane conserva la mejor suma de un intervalo que termina en cada índice."
+        const { start, end, sum, base, restarted, improved } = current
+        const detail =
+          search.method === "brute"
+            ? "Inicio " +
+              start +
+              " · final " +
+              end +
+              " · P[" +
+              (end + 1) +
+              "] − P[" +
+              start +
+              "] = " +
+              search.prefix[end + 1] +
+              " − (" +
+              search.prefix[start] +
+              ") = " +
+              sum +
+              "."
+            : "i = " +
+              end +
+              " · actual [" +
+              start +
+              ", " +
+              end +
+              "] · " +
+              (restarted ? "Se descarta la suma anterior por ser negativa. " : "") +
+              base +
+              " + (" +
+              search.weights[end] +
+              ") = " +
+              sum +
+              "."
+        return detail + (improved ? " Este intervalo pasa a ser el mejor." : "")
+      }
+
+      function track(name, range, best) {
+        const kind = best ? " best" : ""
+        const label =
+          '<div class="trace-grid track' + kind + '"><span class="track-name">' + name + "</span>"
+        if (!range || range.start < 0) {
+          const empty = best ? "Vacío · suma 0" : "Sin evaluar"
+          return label + '<span style="grid-column: 2 / -1">' + empty + "</span></div>"
+        }
+        const offset = page * pageSize
+        const start = Math.max(range.start, offset)
+        const end = Math.min(range.end, offset + visibleGroups.length - 1)
+        const sum = "Suma " + range.sum
+        if (start > end) {
+          return (
+            label +
+            '<span style="grid-column: 2 / -1">' +
+            sum +
+            " · fuera de esta página</span></div>"
+          )
+        }
+        return (
+          label +
+          '<span class="track-mark" data-range style="grid-column: ' +
+          (start - offset + 2) +
+          " / span " +
+          (end - start + 1) +
+          '">' +
+          sum +
+          "</span></div>"
+        )
+      }
+
+      function renderRanges(current, best) {
+        tableArea.style.setProperty("--length", visibleGroups.length)
+        const local = current ? current.end - page * pageSize : -1
+        const pointer = byId("trace-pointer")
+        const showPointer = search.method === "kadane" && local >= 0 && local < visibleGroups.length
+        pointer.hidden = !showPointer
+        pointer.innerHTML = showPointer
+          ? '<span class="trace-pointer" style="grid-column:' + (local + 2) + '">↓</span>'
+          : ""
+        for (const [index, cell] of [...table.rows[1].cells].slice(1).entries()) {
+          cell.firstElementChild.toggleAttribute("data-cursor", showPointer && index === local)
+        }
+        byId("trace-ranges").innerHTML =
+          (directBest ? "" : track("Actual", current, false)) + track("Mejor", best, true)
+      }
+
+      function renderMatrix(current, best) {
+        const matrix = byId("matrix")
+        const focus = current ?? directBest ?? search.current
+        const rowBase = Math.floor(Math.max(0, focus?.start ?? 0) / pageSize) * pageSize
+        const colBase = Math.floor(Math.max(0, focus?.end ?? 0) / pageSize) * pageSize
+        const count = search.weights.length
+        const cols = Math.min(pageSize, count - colBase)
+        const rows = Math.min(pageSize, count - rowBase)
+        const tested = search.current
+        const headers = Array.from(
+          { length: cols },
+          (_, j) => '<th scope="col">' + (colBase + j) + "</th>",
+        ).join("")
+        const body = Array.from({ length: rows }, (_, i) => {
+          const start = rowBase + i
+          const cells = Array.from({ length: cols }, (_, j) => {
+            const end = colBase + j
+            if (end < start) return "<td data-invalid>—</td>"
+            const active = current?.start === start && current.end === end
+            const wins = best.start === start && best.end === end
+            const visited =
+              tested && (end < tested.end || (end === tested.end && start <= tested.start))
+            const score = visited || wins ? search.prefix[end + 1] - search.prefix[start] : "·"
+            return (
+              "<td" +
+              (active ? ' data-current aria-current="true"' : "") +
+              (wins ? " data-best" : "") +
+              ">" +
+              score +
+              "</td>"
+            )
+          }).join("")
+          return '<tr><th scope="row">' + start + "</th>" + cells + "</tr>"
+        }).join("")
+        matrix.innerHTML =
+          '<thead><tr><th scope="col">Inicio ↓ / Fin →</th>' +
+          headers +
+          "</tr></thead><tbody>" +
+          body +
+          "</tbody>"
+
+        const activeCell = matrix.querySelector("[data-current]")
+        if (activeCell) {
+          const viewport = byId("matrix-scroll")
+          const outer = viewport.getBoundingClientRect()
+          const inner = activeCell.getBoundingClientRect()
+          const head = matrix.tHead.getBoundingClientRect().height
+          const label = matrix.rows[0].cells[0].getBoundingClientRect().width
+          if (inner.bottom > outer.bottom) viewport.scrollTop += inner.bottom - outer.bottom + 2
+          else if (inner.top < outer.top + head) viewport.scrollTop += inner.top - outer.top - head
+          if (inner.right > outer.right) viewport.scrollLeft += inner.right - outer.right + 2
+          else if (inner.left < outer.left + label)
+            viewport.scrollLeft += inner.left - outer.left - label
+        }
+      }
+
+      function renderSearch() {
+        const current = directBest ? null : search.current
+        const best = directBest ?? search.best
+        const finished = search.steps === search.total
+        byId("trace-result").textContent = resultText(best, finished || directBest)
+        byId("trace-progress").textContent =
+          "Paso " + format.format(search.steps) + " de " + format.format(search.total)
+        byId("trace-detail").textContent = currentDetail(current)
+        byId("trace-play").disabled = finished || playback !== undefined
+        byId("trace-pause").disabled = playback === undefined
+        byId("trace-step").disabled = finished
+        byId("trace-reset").disabled = search.steps === 0 && !directBest
+        byId("matrix-panel").hidden = search.method !== "brute"
+        renderRanges(current, best)
+        if (search.method === "brute") renderMatrix(current, best)
+      }
+
+      function highlight(key) {
+        if (key === highlighted) return
+        highlighted = key
+        for (const block of groupGrid.querySelectorAll("[data-block]")) {
+          block.toggleAttribute("data-highlighted", block.dataset.block === key)
+        }
+        for (const cell of table.querySelectorAll("[data-key]")) {
+          cell.toggleAttribute("data-highlighted", cell.dataset.key === key)
+        }
+        draw()
+      }
+
+      table.addEventListener("pointerover", (event) =>
+        highlight(event.target.closest("[data-key]")?.dataset.key),
+      )
+      table.addEventListener("pointerleave", () =>
+        highlight(table.querySelector(":focus-visible")?.dataset.key),
+      )
+      table.addEventListener("focusin", (event) => highlight(event.target.dataset.key))
+      table.addEventListener("focusout", (event) => highlight(event.relatedTarget?.dataset?.key))
+
+      canvas.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0 || drag) return
+        ignorePlotClick = false
+        if (plotMode.value !== "move") return
+        drag = {
+          pointer: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          pan,
+          scroll: scroll.scrollLeft,
+        }
+        canvas.setPointerCapture(event.pointerId)
+      })
+      canvas.addEventListener("pointermove", (event) => {
+        if (!drag || event.pointerId !== drag.pointer) return
+        const dx = event.clientX - drag.x
+        const dy = event.clientY - drag.y
+        if (!ignorePlotClick && Math.hypot(dx, dy) < 4) return
+        ignorePlotClick = true
+        canvas.setAttribute("data-dragging", "")
+        if (position > 1) scroll.scrollLeft = drag.scroll - dx
+        else {
+          pan = { x: drag.pan.x + dx, y: drag.pan.y + dy }
+          draw()
+        }
+      })
+      canvas.addEventListener("lostpointercapture", (event) => {
+        if (drag?.pointer !== event.pointerId) return
+        drag = undefined
+        canvas.removeAttribute("data-dragging")
+      })
+      canvas.addEventListener("click", editPlot)
+      plotMode.addEventListener("change", () => {
+        if (plotMode.value !== "move" && stage !== 0) goTo(0, true)
+        else showPlotMode()
+      })
+      byId("center-plot").addEventListener("click", () => {
+        pan = { x: 0, y: 0 }
+        scroll.scrollLeft = 0
+        draw()
+      })
+
+      algorithm.addEventListener("change", resetSearch)
+      byId("trace-optimum").addEventListener("click", showOptimum)
+      byId("trace-play").addEventListener("click", () => {
+        playback = setInterval(stepSearch, 480)
+        stepSearch()
+      })
+      byId("trace-pause").addEventListener("click", () => {
+        stopPlayback()
+        renderSearch()
+      })
+      byId("trace-step").addEventListener("click", () => {
+        stopPlayback()
+        stepSearch()
+      })
+      byId("trace-reset").addEventListener("click", resetSearch)
+      previous.addEventListener("click", () => goTo(stage - 1))
+      next.addEventListener("click", () => goTo((stage + 1) % stageText.length))
+      for (const [id, delta] of [
+        ["prev-group-page", -1],
+        ["next-group-page", 1],
+      ]) {
+        byId(id).addEventListener("click", () => {
+          page += delta
+          scroll.scrollLeft = 0
+          if (stage === 4) {
+            stopPlayback()
+            fillGroups()
+            draw()
+            renderSearch()
+          } else goTo(stage, stage === 2)
+        })
+      }
+      byId("input-form").addEventListener("submit", (event) => {
+        event.preventDefault()
+        loadText()
+      })
+      coordinates.addEventListener("input", () => {
+        byId("input-count").textContent =
+          "N = " + format.format(inputLines(coordinates.value).length)
+      })
+      byId("load-example").addEventListener("click", () => {
+        coordinates.value = example
+        loadText()
+      })
+      byId("clear-input").addEventListener("click", () => {
+        coordinates.value = ""
+        loadText()
+        coordinates.focus()
+      })
+      new ResizeObserver(draw).observe(scroll)
+      coordinates.value = example
+      loadText()
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1255 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lanzamiento de aceitunas · Explorar el aro</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --background: #f3f5ef;
+        --surface: #fffefa;
+        --plot: #f8f9f4;
+        --ink: #172e2a;
+        --muted: #50645d;
+        --line: #d6dfd4;
+        --grid: #e3e9df;
+        --axis: #869c91;
+        --olive: #176554;
+        --rival: #a04921;
+        --inner: #305b9c;
+        --outer: #75539e;
+        --ring: #dceee4;
+        --focus: #305b9c;
+        font:
+          16px/1.45 system-ui,
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--ink);
+      }
+      main {
+        width: min(1320px, 100% - 2.5rem);
+        margin: 0 auto;
+        padding: 1.6rem 0 2.4rem;
+      }
+      a {
+        color: var(--olive);
+        text-underline-offset: 0.2em;
+      }
+      a:focus-visible,
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
+      }
+      .back {
+        font-weight: 650;
+        font-size: 0.88rem;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin: 1rem 0 1.45rem;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: clamp(1.75rem, 4vw, 2.65rem);
+        line-height: 1.13;
+        letter-spacing: -0.04em;
+      }
+      h2 {
+        font-size: 1.03rem;
+      }
+      .intro {
+        margin-top: 0.35rem;
+        color: var(--muted);
+      }
+      .formula,
+      .panel {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: 0.8rem;
+      }
+      .formula {
+        padding: 0.65rem 0.85rem;
+        max-width: 27rem;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+      .formula span {
+        display: block;
+        margin-top: 0.3rem;
+        color: var(--ink);
+        font:
+          1rem / 1.45 Georgia,
+          serif;
+      }
+      .field-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .plan-tools {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      select {
+        min-height: 2.55rem;
+        border: 1px solid var(--line);
+        border-radius: 0.45rem;
+        padding: 0.35rem 0.5rem;
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(205px, 0.95fr) minmax(0, 2.65fr) minmax(215px, 1fr);
+        gap: 1rem;
+        align-items: start;
+      }
+      .panel {
+        min-width: 0;
+        padding: 1rem;
+      }
+      .quiet {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+      .stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+      label,
+      .label {
+        font-weight: 650;
+        font-size: 0.86rem;
+      }
+      textarea,
+      input[type="text"] {
+        width: 100%;
+        min-width: 0;
+        border: 1px solid var(--axis);
+        background: var(--plot);
+        color: var(--ink);
+        border-radius: 0.45rem;
+        padding: 0.5rem 0.65rem;
+        font:
+          0.9rem/1.5 ui-monospace,
+          Consolas,
+          monospace;
+      }
+      textarea {
+        display: block;
+        resize: vertical;
+        min-height: 10rem;
+        white-space: pre;
+      }
+      button,
+      .file-button {
+        border: 1px solid var(--line);
+        border-radius: 0.45rem;
+        background: var(--surface);
+        color: var(--ink);
+        min-height: 2.55rem;
+        padding: 0.4rem 0.65rem;
+        font:
+          650 0.86rem/1.2 system-ui,
+          sans-serif;
+        cursor: pointer;
+      }
+      button:hover:not(:disabled),
+      .file-button:hover {
+        background: var(--ring);
+      }
+      button:disabled {
+        cursor: default;
+        opacity: 0.5;
+      }
+      .primary {
+        border-color: var(--olive);
+        background: var(--olive);
+        color: #fff;
+      }
+      .primary:hover:not(:disabled) {
+        background: #0e4f41;
+      }
+      .actions {
+        display: flex;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+      }
+      .actions > button {
+        flex: 1;
+      }
+      .file-button {
+        display: inline-flex;
+        align-items: center;
+      }
+      #input-file:focus-visible + .file-button {
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
+      }
+      .error {
+        color: #a33223;
+        overflow-wrap: anywhere;
+        font-size: 0.84rem;
+      }
+      .error:empty,
+      .quiet:empty {
+        display: none;
+      }
+      figure {
+        margin: 0;
+      }
+      .legend {
+        display: flex;
+        gap: 0.5rem 1rem;
+        flex-wrap: wrap;
+      }
+      .legend b {
+        font-size: 1rem;
+        margin-right: 0.2rem;
+      }
+      .oli {
+        color: var(--olive);
+      }
+      .rival {
+        color: var(--rival);
+      }
+      .swatch {
+        display: inline-block;
+        width: 0.7rem;
+        height: 0.7rem;
+        margin-right: 0.3rem;
+        background: var(--ring);
+        border: 1px solid var(--axis);
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: clamp(270px, 39vw, 495px);
+        background: var(--plot);
+        border-radius: 0.55rem;
+        touch-action: pan-y;
+        cursor: crosshair;
+      }
+      canvas[data-dragging] {
+        cursor: grabbing;
+      }
+      canvas[data-mode="move"] {
+        cursor: grab;
+        touch-action: none;
+      }
+      canvas[data-mode="move"][data-dragging] {
+        cursor: grabbing;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      fieldset {
+        margin: 0;
+        min-inline-size: 0;
+      }
+      fieldset legend {
+        padding: 0 0.4rem;
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+      [data-border="inner"] {
+        --border-color: var(--inner);
+      }
+      [data-border="outer"] {
+        --border-color: var(--outer);
+      }
+      fieldset legend,
+      .radius {
+        color: var(--border-color);
+      }
+      .radius {
+        font-size: 1.13rem;
+        font-weight: 720;
+        overflow-wrap: anywhere;
+      }
+      input[type="range"] {
+        display: block;
+        width: 100%;
+        margin: 0.35rem 0 0.65rem;
+        accent-color: var(--border-color);
+      }
+      .stepper {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 0.28rem;
+        align-items: center;
+      }
+      .stepper button {
+        min-width: 2rem;
+        padding-inline: 0.4rem;
+        font-size: 1rem;
+      }
+      .counts {
+        margin: 0;
+        display: grid;
+        gap: 0.25rem;
+      }
+      .counts > div {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .counts dd {
+        margin: 0;
+        font-size: 1.22rem;
+        font-weight: 750;
+        font-variant-numeric: tabular-nums;
+      }
+      .net {
+        padding: 0.7rem 0.8rem;
+        border-radius: 0.55rem;
+        background: var(--ring);
+      }
+      .net strong {
+        display: block;
+        font-size: 2rem;
+        line-height: 1.25;
+        font-variant-numeric: tabular-nums;
+      }
+      .net[data-negative] {
+        background: #f9e9e0;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        width: 100%;
+        margin: 0.15rem 0;
+      }
+      output {
+        font-variant-numeric: tabular-nums;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      @media (max-width: 1050px) {
+        .layout {
+          grid-template-columns: minmax(190px, 0.85fr) minmax(0, 2fr);
+        }
+        .result {
+          grid-column: 2;
+        }
+      }
+      @media (max-width: 655px) {
+        main {
+          width: min(100% - 1.25rem, 34rem);
+          padding-top: 1rem;
+        }
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 0.8rem;
+        }
+        .result {
+          grid-column: auto;
+        }
+        .panel {
+          padding: 0.8rem;
+        }
+        .controls {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        textarea,
+        input[type="text"] {
+          font-size: 1rem;
+        }
+        textarea {
+          min-height: 8rem;
+        }
+        button,
+        .file-button {
+          min-height: 2.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a
+        class="back"
+        id="article-link"
+        href="../../bestiario/oia/lanzamiento-de-aceitunas#visualizaciones"
+        >← Volver al artículo</a
+      >
+      <header>
+        <div>
+          <h1>Lanzamiento de aceitunas</h1>
+          <p class="intro">
+            Elegí los bordes del aro y compará los tiros que cuentan para cada equipo.
+          </p>
+        </div>
+        <p class="formula">
+          En el plano usamos los radios. Para resolver el problema, elevar al cuadrado conserva el
+          orden en las distancias no negativas y permite trabajar con enteros exactos.
+          <span>R₁ ≤ √(x² + y²) ≤ R₂ ⇔ R₁² ≤ x² + y² ≤ R₂²</span>
+        </p>
+      </header>
+
+      <div class="layout">
+        <section class="panel stack" aria-labelledby="input-heading">
+          <h2 id="input-heading">Coordenadas</h2>
+          <form class="stack" id="input-form">
+            <div>
+              <label for="coordinates">Entrada de tiros</label>
+              <textarea
+                id="coordinates"
+                rows="11"
+                spellcheck="false"
+                aria-describedby="input-help"
+              ></textarea>
+            </div>
+            <p class="quiet" id="input-help">
+              Un par x y por renglón. N se calcula a partir de los tiros ingresados.
+            </p>
+            <button class="primary" type="submit">Procesar coordenadas</button>
+            <div class="actions">
+              <button id="load-example" type="button">Cargar ejemplo</button>
+              <button id="clear-input" type="button">Limpiar</button>
+            </div>
+            <div>
+              <input class="sr-only" id="input-file" type="file" accept=".txt,.in,text/plain" />
+              <label class="file-button" for="input-file">Abrir archivo de texto</label>
+            </div>
+            <p class="error" id="input-error" role="alert"></p>
+            <p class="quiet" id="input-count" role="status"></p>
+          </form>
+        </section>
+
+        <div class="stack">
+          <figure class="panel stack" aria-labelledby="field-heading">
+            <div class="field-tools">
+              <h2 id="field-heading">La cancha</h2>
+              <div class="plan-tools">
+                <button id="center-plot" type="button">Centrar</button>
+                <label for="plot-mode">Modo</label>
+                <select id="plot-mode">
+                  <option value="move">Moverse</option>
+                  <option value="add">Agregar tiros</option>
+                  <option value="erase">Borrar tiros</option>
+                </select>
+              </div>
+            </div>
+            <div class="legend quiet">
+              <span><b class="oli" aria-hidden="true">×</b> Oli</span>
+              <span><b class="rival" aria-hidden="true">○</b> Rival</span>
+              <span><i class="swatch" aria-hidden="true"></i>Aro</span>
+            </div>
+            <canvas
+              id="field"
+              role="img"
+              aria-label="Plano de los tiros y el aro centrado en el origen"
+              aria-describedby="field-help"
+            ></canvas>
+            <figcaption class="quiet">
+              <p id="field-help"></p>
+              <p class="quiet" id="sample-note"></p>
+            </figcaption>
+          </figure>
+
+          <div class="controls">
+            <fieldset class="panel" data-border="inner">
+              <legend>Radio interior · R₁</legend>
+              <output class="radius" id="inner-radius" for="inner-slider inner-input"></output>
+              <input
+                type="range"
+                id="inner-slider"
+                min="0"
+                step="any"
+                aria-label="Mover radio interior"
+              />
+              <label for="inner-input">R₁</label>
+              <div class="stepper">
+                <button
+                  data-step="-1"
+                  type="button"
+                  aria-label="Posición anterior del radio interior"
+                >
+                  −
+                </button>
+                <input
+                  type="text"
+                  id="inner-input"
+                  inputmode="decimal"
+                  maxlength="45"
+                  spellcheck="false"
+                />
+                <button
+                  data-step="1"
+                  type="button"
+                  aria-label="Posición siguiente del radio interior"
+                >
+                  +
+                </button>
+              </div>
+            </fieldset>
+            <fieldset class="panel" data-border="outer">
+              <legend>Radio exterior · R₂</legend>
+              <output class="radius" id="outer-radius" for="outer-slider outer-input"></output>
+              <input
+                type="range"
+                id="outer-slider"
+                min="0"
+                step="any"
+                aria-label="Mover radio exterior"
+              />
+              <label for="outer-input">R₂</label>
+              <div class="stepper">
+                <button
+                  data-step="-1"
+                  type="button"
+                  aria-label="Posición anterior del radio exterior"
+                >
+                  −
+                </button>
+                <input
+                  type="text"
+                  id="outer-input"
+                  inputmode="decimal"
+                  maxlength="45"
+                  spellcheck="false"
+                />
+                <button
+                  data-step="1"
+                  type="button"
+                  aria-label="Posición siguiente del radio exterior"
+                >
+                  +
+                </button>
+              </div>
+            </fieldset>
+          </div>
+          <p class="quiet">
+            Al arrastrar un borde cerca del radio de un tiro, se ajusta a ese radio. Podés escribir
+            un radio decimal y confirmarlo con Enter. Los botones − y + saltan entre radios de
+            tiros. Si los bordes se cruzan, ambos quedan en el radio elegido.
+          </p>
+          <p class="error" id="radius-error" role="alert"></p>
+        </div>
+
+        <section class="panel stack result" aria-labelledby="result-heading">
+          <h2 id="result-heading">Tiros dentro del aro</h2>
+          <dl class="counts">
+            <div>
+              <dt class="oli">× Oli</dt>
+              <dd id="count-oli"></dd>
+            </div>
+            <div>
+              <dt class="rival">○ Rival</dt>
+              <dd id="count-rival"></dd>
+            </div>
+          </dl>
+          <div class="net" id="net-box">
+            <span class="label">Diferencia · Oli − rival</span>
+            <strong id="score"></strong>
+            <span class="quiet" id="score-detail"></span>
+          </div>
+          <p class="sr-only" id="counts-announcement" role="status"></p>
+          <p class="quiet" id="outside"></p>
+          <hr />
+          <button class="primary" type="button" id="best-ring">Encontrar aro óptimo</button>
+          <p class="quiet" id="best-score"></p>
+          <div>
+            <label for="ring-output">Salida equivalente · R₁² R₂²</label>
+            <input type="text" id="ring-output" readonly />
+          </div>
+          <button type="button" id="copy-output">Copiar salida</button>
+          <p class="quiet" id="copy-status" role="status"></p>
+          <p class="quiet">
+            Los bordes cuentan. La salida usa cuadrados enteros que incluyen los mismos tiros del
+            aro mostrado.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const example = `9 3
+6 1
+9 8
+-1 -2
+8 -9
+-2 10
+5 -8
+-5 8
+-10 9
+-1 -10`
+      const coordinateLimit = 2_000_000_000n
+      const maxSquare = 2n * coordinateLimit ** 2n
+      const drawingLimit = 5_000
+      const intFormat = new Intl.NumberFormat("es-AR")
+      const radiusFormat = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 3 })
+      const compactFormat = new Intl.NumberFormat("es-AR", {
+        notation: "scientific",
+        maximumFractionDigits: 1,
+      })
+      const byId = (id) => document.getElementById(id)
+      const coordinates = byId("coordinates")
+      const canvas = byId("field")
+      const context = canvas.getContext("2d")
+      const plotMode = byId("plot-mode")
+      const output = byId("ring-output")
+      const radiusError = byId("radius-error")
+      const copyStatus = byId("copy-status")
+      const controls = ["inner", "outer"].map((name) => ({
+        slider: byId(`${name}-slider`),
+        input: byId(`${name}-input`),
+        radius: byId(`${name}-radius`),
+        steps: [...document.querySelectorAll(`[data-border="${name}"] [data-step]`)],
+      }))
+      const styles = getComputedStyle(document.documentElement)
+      const colors = Object.fromEntries(
+        ["grid", "axis", "ink", "muted", "olive", "rival", "inner", "outer", "ring", "surface"].map(
+          (name) => [name, styles.getPropertyValue(`--${name}`).trim()],
+        ),
+      )
+
+      let model
+      let ring
+      let integerBounds
+      let view
+      let drag
+      let pan = { x: 0, y: 0 }
+      let drawingFrame = 0
+      let inputRevision = 0
+      let appliedText = ""
+
+      if (location.protocol === "file:") {
+        byId("article-link").href = "../../../content/bestiario/oia/lanzamiento-de-aceitunas.md"
+      }
+
+      function inputLines(text) {
+        return text
+          .split(/\r?\n/)
+          .map((line) => line.trim())
+          .filter(Boolean)
+      }
+
+      function makeShot(x, y) {
+        const exactX = BigInt(x)
+        const exactY = BigInt(y)
+        return { x, y, d: exactX * exactX + exactY * exactY, oli: x > 0 }
+      }
+
+      function parseShots(text) {
+        const lines = inputLines(text)
+        if (lines.length > 100_000) throw new Error("Ingresá hasta 100.000 tiros.")
+        return lines.map((line, index) => {
+          const match = /^([+-]?\d+)(?:\s*,\s*|\s+)([+-]?\d+)$/.exec(line)
+          if (!match) throw new Error(`Tiro ${index + 1}. Ingresá dos coordenadas enteras.`)
+          const x = BigInt(match[1])
+          const y = BigInt(match[2])
+          if (
+            x === 0n ||
+            x < -coordinateLimit ||
+            x > coordinateLimit ||
+            y < -coordinateLimit ||
+            y > coordinateLimit
+          ) {
+            throw new Error(
+              `Tiro ${index + 1}. Las coordenadas deben estar entre −2.000.000.000 y 2.000.000.000 y x debe ser distinto de 0.`,
+            )
+          }
+          return makeShot(Number(x), Number(y))
+        })
+      }
+
+      function integerBorder(square) {
+        const radius = Math.sqrt(Number(square))
+        return {
+          radius,
+          numerator: square,
+          denominator: 1n,
+          text: String(radius).replace(".", ","),
+          approximate: BigInt(Math.round(radius)) ** 2n !== square,
+        }
+      }
+
+      // A decimal has an exact rational square. Only drawing uses a floating-point radius.
+      function decimalBorder(text) {
+        const value = text.trim().replace(",", ".")
+        const match = /^\+?(\d*)(?:\.(\d*))?(?:e([+-]?\d+))?$/i.exec(value)
+        const radius = Number(value)
+        if (!match || !(match[1] || match[2]) || !Number.isFinite(radius)) return null
+        const exponent = Number(match[3] ?? 0)
+        if (Math.abs(exponent) > 400) return null
+        const fraction = match[2] ?? ""
+        const power = 2 * (exponent - fraction.length)
+        const digits = BigInt(match[1] + fraction)
+        return {
+          radius,
+          numerator: digits ** 2n * 10n ** BigInt(Math.max(0, power)),
+          denominator: 10n ** BigInt(Math.max(0, -power)),
+          text: value.replace(".", ","),
+          approximate: false,
+        }
+      }
+
+      function floorSquare(border) {
+        return border.numerator / border.denominator
+      }
+
+      function ceilSquare(border) {
+        return (border.numerator + border.denominator - 1n) / border.denominator
+      }
+
+      function bestRing(groups) {
+        let start = 0
+        let sum = 0
+        let score = 0
+        let bounds = [0n, 0n]
+        for (let end = 0; end < groups.length; end++) {
+          if (sum < 0) {
+            start = end
+            sum = 0
+          }
+          sum += groups[end].oli - groups[end].rival
+          if (sum > score) {
+            score = sum
+            bounds = [start === 0 ? 0n : groups[start - 1].d + 1n, groups[end].d]
+          }
+        }
+        return { bounds, score }
+      }
+
+      function prepareModel(shots) {
+        const byDistance = new Map()
+        for (const shot of shots) {
+          if (!byDistance.has(shot.d)) byDistance.set(shot.d, { d: shot.d, oli: 0, rival: 0 })
+          const group = byDistance.get(shot.d)
+          if (shot.oli) group.oli++
+          else group.rival++
+        }
+
+        const groups = [...byDistance.values()].sort((left, right) => {
+          if (left.d === right.d) return 0
+          return left.d < right.d ? -1 : 1
+        })
+        const distances = groups.map((group) => group.d)
+        const oli = new Int32Array(groups.length + 1)
+        const rival = new Int32Array(groups.length + 1)
+        for (const [index, group] of groups.entries()) {
+          oli[index + 1] = oli[index] + group.oli
+          rival[index + 1] = rival[index] + group.rival
+        }
+
+        const plotted =
+          shots.length <= drawingLimit
+            ? shots
+            : Array.from(
+                { length: drawingLimit },
+                (_, index) => shots[Math.floor((index * shots.length) / drawingLimit)],
+              )
+        return {
+          distances,
+          oli,
+          rival,
+          radii: distances.map((d) => Math.sqrt(Number(d))),
+          plotted,
+          shots,
+          farthest: distances.at(-1) ?? 0n,
+          total: shots.length,
+          best: bestRing(groups),
+        }
+      }
+
+      function firstBound(values, target, strict = false) {
+        let left = 0
+        let right = values.length
+        while (left < right) {
+          const middle = Math.floor((left + right) / 2)
+          if (values[middle] < target || (strict && values[middle] === target)) left = middle + 1
+          else right = middle
+        }
+        return left
+      }
+
+      function draggedBorder(radius, scale) {
+        const next = firstBound(model.radii, radius)
+        const previous = next - 1
+        const nearest =
+          (model.radii[next] ?? Infinity) - radius < radius - (model.radii[previous] ?? -Infinity)
+            ? next
+            : previous
+        if (Math.abs(model.radii[nearest] - radius) * scale <= 6) {
+          return integerBorder(model.distances[nearest])
+        }
+        return decimalBorder(String(radius))
+      }
+
+      function setShots(shots, keepBorders = false) {
+        model = prepareModel(shots)
+        if (!keepBorders) {
+          ring = [0n, model.farthest].map(integerBorder)
+          pan = { x: 0, y: 0 }
+        }
+        appliedText = coordinates.value
+        byId("input-error").textContent = ""
+        radiusError.textContent = ""
+        byId("input-count").textContent =
+          `N = ${intFormat.format(model.total)} · ${intFormat.format(model.distances.length)} radios distintos`
+        byId("sample-note").textContent =
+          model.total > drawingLimit
+            ? `Se dibujan ${intFormat.format(drawingLimit)} de ${intFormat.format(model.total)} tiros. El cálculo incluye todos los tiros.`
+            : ""
+        refresh()
+      }
+
+      function processInput() {
+        inputRevision++
+        try {
+          setShots(parseShots(coordinates.value))
+        } catch (error) {
+          byId("input-error").textContent =
+            `${error.message} El gráfico conserva la última entrada válida.`
+        }
+      }
+
+      function setBorder(index, value) {
+        ring[index] = value
+        if (ring[0].numerator * ring[1].denominator > ring[1].numerator * ring[0].denominator) {
+          ring[1 - index] = value
+        }
+        radiusError.textContent = ""
+        refresh()
+      }
+
+      function applyRadius(index) {
+        const control = controls[index]
+        const text = control.input.value.trim()
+        if (text === ring[index].text) return
+        const value = decimalBorder(text)
+        if (!value) {
+          radiusError.textContent = "Ingresá un radio no negativo, por ejemplo 2,5."
+          control.input.setAttribute("aria-invalid", "true")
+          return
+        }
+        setBorder(index, value)
+      }
+
+      function signed(value) {
+        return value > 0 ? `+${intFormat.format(value)}` : intFormat.format(value)
+      }
+
+      function refresh() {
+        integerBounds = [ceilSquare(ring[0]), floorSquare(ring[1])]
+        const start = firstBound(model.distances, integerBounds[0])
+        const end = firstBound(model.distances, integerBounds[1], true)
+        const oli = model.oli[end] - model.oli[start]
+        const rival = model.rival[end] - model.rival[start]
+        const score = oli - rival
+        byId("count-oli").textContent = intFormat.format(oli)
+        byId("count-rival").textContent = intFormat.format(rival)
+        byId("score").textContent = signed(score)
+        byId("score-detail").textContent =
+          `${intFormat.format(oli)} − ${intFormat.format(rival)} = ${intFormat.format(score)}`
+        byId("net-box").toggleAttribute("data-negative", score < 0)
+        const announcement = `${oli} tiros del Oli, ${rival} del rival. Diferencia ${signed(score)}.`
+        if (byId("counts-announcement").textContent !== announcement)
+          byId("counts-announcement").textContent = announcement
+        byId("outside").textContent =
+          `Fuera del aro · ${intFormat.format(model.total - oli - rival)} tiros`
+        byId("best-score").textContent = `Mejor diferencia posible · ${signed(model.best.score)}`
+        const upper = integerBounds[1] < maxSquare ? integerBounds[1] : maxSquare
+        output.value = end === start ? "0 0" : `${integerBounds[0]} ${upper}`
+        copyStatus.textContent = ""
+
+        for (const [index, control] of controls.entries()) {
+          const border = ring[index]
+          const format = border.radius >= 1e6 ? compactFormat : radiusFormat
+          control.radius.textContent = `${border.approximate ? "≈ " : ""}${format.format(border.radius)}`
+          control.input.value = border.text
+          control.input.removeAttribute("aria-invalid")
+          control.slider.max = String(Math.max(5, (model.radii.at(-1) ?? 0) * 1.2, ring[1].radius))
+          control.slider.value = String(border.radius)
+          control.slider.setAttribute("aria-valuetext", `Radio ${border.text}`)
+          control.steps[0].disabled = firstBound(model.distances, ceilSquare(border)) === 0
+          control.steps[1].disabled =
+            firstBound(model.distances, floorSquare(border), true) === model.distances.length
+        }
+        scheduleDrawing()
+      }
+
+      function scheduleDrawing() {
+        if (drawingFrame !== 0) return
+        drawingFrame = requestAnimationFrame(() => {
+          drawingFrame = 0
+          draw()
+        })
+      }
+
+      function draw() {
+        const { width, height } = canvas.getBoundingClientRect()
+        if (!width || !height) return
+        const ratio = Math.min(devicePixelRatio || 1, 2)
+        const pixelWidth = Math.round(width * ratio)
+        const pixelHeight = Math.round(height * ratio)
+        if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+          canvas.width = pixelWidth
+          canvas.height = pixelHeight
+        }
+        context.setTransform(ratio, 0, 0, ratio, 0, 0)
+        context.clearRect(0, 0, width, height)
+
+        const cx = width / 2 + pan.x
+        const cy = height / 2 + pan.y
+        const extent = Math.max(2, ring[1].radius, model.radii.at(-1) ?? 0)
+        const scale = drag?.scale ?? (Math.min(width, height) / 2 - 19) / extent / 1.08
+        const radii = ring.map((border) => border.radius * scale)
+        drawGrid(width, height, cx, cy, scale)
+
+        if (radii[1] > 0) {
+          context.beginPath()
+          context.arc(cx, cy, radii[1], 0, 2 * Math.PI)
+          if (radii[0] > 0) {
+            context.moveTo(cx + radii[0], cy)
+            context.arc(cx, cy, radii[0], 0, 2 * Math.PI)
+          }
+          context.fillStyle = colors.ring
+          context.globalAlpha = 0.76
+          context.fill("evenodd")
+          context.globalAlpha = 1
+        }
+        drawAxes(width, height, cx, cy)
+
+        for (const index of [1, 0]) {
+          if (radii[index] <= 0) continue
+          context.beginPath()
+          context.arc(cx, cy, radii[index], 0, 2 * Math.PI)
+          context.strokeStyle = index === 0 ? colors.inner : colors.outer
+          context.lineWidth = 1.7
+          context.setLineDash(index === 0 ? [5, 4] : [])
+          context.stroke()
+        }
+        context.setLineDash([])
+        drawShots(cx, cy, scale)
+
+        const handles = radii.map((radius, index) => {
+          const color = index === 0 ? colors.inner : colors.outer
+          const direction = index === 0 ? 1 : -1
+          const x = cx + direction * Math.max(13, radius)
+          context.beginPath()
+          context.moveTo(cx + direction * radius, cy)
+          context.lineTo(x, cy)
+          context.strokeStyle = color
+          context.stroke()
+          context.beginPath()
+          context.arc(x, cy, 6, 0, 2 * Math.PI)
+          context.fillStyle = colors.surface
+          context.fill()
+          context.stroke()
+          context.font = "bold 12px system-ui"
+          context.textAlign = "center"
+          context.fillStyle = color
+          context.fillText(index === 0 ? "R₁" : "R₂", x, cy - 12)
+          return x
+        })
+        view = { cx, cy, scale, handles }
+      }
+
+      function drawGrid(width, height, cx, cy, scale) {
+        const target = 54 / scale
+        const power = 10 ** Math.floor(Math.log10(target))
+        const step = (target / power <= 2 ? 2 : target / power <= 5 ? 5 : 10) * power
+        const gap = step * scale
+        context.lineWidth = 1
+        context.strokeStyle = colors.grid
+        context.fillStyle = colors.muted
+        context.font = "11px system-ui"
+        context.textAlign = "center"
+        const tick = (value) =>
+          Math.abs(value) < 100_000 ? radiusFormat.format(value) : compactFormat.format(value)
+
+        for (let i = Math.ceil((12 - cx) / gap); i <= Math.floor((width - 12 - cx) / gap); i++) {
+          if (i === 0) continue
+          const x = cx + i * gap
+          context.beginPath()
+          context.moveTo(x, 12)
+          context.lineTo(x, height - 12)
+          context.stroke()
+          if (x > 22 && x < width - 22) context.fillText(tick(i * step), x, height - 9)
+        }
+        context.textAlign = "left"
+        for (let i = Math.ceil((12 - cy) / gap); i <= Math.floor((height - 12 - cy) / gap); i++) {
+          if (i === 0) continue
+          const y = cy - i * gap
+          context.beginPath()
+          context.moveTo(12, y)
+          context.lineTo(width - 12, y)
+          context.stroke()
+          if (y > 20 && y < height - 20) context.fillText(tick(i * step), 11, y - 4)
+        }
+      }
+
+      function drawAxes(width, height, cx, cy) {
+        context.strokeStyle = colors.axis
+        context.lineWidth = 1
+        context.beginPath()
+        context.moveTo(9, cy)
+        context.lineTo(width - 9, cy)
+        context.stroke()
+        context.setLineDash([4, 4])
+        context.beginPath()
+        context.moveTo(cx, 10)
+        context.lineTo(cx, height - 12)
+        context.stroke()
+        context.setLineDash([])
+        context.font = "12px system-ui"
+        context.fillStyle = colors.muted
+        context.textAlign = "left"
+        context.fillText("y", cx + 7, 16)
+        context.fillText("x", width - 14, cy - 7)
+        context.fillText("0", cx + 5, cy + 15)
+      }
+
+      function drawShots(cx, cy, scale) {
+        const paths = [new Path2D(), new Path2D(), new Path2D(), new Path2D()]
+        const size = model.plotted.length > 250 ? 2.2 : 4
+        for (const shot of model.plotted) {
+          const inside = shot.d >= integerBounds[0] && shot.d <= integerBounds[1]
+          const path = paths[(inside ? 2 : 0) + (shot.oli ? 0 : 1)]
+          const x = cx + shot.x * scale
+          const y = cy - shot.y * scale
+          if (shot.oli) {
+            path.moveTo(x - size, y - size)
+            path.lineTo(x + size, y + size)
+            path.moveTo(x - size, y + size)
+            path.lineTo(x + size, y - size)
+          } else {
+            path.moveTo(x + size, y)
+            path.arc(x, y, size, 0, 2 * Math.PI)
+          }
+        }
+        context.lineWidth = model.plotted.length > 250 ? 1.2 : 2
+        for (const [index, path] of paths.entries()) {
+          context.globalAlpha = index < 2 ? 0.34 : 1
+          context.strokeStyle = index % 2 === 0 ? colors.olive : colors.rival
+          context.stroke(path)
+        }
+        context.globalAlpha = 1
+      }
+
+      function handleAt(event) {
+        if (!view) return -1
+        const rect = canvas.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        if (Math.abs(y - view.cy) > 22) return -1
+        const index = Math.abs(x - view.handles[0]) <= Math.abs(x - view.handles[1]) ? 0 : 1
+        return Math.abs(x - view.handles[index]) <= 22 ? index : -1
+      }
+
+      function editShots(event) {
+        if (!view || plotMode.value === "move") return
+        const rect = canvas.getBoundingClientRect()
+        const px = event.clientX - rect.left
+        const py = event.clientY - rect.top
+        const erasing = plotMode.value === "erase"
+        let hit
+        let closest = 9
+        for (const shot of model.plotted) {
+          const distance = Math.hypot(
+            px - view.cx - shot.x * view.scale,
+            py - view.cy + shot.y * view.scale,
+          )
+          if (distance <= closest) {
+            closest = distance
+            hit = shot
+          }
+        }
+        if (erasing !== Boolean(hit)) return
+
+        try {
+          const shots = [
+            ...(coordinates.value === appliedText ? model.shots : parseShots(coordinates.value)),
+          ]
+          if (hit) {
+            const index = shots.findIndex((shot) => shot.x === hit.x && shot.y === hit.y)
+            if (index < 0)
+              throw new Error(
+                "Ese tiro ya se quitó del texto. Procesá las coordenadas para actualizar el plano.",
+              )
+            shots.splice(index, 1)
+          } else {
+            if (shots.length === 100_000) throw new Error("Ya hay 100.000 tiros.")
+            const x = Math.round((px - view.cx) / view.scale)
+            const y = Math.round((view.cy - py) / view.scale)
+            if (x === 0) throw new Error("No hay tiros sobre la red en x = 0.")
+            if (Math.max(Math.abs(x), Math.abs(y)) > Number(coordinateLimit)) {
+              throw new Error("Ese punto queda fuera del rango de coordenadas permitido.")
+            }
+            shots.push(makeShot(x, y))
+          }
+          inputRevision++
+          coordinates.value = shots.map(({ x, y }) => `${x} ${y}`).join("\n")
+          setShots(shots, true)
+        } catch (error) {
+          byId("input-error").textContent = error.message
+        }
+      }
+
+      canvas.addEventListener("pointerdown", (event) => {
+        if (drag || !view || event.button !== 0 || plotMode.value !== "move") return
+        const index = handleAt(event)
+        drag = {
+          index,
+          startX: event.clientX,
+          startY: event.clientY,
+          startPan: pan,
+          startRadius: ring[index]?.radius,
+          scale: view.scale,
+          pointer: event.pointerId,
+        }
+        canvas.setPointerCapture(event.pointerId)
+        canvas.setAttribute("data-dragging", "")
+      })
+      canvas.addEventListener("pointermove", (event) => {
+        if (!drag || event.pointerId !== drag.pointer) return
+        const dx = event.clientX - drag.startX
+        if (drag.index < 0) {
+          pan = { x: drag.startPan.x + dx, y: drag.startPan.y + event.clientY - drag.startY }
+          scheduleDrawing()
+          return
+        }
+        const direction = drag.index === 0 ? 1 : -1
+        const radius = Math.min(
+          Number.MAX_VALUE,
+          Math.max(0, drag.startRadius + (dx * direction) / drag.scale),
+        )
+        setBorder(drag.index, draggedBorder(radius, drag.scale))
+      })
+      canvas.addEventListener("lostpointercapture", (event) => {
+        if (drag?.pointer !== event.pointerId) return
+        drag = undefined
+        canvas.removeAttribute("data-dragging")
+        scheduleDrawing()
+      })
+      canvas.addEventListener("click", editShots)
+      function showPlotMode() {
+        canvas.dataset.mode = plotMode.value
+        byId("field-help").textContent = {
+          move: "Arrastrá el plano para desplazarte, o arrastrá R₁ y R₂ para ajustar el aro.",
+          add: "Hacé clic en un lugar libre del plano para agregar un tiro.",
+          erase: "Hacé clic sobre un tiro para quitarlo.",
+        }[plotMode.value]
+      }
+      plotMode.addEventListener("change", showPlotMode)
+      byId("center-plot").addEventListener("click", () => {
+        pan = { x: 0, y: 0 }
+        scheduleDrawing()
+      })
+
+      for (const [index, control] of controls.entries()) {
+        control.slider.addEventListener("input", () =>
+          setBorder(index, decimalBorder(control.slider.value)),
+        )
+        control.input.addEventListener("change", () => applyRadius(index))
+        control.input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") applyRadius(index)
+        })
+        for (const button of control.steps) {
+          button.addEventListener("click", () => {
+            const forward = Number(button.dataset.step) === 1
+            const stop = forward
+              ? firstBound(model.distances, floorSquare(ring[index]), true)
+              : firstBound(model.distances, ceilSquare(ring[index])) - 1
+            setBorder(index, integerBorder(model.distances[stop]))
+          })
+        }
+      }
+      byId("input-form").addEventListener("submit", (event) => {
+        event.preventDefault()
+        processInput()
+      })
+      coordinates.addEventListener("input", () => {
+        inputRevision++
+        byId("input-count").textContent =
+          `N = ${intFormat.format(inputLines(coordinates.value).length)}`
+      })
+      byId("load-example").addEventListener("click", () => {
+        coordinates.value = example
+        processInput()
+      })
+      byId("clear-input").addEventListener("click", () => {
+        inputRevision++
+        coordinates.value = ""
+        setShots([])
+        coordinates.focus()
+      })
+      byId("input-file").addEventListener("change", async (event) => {
+        const file = event.target.files[0]
+        if (!file) return
+        event.target.value = ""
+        const revision = ++inputRevision
+        try {
+          const lines = inputLines(await file.text())
+          if (revision !== inputRevision) return
+          if (/^\+?\d+$/.test(lines[0] ?? "") && Number(lines.shift()) !== lines.length) {
+            byId("input-error").textContent =
+              "El N del archivo debe coincidir con la cantidad de pares."
+            return
+          }
+          coordinates.value = lines.join("\n")
+          processInput()
+        } catch {
+          if (revision === inputRevision)
+            byId("input-error").textContent = "No se pudo leer el archivo de texto."
+        }
+      })
+      byId("best-ring").addEventListener("click", () => {
+        ring = model.best.bounds.map(integerBorder)
+        radiusError.textContent = ""
+        refresh()
+      })
+      byId("copy-output").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(output.value)
+          copyStatus.textContent = "Salida copiada."
+        } catch {
+          output.focus()
+          output.select()
+          copyStatus.textContent = "Salida seleccionada. Usá el atajo de copiar de tu dispositivo."
+        }
+      })
+
+      new ResizeObserver(scheduleDrawing).observe(canvas)
+      showPlotMode()
+      coordinates.value = example
+      processInput()
+    </script>
+  </body>
+</html>
