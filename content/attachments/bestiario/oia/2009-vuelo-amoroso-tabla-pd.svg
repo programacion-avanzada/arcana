@@ -1,0 +1,334 @@
+<svg width="740" height="556" viewBox="0 0 740 556" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vuelo amoroso: tabla de programación dinámica del ejemplo</title>
+  <desc id="desc">Tabla dist con t de 0 a 13 en columnas y h de 0 a 13 en filas. Solo se llenan las celdas donde h tiene la misma paridad que t y h es menor o igual a t. El mínimo de la última columna es 23 en h igual a 3. El recorrido reconstruido 0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 4, 3 está resaltado.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .cell { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .query { fill: #f5f7fa; stroke: #c0742a; stroke-width: 2; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .cell { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm { fill: #e2e8f0; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .query { fill: #1e2330; stroke: #d4884a; }
+      .accent-label { fill: #d4884a; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+    }
+  </style>
+
+  <text x="400" y="24" class="op">dist[t][h]: menor distancia total de las primeras t mediciones terminando a altura h</text>
+
+  <!-- encabezados -->
+  <text x="70" y="52" class="op">t</text>
+  <text x="70" y="76" class="accent-label">a</text>
+  <text x="118" y="52" class="idx">0</text>
+  <text x="118" y="76" class="accent-label">0</text>
+  <text x="162" y="52" class="idx">1</text>
+  <text x="162" y="76" class="accent-label">3</text>
+  <text x="206" y="52" class="idx">2</text>
+  <text x="206" y="76" class="accent-label">3</text>
+  <text x="250" y="52" class="idx">3</text>
+  <text x="250" y="76" class="accent-label">3</text>
+  <text x="294" y="52" class="idx">4</text>
+  <text x="294" y="76" class="accent-label">6</text>
+  <text x="338" y="52" class="idx">5</text>
+  <text x="338" y="76" class="accent-label">9</text>
+  <text x="382" y="52" class="idx">6</text>
+  <text x="382" y="76" class="accent-label">12</text>
+  <text x="426" y="52" class="idx">7</text>
+  <text x="426" y="76" class="accent-label">9</text>
+  <text x="470" y="52" class="idx">8</text>
+  <text x="470" y="76" class="accent-label">9</text>
+  <text x="514" y="52" class="idx">9</text>
+  <text x="514" y="76" class="accent-label">6</text>
+  <text x="558" y="52" class="idx">10</text>
+  <text x="558" y="76" class="accent-label">3</text>
+  <text x="602" y="52" class="idx">11</text>
+  <text x="602" y="76" class="accent-label">3</text>
+  <text x="646" y="52" class="idx">12</text>
+  <text x="646" y="76" class="accent-label">3</text>
+  <text x="690" y="52" class="idx">13</text>
+  <text x="690" y="76" class="accent-label">3</text>
+
+  <!-- celdas: x = 96 + 44*t, y = 92 + (13-h)*26 -->
+  <text x="70" y="110" class="idx">h=13</text>
+  <text x="118" y="109" class="idx">·</text>
+  <text x="162" y="109" class="idx">·</text>
+  <text x="206" y="109" class="idx">·</text>
+  <text x="250" y="109" class="idx">·</text>
+  <text x="294" y="109" class="idx">·</text>
+  <text x="338" y="109" class="idx">·</text>
+  <text x="382" y="109" class="idx">·</text>
+  <text x="426" y="109" class="idx">·</text>
+  <text x="470" y="109" class="idx">·</text>
+  <text x="514" y="109" class="idx">·</text>
+  <text x="558" y="109" class="idx">·</text>
+  <text x="602" y="109" class="idx">·</text>
+  <text x="646" y="109" class="idx">·</text>
+  <rect x="670" y="94" width="40" height="22" rx="4" class="cell"/>
+  <text x="690" y="111" class="val-sm">55</text>
+  <text x="70" y="136" class="idx">h=12</text>
+  <text x="118" y="135" class="idx">·</text>
+  <text x="162" y="135" class="idx">·</text>
+  <text x="206" y="135" class="idx">·</text>
+  <text x="250" y="135" class="idx">·</text>
+  <text x="294" y="135" class="idx">·</text>
+  <text x="338" y="135" class="idx">·</text>
+  <text x="382" y="135" class="idx">·</text>
+  <text x="426" y="135" class="idx">·</text>
+  <text x="470" y="135" class="idx">·</text>
+  <text x="514" y="135" class="idx">·</text>
+  <text x="558" y="135" class="idx">·</text>
+  <text x="602" y="135" class="idx">·</text>
+  <rect x="626" y="120" width="40" height="22" rx="4" class="cell"/>
+  <text x="646" y="137" class="val-sm">45</text>
+  <text x="690" y="135" class="idx">·</text>
+  <text x="70" y="162" class="idx">h=11</text>
+  <text x="118" y="161" class="idx">·</text>
+  <text x="162" y="161" class="idx">·</text>
+  <text x="206" y="161" class="idx">·</text>
+  <text x="250" y="161" class="idx">·</text>
+  <text x="294" y="161" class="idx">·</text>
+  <text x="338" y="161" class="idx">·</text>
+  <text x="382" y="161" class="idx">·</text>
+  <text x="426" y="161" class="idx">·</text>
+  <text x="470" y="161" class="idx">·</text>
+  <text x="514" y="161" class="idx">·</text>
+  <text x="558" y="161" class="idx">·</text>
+  <rect x="582" y="146" width="40" height="22" rx="4" class="cell"/>
+  <text x="602" y="163" class="val-sm">36</text>
+  <text x="646" y="161" class="idx">·</text>
+  <rect x="670" y="146" width="40" height="22" rx="4" class="cell"/>
+  <text x="690" y="163" class="val-sm">45</text>
+  <text x="70" y="188" class="idx">h=10</text>
+  <text x="118" y="187" class="idx">·</text>
+  <text x="162" y="187" class="idx">·</text>
+  <text x="206" y="187" class="idx">·</text>
+  <text x="250" y="187" class="idx">·</text>
+  <text x="294" y="187" class="idx">·</text>
+  <text x="338" y="187" class="idx">·</text>
+  <text x="382" y="187" class="idx">·</text>
+  <text x="426" y="187" class="idx">·</text>
+  <text x="470" y="187" class="idx">·</text>
+  <text x="514" y="187" class="idx">·</text>
+  <rect x="538" y="172" width="40" height="22" rx="4" class="cell"/>
+  <text x="558" y="189" class="val-sm">28</text>
+  <text x="602" y="187" class="idx">·</text>
+  <rect x="626" y="172" width="40" height="22" rx="4" class="cell"/>
+  <text x="646" y="189" class="val-sm">37</text>
+  <text x="690" y="187" class="idx">·</text>
+  <text x="70" y="214" class="idx">h=9</text>
+  <text x="118" y="213" class="idx">·</text>
+  <text x="162" y="213" class="idx">·</text>
+  <text x="206" y="213" class="idx">·</text>
+  <text x="250" y="213" class="idx">·</text>
+  <text x="294" y="213" class="idx">·</text>
+  <text x="338" y="213" class="idx">·</text>
+  <text x="382" y="213" class="idx">·</text>
+  <text x="426" y="213" class="idx">·</text>
+  <text x="470" y="213" class="idx">·</text>
+  <rect x="494" y="198" width="40" height="22" rx="4" class="cell"/>
+  <text x="514" y="215" class="val-sm">21</text>
+  <text x="558" y="213" class="idx">·</text>
+  <rect x="582" y="198" width="40" height="22" rx="4" class="cell"/>
+  <text x="602" y="215" class="val-sm">30</text>
+  <text x="646" y="213" class="idx">·</text>
+  <rect x="670" y="198" width="40" height="22" rx="4" class="cell"/>
+  <text x="690" y="215" class="val-sm">37</text>
+  <text x="70" y="240" class="idx">h=8</text>
+  <text x="118" y="239" class="idx">·</text>
+  <text x="162" y="239" class="idx">·</text>
+  <text x="206" y="239" class="idx">·</text>
+  <text x="250" y="239" class="idx">·</text>
+  <text x="294" y="239" class="idx">·</text>
+  <text x="338" y="239" class="idx">·</text>
+  <text x="382" y="239" class="idx">·</text>
+  <text x="426" y="239" class="idx">·</text>
+  <rect x="450" y="224" width="40" height="22" rx="4" class="cell"/>
+  <text x="470" y="241" class="val-sm">18</text>
+  <text x="514" y="239" class="idx">·</text>
+  <rect x="538" y="224" width="40" height="22" rx="4" class="cell"/>
+  <text x="558" y="241" class="val-sm">24</text>
+  <text x="602" y="239" class="idx">·</text>
+  <rect x="626" y="224" width="40" height="22" rx="4" class="cell"/>
+  <text x="646" y="241" class="val-sm">31</text>
+  <text x="690" y="239" class="idx">·</text>
+  <text x="70" y="266" class="idx">h=7</text>
+  <text x="118" y="265" class="idx">·</text>
+  <text x="162" y="265" class="idx">·</text>
+  <text x="206" y="265" class="idx">·</text>
+  <text x="250" y="265" class="idx">·</text>
+  <text x="294" y="265" class="idx">·</text>
+  <text x="338" y="265" class="idx">·</text>
+  <text x="382" y="265" class="idx">·</text>
+  <rect x="406" y="250" width="40" height="22" rx="4" class="query"/>
+  <text x="426" y="267" class="val-sm">17</text>
+  <text x="470" y="265" class="idx">·</text>
+  <rect x="494" y="250" width="40" height="22" rx="4" class="cell"/>
+  <text x="514" y="267" class="val-sm">19</text>
+  <text x="558" y="265" class="idx">·</text>
+  <rect x="582" y="250" width="40" height="22" rx="4" class="cell"/>
+  <text x="602" y="267" class="val-sm">26</text>
+  <text x="646" y="265" class="idx">·</text>
+  <rect x="670" y="250" width="40" height="22" rx="4" class="cell"/>
+  <text x="690" y="267" class="val-sm">31</text>
+  <text x="70" y="292" class="idx">h=6</text>
+  <text x="118" y="291" class="idx">·</text>
+  <text x="162" y="291" class="idx">·</text>
+  <text x="206" y="291" class="idx">·</text>
+  <text x="250" y="291" class="idx">·</text>
+  <text x="294" y="291" class="idx">·</text>
+  <text x="338" y="291" class="idx">·</text>
+  <rect x="362" y="276" width="40" height="22" rx="4" class="query"/>
+  <text x="382" y="293" class="val-sm">15</text>
+  <text x="426" y="291" class="idx">·</text>
+  <rect x="450" y="276" width="40" height="22" rx="4" class="query"/>
+  <text x="470" y="293" class="val-sm">20</text>
+  <text x="514" y="291" class="idx">·</text>
+  <rect x="538" y="276" width="40" height="22" rx="4" class="cell"/>
+  <text x="558" y="293" class="val-sm">22</text>
+  <text x="602" y="291" class="idx">·</text>
+  <rect x="626" y="276" width="40" height="22" rx="4" class="cell"/>
+  <text x="646" y="293" class="val-sm">27</text>
+  <text x="690" y="291" class="idx">·</text>
+  <text x="70" y="318" class="idx">h=5</text>
+  <text x="118" y="317" class="idx">·</text>
+  <text x="162" y="317" class="idx">·</text>
+  <text x="206" y="317" class="idx">·</text>
+  <text x="250" y="317" class="idx">·</text>
+  <text x="294" y="317" class="idx">·</text>
+  <rect x="318" y="302" width="40" height="22" rx="4" class="query"/>
+  <text x="338" y="319" class="val-sm">9</text>
+  <text x="382" y="317" class="idx">·</text>
+  <rect x="406" y="302" width="40" height="22" rx="4" class="cell"/>
+  <text x="426" y="319" class="val-sm">19</text>
+  <text x="470" y="317" class="idx">·</text>
+  <rect x="494" y="302" width="40" height="22" rx="4" class="query"/>
+  <text x="514" y="319" class="val-sm">21</text>
+  <text x="558" y="317" class="idx">·</text>
+  <rect x="582" y="302" width="40" height="22" rx="4" class="cell"/>
+  <text x="602" y="319" class="val-sm">24</text>
+  <text x="646" y="317" class="idx">·</text>
+  <rect x="670" y="302" width="40" height="22" rx="4" class="cell"/>
+  <text x="690" y="319" class="val-sm">25</text>
+  <text x="70" y="344" class="idx">h=4</text>
+  <text x="118" y="343" class="idx">·</text>
+  <text x="162" y="343" class="idx">·</text>
+  <text x="206" y="343" class="idx">·</text>
+  <text x="250" y="343" class="idx">·</text>
+  <rect x="274" y="328" width="40" height="22" rx="4" class="query"/>
+  <text x="294" y="345" class="val-sm">5</text>
+  <text x="338" y="343" class="idx">·</text>
+  <rect x="362" y="328" width="40" height="22" rx="4" class="cell"/>
+  <text x="382" y="345" class="val-sm">17</text>
+  <text x="426" y="343" class="idx">·</text>
+  <rect x="450" y="328" width="40" height="22" rx="4" class="cell"/>
+  <text x="470" y="345" class="val-sm">24</text>
+  <text x="514" y="343" class="idx">·</text>
+  <rect x="538" y="328" width="40" height="22" rx="4" class="query"/>
+  <text x="558" y="345" class="val-sm">22</text>
+  <text x="602" y="343" class="idx">·</text>
+  <rect x="626" y="328" width="40" height="22" rx="4" class="query"/>
+  <text x="646" y="345" class="val-sm">23</text>
+  <text x="690" y="343" class="idx">·</text>
+  <text x="70" y="370" class="idx">h=3</text>
+  <text x="118" y="369" class="idx">·</text>
+  <text x="162" y="369" class="idx">·</text>
+  <text x="206" y="369" class="idx">·</text>
+  <rect x="230" y="354" width="40" height="22" rx="4" class="query"/>
+  <text x="250" y="371" class="val-sm">3</text>
+  <text x="294" y="369" class="idx">·</text>
+  <rect x="318" y="354" width="40" height="22" rx="4" class="cell"/>
+  <text x="338" y="371" class="val-sm">11</text>
+  <text x="382" y="369" class="idx">·</text>
+  <rect x="406" y="354" width="40" height="22" rx="4" class="cell"/>
+  <text x="426" y="371" class="val-sm">23</text>
+  <text x="470" y="369" class="idx">·</text>
+  <rect x="494" y="354" width="40" height="22" rx="4" class="cell"/>
+  <text x="514" y="371" class="val-sm">27</text>
+  <text x="558" y="369" class="idx">·</text>
+  <rect x="582" y="354" width="40" height="22" rx="4" class="query"/>
+  <text x="602" y="371" class="val-sm">22</text>
+  <text x="646" y="369" class="idx">·</text>
+  <rect x="670" y="354" width="40" height="22" rx="4" class="query"/>
+  <text x="690" y="371" class="val-sm">23</text>
+  <text x="70" y="396" class="idx">h=2</text>
+  <text x="118" y="395" class="idx">·</text>
+  <text x="162" y="395" class="idx">·</text>
+  <rect x="186" y="380" width="40" height="22" rx="4" class="query"/>
+  <text x="206" y="397" class="val-sm">3</text>
+  <text x="250" y="395" class="idx">·</text>
+  <rect x="274" y="380" width="40" height="22" rx="4" class="cell"/>
+  <text x="294" y="397" class="val-sm">7</text>
+  <text x="338" y="395" class="idx">·</text>
+  <rect x="362" y="380" width="40" height="22" rx="4" class="cell"/>
+  <text x="382" y="397" class="val-sm">21</text>
+  <text x="426" y="395" class="idx">·</text>
+  <rect x="450" y="380" width="40" height="22" rx="4" class="cell"/>
+  <text x="470" y="397" class="val-sm">30</text>
+  <text x="514" y="395" class="idx">·</text>
+  <rect x="538" y="380" width="40" height="22" rx="4" class="cell"/>
+  <text x="558" y="397" class="val-sm">28</text>
+  <text x="602" y="395" class="idx">·</text>
+  <rect x="626" y="380" width="40" height="22" rx="4" class="cell"/>
+  <text x="646" y="397" class="val-sm">23</text>
+  <text x="690" y="395" class="idx">·</text>
+  <text x="70" y="422" class="idx">h=1</text>
+  <text x="118" y="421" class="idx">·</text>
+  <rect x="142" y="406" width="40" height="22" rx="4" class="query"/>
+  <text x="162" y="423" class="val-sm">2</text>
+  <text x="206" y="421" class="idx">·</text>
+  <rect x="230" y="406" width="40" height="22" rx="4" class="cell"/>
+  <text x="250" y="423" class="val-sm">5</text>
+  <text x="294" y="421" class="idx">·</text>
+  <rect x="318" y="406" width="40" height="22" rx="4" class="cell"/>
+  <text x="338" y="423" class="val-sm">15</text>
+  <text x="382" y="421" class="idx">·</text>
+  <rect x="406" y="406" width="40" height="22" rx="4" class="cell"/>
+  <text x="426" y="423" class="val-sm">29</text>
+  <text x="470" y="421" class="idx">·</text>
+  <rect x="494" y="406" width="40" height="22" rx="4" class="cell"/>
+  <text x="514" y="423" class="val-sm">35</text>
+  <text x="558" y="421" class="idx">·</text>
+  <rect x="582" y="406" width="40" height="22" rx="4" class="cell"/>
+  <text x="602" y="423" class="val-sm">30</text>
+  <text x="646" y="421" class="idx">·</text>
+  <rect x="670" y="406" width="40" height="22" rx="4" class="cell"/>
+  <text x="690" y="423" class="val-sm">25</text>
+  <text x="70" y="448" class="idx">h=0</text>
+  <rect x="98" y="432" width="40" height="22" rx="4" class="query"/>
+  <text x="118" y="449" class="val-sm">0</text>
+  <text x="162" y="447" class="idx">·</text>
+  <rect x="186" y="432" width="40" height="22" rx="4" class="cell"/>
+  <text x="206" y="449" class="val-sm">5</text>
+  <text x="250" y="447" class="idx">·</text>
+  <rect x="274" y="432" width="40" height="22" rx="4" class="cell"/>
+  <text x="294" y="449" class="val-sm">11</text>
+  <text x="338" y="447" class="idx">·</text>
+  <rect x="362" y="432" width="40" height="22" rx="4" class="cell"/>
+  <text x="382" y="449" class="val-sm">27</text>
+  <text x="426" y="447" class="idx">·</text>
+  <rect x="450" y="432" width="40" height="22" rx="4" class="cell"/>
+  <text x="470" y="449" class="val-sm">38</text>
+  <text x="514" y="447" class="idx">·</text>
+  <rect x="538" y="432" width="40" height="22" rx="4" class="cell"/>
+  <text x="558" y="449" class="val-sm">38</text>
+  <text x="602" y="447" class="idx">·</text>
+  <rect x="626" y="432" width="40" height="22" rx="4" class="cell"/>
+  <text x="646" y="449" class="val-sm">33</text>
+  <text x="690" y="447" class="idx">·</text>
+
+  <!-- notas -->
+  <rect x="96" y="474" width="22" height="16" rx="4" class="query"/>
+  <text x="128" y="487" class="accent-label" style="text-anchor: start">recorrido reconstruido desde dist[13][3] = 23 (mínimo de la última columna)</text>
+  <text x="107" y="512" class="idx">·</text>
+  <text x="128" y="512" class="op" style="text-anchor: start">inalcanzable: la paridad de h debe coincidir con la de t, y h ≤ t</text>
+  <text x="128" y="536" class="op" style="text-anchor: start">ej.: dist[8][6] = min(dist[7][5], dist[7][7]) + |6 - 9| = min(19, 17) + 3 = 20</text>
+</svg>
