@@ -1,11 +1,11 @@
 ---
-title: 'OIA2009 - Vuelo amoroso - Fuerza Bruta'
+title: 'OIA - Vuelo amoroso - Fuerza Bruta'
 tags:
   - oia
   - solucion
 ---
 
-Solución por fuerza bruta para [[2009_vuelo_amoroso]].
+Solución por fuerza bruta para [[vuelo_amoroso]].
 
 ## Técnicas utilizadas
 
@@ -62,7 +62,7 @@ Las secuencias se generan en orden, probando primero $+1$ y después $-1$ en cad
 
 El árbol de decisiones de las primeras cuatro mediciones muestra cómo se ramifica la búsqueda. Cada nodo indica la altura del pajarito y la distancia acumulada hasta ese momento. Las ramas a la izquierda suben y las de la derecha bajan.
 
-![Árbol de decisiones de la fuerza bruta en las primeras cuatro mediciones](2009-vuelo-amoroso-fuerza-bruta-arbol.svg)
+![Árbol de decisiones de la fuerza bruta en las primeras cuatro mediciones](vuelo-amoroso-fuerza-bruta-arbol.svg)
 
 Ya en cuatro niveles aparece el problema central: el estado "medición 4, altura 2" se alcanza por tres caminos distintos, con distancias acumuladas 7, 9 y 11. A partir de ahí, las tres copias tienen exactamente el mismo futuro posible, así que las de 9 y 11 nunca pueden llevar a una solución mejor que la de 7. Aun así, la fuerza bruta las expande a todas hasta el final.
 
@@ -123,10 +123,10 @@ $O(n)$: en cada momento se guardan solo la secuencia actual, el recorrido del ca
 
 ## Comparación con programación dinámica
 
-La fuerza bruta trata cada vuelo como una solución independiente. La [[2009_vuelo_amoroso-programacion-dinamica]] parte de la observación que deja ver el árbol: lo único que importa del pasado es la altura actual, así que de todos los vuelos que llegan al mismo estado alcanza con conservar el de menor distancia acumulada. Eso reduce el trabajo de $O(2^n \cdot n)$ a $O(n \cdot H)$, con $H = 301$ alturas factibles: para el límite del problema, unos 12 millones de pasos contra un número astronómico.
+La fuerza bruta trata cada vuelo como una solución independiente. La [[vuelo_amoroso-programacion-dinamica]] parte de la observación que deja ver el árbol: lo único que importa del pasado es la altura actual, así que de todos los vuelos que llegan al mismo estado alcanza con conservar el de menor distancia acumulada. Eso reduce el trabajo de $O(2^n \cdot n)$ a $O(n \cdot H)$, con $H = 301$ alturas factibles: para el límite del problema, unos 12 millones de pasos contra un número astronómico.
 
 La fuerza bruta solo gana en simplicidad: no requiere identificar estados ni plantear una recurrencia, y por eso es útil como oráculo para probar la versión de programación dinámica en instancias chicas.
 
 ## Referencias
 
-- [Enunciado original (OIA 2009, Nivel 3, Problema 2)](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf)
+- [Enunciado original (OIA, Nivel 3, Problema 2)](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf)

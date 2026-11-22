@@ -15,7 +15,7 @@ Un pajarito enamorado quiere seguir de cerca el vuelo de una pájara. Las altura
 
 Conocido el vuelo de la pájara, hay que encontrar la distancia total mínima y un recorrido del pajarito que la alcance. La distancia total es la suma de las diferencias absolutas entre las dos alturas en cada medición.
 
-[Enunciado original de la OIA, Certamen Nacional 2009, nivel 3, problema 2](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf) (contribución de Guillermo García).
+[Enunciado original de la OIA, Certamen Nacional, nivel 3, problema 2](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf) 
 
 ## Intuición
 
@@ -23,7 +23,7 @@ A primera vista parece que alcanza con elegir, en cada medición, el movimiento 
 
 En la medición 8 del ejemplo oficial, la pájara está a 9 metros y el pajarito viene de estar a 7. Subir a 8 cuesta 1 en ese paso y lleva a un costo total de 25 si el pajarito sigue eligiendo el movimiento que lo deja más cerca. Bajar a 6 cuesta 3 en ese paso y le permite anticipar el descenso de la pájara. Ese recorrido suma 23.
 
-![Comparación del recorrido greedy y el óptimo entre las mediciones 6 y 13](2009-vuelo-amoroso-greedy.svg)
+![Comparación del recorrido greedy y el óptimo entre las mediciones 6 y 13](vuelo-amoroso-greedy.svg)
 
 ## Definición formal
 
@@ -61,7 +61,7 @@ El ejemplo oficial tiene 13 mediciones. La tabla muestra un recorrido que suma *
 | Pajarito $h_t$ | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 6 | 5 | 4 | 3 | 4 | 3 |
 | Distancia | 2 | 1 | 0 | 2 | 4 | 6 | 2 | 3 | 1 | 1 | 0 | 1 | 0 |
 
-![Alturas de la pájara y del pajarito en un recorrido óptimo de costo 23](2009-vuelo-amoroso-ejemplo.svg)
+![Alturas de la pájara y del pajarito en un recorrido óptimo de costo 23](vuelo-amoroso-ejemplo.svg)
 
 Hasta la medición 7, el pajarito puede estar como máximo a $t$ metros en la medición $t$ y la pájara siempre está a esa altura o por encima. Las primeras siete distancias de la tabla son los mínimos posibles y suman 17.
 
@@ -79,5 +79,5 @@ Para mejorarla hay que preguntarse qué información del pasado importa realment
 
 ## Soluciones disponibles
 
-- [[2009_vuelo_amoroso-fuerza-bruta|Fuerza bruta]]
-- [[2009_vuelo_amoroso-programacion-dinamica|Programación dinámica]]
+- [[vuelo_amoroso-fuerza-bruta|Fuerza bruta]]
+- [[vuelo_amoroso-programacion-dinamica|Programación dinámica]]

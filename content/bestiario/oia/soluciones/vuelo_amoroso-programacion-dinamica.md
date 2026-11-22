@@ -1,11 +1,11 @@
 ---
-title: 'OIA2009 - Vuelo amoroso - Programación Dinámica'
+title: 'OIA - Vuelo amoroso - Programación Dinámica'
 tags:
   - oia
   - solucion
 ---
 
-Solución por programación dinámica (bottom-up) para [[2009_vuelo_amoroso]].
+Solución por programación dinámica (bottom-up) para [[vuelo_amoroso]].
 
 ## Técnicas utilizadas
 
@@ -13,7 +13,7 @@ Solución por programación dinámica (bottom-up) para [[2009_vuelo_amoroso]].
 
 ## Idea de la solución
 
-El árbol de la [[2009_vuelo_amoroso-fuerza-bruta]] muestra que muchos vuelos distintos llegan a la misma altura en la misma medición. A partir de ahí todos tienen exactamente las mismas opciones futuras, así que solo importa el que llegó con **menor distancia acumulada**. El estado del problema queda definido por dos datos:
+El árbol de la [[vuelo_amoroso-fuerza-bruta]] muestra que muchos vuelos distintos llegan a la misma altura en la misma medición. A partir de ahí todos tienen exactamente las mismas opciones futuras, así que solo importa el que llegó con **menor distancia acumulada**. El estado del problema queda definido por dos datos:
 
 - $t$: cuántas mediciones ya pasaron.
 - $h$: a qué altura está el pajarito en ese momento.
@@ -122,11 +122,11 @@ t = 4 (a = 6)   dist[4][0] = |0-6| + dist[3][1]                  = 6 + 5       =
                 dist[4][4] = |4-6| + min(dist[3][3], dist[3][5]) = 2 + min(3, ∞) = 5
 ```
 
-Comparado con el [[2009_vuelo_amoroso-fuerza-bruta#Traza de ejemplo|árbol de la fuerza bruta]]: el estado (3, 1) aparecía dos veces, con 5 y 7, y la tabla guarda solo el 5. El estado (4, 2) aparecía tres veces, con 7, 9 y 11, y la tabla guarda solo el 7. Cada estado se calcula una única vez.
+Comparado con el [[vuelo_amoroso-fuerza-bruta#Traza de ejemplo|árbol de la fuerza bruta]]: el estado (3, 1) aparecía dos veces, con 5 y 7, y la tabla guarda solo el 5. El estado (4, 2) aparecía tres veces, con 7, 9 y 11, y la tabla guarda solo el 7. Cada estado se calcula una única vez.
 
 La tabla completa, con el recorrido óptimo resaltado (se muestran solo las alturas 0 a 13: con 13 mediciones el pajarito no puede subir más, así que el resto de las filas queda en ∞):
 
-![Tabla dist del ejemplo con el recorrido óptimo resaltado](2009-vuelo-amoroso-tabla-pd.svg)
+![Tabla dist del ejemplo con el recorrido óptimo resaltado](vuelo-amoroso-tabla-pd.svg)
 
 La mitad de las celdas queda vacía por la paridad: en la medición $t$ el pajarito solo puede estar en alturas con la misma paridad que $t$. La última medición tiene su mínimo en $dist[13][3] = 23$, que es la respuesta.
 
@@ -195,7 +195,7 @@ La fuerza bruta solo gana en memoria cuando se pide el recorrido: $O(n)$ contra 
 
 ## Referencias
 
-- [Enunciado original (OIA 2009, Nivel 3, Problema 2)](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf)
+- [Enunciado original (OIA, Nivel 3, Problema 2)](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf)
 - [CP-Algorithms - Introduction to Dynamic Programming](https://cp-algorithms.com/dynamic_programming/intro-to-dp.html)
 - [[COR2011]] - Chapter 15.
 - [[KLE2005]] - Chapter 6.
