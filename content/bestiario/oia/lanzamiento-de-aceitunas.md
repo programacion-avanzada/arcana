@@ -137,6 +137,7 @@ Por lo tanto, el mismo intervalo tiene a la vez el menor inicio y el menor final
 
 - <a href="static/aceitunas-aro/#enunciado" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 - <a href="static/aceitunas-reducciones/#enunciado" target="_blank" rel="noopener" data-no-popover="true">Ver el agrupamiento y simular ambos algoritmos</a>
+- <a href="static/aceitunas-comparacion/#enunciado" target="_blank" rel="noopener" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
 
 ## Referencias
 

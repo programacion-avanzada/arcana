@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Compará Kadane y fuerza bruta paso a paso, con los mismos aportes y un reloj compartido."
+    />
+    <title>Kadane vs. fuerza bruta · Lanzamiento de aceitunas</title>
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("aceitunas-comparison-theme") || "light"
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="comparison.css" />
+    <script type="module" src="comparison.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#comparison">Ir a los algoritmos</a>
+    <nav class="app-bar" aria-label="Navegación principal">
+      <span class="brand"
+        ><span class="brand-symbol" aria-hidden="true">◉</span
+        ><span
+          >Lanzamiento de aceitunas<small
+            >PROGRAMACIÓN AVANZADA · LABORATORIO INTERACTIVO</small
+          ></span
+        ></span
+      >
+      <button id="theme-toggle" type="button" aria-pressed="false">Modo oscuro</button>
+    </nav>
+    <main>
+      <div class="context-row">
+        <a id="article-link" href="../../bestiario/oia/lanzamiento-de-aceitunas#visualizaciones"
+          >Volver al enunciado</a
+        ><span>Máxima suma de un intervalo</span>
+      </div>
+      <header class="page-header">
+        <p class="eyebrow">DOS ALGORITMOS · UNA MISMA ENTRADA</p>
+        <h1>
+          El mismo resultado.<br class="mobile-break" />
+          <span>Distintos recorridos.</span>
+        </h1>
+        <p>
+          Iniciá ambos a la vez y observá por qué Kadane termina mientras fuerza bruta sigue
+          buscando.
+        </p>
+      </header>
+
+      <section class="input-card panel" aria-labelledby="input-title">
+        <div class="input-top">
+          <div>
+            <h2 id="input-title">Aportes por radio</h2>
+            <p id="dataset-description">
+              Ejemplo OIA · radios agrupados y ordenados por distancia.
+            </p>
+          </div>
+          <button id="edit-data" type="button" aria-expanded="false" aria-controls="data-editor">
+            Editar entrada
+          </button>
+        </div>
+        <div class="presets" role="group" aria-label="Ejemplos de entrada">
+          <button type="button" data-preset="oia" aria-pressed="true">Ejemplo OIA</button>
+          <button type="button" data-preset="long" aria-pressed="false">24 radios</button>
+          <button type="button" data-preset="negative" aria-pressed="false">Todos negativos</button>
+        </div>
+        <div
+          class="array-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Aportes compartidos, ordenados por radio"
+        >
+          <div id="shared-array" class="shared-array"></div>
+        </div>
+        <p class="input-foot">
+          <span id="input-count"></span
+          ><span>Índices desde 0 · Un aporte = tiros de Olivares − tiros del rival</span>
+        </p>
+        <form id="data-editor" class="data-editor" hidden>
+          <div class="editor-top">
+            <label for="input-type">Tipo de entrada</label
+            ><select id="input-type">
+              <option value="values">Aportes ya ordenados</option>
+              <option value="coordinates">Coordenadas de tiros</option>
+            </select>
+          </div>
+          <label for="data-input" id="data-label">Aportes</label>
+          <textarea
+            id="data-input"
+            rows="3"
+            spellcheck="false"
+            aria-describedby="data-help data-error"
+          ></textarea>
+          <p class="muted" id="data-help">
+            Enteros separados por espacios o comas. Hasta 64 aportes.
+          </p>
+          <p class="error" id="data-error" role="alert"></p>
+          <div class="editor-actions">
+            <button class="primary" type="submit">Aplicar y reiniciar</button
+            ><button id="cancel-edit" type="button">Cancelar</button
+            ><span id="draft-note" class="muted"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="playback panel" aria-label="Reloj compartido y controles">
+        <div class="control-row">
+          <div class="transport">
+            <button class="primary start" id="start" type="button" aria-keyshortcuts="Space">
+              Start · iniciar ambos</button
+            ><button id="pause" type="button" hidden>Pausar</button
+            ><button
+              id="back"
+              type="button"
+              aria-label="Retroceder un pulso"
+              aria-keyshortcuts="ArrowLeft"
+              disabled
+            >
+              Anterior</button
+            ><button id="step" type="button" aria-keyshortcuts="ArrowRight">Un paso</button
+            ><button id="reset" type="button" disabled>Reiniciar</button>
+          </div>
+          <div class="speed">
+            <label for="speed">Velocidad</label
+            ><select id="speed">
+              <option value="0.5">0,5×</option>
+              <option value="1" selected>1×</option>
+              <option value="2">2×</option>
+              <option value="4">4×</option>
+              <option value="8">8×</option>
+              <option value="16">16×</option>
+            </select>
+          </div>
+        </div>
+        <div class="clock-row">
+          <span id="race-status" role="status" aria-live="polite">Listos para empezar</span
+          ><span id="clock-label">Pulso 0 de 36</span>
+        </div>
+        <label class="sr-only" for="timeline">Recorrer la comparación por pulsos</label
+        ><input id="timeline" type="range" min="0" max="36" value="0" step="1" />
+        <div class="mobile-race" aria-label="Progreso de ambos algoritmos">
+          <span id="mobile-kadane"></span><span id="mobile-brute"></span>
+        </div>
+        <div class="cadence-note">
+          <p>
+            <strong>El mismo ritmo:</strong> una evaluación por pulso en cada algoritmo. Cuando uno
+            termina, el otro continúa.
+          </p>
+          <span class="keyboard-hint">Espacio: iniciar / pausar · ← / →: paso</span>
+        </div>
+      </section>
+
+      <div class="comparison" id="comparison" tabindex="-1">
+        <article
+          class="algorithm-card kadane"
+          id="kadane-card"
+          aria-labelledby="kadane-title"
+        ></article>
+        <article
+          class="algorithm-card brute"
+          id="brute-card"
+          aria-labelledby="brute-title"
+        ></article>
+      </div>
+
+      <section class="takeaway panel" aria-labelledby="takeaway-title">
+        <div>
+          <p class="eyebrow">LO QUE CAMBIA ES EL TRABAJO</p>
+          <h2 id="takeaway-title">8 evaluaciones frente a 36</h2>
+          <p id="takeaway-text">Con los mismos datos, Kadane recorre cada posición una sola vez.</p>
+        </div>
+        <div class="work-chart" aria-label="Comparación del total de evaluaciones">
+          <div>
+            <span>Kadane</span>
+            <div class="work-track"><div id="kadane-work" class="work-bar kadane-bar"></div></div>
+            <strong id="kadane-total">8</strong>
+          </div>
+          <div>
+            <span>Fuerza bruta</span>
+            <div class="work-track"><div id="brute-work" class="work-bar brute-bar"></div></div>
+            <strong id="brute-total">36</strong>
+          </div>
+        </div>
+        <p class="measurement-note">
+          La animación compara evaluaciones con una duración visual común; no mide milisegundos
+          reales de CPU. La generación de las trazas y el agrupamiento previo quedan fuera de la
+          comparación.
+        </p>
+      </section>
+      <footer>
+        <p>
+          El rango vacío tiene suma 0. Si ninguna suma es positiva, ambos conservan ese rango. Ante
+          empates, se conserva la primera mejora estricta.
+        </p>
+        <p>Las dos visualizaciones anteriores siguen disponibles desde el enunciado.</p>
+      </footer>
+    </main>
+  </body>
+</html>

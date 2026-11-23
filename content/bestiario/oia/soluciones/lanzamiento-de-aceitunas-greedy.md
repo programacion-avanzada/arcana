@@ -100,6 +100,7 @@ Kadane es adecuado cuando hay que maximizar una suma aditiva en un intervalo con
 
 - <a href="static/aceitunas-aro/#kadane-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 - <a href="static/aceitunas-reducciones/#kadane-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de Kadane</a>
+- <a href="static/aceitunas-comparacion/#kadane" target="_blank" rel="noopener" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
 
 ## Referencias
 

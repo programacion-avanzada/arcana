@@ -101,6 +101,7 @@ La enumeración permite inspeccionar todos los candidatos y sirve para validar o
 
 - <a href="static/aceitunas-aro/#fuerza-bruta-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 - <a href="static/aceitunas-reducciones/#fuerza-bruta-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de fuerza bruta</a>
+- <a href="static/aceitunas-comparacion/#fuerza-bruta" target="_blank" rel="noopener" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
 
 ## Referencias
 
