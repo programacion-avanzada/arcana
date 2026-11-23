@@ -9,82 +9,96 @@ tags:
 
 ## Técnicas utilizadas
 
-Aplicamos el **algoritmo de Kadane**. La decisión ávida consiste en descartar un tramo acumulado cuando su suma es negativa. El algoritmo también se puede expresar como una recurrencia de programación dinámica sobre el mejor intervalo que termina en cada índice.
+Aplicamos el **algoritmo de Kadane**. En cada posición elegimos entre empezar un rango con su aporte o extender el mejor rango que terminaba en la posición anterior.
 
 ## Idea de la solución
 
-Con el ejemplo cargado, dejá fijo el borde exterior y aumentá el radio interior hasta excluir el tiro más cercano al centro. Observá cómo descartar ese aporte negativo mejora el puntaje. <a id="visualizacion-aro" href="static/aceitunas-aro/#kadane" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
+Con el ejemplo cargado, dejá fijo el borde exterior y aumentá el radio interior hasta excluir el tiro más cercano al centro. Observá cómo descartar ese aporte negativo mejora el puntaje. <a id="visualizacion-aro" href="static/aceitunas-aro/#kadane" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 
-Recorremos los [[array|vectores]] `distancias2` y `pesos` del enunciado. Antes de sumar el peso de la posición $j$, mantenemos el mejor intervalo que termina en $j-1$, junto con su inicio. Un intervalo que termina en $j$ empieza en $j$ o extiende un intervalo que termina en $j-1$. Entre las extensiones basta con tomar la del mejor, porque a todas se les suma el mismo peso. De ahí sale la recurrencia
+### Construir y consultar sumas de prefijos
 
-$$
-B_j = \max(\text{pesos}[j], B_{j-1} + \text{pesos}[j]),\qquad B_0=\text{pesos}[0].
-$$
+Para un vector `a`, `sum[fin]` es la suma del prefijo `a[0..fin]`. El prefijo de una posición contiene solo `a[0]`, así que `sum[0] = a[0]`. Para extenderlo una posición agregamos el elemento siguiente. Por eso `sum[fin] = sum[fin - 1] + a[fin]` para `fin > 0`. Con `a = [-1, 1, 0, 1]`, empezamos en `-1` y obtenemos `0` al sumar `1`, otro `0` al sumar `0` y `1` al sumar el último aporte. Así se construye `sum = [-1, 0, 0, 1]` en una pasada.
 
-Si la suma anterior es negativa, empezar en $j$ es estrictamente mejor. Si es positiva, conviene extender. Si es cero, ambas opciones dan lo mismo y extender conserva el inicio más temprano, por lo que el corte se hace con `< 0`. Así, en cada fin se conserva el mejor intervalo que termina allí y, en caso de empate, el que empieza antes.
+Para obtener la suma de `[inicio, fin]`, usamos `sum[fin] - sum[inicio - 1]`. El segundo término quita la parte anterior al rango. Para `inicio = 0`, usamos directamente `sum[fin]`. Por ejemplo, `[1, 3]` suma `1 - (-1) = 2`. Construir `sum` cuesta $O(M)$ para $M$ elementos y consultar un rango cuesta $O(1)$.
 
-### Sumas de prefijos en una pasada
+### Elegir el inicio sobre la marcha
 
-Si $P[k]$ es la suma de los primeros $k$ aportes, con $P[0]=0$, el intervalo $[i,j]$ suma $P[j+1]-P[i]$. Para un final fijo $j$, el mejor inicio $i$ es el del menor $P[i]$ entre las posiciones $0$ y $j$. Si ese prefijo mínimo se repite, elegimos el primero.
+Acá `a` es el [[array|vector]] `aportes`, construido a partir de los aportes netos de `difs` en el orden de `radiosCuad`. Para un `fin` fijo, la consulta de prefijos muestra que conviene quitar el menor prefijo posible. El término `sum[fin]` es común a todos los candidatos. Entre los prefijos que podemos quitar está el prefijo vacío, que vale cero y corresponde a empezar en el índice cero.
 
-Kadane mantiene esa diferencia sobre la marcha. Justo antes de agregar $\text{pesos}[j]$, la variable `suma` vale $P[j]-P[i]$ para el inicio que venía usando. Si es negativa, $P[j]$ es un nuevo mínimo y conviene arrancar en $j$ con diferencia cero. Si es cero, ambos prefijos valen lo mismo y conservamos el inicio más chico. Luego sumamos el aporte de $j$ para obtener $P[j+1]-P[i]$. Basta guardar la diferencia y su inicio.
+Kadane conserva `suma` e `inicio` para el mejor rango que terminaba en `fin - 1`. Al leer `aporte = aportes[fin]`, todo rango que ya existía recibe ese mismo aporte al extenderse. La mejor extensión vale `suma + aporte`. La otra posibilidad es empezar en `fin`, con valor `aporte`. Si `aporte > suma + aporte`, guardamos `inicio = fin` y `suma = aporte`. En los demás casos extendemos el rango con `suma += aporte`. Si ambas opciones empatan, extender conserva el inicio más chico.
 
-El óptimo global es el máximo entre el cero del aro vacío y todas las sumas $B_j$. Nuestro criterio entre óptimos positivos es el **menor inicio** y, si coinciden, el menor final. En este problema ambos mínimos se alcanzan en el mismo intervalo. Por eso, al recorrer los finales de menor a mayor y actualizar solo ante una mejora estricta, Kadane devuelve el mismo rango que fuerza bruta. [[lanzamiento-de-aceitunas#Desempate opcional|Justificación del desempate]]
+La comparación equivale a decidir qué prefijo conviene quitar. Empezar en `fin` quita todo lo anterior a esa posición. Extender conserva el prefijo que ya habíamos elegido. Como solo comparamos las dos sumas al leer cada aporte, basta con mantener una suma y un inicio sobre la marcha.
+
+Comparamos el mejor rango de cada `fin` con el mejor guardado, que empieza como el aro vacío de puntaje cero. Nuestro criterio entre óptimos positivos es el **menor inicio** y, si coinciden, el menor final. En este problema ambos mínimos se alcanzan en el mismo intervalo. Por eso, al recorrer los finales de menor a mayor y guardar solo mejoras estrictas, Kadane y fuerza bruta eligen el mismo rango. [[lanzamiento-de-aceitunas#Desempate opcional|Justificación del desempate]]
 
 ## Código
 
 El programa lee las coordenadas de la entrada y escribe los dos cuadrados enteros del aro elegido.
 
 ```python
-def mejor_aro_kadane(distancias2, pesos):
-    inicio = 0
-    suma = 0
-    mejor_puntaje = 0
-    respuesta = (0, 0)
-
-    for fin, peso in enumerate(pesos):
-        if suma < 0:
-            inicio = fin
-            suma = 0
-        suma += peso
-        if suma > mejor_puntaje:
-            mejor_puntaje = suma
-            interior2 = 0 if inicio == 0 else distancias2[inicio - 1] + 1
-            respuesta = (interior2, distancias2[fin])
-    return respuesta
-
-
 n = int(input())
-puntos_por_distancia = {}
-for _ in range(n):
-    x, y = map(int, input().split())
-    distancia2 = x * x + y * y
-    aporte = 1 if x > 0 else -1
-    puntos_por_distancia[distancia2] = puntos_por_distancia.get(distancia2, 0) + aporte
+difs = {}
 
-distancias2 = sorted(puntos_por_distancia)
-pesos = [puntos_por_distancia[d] for d in distancias2]
-print(*mejor_aro_kadane(distancias2, pesos))
+for _ in range(n):
+    # Ingreso de las coordenadas de los tiros.
+    x, y = map(int, input().split())
+    distCuad = x * x + y * y
+
+    if distCuad not in difs:
+        difs[distCuad] = 0
+
+    # El tiro del Olivares suma uno y el del rival resta uno.
+    if x > 0:
+        difs[distCuad] += 1
+    elif x < 0:
+        difs[distCuad] -= 1
+
+radiosCuad = sorted(difs)
+aportes = [difs[distCuad] for distCuad in radiosCuad]
+inicio = 0
+suma = 0
+maxSuma = 0
+mejorIni, mejorFin = 0, 0
+
+for fin, aporte in enumerate(aportes):
+    if aporte > suma + aporte:
+        inicio = fin
+        suma = aporte
+    else:
+        suma += aporte
+
+    if suma > maxSuma:
+        maxSuma = suma
+        mejorIni = inicio
+        mejorFin = fin
+
+if maxSuma == 0:
+    print(0, 0)
+else:
+    # Excluye el grupo inmediatamente anterior al inicio elegido.
+    r1Cuadrado = radiosCuad[mejorIni - 1] + 1 if mejorIni > 0 else 0
+    r2Cuadrado = radiosCuad[mejorFin]
+    print(r1Cuadrado, r2Cuadrado)
 ```
 
 ## Traza de ejemplo
 
-Usamos `pesos = [-1, 1, 0, 1, -1, -1, 2, -1]`, con índices desde cero.
+Usamos `aportes = [-1, 1, 0, 1, -1, -1, 2, -1]`, con índices desde cero.
 
-Entrá en **Simulación** y usá **Siguiente paso**. Cuando se comprueba si la suma es negativa en el índice 6, la tabla de variables muestra que vale cero. Kadane conserva el inicio 1 antes de agregar el aporte de ese índice. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#kadane" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de Kadane</a>
+Entrá en **Simulación** y usá **Siguiente paso**. En `fin = 6`, observá que empezar con el aporte 2 y extender la suma anterior de 0 dan el mismo puntaje. La traza conserva el inicio 1. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#kadane" data-router-ignore="true" data-no-popover="true">Ver la reducción y la traza de Kadane</a>
 
-| Final $j$ | Peso | Inicio del intervalo corriente | Suma corriente | Mejor intervalo |
-| --------: | ---: | -----------------------------: | -------------: | --------------- |
-|         0 |   -1 |                              0 |             -1 | Vacío           |
-|         1 |   +1 |                              1 |              1 | `[1, 1]`        |
-|         2 |    0 |                              1 |              1 | `[1, 1]`        |
-|         3 |   +1 |                              1 |              2 | `[1, 3]`        |
-|         4 |   -1 |                              1 |              1 | `[1, 3]`        |
-|         5 |   -1 |                              1 |              0 | `[1, 3]`        |
-|         6 |   +2 |                              1 |              2 | `[1, 3]`        |
-|         7 |   -1 |                              1 |              1 | `[1, 3]`        |
+| `fin` | Aporte | Inicio del intervalo corriente | Suma corriente | Mejor intervalo |
+| ----: | -----: | -----------------------------: | -------------: | --------------- |
+|     0 |     -1 |                              0 |             -1 | Vacío           |
+|     1 |     +1 |                              1 |              1 | `[1, 1]`        |
+|     2 |      0 |                              1 |              1 | `[1, 1]`        |
+|     3 |     +1 |                              1 |              2 | `[1, 3]`        |
+|     4 |     -1 |                              1 |              1 | `[1, 3]`        |
+|     5 |     -1 |                              1 |              0 | `[1, 3]`        |
+|     6 |     +2 |                              1 |              2 | `[1, 3]`        |
+|     7 |     -1 |                              1 |              1 | `[1, 3]`        |
 
-En $j=1$ se descarta el tramo anterior porque suma $-1$. En $j=6$ se conserva el inicio 1 porque el tramo anterior suma cero. El intervalo corriente vuelve a dar 2 y se mantiene la mejor respuesta ya guardada. Reconstruimos `6 90` a partir del intervalo `[1, 3]`.
+En `fin = 1`, empezar con el aporte 1 da más que extender el rango anterior, que daría `-1 + 1 = 0`. Ahí empieza el rango en 1. En `fin = 6`, la igualdad `2 = 0 + 2` conserva ese inicio y se mantiene el mejor rango guardado `[1, 3]`. Su borde interior al cuadrado es `radiosCuad[0] + 1 = 6` y el exterior es `radiosCuad[3] = 90`.
 
 ## Complejidad
 
@@ -98,9 +112,9 @@ Kadane es adecuado cuando hay que maximizar una suma aditiva en un intervalo con
 
 ## Visualizaciones
 
-- <a href="static/aceitunas-aro/#kadane-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
-- <a href="static/aceitunas-reducciones/#kadane-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de Kadane</a>
-- <a href="static/aceitunas-comparacion/#kadane" target="_blank" rel="noopener" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
+- <a href="static/aceitunas-aro/#kadane-visualizaciones" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
+- <a href="static/aceitunas-reducciones/#kadane-visualizaciones" data-router-ignore="true" data-no-popover="true">Ver la reducción y la traza de Kadane</a>
+- <a href="static/aceitunas-comparacion/#kadane" data-router-ignore="true" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
 
 ## Referencias
 

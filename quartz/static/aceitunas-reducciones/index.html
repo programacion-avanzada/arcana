@@ -877,7 +877,8 @@
                 <div>
                   <h2>Intervalos probados</h2>
                   <p class="quiet" id="matrix-caption">
-                    Cada fila fija un inicio. La suma crece o disminuye al avanzar por sus finales.
+                    Cada fila fija <code>ini</code>. La suma se actualiza al avanzar
+                    <code>fin</code>.
                   </p>
                 </div>
                 <div class="row" id="matrix-pages" hidden>
@@ -987,12 +988,12 @@
             "El rival tira a x < 0 y Olivares a x > 0. Los tiros a la misma distancia comparten una circunferencia.",
           caption:
             "Arrastrá el plano para desplazarte o hacé clic sobre un tiro para ver su radio.",
-          action: "Girar hacia y = 0",
+          action: "Ver los radios en y = 0",
         },
         {
-          title: "Los tiros se reúnen en y = 0",
-          description: "Cada tiro gira sin cambiar su radio hasta llegar al semieje x positivo.",
-          caption: "El equipo de cada tiro se conserva según el signo de su x original.",
+          title: "Las distancias en y = 0",
+          description: "Representamos cada radio como una posición del semieje x positivo.",
+          caption: "El aporte conserva el signo que le corresponde por la x original del tiro.",
           action: "Mostrar aportes por radio",
         },
         {
@@ -1005,7 +1006,7 @@
         {
           title: "El mapa ordenado",
           description:
-            "Los cuadrados de los radios son las claves del mapa. Cada columna conserva su aporte.",
+            "Cada clave distCuad es el cuadrado de un radio. Ordenamos las claves para que cualquier aro cubra un bloque consecutivo de aportes.",
           caption:
             "Pasá el mouse o enfocá una celda para resaltar su columna y el bloque que le dio origen.",
           action: "Buscar rango óptimo",
@@ -1025,17 +1026,17 @@
             ["algorithm", "ALGORITMO FuerzaBruta(aportes[0..M−1])"],
             ["initScore", "  mejorSuma ← 0"],
             ["initBest", "  mejor ← vacío"],
-            ["initStart", "  inicio ← 0"],
-            ["checkStart", "  MIENTRAS inicio < M HACER"],
+            ["initStart", "  ini ← 0"],
+            ["checkStart", "  MIENTRAS ini < M HACER"],
             ["reset", "    suma ← 0"],
-            ["setEnd", "    fin ← inicio"],
+            ["setEnd", "    fin ← ini"],
             ["checkEnd", "    MIENTRAS fin < M HACER"],
             ["add", "      suma ← suma + aportes[fin]"],
             ["compare", "      SI suma > mejorSuma ENTONCES"],
             ["saveScore", "        mejorSuma ← suma"],
-            ["saveRange", "        mejor ← [inicio, fin]"],
+            ["saveRange", "        mejor ← [ini, fin]"],
             ["incrementEnd", "      fin ← fin + 1"],
-            ["incrementStart", "    inicio ← inicio + 1"],
+            ["incrementStart", "    ini ← ini + 1"],
             ["return", "  RETORNAR mejor"],
           ],
           time: "O(M²)",
@@ -1043,7 +1044,7 @@
             "En fuerza bruta, O(M log M) queda dominado por O(M²) porque el recorrido cuadrático crece más rápido. Al contar el agrupamiento, el costo total esperado es O(N + M²).",
           costs: [
             ["Inicializar", "1", "O(1)"],
-            ["Preparar cada inicio", "M", "O(M)"],
+            ["Preparar cada ini", "M", "O(M)"],
             ["Extender y comparar", "M(M + 1)/2", "O(M²)"],
             ["Guardar una mejora", "Hasta M(M + 1)/2", "O(M²)"],
             ["Retornar", "1", "O(1)"],
@@ -1058,10 +1059,12 @@
             ["initScore", "  mejorSuma ← 0"],
             ["initBest", "  mejor ← vacío"],
             ["checkEnd", "  MIENTRAS fin < M HACER"],
-            ["checkReset", "    SI suma < 0 ENTONCES"],
+            ["readContribution", "    aporte ← aportes[fin]"],
+            ["checkChoice", "    SI aporte > suma + aporte ENTONCES"],
             ["restart", "      inicio ← fin"],
-            ["reset", "      suma ← 0"],
-            ["add", "    suma ← suma + aportes[fin]"],
+            ["startSum", "      suma ← aporte"],
+            ["else", "    SINO"],
+            ["add", "      suma ← suma + aporte"],
             ["compare", "    SI suma > mejorSuma ENTONCES"],
             ["saveScore", "      mejorSuma ← suma"],
             ["saveRange", "      mejor ← [inicio, fin]"],
@@ -1073,8 +1076,8 @@
             "En Kadane, O(M log M) domina la búsqueda O(M) porque el ordenamiento crece más rápido. Ordenar y buscar cuesta O(M log M) sobre los radios. Al contar el agrupamiento, el costo total esperado es O(N + M log M).",
           costs: [
             ["Inicializar", "1", "O(1)"],
-            ["Comprobar si hay que reiniciar", "M", "O(M)"],
-            ["Sumar y comparar", "M", "O(M)"],
+            ["Leer, comparar y elegir suma", "M", "O(M)"],
+            ["Comparar con el mejor rango", "M", "O(M)"],
             ["Guardar una mejora", "Hasta M", "O(M)"],
             ["Retornar", "1", "O(1)"],
           ],
@@ -1164,7 +1167,7 @@
       }
 
       function makeShot(x, y) {
-        return { x, y, d: BigInt(x) ** 2n + BigInt(y) ** 2n, theta: Math.atan2(y, x) }
+        return { x, y, distCuad: BigInt(x) ** 2n + BigInt(y) ** 2n, theta: Math.atan2(y, x) }
       }
 
       function parseShots(text) {
@@ -1197,17 +1200,20 @@
       function prepare(shots) {
         const map = new Map()
         for (const shot of shots) {
-          if (!map.has(shot.d)) {
-            const radius = Math.sqrt(Number(shot.d))
+          const { distCuad } = shot
+          if (!map.has(distCuad)) {
+            const radius = Math.sqrt(Number(distCuad))
             const whole = BigInt(Math.round(radius))
-            const radioLabel = whole ** 2n === shot.d ? String(whole) : "√" + shot.d
-            map.set(shot.d, { d: shot.d, radius, radioLabel, oli: 0, rival: 0 })
+            const radioLabel = whole ** 2n === distCuad ? String(whole) : "√" + distCuad
+            map.set(distCuad, { distCuad, radius, radioLabel, oli: 0, rival: 0 })
           }
-          const group = map.get(shot.d)
+          const group = map.get(distCuad)
           if (shot.x > 0) group.oli++
           else group.rival++
         }
-        const groups = [...map.values()].sort((a, b) => (a.d === b.d ? 0 : a.d < b.d ? -1 : 1))
+        const groups = [...map.values()].sort((a, b) =>
+          a.distCuad === b.distCuad ? 0 : a.distCuad < b.distCuad ? -1 : 1,
+        )
         return { shots, map, groups, plotted: sample(shots), guides: sample(groups) }
       }
 
@@ -1236,7 +1242,7 @@
 
       function showSelection() {
         const target = byId("selection")
-        const group = selected && model.map.get(selected.d)
+        const group = selected && model.map.get(selected.distCuad)
         target.hidden = !group
         if (group) {
           target.textContent =
@@ -1246,8 +1252,8 @@
             selected.y +
             ") · r = " +
             group.radioLabel +
-            " · r² = " +
-            group.d +
+            " · distCuad = " +
+            group.distCuad +
             " · Aporte " +
             (group.oli - group.rival)
         }
@@ -1319,12 +1325,12 @@
         const isValue = row === "value"
         const net = group.oli - group.rival
         const element = interactive ? "button" : "span"
-        const content = isValue ? net : row === "key" ? group.d : group.radioLabel
+        const content = isValue ? net : row === "key" ? group.distCuad : group.radioLabel
         const kind = isValue
-          ? "Aporte " + net + " de la clave " + group.d
+          ? "Aporte " + net + " de la clave " + group.distCuad
           : (row === "key" ? "Radio al cuadrado " : "Radio ") + content
         const attributes = interactive
-          ? ' type="button" data-key="' + group.d + '" aria-label="' + kind + '"'
+          ? ' type="button" data-key="' + group.distCuad + '" aria-label="' + kind + '"'
           : ""
         return (
           "<" +
@@ -1352,7 +1358,7 @@
           .map(
             (group) =>
               '<div class="group"><div class="pair" data-block="' +
-              group.d +
+              group.distCuad +
               '">' +
               tile(group, "radio") +
               tile(group, "value") +
@@ -1646,7 +1652,7 @@
 
       function radiusDifference(group, first) {
         // Una resta de raíces convertidas a Number puede redondear la separación a cero.
-        return Number(group.d - first.d) / (group.radius + first.radius)
+        return Number(group.distCuad - first.distCuad) / (group.radius + first.radius)
       }
 
       function placeGroups(positions, axisOffset) {
@@ -1710,7 +1716,7 @@
       function drawCircles(cx, cy, scale) {
         context.beginPath()
         for (const group of model.guides) {
-          if (group.d === selected?.d) continue
+          if (group.distCuad === selected?.distCuad) continue
           const radius = group.radius * scale
           context.moveTo(cx + radius, cy)
           context.arc(cx, cy, radius, 0, 2 * Math.PI)
@@ -1720,7 +1726,7 @@
         context.setLineDash([3, 4])
         context.stroke()
         context.setLineDash([])
-        const group = selected && model.map.get(selected.d)
+        const group = selected && model.map.get(selected.distCuad)
         if (group) {
           context.beginPath()
           context.arc(cx, cy, group.radius * scale, 0, 2 * Math.PI)
@@ -1732,7 +1738,7 @@
 
       function shotPosition(shot, alignment) {
         const angle = shot.theta * (1 - alignment)
-        const radius = model.map.get(shot.d).radius
+        const radius = model.map.get(shot.distCuad).radius
         return { x: radius * Math.cos(angle), y: radius * Math.sin(angle) }
       }
 
@@ -1764,7 +1770,9 @@
       function drawAxisGroups(shown, positions, cy, zoom) {
         for (const [index, group] of shown.entries()) {
           const x = positions[index]
-          const active = String(group.d) === highlighted || (zoom === 0 && group.d === selected?.d)
+          const active =
+            String(group.distCuad) === highlighted ||
+            (zoom === 0 && group.distCuad === selected?.distCuad)
           context.fillStyle = active
             ? colors.selected
             : group.oli > group.rival
@@ -1778,7 +1786,7 @@
         }
       }
 
-      function createSearch(method, weights) {
+      function createSearch(method, aportes) {
         const brute = method === "brute"
         const initial = {
           line: null,
@@ -1787,6 +1795,7 @@
           evaluated: 0,
           start: null,
           end: null,
+          aporte: null,
           sum: null,
           bestSum: null,
           best: null,
@@ -1794,14 +1803,14 @@
         }
         const state = {
           method,
-          weights,
-          candidates: brute ? (weights.length * (weights.length + 1)) / 2 : weights.length,
+          aportes,
+          candidates: brute ? (aportes.length * (aportes.length + 1)) / 2 : aportes.length,
           frame: { ...initial },
           checkpoints: [initial],
         }
         if (brute) {
           state.prefixes = [0]
-          for (const weight of weights) state.prefixes.push(state.prefixes.at(-1) + weight)
+          for (const aporte of aportes) state.prefixes.push(state.prefixes.at(-1) + aporte)
           state.total = indexBruteRows(state)
         } else {
           while (state.frame.next) {
@@ -1814,7 +1823,7 @@
         return state
       }
 
-      function advanceSearch({ method, weights, frame }) {
+      function advanceSearch({ method, aportes, frame }) {
         if (!frame.next) return
         const brute = method === "brute"
         frame.line = frame.next
@@ -1841,33 +1850,40 @@
             frame.next = brute ? "initStart" : "checkEnd"
             break
           case "checkStart":
-            frame.next = frame.start < weights.length ? "reset" : "return"
+            frame.next = frame.start < aportes.length ? "reset" : "return"
             break
           case "reset":
             frame.sum = 0
-            frame.next = brute ? "setEnd" : "add"
+            frame.next = "setEnd"
             break
           case "setEnd":
             frame.end = frame.start
             frame.next = "checkEnd"
             break
           case "checkEnd":
-            if (frame.end < weights.length) frame.next = brute ? "add" : "checkReset"
+            if (frame.end < aportes.length) frame.next = brute ? "add" : "readContribution"
             else frame.next = brute ? "incrementStart" : "return"
             break
-          case "checkReset":
-            frame.next = frame.sum < 0 ? "restart" : "add"
+          case "readContribution":
+            frame.aporte = aportes[frame.end]
+            frame.next = "checkChoice"
+            break
+          case "checkChoice":
+            frame.next = frame.aporte > frame.sum + frame.aporte ? "restart" : "add"
             break
           case "restart":
             frame.start = frame.end
-            frame.next = "reset"
+            frame.next = "startSum"
             break
-          case "add":
-            frame.sum += weights[frame.end]
+          case "startSum":
+          case "add": {
+            const aporte = brute ? aportes[frame.end] : frame.aporte
+            frame.sum = frame.line === "startSum" ? aporte : frame.sum + aporte
             frame.current = { start: frame.start, end: frame.end, sum: frame.sum }
             frame.evaluated++
             frame.next = "compare"
             break
+          }
           case "compare":
             frame.next = frame.sum > frame.bestSum ? "saveScore" : "incrementEnd"
             break
@@ -1912,40 +1928,41 @@
         return firstGreater
       }
 
-      function indexBruteRows({ prefixes, weights, checkpoints }) {
-        const count = weights.length
+      function indexBruteRows({ prefixes, aportes, checkpoints }) {
+        const count = aportes.length
         const firstGreater = prefixSearch(prefixes)
         let steps = 3
         let evaluated = 0
         let best = emptyRange
         let current = null
-        for (let start = 0; start <= count; start++) {
+        for (let ini = 0; ini <= count; ini++) {
           checkpoints.push({
-            line: start === 0 ? "initStart" : "incrementStart",
+            line: ini === 0 ? "initStart" : "incrementStart",
             next: "checkStart",
             steps,
             evaluated,
-            start,
-            end: start === 0 ? null : count,
+            start: ini,
+            end: ini === 0 ? null : count,
+            aporte: null,
             sum: current?.sum ?? null,
             bestSum: best.sum,
             best,
             current,
           })
-          if (start === count) break
-          const base = prefixes[start]
+          if (ini === count) break
+          const base = prefixes[ini]
           // Una mejora agrega dos asignaciones, una al puntaje y otra al rango guardado.
-          let prefix = firstGreater(start + 1, base + best.sum)
+          let prefix = firstGreater(ini + 1, base + best.sum)
           while (prefix >= 0) {
-            best = { start, end: prefix - 1, sum: prefixes[prefix] - base }
+            best = { start: ini, end: prefix - 1, sum: prefixes[prefix] - base }
             steps += 2
             prefix = firstGreater(prefix + 1, prefixes[prefix])
           }
-          const ranges = count - start
+          const ranges = count - ini
           // Cinco instrucciones por fila y cuatro por intervalo, además de las mejoras.
           steps += 5 + 4 * ranges
           evaluated += ranges
-          current = { start, end: count - 1, sum: prefixes[count] - base }
+          current = { start: ini, end: count - 1, sum: prefixes[count] - base }
         }
         return steps + 2
       }
@@ -2020,13 +2037,13 @@
       }
 
       function traceEnd({ end, current }) {
-        return end !== null && end < search.weights.length ? end : (current?.end ?? null)
+        return end !== null && end < search.aportes.length ? end : (current?.end ?? null)
       }
 
       function showStep() {
         const { start, current } = search.frame
         const end = traceEnd(search.frame)
-        const row = start !== null && start < search.weights.length ? start : (current?.start ?? 0)
+        const row = start !== null && start < search.aportes.length ? start : (current?.start ?? 0)
         matrixPages = [Math.floor(row / pageSize), Math.floor((end ?? 0) / pageSize)]
         followIndex(end ?? 0)
         renderSearch()
@@ -2047,7 +2064,7 @@
       function resultText(best, finished) {
         const label = finished ? "Óptimo" : "Mejor hasta ahora"
         if (best.start < 0) return label + " · rango vacío · suma 0 · salida 0 0"
-        const inner = best.start === 0 ? 0n : model.groups[best.start - 1].d + 1n
+        const inner = best.start === 0 ? 0n : model.groups[best.start - 1].distCuad + 1n
         return (
           label +
           " · [" +
@@ -2059,7 +2076,7 @@
           " · salida " +
           inner +
           " " +
-          model.groups[best.end].d
+          model.groups[best.end].distCuad
         )
       }
 
@@ -2088,10 +2105,12 @@
           traceCode.querySelector(`[data-line="${line}"]`).setAttribute("aria-current", "step")
       }
 
-      function currentDetail({ line, start, end, sum, bestSum }) {
+      function currentDetail({ line, start: ini, end: fin, aporte, sum, bestSum }) {
         switch (line) {
           case "initStart":
-            return "Inicializa el primer índice de inicio en cero."
+            return search.method === "brute"
+              ? "Inicializa ini en cero."
+              : "Inicializa inicio en cero."
           case "initEnd":
             return "Inicializa el primer índice de fin en cero."
           case "initSum":
@@ -2102,24 +2121,31 @@
           case "initBest":
             return "Guarda el rango vacío como mejor respuesta inicial."
           case "checkStart":
-            return start < search.weights.length
-              ? "Comprueba que inicio < M y entra en la fila de este inicio."
-              : "Comprueba que inicio < M y sale del bucle porque recorrió todos los inicios."
+            return ini < search.aportes.length
+              ? "Comprueba que ini < M y entra en la fila de ini."
+              : "Comprueba que ini < M es falso porque ya recorrió todas las filas."
           case "setEnd":
-            return "Ubica el fin en la misma posición que el inicio."
+            return "Asigna a fin la misma posición que tiene ini."
           case "checkEnd":
-            return end < search.weights.length
+            return fin < search.aportes.length
               ? "Comprueba que fin < M y continúa con esta posición."
               : "Comprueba que fin < M y sale del bucle porque llegó al final del vector."
-          case "checkReset":
-            return sum < 0
-              ? "Comprueba que la suma es negativa y entra en el bloque de reinicio."
-              : "Comprueba que suma < 0 es falso y conserva el inicio."
+          case "readContribution":
+            return "Lee el aporte neto de la posición fin."
+          case "checkChoice": {
+            const extendida = sum + aporte
+            if (aporte > extendida)
+              return `Compara empezar (${aporte}) con extender (${extendida}) y elige empezar en fin.`
+            const motivo = aporte === extendida ? " para conservar el inicio en el empate" : ""
+            return `Compara empezar (${aporte}) con extender (${extendida}) y elige extender${motivo}.`
+          }
           case "restart":
             return "Mueve el inicio del rango al fin actual."
+          case "startSum":
+            return "Asigna a suma el aporte de fin para empezar el nuevo rango."
           case "add": {
-            const weight = search.weights[end]
-            return `Agrega el aporte ${weight} a la suma anterior, que valía ${sum - weight}.`
+            const agregado = search.aportes[fin]
+            return `Agrega el aporte ${agregado} a la suma anterior, que valía ${sum - agregado}.`
           }
           case "compare":
             return sum > bestSum
@@ -2128,11 +2154,11 @@
           case "saveScore":
             return "Copia la suma actual en mejorSuma."
           case "saveRange":
-            return `Guarda [${start}, ${end}] como el mejor rango.`
+            return `Guarda [${ini}, ${fin}] como el mejor rango.`
           case "incrementEnd":
-            return `Avanza el fin a la posición ${end}.`
+            return `Avanza fin a la posición ${fin}.`
           case "incrementStart":
-            return `Avanza el inicio a la posición ${start}.`
+            return `Avanza ini a la posición ${ini}.`
           case "return":
             return "Devuelve el mejor rango guardado."
           default:
@@ -2140,12 +2166,14 @@
         }
       }
 
-      function renderVariables({ start, end, sum, bestSum, best }) {
+      function renderVariables({ start: ini, end: fin, aporte, sum, bestSum, best }) {
+        const brute = search.method === "brute"
         const rows = [
-          ["M", search.weights.length],
-          ["inicio", start],
-          ["fin", end],
-          ["aportes[fin]", search.weights[end]],
+          ["M", search.aportes.length],
+          [brute ? "ini" : "inicio", ini],
+          ["fin", fin],
+          ["distCuad", model.groups[fin]?.distCuad],
+          brute ? ["aportes[fin]", search.aportes[fin]] : ["aporte", aporte],
           ["suma", sum],
           ["mejorSuma", bestSum],
           ["mejor", best && (best.start < 0 ? "vacío" : `[${best.start}, ${best.end}]`)],
@@ -2209,7 +2237,7 @@
         const matrix = byId("matrix")
         const rowBase = matrixPages[0] * pageSize
         const colBase = matrixPages[1] * pageSize
-        const count = search.weights.length
+        const count = search.aportes.length
         const pages = Math.ceil(count / pageSize)
         byId("matrix-pages").hidden = pages <= 1
         byId("matrix-page-count").textContent = `De 1 a ${format.format(pages)}`
@@ -2221,18 +2249,18 @@
         const rows = Math.min(pageSize, count - rowBase)
         const headers = Array.from(
           { length: cols },
-          (_, j) => '<th scope="col">' + (colBase + j) + "</th>",
+          (_, column) => '<th scope="col">' + (colBase + column) + "</th>",
         ).join("")
-        const body = Array.from({ length: rows }, (_, i) => {
-          const start = rowBase + i
-          const cells = Array.from({ length: cols }, (_, j) => {
-            const end = colBase + j
-            if (end < start) return "<td data-invalid>—</td>"
-            const active = current?.start === start && current.end === end
-            const wins = best.start === start && best.end === end
+        const body = Array.from({ length: rows }, (_, row) => {
+          const ini = rowBase + row
+          const cells = Array.from({ length: cols }, (_, column) => {
+            const fin = colBase + column
+            if (fin < ini) return "<td data-invalid>—</td>"
+            const active = current?.start === ini && current.end === fin
+            const wins = best.start === ini && best.end === fin
             const visited =
-              current && (start < current.start || (start === current.start && end <= current.end))
-            const score = visited ? search.prefixes[end + 1] - search.prefixes[start] : "·"
+              current && (ini < current.start || (ini === current.start && fin <= current.end))
+            const score = visited ? search.prefixes[fin + 1] - search.prefixes[ini] : "·"
             return (
               "<td" +
               (active ? ' data-current aria-current="true"' : "") +
@@ -2242,10 +2270,10 @@
               "</td>"
             )
           }).join("")
-          return '<tr><th scope="row">' + start + "</th>" + cells + "</tr>"
+          return '<tr><th scope="row">' + ini + "</th>" + cells + "</tr>"
         }).join("")
         matrix.innerHTML =
-          '<thead><tr><th scope="col">Inicio ↓ / Fin →</th>' +
+          '<thead><tr><th scope="col">ini ↓ / fin →</th>' +
           headers +
           "</tr></thead><tbody>" +
           body +

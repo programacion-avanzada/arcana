@@ -77,6 +77,8 @@ Este aro produce la siguiente salida.
 6 90
 ```
 
+![Plano de los diez tiros del ejemplo. El aro de salida tiene radios √6 y √90, con tres tiros del Oli y uno del rival en la región sombreada.](aceitunas-ejemplo.png)
+
 ## Por dónde empezar
 
 ### Agrupar por distancia
@@ -87,7 +89,7 @@ $$
 r = \sqrt{(x-0)^2+(y-0)^2} = \sqrt{x^2+y^2}.
 $$
 
-Así, el tiro cuenta si $R_1 \le r \le R_2$. Podemos imaginar que cada tiro gira alrededor del origen hasta llegar a $(r,0)$. Los tiros del mismo radio se reúnen en el mismo punto y conservan su aporte, que depende del signo de su $x$ original.
+Para decidir si un tiro cuenta, podemos quedarnos con su radio $r$. La consulta de pertenencia al aro en el plano, que tiene dos dimensiones, se convierte en verificar si un número está dentro de un intervalo en una dimensión. Basta comprobar si $R_1 \le r \le R_2$. El signo de la $x$ original determina el aporte del tiro.
 
 Para pensar el problema, conviene mirar las distancias al origen como radios. La salida pide los radios al cuadrado, y calcular las raíces para obtener los radios puede requerir aproximaciones de punto flotante. Como $x$ e $y$ son enteros, sus cuadrados y la suma $x^2+y^2$ también son enteros. Elevar al cuadrado conserva el orden de las distancias no negativas, así que podemos usar solo enteros para agrupar y comparar.
 
@@ -97,42 +99,31 @@ R_1 \le \sqrt{x^2+y^2} \le R_2
 R_1^2 \le x^2+y^2 \le R_2^2.
 $$
 
-Usamos $s=x^2+y^2$ como clave exacta de un [[map|mapa]]. Cada tiro suma $+1$ a su clave si lo hizo el Oli y $-1$ si lo hizo el rival. Al terminar, el valor de cada clave es la diferencia de tiros en esa circunferencia.
+Llamamos `distCuad` a $x^2+y^2$ y lo usamos como clave de un [[map|mapa]] `difs`. El aporte de un tiro es $+1$ si lo hizo el Oli y $-1$ si lo hizo el rival. Sumamos ese aporte al valor de su clave. El valor final de cada clave es el **aporte neto** de su circunferencia. Una distancia al cuadrado puede llegar a $8\cdot 10^{18}$. Python la representa exactamente con enteros y, en un lenguaje con enteros de tamaño fijo, las operaciones requieren al menos 64 bits con signo.
 
-### Ordenar los grupos
+### Del mapa a un vector de aportes
 
-Ordenamos las $M$ claves distintas y guardamos dos [[array|vectores]] paralelos. Como cada clave corresponde a uno o más de los $N$ tiros, se cumple $1 \le M \le N$. Los vectores se pueden leer como dos filas de una tabla, con las claves ordenadas arriba y sus aportes netos abajo. En el índice $i$, `distancias2[i]` guarda el cuadrado del radio y `pesos[i]` guarda el aporte neto del grupo. Conservamos las claves de aporte cero porque señalan distancias donde hay tiros y ayudan a reconstruir los bordes que incluyen exactamente un bloque.
+Ordenamos las claves del mapa de menor a mayor en el [[array|vector]] `radiosCuad`. Ese orden importa porque, si el aro incluye dos radios, también incluye todos los que están entre ellos. Una vez ordenados, todos los grupos que entran al aro ocupan un bloque consecutivo. Las claves con aporte neto cero se conservan porque corresponden a tiros y pueden determinar dónde queda un borde.
 
-```python
-def agrupar_tiros(tiros):
-    puntos_por_distancia = {}
-    for x, y in tiros:
-        distancia2 = x * x + y * y
-        aporte = 1 if x > 0 else -1
-        puntos_por_distancia[distancia2] = (
-            puntos_por_distancia.get(distancia2, 0) + aporte
-        )
+Hay $M$ claves distintas entre $N$ tiros, con $1 \le M \le N$. El `dict` de Python implementa el mapa con una [[hash table|tabla hash]]. Agrupar cuesta $O(N)$ esperado y ordenar las claves cuesta $O(M\log M)$. Leer los valores en ese orden cuesta $O(M)$, con $O(M)$ de espacio auxiliar para el mapa y los vectores.
 
-    distancias2 = sorted(puntos_por_distancia)
-    pesos = [puntos_por_distancia[d] for d in distancias2]
-    return distancias2, pesos
-```
-
-El `dict` de Python implementa el mapa con una [[hash table|tabla hash]]. Agrupar cuesta $O(N)$ esperado, ordenar cuesta $O(M\log M)$ y construir los vectores cuesta $O(M)$. El espacio auxiliar es $O(M)$. El valor de $s$ puede llegar a $8\cdot 10^{18}$. Los enteros de Python lo representan exactamente. En un lenguaje con enteros de tamaño fijo, las multiplicaciones y la suma deben hacerse con al menos 64 bits con signo.
+Al leer los valores del mapa según `radiosCuad` queda el vector `aportes` de aportes netos. Las claves se usan después para recuperar los bordes del aro. Para elegir el rango, alcanza con mirar `aportes`. ¿Qué bloque consecutivo tiene la mayor suma? Es el problema clásico de la **suma máxima de un subarreglo**, con la posibilidad de elegir el bloque vacío.
 
 ### Elegir y reconstruir el aro
 
-Cualquier aro que cuente algún tiro incluye un intervalo de índices $[i,j]$ en el vector ordenado. Si incluye las distancias de los extremos, también incluye todas las intermedias. Recíprocamente, todo intervalo $[i,j]$ se puede obtener con cuadrados `distancias2[i] distancias2[j]`. Buscar el mejor aro equivale a maximizar la suma de un intervalo, con la opción adicional de dejar todos los tiros afuera.
+Cualquier rango `[ini, fin]` del vector ordenado puede obtenerse eligiendo `radiosCuad[ini]` y `radiosCuad[fin]` como cuadrados de los bordes. Podemos ajustar el borde interior para que el radio sea lo más chico posible e incluya exactamente ese mismo bloque.
 
-Para un intervalo $[i,j]$, el menor cuadrado exterior es `distancias2[j]`. El menor cuadrado interior es `0` si $i=0$ y `distancias2[i - 1] + 1` en otro caso. Ese valor supera al grupo anterior, que quedaría incluido en caso de igualdad, y no supera a `distancias2[i]`. Si el mejor puntaje es cero, ambas soluciones devuelven `0 0`.
+Si `ini = 0`, el menor cuadrado interior es `0`. Si `ini > 0`, el grupo de `radiosCuad[ini - 1]` tiene que quedar afuera y el de `radiosCuad[ini]` tiene que entrar. Como el borde cuenta, el cuadrado interior tiene que ser **estrictamente mayor** que la clave anterior. Debe quedar lo más cerca posible a su derecha. El primer entero que lo consigue es `radiosCuad[ini - 1] + 1`. Las claves son enteras y distintas, así que ese valor llega como máximo hasta `radiosCuad[ini]` y todavía incluye el primer grupo elegido.
 
-La salida entera permite elegir el primer valor a la derecha del cuadrado anterior. Por ejemplo, para excluir el grupo de clave 5, el menor cuadrado entero mayor que 5 es 6. Si se permitieran cuadrados reales, para cualquier valor $5+\varepsilon$ con $\varepsilon>0$ podríamos usar $5+\varepsilon/2$ y seguir excluyendo el grupo. En ese caso, 5 sería el ínfimo y el borde interior mínimo no existiría.
+En el ejemplo, la clave anterior es 5 y la primera del rango es 37. Con $R_1^2=5$ se incluiría el tiro de clave 5. Con $R_1^2=6$ se lo excluye y se incluye el de clave 37. Si la consigna admitiera valores reales, para cualquier cuadrado válido $5+\varepsilon$ se podría elegir $5+\varepsilon/2$ y acercarse más a 5. Un cálculo en punto flotante solo aproximaría la posición del borde. Con la salida entera, el mínimo queda determinado por el `+1`.
+
+El menor cuadrado exterior es `radiosCuad[fin]`, porque el último grupo tiene que quedar incluido. Si el mejor puntaje es cero, ambas soluciones devuelven `0 0`.
 
 ### Desempate opcional
 
 Entre los rangos de puntaje máximo positivo, elegimos el que tenga **el menor índice de inicio**. Si hay empate también en el inicio, elegimos el menor final. La consigna admite cualquier respuesta óptima.
 
-Con un óptimo positivo, consideramos el primer final $j$ que alcanza el máximo y, para ese final, el primer inicio $i$ que lo alcanza. Así obtenemos el menor borde exterior. También obtenemos el menor borde interior entre todos los aros óptimos con cuadrados enteros. Si otro intervalo óptimo empezara antes de $i$, su final no podría ser anterior a $j$, y con el mismo final contradiría la elección de $i$. Si terminara después de $j$, contendría a $[i,j]$ y agregaría dos tramos, uno a la izquierda y otro a la derecha. Esos tramos sumarían cero juntos. Ninguno puede tener suma positiva, porque agregarlo por separado mejoraría el óptimo. Por lo tanto, ambos suman cero y el tramo izquierdo también se podría agregar al intervalo que termina en $j$, contradiciendo que $i$ era el primer inicio posible.
+Con un óptimo positivo, consideramos el primer `fin` que alcanza el máximo y, para ese `fin`, el primer `ini` que lo alcanza. Así obtenemos el menor borde exterior. Si otro intervalo óptimo empezara antes de `ini`, su final tendría que ser posterior a `fin`. Un final anterior o igual contradiría cómo elegimos los índices. Entonces contendría a `[ini, fin]` y agregaría un tramo a cada lado. Esos tramos sumarían cero juntos. Cada tramo tiene suma a lo sumo cero, porque agregar por separado uno de suma positiva mejoraría el óptimo. Por lo tanto, ambos suman cero. Podríamos agregar el tramo izquierdo al intervalo que termina en `fin`, lo que contradice que `ini` era el primer inicio posible.
 
 Por lo tanto, el mismo intervalo tiene a la vez el menor inicio y el menor final entre los óptimos. Fuerza bruta lo encuentra al recorrer primero los inicios. Kadane lo encuentra al recorrer primero los finales. Esta elección minimiza también $R_1+R_2$ entre las respuestas con cuadrados enteros, porque cada radio es mínimo.
 
@@ -143,9 +134,9 @@ Por lo tanto, el mismo intervalo tiene a la vez el menor inicio y el menor final
 
 ## Visualizaciones
 
-- <a href="static/aceitunas-aro/#enunciado" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
-- <a href="static/aceitunas-reducciones/#enunciado" target="_blank" rel="noopener" data-no-popover="true">Ver el agrupamiento y simular ambos algoritmos</a>
-- <a href="static/aceitunas-comparacion/#enunciado" target="_blank" rel="noopener" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
+- <a href="static/aceitunas-aro/#enunciado" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
+- <a href="static/aceitunas-reducciones/#enunciado" data-router-ignore="true" data-no-popover="true">Ver el agrupamiento y simular ambos algoritmos</a>
+- <a href="static/aceitunas-comparacion/#enunciado" data-router-ignore="true" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
 
 ## Referencias
 

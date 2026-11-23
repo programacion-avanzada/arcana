@@ -11,11 +11,11 @@ export function parseValues(text) {
   if (tokens.length > MAX_VALUES)
     throw new Error(`Usá hasta ${MAX_VALUES} aportes para que cada paso sea legible.`)
   return tokens.map((token, index) => {
-    const value = Number(token)
-    if (!/^[+-]?\d+$/.test(token) || !Number.isSafeInteger(value) || Math.abs(value) > 10000) {
+    const aporte = Number(token)
+    if (!/^[+-]?\d+$/.test(token) || !Number.isSafeInteger(aporte) || Math.abs(aporte) > 10000) {
       throw new Error(`Aporte ${index + 1}: ingresá un entero entre −10.000 y 10.000.`)
     }
-    return value
+    return aporte
   })
 }
 
@@ -37,20 +37,24 @@ export function groupCoordinates(text) {
         `Tiro ${index + 1}: x debe ser distinto de cero y las coordenadas no deben superar ±2.000.000.000.`,
       )
     }
-    const radius = x * x + y * y
-    groups.set(radius, (groups.get(radius) ?? 0) + (x > 0n ? 1 : -1))
+    const distCuad = x * x + y * y
+    const aporte = x > 0n ? 1 : -1
+    groups.set(distCuad, (groups.get(distCuad) ?? 0) + aporte)
   }
   if (groups.size > MAX_VALUES)
     throw new Error(`Usá hasta ${MAX_VALUES} radios distintos en esta comparación.`)
   const entries = [...groups].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
-  return { values: entries.map(([, value]) => value), keys: entries.map(([key]) => String(key)) }
+  return {
+    values: entries.map(([, aporte]) => aporte),
+    keys: entries.map(([distCuad]) => String(distCuad)),
+  }
 }
 
-export function buildTrace(values, method) {
+export function buildTrace(aportes, method) {
   if (
-    !values.length ||
-    values.length > MAX_VALUES ||
-    values.some((value) => !Number.isSafeInteger(value) || Math.abs(value) > 10000)
+    !aportes.length ||
+    aportes.length > MAX_VALUES ||
+    aportes.some((aporte) => !Number.isSafeInteger(aporte) || Math.abs(aporte) > 10000)
   ) {
     throw new Error("La comparación necesita entre 1 y 64 aportes enteros válidos.")
   }
@@ -69,30 +73,42 @@ export function buildTrace(values, method) {
       newRow: false,
     },
   ]
-  function record(start, end, base, restarted, newRow) {
-    const sum = base + values[end]
-    const improved = sum > best.sum
-    if (improved) best = { start, end, sum }
-    trace.push({ step: trace.length, start, end, sum, base, best, improved, restarted, newRow })
-    return sum
+  function record(ini, fin, suma, base, restarted, newRow) {
+    const improved = suma > best.sum
+    if (improved) best = { start: ini, end: fin, sum: suma }
+    trace.push({
+      step: trace.length,
+      start: ini,
+      end: fin,
+      sum: suma,
+      base,
+      best,
+      improved,
+      restarted,
+      newRow,
+    })
   }
   if (method === "brute") {
-    for (let start = 0; start < values.length; start++) {
-      let sum = 0
-      for (let end = start; end < values.length; end++) {
-        sum = record(start, end, sum, false, start === end)
+    for (let ini = 0; ini < aportes.length; ini++) {
+      let suma = 0
+      for (let fin = ini; fin < aportes.length; fin++) {
+        const anterior = suma
+        suma += aportes[fin]
+        record(ini, fin, suma, anterior, false, ini === fin)
       }
     }
   } else {
-    let start = 0,
-      sum = 0
-    for (let end = 0; end < values.length; end++) {
-      const restarted = sum < 0
+    let inicio = 0
+    let suma = 0
+    for (let fin = 0; fin < aportes.length; fin++) {
+      const aporte = aportes[fin]
+      const anterior = suma
+      const restarted = aporte > suma + aporte
       if (restarted) {
-        start = end
-        sum = 0
-      }
-      sum = record(start, end, sum, restarted, false)
+        inicio = fin
+        suma = aporte
+      } else suma += aporte
+      record(inicio, fin, suma, restarted ? 0 : anterior, restarted, false)
     }
   }
   return trace
@@ -102,9 +118,9 @@ export function frameAt(trace, tick) {
   return trace[Math.max(0, Math.min(trace.length - 1, Math.floor(tick)))]
 }
 
-export function ringOutput(best, keys) {
-  if (!keys) return null
-  if (best.start < 0) return "0 0"
-  const inner = best.start === 0 ? 0n : BigInt(keys[best.start - 1]) + 1n
-  return `${inner} ${keys[best.end]}`
+export function ringOutput({ start: ini, end: fin }, radiosCuad) {
+  if (!radiosCuad) return null
+  if (ini < 0) return "0 0"
+  const inner = ini === 0 ? 0n : BigInt(radiosCuad[ini - 1]) + 1n
+  return `${inner} ${radiosCuad[fin]}`
 }

@@ -475,7 +475,8 @@
         </div>
         <p class="formula">
           En el plano usamos los radios. Para resolver el problema, elevar al cuadrado conserva el
-          orden en las distancias no negativas y permite trabajar con enteros exactos.
+          orden en las distancias no negativas. Guardamos <code>distCuad = x² + y²</code> como un
+          entero exacto.
           <span>R₁ ≤ √(x² + y²) ≤ R₂ ⇔ R₁² ≤ x² + y² ≤ R₂²</span>
         </p>
       </header>
@@ -802,7 +803,7 @@
       function makeShot(x, y) {
         const exactX = BigInt(x)
         const exactY = BigInt(y)
-        return { x, y, d: exactX * exactX + exactY * exactY, oli: x > 0 }
+        return { x, y, distCuad: exactX * exactX + exactY * exactY, oli: x > 0 }
       }
 
       function parseShots(text) {
@@ -899,19 +900,21 @@
       }
 
       function bestRing(groups) {
-        let start = 0
-        let sum = 0
+        let inicio = 0
+        let suma = 0
         let score = 0
         let bounds = [0n, 0n]
-        for (let end = 0; end < groups.length; end++) {
-          if (sum < 0) {
-            start = end
-            sum = 0
+        for (let fin = 0; fin < groups.length; fin++) {
+          const aporte = groups[fin].oli - groups[fin].rival
+          if (aporte > suma + aporte) {
+            inicio = fin
+            suma = aporte
+          } else {
+            suma += aporte
           }
-          sum += groups[end].oli - groups[end].rival
-          if (sum > score) {
-            score = sum
-            bounds = [start === 0 ? 0n : groups[start - 1].d + 1n, groups[end].d]
+          if (suma > score) {
+            score = suma
+            bounds = [inicio === 0 ? 0n : groups[inicio - 1].distCuad + 1n, groups[fin].distCuad]
           }
         }
         return { bounds, score }
@@ -920,17 +923,18 @@
       function prepareModel(shots) {
         const byDistance = new Map()
         for (const shot of shots) {
-          if (!byDistance.has(shot.d)) byDistance.set(shot.d, { d: shot.d, oli: 0, rival: 0 })
-          const group = byDistance.get(shot.d)
+          const { distCuad } = shot
+          if (!byDistance.has(distCuad)) byDistance.set(distCuad, { distCuad, oli: 0, rival: 0 })
+          const group = byDistance.get(distCuad)
           if (shot.oli) group.oli++
           else group.rival++
         }
 
         const groups = [...byDistance.values()].sort((left, right) => {
-          if (left.d === right.d) return 0
-          return left.d < right.d ? -1 : 1
+          if (left.distCuad === right.distCuad) return 0
+          return left.distCuad < right.distCuad ? -1 : 1
         })
-        const distances = groups.map((group) => group.d)
+        const radiosCuad = groups.map((group) => group.distCuad)
         const oli = new Int32Array(groups.length + 1)
         const rival = new Int32Array(groups.length + 1)
         for (const [index, group] of groups.entries()) {
@@ -946,13 +950,13 @@
                 (_, index) => shots[Math.floor((index * shots.length) / drawingLimit)],
               )
         return {
-          distances,
+          radiosCuad,
           oli,
           rival,
-          radii: distances.map((d) => Math.sqrt(Number(d))),
+          radii: radiosCuad.map((distCuad) => Math.sqrt(Number(distCuad))),
           plotted,
           shots,
-          farthest: distances.at(-1) ?? 0n,
+          farthest: radiosCuad.at(-1) ?? 0n,
           total: shots.length,
           best: bestRing(groups),
         }
@@ -977,7 +981,7 @@
             ? next
             : previous
         if (Math.abs(model.radii[nearest] - radius) * scale <= 6) {
-          return squareBorder(model.distances[nearest])
+          return squareBorder(model.radiosCuad[nearest])
         }
         return decimalBorder(String(radius))
       }
@@ -994,7 +998,7 @@
         byId("input-error").textContent = ""
         radiusError.textContent = ""
         byId("input-count").textContent =
-          `N = ${intFormat.format(model.total)} · ${intFormat.format(model.distances.length)} radios distintos`
+          `N = ${intFormat.format(model.total)} · ${intFormat.format(model.radiosCuad.length)} radios distintos`
         byId("sample-note").textContent =
           model.total > drawingLimit
             ? `Se dibujan ${intFormat.format(drawingLimit)} de ${intFormat.format(model.total)} tiros. El cálculo incluye todos los tiros.`
@@ -1074,8 +1078,8 @@
 
       function refresh(rescaleSquares = true) {
         integerBounds = [ceilSquare(ring[0]), floorSquare(ring[1])]
-        const start = firstBound(model.distances, integerBounds[0])
-        const end = firstBound(model.distances, integerBounds[1], true)
+        const start = firstBound(model.radiosCuad, integerBounds[0])
+        const end = firstBound(model.radiosCuad, integerBounds[1], true)
         const oli = model.oli[end] - model.oli[start]
         const rival = model.rival[end] - model.rival[start]
         const score = oli - rival
@@ -1111,9 +1115,9 @@
           control.slider.value = String(border.radius)
           control.slider.setAttribute("aria-valuetext", `Radio ${border.text}`)
           refreshSquareControl(control, border, rescaleSquares)
-          control.steps[0].disabled = firstBound(model.distances, ceilSquare(border)) === 0
+          control.steps[0].disabled = firstBound(model.radiosCuad, ceilSquare(border)) === 0
           control.steps[1].disabled =
-            firstBound(model.distances, floorSquare(border), true) === model.distances.length
+            firstBound(model.radiosCuad, floorSquare(border), true) === model.radiosCuad.length
         }
         scheduleDrawing()
       }
@@ -1276,7 +1280,7 @@
         const paths = [new Path2D(), new Path2D(), new Path2D(), new Path2D()]
         const size = model.plotted.length > 250 ? 2.2 : 4
         for (const shot of model.plotted) {
-          const inside = shot.d >= integerBounds[0] && shot.d <= integerBounds[1]
+          const inside = shot.distCuad >= integerBounds[0] && shot.distCuad <= integerBounds[1]
           const path = paths[(inside ? 2 : 0) + (shot.oli ? 0 : 1)]
           const x = cx + shot.x * scale
           const y = cy - shot.y * scale
@@ -1458,9 +1462,9 @@
           button.addEventListener("click", () => {
             const forward = Number(button.dataset.step) === 1
             const stop = forward
-              ? firstBound(model.distances, floorSquare(ring[index]), true)
-              : firstBound(model.distances, ceilSquare(ring[index])) - 1
-            setBorder(index, squareBorder(model.distances[stop]))
+              ? firstBound(model.radiosCuad, floorSquare(ring[index]), true)
+              : firstBound(model.radiosCuad, ceilSquare(ring[index])) - 1
+            setBorder(index, squareBorder(model.radiosCuad[stop]))
           })
         }
       }

@@ -13,15 +13,19 @@ Usamos **fuerza bruta** para evaluar cada intervalo de distancias. Para cada ini
 
 ## Idea de la solución
 
-Mové un borde del aro y observá cómo entran o salen juntos todos los tiros que comparten un radio. Al ordenar las distancias, los dos bordes delimitan un bloque de grupos consecutivos. <a id="visualizacion-aro" href="static/aceitunas-aro/#fuerza-bruta" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
+Mové un borde del aro y observá cómo entran o salen juntos todos los tiros que comparten un radio. Al ordenar las distancias, los dos bordes delimitan un bloque de grupos consecutivos. <a id="visualizacion-aro" href="static/aceitunas-aro/#fuerza-bruta" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 
-Registramos la diferencia entre tiros del Oli y del rival en un [[map|mapa]] cuya clave es el cuadrado de la distancia al centro. En Python usamos un `dict`, implementado con una [[hash table|tabla hash]]. Ordenamos las claves en un [[array|vector]] `radiosCuad` para que cada aro que cuenta tiros corresponda a un intervalo de índices consecutivos.
+Registramos el aporte neto de cada radio en el [[map|mapa]] `difs`, con `distCuad` como clave. En Python usamos un `dict`, implementado con una [[hash table|tabla hash]]. Ordenamos las claves en el [[array|vector]] `radiosCuad` para que cada aro que cuenta tiros corresponda a un intervalo de índices consecutivos.
 
-### Sumas de prefijos al recorrer un inicio
+### Construir y consultar sumas de prefijos
 
-Una **suma de prefijos** es la suma de los primeros elementos de un vector. Si $P[k]$ guarda el aporte de los primeros $k$ grupos, entonces $P[0]=0$ y $P[k+1]=P[k]+\text{pesos}[k]$. El puntaje de $[i,j]$ es $P[j+1]-P[i]$, porque se resta el tramo anterior a $i$.
+Para un vector `a`, `sum[fin]` guarda la suma del prefijo `a[0..fin]`, desde el índice cero hasta `fin` inclusive. Empezamos con `sum[0] = a[0]`. Avanzamos de izquierda a derecha y, para cada `fin > 0`, construimos `sum[fin] = sum[fin - 1] + a[fin]`. Con `a = [-1, 1, 0, 1]`, los prefijos se construyen como `-1`, `-1 + 1 = 0`, `0 + 0 = 0` y `0 + 1 = 1`. El vector `sum` queda `[-1, 0, 0, 1]`.
 
-Acumulamos los prefijos del tramo que empieza en $i$ a medida que los necesitamos. Al fijar $i$, ponemos `suma` en cero. Al avanzar $j$, agregamos el aporte del grupo recién incluido. La variable pasa de $P[j]-P[i]$ a $P[j+1]-P[i]$ en tiempo constante. Al cambiar de inicio, volvemos a cero.
+Para consultar `[ini, fin]`, tomamos `sum[fin]` y restamos `sum[ini - 1]`, que contiene los elementos anteriores a `ini`. Si `ini = 0`, el resultado es directamente `sum[fin]`. Por ejemplo, `[1, 3]` suma `sum[3] - sum[0] = 1 - (-1) = 2`. Construir los prefijos toma $O(M)$ para un vector de $M$ elementos y cada consulta toma $O(1)$.
+
+### Aplicar la suma sobre la marcha
+
+En este problema, `a` son los aportes netos del mapa leídos en el orden de `radiosCuad`. Para cada `ini` recorremos los finales en orden, así que podemos acumular en el momento el mismo valor que daría la consulta de prefijos. Empezamos esa fila con `suma = 0`. Al extender el rango hasta `fin`, agregamos `difs[radiosCuad[fin]]`. La nueva `suma` vale lo mismo que `sum[fin] - sum[ini - 1]` si `ini > 0`, o que `sum[fin]` si `ini = 0`. Al pasar a otro `ini`, la suma vuelve a cero. Esto calcula cada candidato en tiempo constante esperado con una consulta al mapa y mantiene solo la suma corriente.
 
 Al recorrer todos los inicios y todos sus finales, probamos cada intervalo válido exactamente una vez. Como criterio de desempate, elegimos el rango de **menor inicio** y, si comparten inicio, el de menor final. Los bucles visitan los rangos en ese orden y guardamos uno nuevo solo si supera el mejor puntaje. Si el mejor puntaje es cero, devolvemos `0 0`. Para un puntaje positivo, reconstruimos los dos cuadrados enteros con los índices guardados. [[lanzamiento-de-aceitunas#Desempate opcional|Justificación del desempate]]
 
@@ -31,7 +35,7 @@ Al recorrer todos los inicios y todos sus finales, probamos cada intervalo váli
 n = int(input())
 difs = {}
 
-for i in range(n):
+for _ in range(n):
     # Ingreso de las coordenadas de los tiros.
     x, y = map(int, input().split())
     distCuad = x * x + y * y
@@ -70,22 +74,22 @@ else:
 
 ## Traza de ejemplo
 
-Los aportes de los ocho grupos del enunciado son `[-1, 1, 0, 1, -1, -1, 2, -1]`. Cada fila fija un inicio $i$ y muestra cómo cambia la suma al extender el final $j$.
+Los aportes de los ocho grupos del enunciado son `[-1, 1, 0, 1, -1, -1, 2, -1]`. Cada fila fija `ini` y muestra cómo cambia la suma al avanzar `fin`.
 
-Entrá en **Simulación** y usá **Siguiente paso** para ejecutar una instrucción por vez. Para $i=1$, observá cómo la suma pasa de 1 a 2 al agregar el aporte de $j=3$ y cómo se actualiza el mejor rango en las instrucciones siguientes. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#fuerza-bruta" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de fuerza bruta</a>
+Entrá en **Simulación** y usá **Siguiente paso** para ejecutar una instrucción por vez. Con `ini = 1`, observá cómo la suma pasa de 1 a 2 al agregar el aporte de `fin = 3` y cómo se guarda el nuevo rango. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#fuerza-bruta" data-router-ignore="true" data-no-popover="true">Ver la reducción y la traza de fuerza bruta</a>
 
-| Inicio $i$ | Puntajes de $[i,j]$ con $j=i,\ldots,7$ | Mejor puntaje acumulado | Mejor intervalo |
-| ---------: | -------------------------------------- | ----------------------: | --------------- |
-|          0 | `-1, 0, 0, 1, 0, -1, 1, 0`             |                       1 | `[0, 3]`        |
-|          1 | `1, 1, 2, 1, 0, 2, 1`                  |                       2 | `[1, 3]`        |
-|          2 | `0, 1, 0, -1, 1, 0`                    |                       2 | `[1, 3]`        |
-|          3 | `1, 0, -1, 1, 0`                       |                       2 | `[1, 3]`        |
-|          4 | `-1, -2, 0, -1`                        |                       2 | `[1, 3]`        |
-|          5 | `-1, 1, 0`                             |                       2 | `[1, 3]`        |
-|          6 | `2, 1`                                 |                       2 | `[1, 3]`        |
-|          7 | `-1`                                   |                       2 | `[1, 3]`        |
+| `ini` | Puntajes de `[ini, fin]` desde `fin = ini` hasta `fin = 7` | Mejor puntaje acumulado | Mejor intervalo |
+| ----: | ---------------------------------------------------------- | ----------------------: | --------------- |
+|     0 | `-1, 0, 0, 1, 0, -1, 1, 0`                                 |                       1 | `[0, 3]`        |
+|     1 | `1, 1, 2, 1, 0, 2, 1`                                      |                       2 | `[1, 3]`        |
+|     2 | `0, 1, 0, -1, 1, 0`                                        |                       2 | `[1, 3]`        |
+|     3 | `1, 0, -1, 1, 0`                                           |                       2 | `[1, 3]`        |
+|     4 | `-1, -2, 0, -1`                                            |                       2 | `[1, 3]`        |
+|     5 | `-1, 1, 0`                                                 |                       2 | `[1, 3]`        |
+|     6 | `2, 1`                                                     |                       2 | `[1, 3]`        |
+|     7 | `-1`                                                       |                       2 | `[1, 3]`        |
 
-Para $i=1$, arrancamos con cero. El grupo de índice 1 aporta 1, el de índice 2 aporta 0 y el de índice 3 aporta 1. La suma llega a 2 en $[1,3]$. Para reconstruir el aro usamos `radiosCuad[0] + 1 = 6` y `radiosCuad[3] = 90`. La salida es `6 90`.
+Con `ini = 1`, arrancamos con cero y sumamos los aportes 1, 0 y 1 para `fin = 1`, `2` y `3`. El rango `[1, 3]` alcanza una suma de 2. Para elegir el menor radio interior, tomamos el primer entero a la derecha del cuadrado anterior, `radiosCuad[0] + 1 = 6`. Ese borde excluye el grupo de clave 5 y conserva el de clave 37. El borde exterior es `radiosCuad[3] = 90`. [[lanzamiento-de-aceitunas#Elegir y reconstruir el aro|Reconstrucción de los radios]]
 
 ## Complejidad
 
@@ -99,9 +103,9 @@ La enumeración permite inspeccionar todos los candidatos y sirve para validar o
 
 ## Visualizaciones
 
-- <a href="static/aceitunas-aro/#fuerza-bruta-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
-- <a href="static/aceitunas-reducciones/#fuerza-bruta-visualizaciones" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de fuerza bruta</a>
-- <a href="static/aceitunas-comparacion/#fuerza-bruta" target="_blank" rel="noopener" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
+- <a href="static/aceitunas-aro/#fuerza-bruta-visualizaciones" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
+- <a href="static/aceitunas-reducciones/#fuerza-bruta-visualizaciones" data-router-ignore="true" data-no-popover="true">Ver la reducción y la traza de fuerza bruta</a>
+- <a href="static/aceitunas-comparacion/#fuerza-bruta" data-router-ignore="true" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
 
 ## Referencias
 

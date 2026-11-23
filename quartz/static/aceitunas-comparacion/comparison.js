@@ -17,26 +17,29 @@ const code = {
     ["init", "mejor = vacío; mejorSuma = 0"],
     ["init", "inicio = 0; suma = 0"],
     ["loop", "para fin = 0 … M−1:"],
-    ["restart", "  si suma < 0:"],
-    ["restart", "    suma = 0; inicio = fin"],
-    ["add", "  suma += aportes[fin]"],
+    ["read", "  aporte = aportes[fin]"],
+    ["choice", "  si aporte > suma + aporte:"],
+    ["restart", "    inicio = fin"],
+    ["restart", "    suma = aporte"],
+    ["else", "  si no:"],
+    ["add", "    suma += aporte"],
     ["compare", "  si suma > mejorSuma:"],
     ["save", "    guardar suma e intervalo"],
     ["return", "devolver mejor"],
   ],
   brute: [
     ["init", "mejor = vacío; mejorSuma = 0"],
-    ["loop", "para inicio = 0 … M−1:"],
+    ["loop", "para ini = 0 … M−1:"],
     ["restart", "  suma = 0"],
-    ["loop", "  para fin = inicio … M−1:"],
+    ["loop", "  para fin = ini … M−1:"],
     ["add", "    suma += aportes[fin]"],
     ["compare", "    si suma > mejorSuma:"],
-    ["save", "      guardar suma e intervalo"],
+    ["save", "      guardar la suma de [ini, fin]"],
     ["return", "devolver mejor"],
   ],
 }
-let values = [],
-  keys = null,
+let aportes = [],
+  radiosCuad = null,
   traces = {},
   tick = 0,
   running = false,
@@ -75,8 +78,9 @@ function announce(message) {
 }
 
 function renderCard(method) {
-  const frame = frameAt(traces[method], tick)
-  const total = traces[method].length - 1
+  const trace = traces[method]
+  const frame = frameAt(trace, tick)
+  const total = trace.length - 1
   const done = tick >= total
   const progress = field(method, "progress")
   progress.max = total
@@ -104,14 +108,14 @@ function renderCard(method) {
     cell.classList.toggle("current", frame.step > 0 && index === frame.end)
     cell.setAttribute(
       "aria-label",
-      `Índice ${index}, aporte ${values[index]}${index === frame.end ? ", posición actual" : ""}${frame.best.start >= 0 && index >= frame.best.start && index <= frame.best.end ? ", mejor rango" : ""}`,
+      `Índice ${index}, aporte ${aportes[index]}${index === frame.end ? ", posición actual" : ""}${frame.best.start >= 0 && index >= frame.best.start && index <= frame.best.end ? ", mejor rango" : ""}`,
     )
   }
   const result = field(method, "result")
   result.classList.toggle("completed", done)
   const bestRange =
     frame.best.start < 0 ? "rango vacío" : `rango [${frame.best.start}, ${frame.best.end}]`
-  const output = ringOutput(frame.best, keys)
+  const output = ringOutput(frame.best, radiosCuad)
   result.innerHTML = `<strong>${done ? "Óptimo confirmado" : "Mejor hasta ahora"}: ${format(frame.best.sum)}</strong> · ${bestRange}<small>${output !== null ? `Salida del aro: ${output} · ` : ""}${done ? `Completó ${format(total)} evaluaciones.` : "El resultado puede mejorar durante el recorrido."}</small>`
 
   let title = "Todo listo",
@@ -120,27 +124,39 @@ function renderCard(method) {
   if (!frame.step) {
     explanation =
       method === "kadane"
-        ? "Va a extender el rango mientras su suma no sea negativa. Si lo es, empezará de nuevo en la posición actual."
-        : "Va a fijar un inicio y extender el final. Después repetirá la búsqueda desde el siguiente inicio."
+        ? "Para cada fin compara empezar con el aporte actual y extender el rango anterior."
+        : "Fija ini y extiende fin. Después repite la búsqueda desde el siguiente ini."
   } else {
     title = frame.improved
       ? "Encontró una mejor suma"
       : method === "kadane" && frame.restarted
-        ? "Descartó una suma negativa"
+        ? "Empieza un nuevo rango"
         : "Evalúa el siguiente intervalo"
     const decision = frame.improved
       ? `La suma ${frame.sum} mejora el máximo anterior: guarda [${frame.start}, ${frame.end}].`
       : `La suma ${frame.sum} no supera ${frame.best.sum}: conserva el mejor rango.`
-    explanation =
-      method === "kadane"
-        ? `${frame.restarted ? `La suma previa era negativa. Empieza de nuevo en ${frame.end}.` : `Extiende el rango desde ${frame.start} hasta ${frame.end}.`} ${decision}`
-        : `${frame.newRow ? `Fija inicio = ${frame.start} y reinicia la suma.` : `Mantiene inicio = ${frame.start} y avanza fin a ${frame.end}.`} ${decision}`
-    equation = `${frame.base} + (${values[frame.end]}) = ${frame.sum}`
+    const { start: ini, end: fin } = frame
+    const aporte = aportes[fin]
+    if (method === "kadane") {
+      const extendida = trace[frame.step - 1].sum + aporte
+      const choice = frame.restarted
+        ? `Como empezar suma ${aporte} y extender sumaría ${extendida}, empieza en fin = ${fin}.`
+        : `Extender suma ${extendida} y conserva inicio = ${ini}.`
+      explanation = `${choice} ${decision}`
+    } else {
+      const action = frame.newRow
+        ? `Fija ini = ${ini} y reinicia la suma.`
+        : `Mantiene ini = ${ini} y avanza fin a ${fin}.`
+      explanation = `${action} ${decision}`
+    }
+    equation = frame.restarted
+      ? `suma = aporte = ${aporte}`
+      : `${frame.base} + (${aporte}) = ${frame.sum}`
     if (done) {
       title = method === "kadane" && tick < maxTick() ? "Kadane ya terminó" : "Búsqueda completa"
       explanation =
         method === "kadane" && tick < maxTick()
-          ? `Ya procesó las ${values.length} posiciones. Su resultado queda fijo mientras fuerza bruta sigue evaluando intervalos.`
+          ? `Ya procesó las ${aportes.length} posiciones. Su resultado queda fijo mientras fuerza bruta sigue evaluando intervalos.`
           : `Evaluó ${format(total)} ${method === "kadane" ? "posiciones" : "intervalos"}. La mejor suma es ${frame.best.sum}; ${bestRange}.`
     }
   }
@@ -153,10 +169,11 @@ function renderCard(method) {
       ? ["return"]
       : [
           "loop",
-          "add",
           "compare",
+          ...(method === "kadane" ? ["read", "choice"] : []),
+          ...(frame.restarted ? ["restart"] : ["add"]),
           ...(frame.improved ? ["save"] : []),
-          ...(frame.restarted || frame.newRow ? ["restart"] : []),
+          ...(frame.newRow ? ["restart"] : []),
         ]
   for (const line of $(method + "-card").querySelectorAll(".code-line")) {
     const active = activeLines.includes(line.dataset.line)
@@ -191,10 +208,10 @@ function render() {
   $("timeline").setAttribute("aria-valuetext", `Pulso ${tick} de ${maxTick()}`)
   $("clock-label").textContent = `Pulso ${format(tick)} de ${format(maxTick())}`
   $("mobile-kadane").textContent =
-    `Kadane: ${Math.min(tick, values.length)}/${values.length}${tick >= values.length ? " · listo" : ""}`
+    `Kadane: ${Math.min(tick, aportes.length)}/${aportes.length}${tick >= aportes.length ? " · listo" : ""}`
   $("mobile-brute").textContent = `F. bruta: ${tick}/${maxTick()}${finished ? " · listo" : ""}`
   if (finished) announce("Ambos terminaron · mismo óptimo")
-  else if (tick >= values.length)
+  else if (tick >= aportes.length)
     announce(
       running ? "Kadane terminó · fuerza bruta continúa" : "Kadane terminó · fuerza bruta en pausa",
     )
@@ -217,37 +234,37 @@ function schedule() {
 
 function applyData(data, name, selectedPreset = null) {
   stop()
-  values = data.values
-  keys = data.keys ?? null
+  aportes = data.values
+  radiosCuad = data.keys ?? null
   preset = selectedPreset
-  traces = Object.fromEntries(methods.map((method) => [method, buildTrace(values, method)]))
+  traces = Object.fromEntries(methods.map((method) => [method, buildTrace(aportes, method)]))
   tick = 0
   $("dataset-description").textContent = name
-  $("input-count").textContent = `${values.length} radios · misma entrada para ambos`
-  $("shared-array").innerHTML = values
+  $("input-count").textContent = `${aportes.length} radios · misma entrada para ambos`
+  $("shared-array").innerHTML = aportes
     .map(
-      (value, index) =>
-        `<span class="shared-cell" title="Índice ${index}${keys ? ` · Radio² = ${keys[index]}` : ""}"><small>${index}</small><strong class="${value > 0 ? "positive" : value < 0 ? "negative" : ""}">${value > 0 ? "+" : ""}${value}</strong></span>`,
+      (aporte, index) =>
+        `<span class="shared-cell" title="Índice ${index}${radiosCuad ? ` · distCuad = ${radiosCuad[index]}` : ""}"><small>${index}</small><strong class="${aporte > 0 ? "positive" : aporte < 0 ? "negative" : ""}">${aporte > 0 ? "+" : ""}${aporte}</strong></span>`,
     )
     .join("")
   for (const method of methods) {
-    field(method, "cells").innerHTML = values
-      .map((value, index) => `<span class="cell"><small>${index}</small><b>${value}</b></span>`)
+    field(method, "cells").innerHTML = aportes
+      .map((aporte, index) => `<span class="cell"><small>${index}</small><b>${aporte}</b></span>`)
       .join("")
   }
   for (const button of document.querySelectorAll("[data-preset]"))
     button.setAttribute("aria-pressed", String(button.dataset.preset === preset))
   const total = maxTick()
-  const ratio = total / values.length
+  const ratio = total / aportes.length
   $("takeaway-title").textContent =
-    `${format(values.length)} evaluaciones frente a ${format(total)}`
+    `${format(aportes.length)} evaluaciones frente a ${format(total)}`
   $("takeaway-text").textContent =
     ratio === 1
       ? "Con un único radio, ambos hacen una evaluación y terminan juntos. Probá más radios para ver la diferencia."
       : `Fuerza bruta hace ${number.format(ratio)} veces la cantidad de evaluaciones de Kadane. Al aumentar los radios, esta diferencia crece.`
-  $("kadane-work").style.width = `${(values.length / total) * 100}%`
+  $("kadane-work").style.width = `${(aportes.length / total) * 100}%`
   $("brute-work").style.width = "100%"
-  $("kadane-total").textContent = format(values.length)
+  $("kadane-total").textContent = format(aportes.length)
   $("brute-total").textContent = format(total)
   $("data-error").textContent = ""
   $("data-input").removeAttribute("aria-invalid")
@@ -268,7 +285,7 @@ function updateInputHelp() {
   $("data-help").textContent = coordinates
     ? "Un par x y por renglón. x > 0: Olivares; x < 0: rival. Se agrupan por radio y se ordenan automáticamente."
     : "Enteros separados por espacios o comas. Hasta 64 aportes."
-  $("data-input").value = coordinates ? OIA_COORDINATES : values.join(" ")
+  $("data-input").value = coordinates ? OIA_COORDINATES : aportes.join(" ")
   $("data-error").textContent = ""
   $("data-input").removeAttribute("aria-invalid")
 }
@@ -303,7 +320,7 @@ $("data-editor").addEventListener("submit", (event) => {
     applyData(
       data,
       coordinates
-        ? "Tus coordenadas · radios agrupados y ordenados por distancia."
+        ? "Tus coordenadas · aportes agrupados y ordenados por distCuad."
         : "Tus aportes · se conserva el orden ingresado.",
     )
     $("start").focus()
@@ -318,7 +335,7 @@ for (const button of document.querySelectorAll("[data-preset]")) {
     if (name === "oia")
       applyData(
         groupCoordinates(OIA_COORDINATES),
-        "Ejemplo OIA · radios agrupados y ordenados por distancia.",
+        "Ejemplo OIA · aportes agrupados y ordenados por distCuad.",
         name,
       )
     else if (name === "negative")
@@ -431,6 +448,6 @@ window.addEventListener("pagehide", stop)
 showTheme()
 applyData(
   groupCoordinates(OIA_COORDINATES),
-  "Ejemplo OIA · radios agrupados y ordenados por distancia.",
+  "Ejemplo OIA · aportes agrupados y ordenados por distCuad.",
   "oia",
 )
