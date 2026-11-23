@@ -3,7 +3,7 @@
 ## 1. Técnicas utilizadas
 
 - **Fuerza bruta (búsqueda exhaustiva):** se prueban todas las candidatas (las `C` calles) y se queda la mejor.
-- **Algoritmo de Dijkstra con cola de prioridad (heap):** calcula el camino mínimo en un grafo dirigido con pesos positivos. Es la subrutina que evalúa cada candidata.
+- **Algoritmo de Dijkstra con cola de prioridad (heap):** calcula el camino mínimo en un [[Graph|grafo|]] dirigido con pesos positivos. Es la subrutina que evalúa cada candidata.
 
 ## 2. Idea de la solución
 

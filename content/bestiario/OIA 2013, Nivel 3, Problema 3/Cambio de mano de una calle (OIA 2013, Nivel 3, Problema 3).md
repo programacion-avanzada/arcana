@@ -1,9 +1,8 @@
-
 ## Nombre y enunciado
 
 Un colectivo escolar recoge alumnos de un barrio lejano y viaja todas las mañanas hasta una escuela, eligiendo siempre el recorrido más corto posible. La ciudad se representa como un mapa de esquinas conectadas por calles de una sola mano con una distancia determinada.
 
-Con el objetivo de reducir el tiempo de viaje matutino, el intendente ofrece cambiar el sentido de circulación de **a lo sumo una calle** cualquiera de la ciudad.
+Con el objetivo de reducir el tiempo de viaje matutino, el intendente ofrece cambiar el sentido de circulación de **una calle** cualquiera de la ciudad.
 
 **Problema:** Dada la red vial de la ciudad, la esquina de partida del colectivo y la esquina donde se ubica la escuela, determinar:
 
@@ -55,7 +54,9 @@ Si $D_1 \ge D_0$, significa que no se consiguió un camino mínimo más pequeño
 Hay mejora **si y solo si** el segundo término es estrictamente menor que $D_0$. Los términos con $d_S(v_i)$ o $d_T(u_i)$ infinitos _(esquina inalcanzable)_ se descartan.
 
 **Restricciones:** $1 \le E \le 80\,000$, $1 \le C \le 250\,000$, $1 \le w_i \le 50$.
----
+
+----
+
 ## Ejemplo concreto
 Consideremos una ciudad con $E = 8$ esquinas, partida en $S = 2$, escuela en $T = 7$ y $C = 13$ calles:
 
@@ -100,4 +101,4 @@ $$2 + 3 + 3 + 3 = 11 \text{ decámetros}$$
 ## Soluciones disponibles
 
 - [[Cambio de mano de una calle - Fuerza bruta]]
-- [[Cambio de mano de una calle - otro metodo]]
+- [[Cambio de mano de una calle - Programación dinámica]]
