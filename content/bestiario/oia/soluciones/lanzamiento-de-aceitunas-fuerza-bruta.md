@@ -72,7 +72,7 @@ else:
 
 Los aportes de los ocho grupos del enunciado son `[-1, 1, 0, 1, -1, -1, 2, -1]`. Cada fila fija un inicio $i$ y muestra cómo cambia la suma al extender el final $j$.
 
-Seguí el agrupamiento hasta formar la tabla y usá **Paso adelante** en la matriz de fuerza bruta. Para $i=1$, observá cómo la suma pasa de 1 a 2 al extender el final de $j=2$ a $j=3$. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#fuerza-bruta" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de fuerza bruta</a>
+Entrá en **Simulación** y usá **Siguiente paso** para ejecutar una instrucción por vez. Para $i=1$, observá cómo la suma pasa de 1 a 2 al agregar el aporte de $j=3$ y cómo se actualiza el mejor rango en las instrucciones siguientes. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#fuerza-bruta" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de fuerza bruta</a>
 
 | Inicio $i$ | Puntajes de $[i,j]$ con $j=i,\ldots,7$ | Mejor puntaje acumulado | Mejor intervalo |
 | ---------: | -------------------------------------- | ----------------------: | --------------- |
@@ -89,7 +89,7 @@ Para $i=1$, arrancamos con cero. El grupo de índice 1 aporta 1, el de índice 2
 
 ## Complejidad
 
-**Temporal.** Para $M$ distancias distintas se evalúan $M(M+1)/2$ intervalos. Cada uno agrega un aporte con una consulta al mapa en $O(1)$ esperado, de modo que la búsqueda cuesta $O(M^2)$ esperado. Con el agrupamiento y el ordenamiento, el tiempo total esperado es $O(N+M\log M+M^2)=O(N+M^2)$, que puede ser cuadrático en $N$.
+**Temporal.** Hay $M$ distancias distintas entre los $N$ tiros, con $1\le M\le N$. Con las claves ordenadas, se evalúan $M(M+1)/2$ intervalos. Cada uno agrega un aporte con una consulta al mapa en $O(1)$ esperado, de modo que buscar el mejor rango cuesta $O(M^2)$ esperado. Ordenar cuesta $O(M\log M)$ y queda dominado por la búsqueda cuadrática. Al sumar también el agrupamiento, el tiempo total esperado es $O(N+M\log M+M^2)=O(N+M^2)$, que puede ser cuadrático en $N$.
 
 **Espacial.** El mapa y el vector de claves ordenadas usan $O(M)$ espacio auxiliar. La búsqueda mantiene una suma, el puntaje máximo y los índices del intervalo elegido, por lo que emplea $O(1)$ espacio adicional.
 

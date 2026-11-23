@@ -56,16 +56,18 @@ Tomamos los tiros del ejemplo original y calculamos el resultado al elegir ambos
 -1 -10
 ```
 
+En este ejemplo hay $N=10$ tiros. Cada fila agrupa los tiros que caen a la misma distancia y los grupos se muestran en el orden en que aparecen por primera vez en la entrada.
+
 | Distancia al cuadrado | Tiros del Oli | Tiros del rival | Aporte neto | Tiros $(x,y)$         |
 | --------------------: | ------------: | --------------: | ----------: | --------------------- |
-|                     5 |             0 |               1 |          -1 | `(-1, -2)`            |
-|                    37 |             1 |               0 |          +1 | `(6, 1)`              |
-|                    89 |             1 |               1 |           0 | `(5, -8)` y `(-5, 8)` |
 |                    90 |             1 |               0 |          +1 | `(9, 3)`              |
-|                   101 |             0 |               1 |          -1 | `(-1, -10)`           |
-|                   104 |             0 |               1 |          -1 | `(-2, 10)`            |
+|                    37 |             1 |               0 |          +1 | `(6, 1)`              |
 |                   145 |             2 |               0 |          +2 | `(9, 8)` y `(8, -9)`  |
+|                     5 |             0 |               1 |          -1 | `(-1, -2)`            |
+|                   104 |             0 |               1 |          -1 | `(-2, 10)`            |
+|                    89 |             1 |               1 |           0 | `(5, -8)` y `(-5, 8)` |
 |                   181 |             0 |               1 |          -1 | `(-10, 9)`            |
+|                   101 |             0 |               1 |          -1 | `(-1, -10)`           |
 
 El aro con cuadrados `6 90` incluye las distancias al cuadrado 37, 89 y 90. Cuenta tres tiros del Oli y uno del rival, con diferencia $3-1=2$. El aro `145 145` también logra 2. Para superar 2 habría que combinar el grupo de 145 con algún aporte positivo de 37 o de 90, y al hacerlo también se incluyen los dos aportes negativos de 101 y 104. La suma máxima es 2.
 
@@ -79,9 +81,15 @@ Este aro produce la siguiente salida.
 
 ### Agrupar por distancia
 
-Para un tiro en $(x,y)$, la distancia al centro es $r=\sqrt{x^2+y^2}$. Podemos imaginar que el tiro gira alrededor del origen hasta llegar a $(r,0)$. Su distancia sigue siendo la misma y su aporte queda determinado por el signo de la $x$ original. Al hacer esto para todos los tiros, los que comparten radio se reúnen en el mismo lugar del semieje horizontal positivo.
+Como elegimos los dos radios del aro, para decidir si un tiro cuenta solo importa en qué circunferencia centrada en el origen cayó. El radio de esa circunferencia es la distancia del tiro al origen. Para un tiro en $(x,y)$, el teorema de Pitágoras da
 
-Elevar al cuadrado conserva el orden de las distancias no negativas. En particular, la pertenencia al aro se puede calcular con enteros cuando se eligen cuadrados enteros para los bordes.
+$$
+r = \sqrt{(x-0)^2+(y-0)^2} = \sqrt{x^2+y^2}.
+$$
+
+Así, el tiro cuenta si $R_1 \le r \le R_2$. Podemos imaginar que cada tiro gira alrededor del origen hasta llegar a $(r,0)$. Los tiros del mismo radio se reúnen en el mismo punto y conservan su aporte, que depende del signo de su $x$ original.
+
+Para pensar el problema, conviene mirar las distancias al origen como radios. La salida pide los radios al cuadrado, y calcular las raíces para obtener los radios puede requerir aproximaciones de punto flotante. Como $x$ e $y$ son enteros, sus cuadrados y la suma $x^2+y^2$ también son enteros. Elevar al cuadrado conserva el orden de las distancias no negativas, así que podemos usar solo enteros para agrupar y comparar.
 
 $$
 R_1 \le \sqrt{x^2+y^2} \le R_2
@@ -93,7 +101,7 @@ Usamos $s=x^2+y^2$ como clave exacta de un [[map|mapa]]. Cada tiro suma $+1$ a s
 
 ### Ordenar los grupos
 
-Ordenamos las $M$ claves distintas y guardamos dos [[array|vectores]] paralelos. Se pueden leer como dos filas de una tabla, con las claves ordenadas arriba y sus aportes netos abajo. En el índice $i$, `distancias2[i]` guarda el cuadrado del radio y `pesos[i]` guarda el aporte neto del grupo. Conservamos las claves de aporte cero porque señalan distancias donde hay tiros y ayudan a reconstruir los bordes que incluyen exactamente un bloque.
+Ordenamos las $M$ claves distintas y guardamos dos [[array|vectores]] paralelos. Como cada clave corresponde a uno o más de los $N$ tiros, se cumple $1 \le M \le N$. Los vectores se pueden leer como dos filas de una tabla, con las claves ordenadas arriba y sus aportes netos abajo. En el índice $i$, `distancias2[i]` guarda el cuadrado del radio y `pesos[i]` guarda el aporte neto del grupo. Conservamos las claves de aporte cero porque señalan distancias donde hay tiros y ayudan a reconstruir los bordes que incluyen exactamente un bloque.
 
 ```python
 def agrupar_tiros(tiros):

@@ -71,7 +71,7 @@ print(*mejor_aro_kadane(distancias2, pesos))
 
 Usamos `pesos = [-1, 1, 0, 1, -1, -1, 2, -1]`, con índices desde cero.
 
-Entrá en **Rango** y usá **Paso adelante**. Al llegar al índice 6, observá que Kadane conserva el inicio del rango corriente porque la suma anterior era cero. Compará las barras del rango corriente y del mejor guardado. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#kadane" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de Kadane</a>
+Entrá en **Simulación** y usá **Siguiente paso**. Cuando se comprueba si la suma es negativa en el índice 6, la tabla de variables muestra que vale cero. Kadane conserva el inicio 1 antes de agregar el aporte de ese índice. <a id="visualizacion-reducciones" href="static/aceitunas-reducciones/#kadane" target="_blank" rel="noopener" data-no-popover="true">Ver la reducción y la traza de Kadane</a>
 
 | Final $j$ | Peso | Inicio del intervalo corriente | Suma corriente | Mejor intervalo |
 | --------: | ---: | -----------------------------: | -------------: | --------------- |
@@ -88,7 +88,7 @@ En $j=1$ se descarta el tramo anterior porque suma $-1$. En $j=6$ se conserva el
 
 ## Complejidad
 
-**Temporal.** La búsqueda cuesta $O(M)$ para $M$ distancias distintas. Cada posición realiza una cantidad constante de operaciones. Con el agrupamiento y el ordenamiento, el tiempo total esperado es $O(N+M\log M)$, hasta $O(N\log N)$ en función de $N$.
+**Temporal.** Hay $M$ distancias distintas entre los $N$ tiros, con $1\le M\le N$. Sobre los aportes ordenados, la búsqueda cuesta $O(M)$ porque cada posición realiza una cantidad constante de operaciones. El ordenamiento cuesta $O(M\log M)$ y domina la búsqueda lineal. Contando también el agrupamiento, el tiempo total esperado es $O(N+M\log M)$, hasta $O(N\log N)$ en función de $N$.
 
 **Espacial.** Kadane usa $O(1)$ espacio adicional sobre los vectores. El total auxiliar es $O(M)$ para el agrupamiento y los vectores, si los tiros se leen de a uno.
 

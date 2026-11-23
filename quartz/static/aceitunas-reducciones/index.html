@@ -28,7 +28,6 @@
         --focus: #305b9c;
         --current: #305b9c;
         --current-fill: #e5edf9;
-        --code-executed: #faf3dc;
         --code-active: #f6e7b3;
         --code-accent: #795016;
         font:
@@ -430,9 +429,6 @@
         padding: 0.08rem 0.55rem;
         border-left: 3px solid transparent;
       }
-      .pseudo-line[data-executed] {
-        background: var(--code-executed);
-      }
       .pseudo-line[aria-current="step"] {
         border-color: var(--code-accent);
         background: var(--code-active);
@@ -451,17 +447,22 @@
         font-variant-numeric: tabular-nums;
         font-weight: 650;
       }
-      .complexity-table {
+      .trace-table {
         width: 100%;
         margin: 0.45rem 0;
         border-collapse: collapse;
         font-size: 0.79rem;
       }
-      .complexity-table th,
-      .complexity-table td {
+      .trace-table th,
+      .trace-table td {
         padding: 0.32rem 0.25rem;
         border-bottom: 1px solid var(--grid);
         text-align: left;
+      }
+      #trace-variables th[scope="row"],
+      #trace-variables td {
+        font-family: ui-monospace, Consolas, monospace;
+        font-variant-numeric: tabular-nums;
       }
       .speed-control {
         display: grid;
@@ -546,9 +547,6 @@
         background: var(--surface);
         border: 1px solid var(--line);
         border-radius: 0.35rem;
-      }
-      #trace-detail {
-        white-space: pre-line;
       }
       #matrix {
         font:
@@ -795,6 +793,7 @@
               <option value="kadane">Kadane</option>
             </select>
             <p class="quiet" id="algorithm-hint"></p>
+            <p class="quiet" id="algorithm-cost-note"></p>
           </div>
           <div class="trace-layout stack">
             <div class="stack">
@@ -904,17 +903,29 @@
                 ></div>
               </section>
               <section class="trace-card">
-                <h3>Qué está pasando</h3>
-                <div class="trace-explanation" role="status">
+                <h3>Explicación</h3>
+                <div class="trace-explanation">
+                  <p class="quiet" id="trace-detail" role="status"></p>
+                  <table class="trace-table" id="trace-variables" aria-label="Variables actuales">
+                    <thead>
+                      <tr>
+                        <th scope="col">Variable</th>
+                        <th scope="col">Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody id="trace-variable-rows"></tbody>
+                  </table>
                   <p class="quiet" id="trace-progress"></p>
-                  <p class="quiet" id="trace-detail"></p>
                 </div>
               </section>
               <details class="trace-card">
                 <summary>Complejidad · <span id="trace-cost"></span></summary>
                 <div class="complexity-body">
-                  <p class="quiet">M es la cantidad de radios distintos.</p>
-                  <table class="complexity-table" aria-label="Costo por bloque del pseudocódigo">
+                  <p class="quiet">
+                    Costo de la búsqueda sobre los aportes ordenados. M es la cantidad de radios
+                    distintos y M ≤ N.
+                  </p>
+                  <table class="trace-table" aria-label="Costo por bloque del pseudocódigo">
                     <thead>
                       <tr>
                         <th scope="col">Bloque</th>
@@ -924,10 +935,7 @@
                     </thead>
                     <tbody id="trace-cost-rows"></tbody>
                   </table>
-                  <p class="quiet">
-                    Espacio auxiliar de la búsqueda O(1). El agrupamiento y el ordenamiento previos
-                    cuestan O(N + M log M) esperado.
-                  </p>
+                  <p class="quiet">Espacio auxiliar del algoritmo de búsqueda O(1).</p>
                 </div>
               </details>
             </aside>
@@ -992,7 +1000,8 @@
         },
         {
           title: "El rango de mayor puntaje",
-          description: "Elegí un algoritmo para recorrer los valores en orden de clave.",
+          description:
+            "Las complejidades indicadas corresponden a buscar el mejor rango sobre los aportes ya ordenados. Hay M radios distintos entre N tiros, con M ≤ N. Ordenar las claves cuesta O(M log M).",
           caption:
             "Los índices empiezan en 0. La salida muestra los cuadrados de los bordes del aro.",
           action: "Volver al plano",
@@ -1004,20 +1013,26 @@
             ["algorithm", "ALGORITMO FuerzaBruta(aportes[0..M−1])"],
             ["initScore", "  mejorSuma ← 0"],
             ["initBest", "  mejor ← vacío"],
-            ["start", "  PARA inicio DESDE 0 HASTA M−1 HACER"],
+            ["initStart", "  inicio ← 0"],
+            ["checkStart", "  MIENTRAS inicio < M HACER"],
             ["reset", "    suma ← 0"],
-            ["end", "    PARA fin DESDE inicio HASTA M−1 HACER"],
+            ["setEnd", "    fin ← inicio"],
+            ["checkEnd", "    MIENTRAS fin < M HACER"],
             ["add", "      suma ← suma + aportes[fin]"],
             ["compare", "      SI suma > mejorSuma ENTONCES"],
             ["saveScore", "        mejorSuma ← suma"],
             ["saveRange", "        mejor ← [inicio, fin]"],
+            ["incrementEnd", "      fin ← fin + 1"],
+            ["incrementStart", "    inicio ← inicio + 1"],
             ["return", "  RETORNAR mejor"],
           ],
           time: "O(M²)",
+          orderCost:
+            "En fuerza bruta, O(M log M) queda dominado por O(M²) porque el recorrido cuadrático crece más rápido. Al contar el agrupamiento, el costo total esperado es O(N + M²).",
           costs: [
             ["Inicializar", "1", "O(1)"],
-            ["Reiniciar la suma", "M", "O(M)"],
-            ["Sumar y comparar", "M(M + 1)/2", "O(M²)"],
+            ["Preparar cada inicio", "M", "O(M)"],
+            ["Extender y comparar", "M(M + 1)/2", "O(M²)"],
             ["Guardar una mejora", "Hasta M(M + 1)/2", "O(M²)"],
             ["Retornar", "1", "O(1)"],
           ],
@@ -1026,10 +1041,11 @@
           lines: [
             ["algorithm", "ALGORITMO Kadane(aportes[0..M−1])"],
             ["initStart", "  inicio ← 0"],
+            ["initEnd", "  fin ← 0"],
             ["initSum", "  suma ← 0"],
             ["initScore", "  mejorSuma ← 0"],
             ["initBest", "  mejor ← vacío"],
-            ["end", "  PARA fin DESDE 0 HASTA M−1 HACER"],
+            ["checkEnd", "  MIENTRAS fin < M HACER"],
             ["checkReset", "    SI suma < 0 ENTONCES"],
             ["restart", "      inicio ← fin"],
             ["reset", "      suma ← 0"],
@@ -1037,9 +1053,12 @@
             ["compare", "    SI suma > mejorSuma ENTONCES"],
             ["saveScore", "      mejorSuma ← suma"],
             ["saveRange", "      mejor ← [inicio, fin]"],
+            ["incrementEnd", "    fin ← fin + 1"],
             ["return", "  RETORNAR mejor"],
           ],
           time: "O(M)",
+          orderCost:
+            "En Kadane, O(M log M) domina la búsqueda O(M) porque el ordenamiento crece más rápido. Ordenar y buscar cuesta O(M log M) sobre los radios. Al contar el agrupamiento, el costo total esperado es O(N + M log M).",
           costs: [
             ["Inicializar", "1", "O(1)"],
             ["Comprobar si hay que reiniciar", "M", "O(M)"],
@@ -1098,7 +1117,6 @@
       let ignorePlotClick = false
       let search
       let matrixPages
-      let matrixPrefixes
       let playback
       const emptyRange = { start: -1, end: -1, sum: 0 }
 
@@ -1749,110 +1767,188 @@
       }
 
       function createSearch(method, weights) {
-        const count = weights.length
-        return {
+        const brute = method === "brute"
+        const initial = {
+          line: null,
+          next: brute ? "initScore" : "initStart",
+          steps: 0,
+          evaluated: 0,
+          start: null,
+          end: null,
+          sum: null,
+          bestSum: null,
+          best: null,
+          current: null,
+        }
+        const state = {
           method,
           weights,
-          steps: 0,
-          total: method === "brute" ? (count * (count + 1)) / 2 : count,
-          start: 0,
-          end: 0,
-          current: null,
-          best: emptyRange,
-          history: method === "kadane" ? [] : undefined,
+          candidates: brute ? (weights.length * (weights.length + 1)) / 2 : weights.length,
+          frame: { ...initial },
+          checkpoints: [initial],
         }
-      }
-
-      function advanceSearch(state) {
-        if (state.steps === state.total) return
-        const end = state.end
-        let start
-        let base = 0
-        let restarted = false
-        if (state.method === "brute") {
-          start = state.start
-          base = start === end ? 0 : state.current.sum
-          if (end === state.weights.length - 1) {
-            state.start++
-            state.end = state.start
-          } else state.end++
+        if (brute) {
+          state.prefixes = [0]
+          for (const weight of weights) state.prefixes.push(state.prefixes.at(-1) + weight)
+          state.total = indexBruteRows(state)
         } else {
-          const previous = state.current
-          state.history.push({ current: previous, best: state.best })
-          restarted = previous !== null && previous.sum < 0
-          const extend = previous !== null && !restarted
-          start = extend ? previous.start : end
-          base = extend ? previous.sum : 0
-          state.end++
-        }
-        const sum = base + state.weights[end]
-        const bestBefore = state.best.sum
-        const improved = sum > bestBefore
-        state.current = { start, end, sum, base, restarted, bestBefore, improved }
-        if (improved) state.best = state.current
-        state.steps++
-      }
-
-      function bestBeforeEachRow(weights) {
-        const rows = new Array(weights.length)
-        let sum = 0
-        let end = weights.length - 1
-        // De derecha a izquierda, encuentra el mejor final para cada inicio.
-        for (let start = weights.length - 1; start >= 0; start--) {
-          if (sum <= 0) {
-            sum = 0
-            end = start
+          while (state.frame.next) {
+            if (state.frame.next === "checkEnd") state.checkpoints.push({ ...state.frame })
+            advanceSearch(state)
           }
-          sum += weights[start]
-          rows[start] = { start, end, sum }
+          state.total = state.frame.steps
         }
+        state.frame = { ...initial }
+        return state
+      }
+
+      function advanceSearch({ method, weights, frame }) {
+        if (!frame.next) return
+        const brute = method === "brute"
+        frame.line = frame.next
+        frame.steps++
+        switch (frame.line) {
+          case "initStart":
+            frame.start = 0
+            frame.next = brute ? "checkStart" : "initEnd"
+            break
+          case "initEnd":
+            frame.end = 0
+            frame.next = "initSum"
+            break
+          case "initSum":
+            frame.sum = 0
+            frame.next = "initScore"
+            break
+          case "initScore":
+            frame.bestSum = 0
+            frame.next = "initBest"
+            break
+          case "initBest":
+            frame.best = emptyRange
+            frame.next = brute ? "initStart" : "checkEnd"
+            break
+          case "checkStart":
+            frame.next = frame.start < weights.length ? "reset" : "return"
+            break
+          case "reset":
+            frame.sum = 0
+            frame.next = brute ? "setEnd" : "add"
+            break
+          case "setEnd":
+            frame.end = frame.start
+            frame.next = "checkEnd"
+            break
+          case "checkEnd":
+            if (frame.end < weights.length) frame.next = brute ? "add" : "checkReset"
+            else frame.next = brute ? "incrementStart" : "return"
+            break
+          case "checkReset":
+            frame.next = frame.sum < 0 ? "restart" : "add"
+            break
+          case "restart":
+            frame.start = frame.end
+            frame.next = "reset"
+            break
+          case "add":
+            frame.sum += weights[frame.end]
+            frame.current = { start: frame.start, end: frame.end, sum: frame.sum }
+            frame.evaluated++
+            frame.next = "compare"
+            break
+          case "compare":
+            frame.next = frame.sum > frame.bestSum ? "saveScore" : "incrementEnd"
+            break
+          case "saveScore":
+            frame.bestSum = frame.sum
+            frame.next = "saveRange"
+            break
+          case "saveRange":
+            frame.best = frame.current
+            frame.next = "incrementEnd"
+            break
+          case "incrementEnd":
+            frame.end++
+            frame.next = "checkEnd"
+            break
+          case "incrementStart":
+            frame.start++
+            frame.next = "checkStart"
+            break
+          case "return":
+            frame.next = null
+            break
+        }
+      }
+
+      function prefixSearch(prefixes) {
+        // Los máximos por segmento permiten encontrar el primer prefijo que supere un umbral.
+        let size = 1
+        while (size < prefixes.length) size *= 2
+        const maxima = new Float64Array(2 * size).fill(-Infinity)
+        maxima.set(prefixes, size)
+        for (let node = size - 1; node > 0; node--)
+          maxima[node] = Math.max(maxima[node * 2], maxima[node * 2 + 1])
+
+        function firstGreater(from, threshold, node = 1, left = 0, right = size) {
+          if (right <= from || maxima[node] <= threshold) return -1
+          if (right - left === 1) return left
+          const middle = (left + right) / 2
+          const found = firstGreater(from, threshold, node * 2, left, middle)
+          return found >= 0 ? found : firstGreater(from, threshold, node * 2 + 1, middle, right)
+        }
+        return firstGreater
+      }
+
+      function indexBruteRows({ prefixes, weights, checkpoints }) {
+        const count = weights.length
+        const firstGreater = prefixSearch(prefixes)
+        let steps = 3
+        let evaluated = 0
         let best = emptyRange
-        for (const [start, candidate] of rows.entries()) {
-          rows[start] = best
-          if (candidate.sum > best.sum) best = candidate
+        let current = null
+        for (let start = 0; start <= count; start++) {
+          checkpoints.push({
+            line: start === 0 ? "initStart" : "incrementStart",
+            next: "checkStart",
+            steps,
+            evaluated,
+            start,
+            end: start === 0 ? null : count,
+            sum: current?.sum ?? null,
+            bestSum: best.sum,
+            best,
+            current,
+          })
+          if (start === count) break
+          const base = prefixes[start]
+          // Una mejora agrega dos asignaciones, una al puntaje y otra al rango guardado.
+          let prefix = firstGreater(start + 1, base + best.sum)
+          while (prefix >= 0) {
+            best = { start, end: prefix - 1, sum: prefixes[prefix] - base }
+            steps += 2
+            prefix = firstGreater(prefix + 1, prefixes[prefix])
+          }
+          const ranges = count - start
+          // Cinco instrucciones por fila y cuatro por intervalo, además de las mejoras.
+          steps += 5 + 4 * ranges
+          evaluated += ranges
+          current = { start, end: count - 1, sum: prefixes[count] - base }
         }
-        return rows
+        return steps + 2
       }
 
-      function seekBruteStep(state, step, start, end) {
-        state.bestBeforeRow ??= bestBeforeEachRow(state.weights)
-        state.steps = step - (end - start + 1)
-        state.start = start
-        state.end = start
-        state.current = null
-        state.best = state.bestBeforeRow[start]
-        // Recorre solo el tramo de la fila que corresponde al paso elegido.
-        while (state.steps < step) advanceSearch(state)
-      }
-
-      function rewindSearch(state) {
-        if (state.steps === 0) return
-        if (state.method === "kadane") {
-          const { current, best } = state.history.pop()
-          state.current = current
-          state.best = best
-          state.end--
-          state.steps--
-          return
+      function seekSearch(state, step) {
+        const checkpoints = state.checkpoints
+        let left = 0
+        let right = checkpoints.length
+        while (left < right) {
+          const middle = Math.floor((left + right) / 2)
+          if (checkpoints[middle].steps <= step) left = middle + 1
+          else right = middle
         }
-        if (state.steps === 1) {
-          Object.assign(state, { steps: 0, start: 0, end: 0, current: null, best: emptyRange })
-          return
-        }
-        const { start, end } = state.current
-        if (start === end)
-          seekBruteStep(state, state.steps - 1, start - 1, state.weights.length - 1)
-        else seekBruteStep(state, state.steps - 1, start, end - 1)
-      }
-
-      function finishSearch(state) {
-        if (state.steps === state.total) return
-        if (state.method === "brute") {
-          const last = state.weights.length - 1
-          seekBruteStep(state, state.total, last, last)
-        } else {
-          while (state.steps < state.total) advanceSearch(state)
-        }
+        state.frame = { ...checkpoints[left - 1] }
+        while (state.frame.steps < step && state.frame.next) advanceSearch(state)
       }
 
       function stopPlayback() {
@@ -1888,11 +1984,6 @@
           model.groups.map((group) => group.oli - group.rival),
         )
         matrixPages = [0, 0]
-        matrixPrefixes = [0]
-        if (search.method === "brute") {
-          // La matriz permite consultar cualquier página de intervalos ya visitados.
-          for (const weight of search.weights) matrixPrefixes.push(matrixPrefixes.at(-1) + weight)
-        }
         page = 0
         scroll.scrollLeft = 0
         fillGroups()
@@ -1912,19 +2003,22 @@
 
       function stepSearch() {
         advanceSearch(search)
-        if (search.steps === search.total) stopPlayback()
+        if (!search.frame.next) stopPlayback()
         showStep()
       }
 
+      function traceEnd({ end, current }) {
+        return end !== null && end < search.weights.length ? end : (current?.end ?? null)
+      }
+
       function showStep() {
-        const { current } = search
-        matrixPages = [
-          Math.floor((current?.start ?? 0) / pageSize),
-          Math.floor((current?.end ?? 0) / pageSize),
-        ]
-        followIndex(current?.end ?? 0)
+        const { start, current } = search.frame
+        const end = traceEnd(search.frame)
+        const row = start !== null && start < search.weights.length ? start : (current?.start ?? 0)
+        matrixPages = [Math.floor(row / pageSize), Math.floor((end ?? 0) / pageSize)]
+        followIndex(end ?? 0)
         renderSearch()
-        if (current) revealTableIndex(current.end)
+        if (end !== null) revealTableIndex(end)
       }
 
       function revealTableIndex(index) {
@@ -1958,7 +2052,7 @@
       }
 
       function renderPseudocode() {
-        const { lines, time, costs } = traceAlgorithms[search.method]
+        const { lines, time, costs, orderCost } = traceAlgorithms[search.method]
         traceCode.replaceChildren(
           ...lines.map(([name, text]) => {
             const line = document.createElement("div")
@@ -1970,71 +2064,83 @@
         )
         traceCode.scrollLeft = 0
         byId("trace-cost").textContent = time
+        byId("algorithm-cost-note").textContent = orderCost
         byId("trace-cost-rows").innerHTML = costs
           .map((row) => "<tr>" + row.map((cell) => "<td>" + cell + "</td>").join("") + "</tr>")
           .join("")
       }
 
-      function highlightPseudocode(current, finished) {
-        const executed = []
-        const primary = finished ? "return" : current ? "add" : "initScore"
-        if (!current) {
-          executed.push("initScore", "initBest")
-          if (search.method === "kadane") executed.push("initStart", "initSum")
-        } else {
-          executed.push("end", "add", "compare")
-          if (search.method === "brute" && current.start === current.end)
-            executed.push("start", "reset")
-          if (search.method === "kadane") {
-            executed.push("checkReset")
-            if (current.restarted) executed.push("restart", "reset")
+      function highlightPseudocode(line) {
+        traceCode.querySelector('[aria-current="step"]')?.removeAttribute("aria-current")
+        if (line)
+          traceCode.querySelector(`[data-line="${line}"]`).setAttribute("aria-current", "step")
+      }
+
+      function currentDetail({ line, start, end, sum, bestSum }) {
+        switch (line) {
+          case "initStart":
+            return "Inicializa el primer índice de inicio en cero."
+          case "initEnd":
+            return "Inicializa el primer índice de fin en cero."
+          case "initSum":
+          case "reset":
+            return "Pone en cero la suma del rango."
+          case "initScore":
+            return "Inicializa el mejor puntaje en cero."
+          case "initBest":
+            return "Guarda el rango vacío como mejor respuesta inicial."
+          case "checkStart":
+            return start < search.weights.length
+              ? "Comprueba que inicio < M y entra en la fila de este inicio."
+              : "Comprueba que inicio < M y sale del bucle porque recorrió todos los inicios."
+          case "setEnd":
+            return "Ubica el fin en la misma posición que el inicio."
+          case "checkEnd":
+            return end < search.weights.length
+              ? "Comprueba que fin < M y continúa con esta posición."
+              : "Comprueba que fin < M y sale del bucle porque llegó al final del vector."
+          case "checkReset":
+            return sum < 0
+              ? "Comprueba que la suma es negativa y entra en el bloque de reinicio."
+              : "Comprueba que suma < 0 es falso y conserva el inicio."
+          case "restart":
+            return "Mueve el inicio del rango al fin actual."
+          case "add": {
+            const weight = search.weights[end]
+            return `Agrega el aporte ${weight} a la suma anterior, que valía ${sum - weight}.`
           }
-          if (current.improved) executed.push("saveScore", "saveRange")
-        }
-        if (finished) executed.push("return")
-        for (const line of traceCode.children) {
-          line.toggleAttribute("data-executed", executed.includes(line.dataset.line))
-          if (line.dataset.line === primary) line.setAttribute("aria-current", "step")
-          else line.removeAttribute("aria-current")
+          case "compare":
+            return sum > bestSum
+              ? "Comprueba que suma > mejorSuma y entra en el bloque de mejora."
+              : "Comprueba que suma > mejorSuma es falso y conserva el rango guardado."
+          case "saveScore":
+            return "Copia la suma actual en mejorSuma."
+          case "saveRange":
+            return `Guarda [${start}, ${end}] como el mejor rango.`
+          case "incrementEnd":
+            return `Avanza el fin a la posición ${end}.`
+          case "incrementStart":
+            return `Avanza el inicio a la posición ${start}.`
+          case "return":
+            return "Devuelve el mejor rango guardado."
+          default:
+            return "Usá Siguiente paso para ejecutar la primera instrucción."
         }
       }
 
-      function currentDetail(current, finished) {
-        if (!current) {
-          const initialization = "mejorSuma = 0\nmejor = vacío\nEl rango vacío suma cero."
-          return search.method === "brute"
-            ? initialization
-            : "inicio = 0\nsuma = 0\n" + initialization
-        }
-        const { start, end, sum, base, restarted, bestBefore, improved } = current
-        const lines = [`inicio = ${start}, fin = ${end}`, `Rango actual [${start}, ${end}]`]
-        if (search.method === "brute" && start === end)
-          lines.push("La suma arranca en cero para este inicio.")
-        if (search.method === "kadane") {
-          if (restarted) {
-            const previousSum = search.history.at(-1).current.sum
-            lines.push(
-              `La suma anterior era ${previousSum}. Como es negativa, se inicia un rango en ${end}.`,
-            )
-          } else if (end > 0) {
-            lines.push(`La suma anterior era ${base}. Se conserva el inicio ${start}.`)
-          }
-        }
-        const weight = search.weights[end]
-        lines.push(`aportes[${end}] = ${weight}`, `suma = ${base} + (${weight}) = ${sum}.`)
-        if (improved) lines.push(`${sum} supera a ${bestBefore}. Se actualiza mejorSuma = ${sum}.`)
-        else if (sum === bestBefore)
-          lines.push(`${sum} empata con mejorSuma. Se conserva el rango guardado.`)
-        else
-          lines.push(
-            `${sum} es menor que mejorSuma = ${bestBefore}. Se conserva el rango guardado.`,
-          )
-        if (finished) {
-          const best = search.best
-          const range = best.start < 0 ? "vacío" : `[${best.start}, ${best.end}]`
-          lines.push(`Se devuelve el rango ${range}.`)
-        }
-        return lines.join("\n")
+      function renderVariables({ start, end, sum, bestSum, best }) {
+        const rows = [
+          ["M", search.weights.length],
+          ["inicio", start],
+          ["fin", end],
+          ["aportes[fin]", search.weights[end]],
+          ["suma", sum],
+          ["mejorSuma", bestSum],
+          ["mejor", best && (best.start < 0 ? "vacío" : `[${best.start}, ${best.end}]`)],
+        ]
+        byId("trace-variable-rows").innerHTML = rows
+          .map(([name, value]) => `<tr><th scope="row">${name}</th><td>${value ?? "—"}</td></tr>`)
+          .join("")
       }
 
       function track(name, range, best) {
@@ -2071,7 +2177,8 @@
 
       function renderRanges(current, best) {
         tableArea.style.setProperty("--length", visibleGroups.length)
-        const local = current ? current.end - page * pageSize : -1
+        const end = traceEnd(search.frame)
+        const local = end === null ? -1 : end - page * pageSize
         const pointer = byId("trace-pointer")
         const showPointer = search.method === "kadane" && local >= 0 && local < visibleGroups.length
         pointer.hidden = !showPointer
@@ -2113,7 +2220,7 @@
             const wins = best.start === start && best.end === end
             const visited =
               current && (start < current.start || (start === current.start && end <= current.end))
-            const score = visited ? matrixPrefixes[end + 1] - matrixPrefixes[start] : "·"
+            const score = visited ? search.prefixes[end + 1] - search.prefixes[start] : "·"
             return (
               "<td" +
               (active ? ' data-current aria-current="true"' : "") +
@@ -2148,31 +2255,38 @@
       }
 
       function renderSearch() {
-        const { current, best } = search
-        const finished = search.steps === search.total
+        const frame = search.frame
+        const { current, steps, evaluated } = frame
+        const best = frame.best ?? emptyRange
+        const finished = !frame.next
         byId("trace-result").textContent = resultText(best, finished)
         byId("trace-progress").textContent =
-          "Paso " + format.format(search.steps) + " de " + format.format(search.total)
-        byId("current-score").textContent = format.format(current?.sum ?? 0)
-        byId("best-score").textContent = format.format(best.sum)
+          "Paso " + format.format(steps) + " de " + format.format(search.total)
+        byId("current-score").textContent = format.format(frame.sum ?? 0)
+        byId("best-score").textContent = format.format(frame.bestSum ?? 0)
         byId("evaluated-count").textContent =
-          `${format.format(search.steps)} / ${format.format(search.total)}`
+          `${format.format(evaluated)} / ${format.format(search.candidates)}`
         byId("evaluated-label").textContent =
           search.method === "brute" ? "Intervalos evaluados" : "Posiciones evaluadas"
         byId("playback-progress").max = Math.max(1, search.total)
-        byId("playback-progress").value = search.steps
+        byId("playback-progress").value = steps
         byId("trace-play").hidden = playback !== undefined
         byId("trace-pause").hidden = playback === undefined
-        byId("trace-detail").textContent = currentDetail(current, finished)
-        highlightPseudocode(current, finished)
+        byId("trace-detail").textContent = currentDetail(frame)
+        renderVariables(frame)
+        highlightPseudocode(frame.line)
         byId("trace-play").disabled = finished || playback !== undefined
         byId("trace-pause").disabled = playback === undefined
-        byId("trace-back").disabled = search.steps === 0
+        byId("trace-back").disabled = steps === 0
         byId("trace-step").disabled = finished
         byId("trace-optimum").disabled = finished
-        byId("trace-reset").disabled = search.steps === 0
+        byId("trace-reset").disabled = steps === 0
         byId("matrix-panel").hidden = search.method !== "brute"
-        renderRanges(current, best)
+        const rangeInProgress =
+          finished || (current?.start === frame.start && current?.end === frame.end)
+            ? current
+            : null
+        renderRanges(rangeInProgress, best)
         if (search.method === "brute") renderMatrix(current, best)
       }
 
@@ -2323,7 +2437,7 @@
       speed.addEventListener("input", updateSpeed)
       byId("trace-optimum").addEventListener("click", () => {
         stopPlayback()
-        finishSearch(search)
+        seekSearch(search, search.total)
         showStep()
       })
       byId("trace-play").addEventListener("click", () => {
@@ -2340,7 +2454,7 @@
       })
       byId("trace-back").addEventListener("click", () => {
         stopPlayback()
-        rewindSearch(search)
+        seekSearch(search, Math.max(0, search.frame.steps - 1))
         showStep()
       })
       byId("trace-reset").addEventListener("click", resetSearch)
@@ -2356,7 +2470,7 @@
               Math.max(1, Math.min(Number(field.max), Math.round(field.valueAsNumber))) - 1
           }
           byId("matrix-scroll").scrollTo(0, 0)
-          renderMatrix(search.current, search.best)
+          renderMatrix(search.frame.current, search.frame.best ?? emptyRange)
         })
       }
       previous.addEventListener("click", () => goTo(stage - 1))
