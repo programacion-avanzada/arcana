@@ -1,0 +1,109 @@
+<svg width="680" height="434" viewBox="0 0 680 434" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Armando Móviles: ejemplo con 3 varillas y 4 colgantes</title>
+  <desc id="desc">Móvil equilibrado de 3 varillas: v1 (4, 2) sostiene colgante 7 y subcadena v2 de peso 14; v2 (2, 5) sostiene subcadena v3 de peso 10 y colgante 4; v3 (3, 2) sostiene colgantes 4 y 6. Total: 4 colgantes, peso 21.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .ceiling { stroke: #9baec8; stroke-width: 3; stroke-linecap: round; }
+    .rod { stroke: #1a1a2e; stroke-width: 3.5; stroke-linecap: round; }
+    .link { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .pivot { fill: #c0742a; stroke: #f5f7fa; stroke-width: 1.5; }
+    .end-dot { fill: #9baec8; }
+    .frame { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .val { font-size: 18px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .arm { font-size: 13px; font-weight: 700; fill: #4a6fa5; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .note-start { font-size: 13px; font-weight: 700; fill: #1a1a2e; text-anchor: start; }
+    .note-end { font-size: 13px; font-weight: 700; fill: #1a1a2e; text-anchor: end; }
+    .sub-start { font-size: 12px; fill: #777777; text-anchor: start; }
+    .sub-end { font-size: 12px; fill: #777777; text-anchor: end; }
+    .accent-label { font-size: 14px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-start { font-size: 12px; font-weight: 700; fill: #c0742a; text-anchor: start; }
+    @media (prefers-color-scheme: dark) {
+      .ceiling { stroke: #4a6fa5; }
+      .rod { stroke: #e2e8f0; }
+      .link { stroke: #4a6fa5; }
+      .pivot { fill: #d4884a; stroke: #1e2330; }
+      .end-dot { fill: #4a6fa5; }
+      .frame { fill: #1e2330; stroke: #4a6fa5; }
+      .val { fill: #e2e8f0; }
+      .arm { fill: #6a9fd8; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .note-start, .note-end { fill: #e2e8f0; }
+      .sub-start, .sub-end { fill: #8899aa; }
+      .accent-label, .accent-start { fill: #d4884a; }
+    }
+  </style>
+
+  <!-- Techo -->
+  <text x="290" y="24" class="idx">techo</text>
+  <line x1="236" y1="34" x2="344" y2="34" class="ceiling"/>
+  <line x1="290" y1="34" x2="290" y2="78" class="link"/>
+
+  <!-- Hilos desde v1 -->
+  <line x1="146" y1="78" x2="146" y2="118" class="link"/>
+  <line x1="362" y1="78" x2="362" y2="178" class="link"/>
+
+  <!-- Hilos desde v2 -->
+  <line x1="290" y1="178" x2="290" y2="278" class="link"/>
+  <line x1="542" y1="178" x2="542" y2="218" class="link"/>
+
+  <!-- Hilos desde v3 -->
+  <line x1="182" y1="278" x2="182" y2="316" class="link"/>
+  <line x1="362" y1="278" x2="362" y2="316" class="link"/>
+
+  <!-- Varilla v1: (4, 2), pivote x=290, y=78 -->
+  <line x1="146" y1="78" x2="362" y2="78" class="rod"/>
+  <circle cx="146" cy="78" r="3" class="end-dot"/>
+  <circle cx="362" cy="78" r="3" class="end-dot"/>
+  <circle cx="290" cy="78" r="5" class="pivot"/>
+  <text x="218" y="68" class="arm">4</text>
+  <text x="326" y="68" class="arm">2</text>
+  <text x="390" y="82" class="note-start">v1: 7 × 4 = 14 × 2 = 28</text>
+  <text x="390" y="100" class="sub-start">peso total W1 = 21</text>
+
+  <!-- Colgante de v1: peso 7 -->
+  <circle cx="146" cy="140" r="22" class="frame"/>
+  <text x="146" y="146" class="val">7</text>
+
+  <!-- Peso subcadena W2 en el hilo v1 -> v2 -->
+  <text x="372" y="134" class="accent-start">W2 = 14</text>
+
+  <!-- Varilla v2: (2, 5), pivote x=362, y=178 -->
+  <line x1="290" y1="178" x2="542" y2="178" class="rod"/>
+  <circle cx="290" cy="178" r="3" class="end-dot"/>
+  <circle cx="542" cy="178" r="3" class="end-dot"/>
+  <circle cx="362" cy="178" r="5" class="pivot"/>
+  <text x="326" y="168" class="arm">2</text>
+  <text x="452" y="168" class="arm">5</text>
+  <text x="266" y="182" class="note-end">v2: 10 × 2 = 4 × 5 = 20</text>
+  <text x="266" y="200" class="sub-end">subcadena W2 = 14</text>
+
+  <!-- Colgante de v2: peso 4 -->
+  <circle cx="542" cy="240" r="22" class="frame"/>
+  <text x="542" y="246" class="val">4</text>
+
+  <!-- Peso subcadena W3 en el hilo v2 -> v3 -->
+  <text x="300" y="234" class="accent-start">W3 = 10</text>
+
+  <!-- Varilla v3: (3, 2), pivote x=290, y=278 -->
+  <line x1="182" y1="278" x2="362" y2="278" class="rod"/>
+  <circle cx="182" cy="278" r="3" class="end-dot"/>
+  <circle cx="362" cy="278" r="3" class="end-dot"/>
+  <circle cx="290" cy="278" r="5" class="pivot"/>
+  <text x="236" y="268" class="arm">3</text>
+  <text x="326" y="268" class="arm">2</text>
+  <text x="390" y="282" class="note-start">v3: 4 × 3 = 6 × 2 = 12</text>
+  <text x="390" y="300" class="sub-start">subcadena W3 = 10</text>
+
+  <!-- Colgantes de v3: pesos 4 y 6 -->
+  <circle cx="182" cy="338" r="22" class="frame"/>
+  <text x="182" y="344" class="val">4</text>
+  <circle cx="362" cy="338" r="22" class="frame"/>
+  <text x="362" y="344" class="val">6</text>
+
+  <!-- Resumen -->
+  <text x="340" y="394" class="accent-label">resultado: 4 colgantes · peso total = 21</text>
+  <text x="340" y="416" class="idx">v4 (2, 5) no puede colgar de v3 (3, 2): max(2, 5) = 5 &gt;= 3 + 2</text>
+</svg>
