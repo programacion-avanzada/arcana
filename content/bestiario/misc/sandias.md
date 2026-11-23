@@ -15,21 +15,16 @@ Además, el carro tarda en volver a cargar: **entre dos sandías cosechadas tien
 
 **Problema:** calcular el máximo peso de sandías que Juan y María pueden cosechar en su recorrido, junto con las ubicaciones de un conjunto de sandías que logre ese peso.
 
-El problema fue tomado en la evaluación parcial de la cátedra; no se cuenta con un enlace a un enunciado original publicado.
-
-### Versión original y modificación
-
-La versión original del problema no tenía la restricción de distancia: solo importaba no superar la capacidad $T$. La modificación agrega el parámetro $D$, que se lee de la entrada después de $T$ y $N$. La versión original es el caso particular $D = 0$.
 
 ---
 
 ## Intuición
 
-Sin la restricción de distancia, el orden de las sandías no importa: hay que elegir un subconjunto de pesos cuya suma sea lo más grande posible sin pasarse de $T$. Ese es el clásico problema de la **suma de subconjuntos** (*subset sum*), un caso particular de la mochila 0/1 en el que el valor de cada objeto es igual a su peso.
+El problema combina dos restricciones que se condicionan entre sí.
 
-Ya en esa versión no alcanza con una estrategia "golosa". Con $T = 10$ y pesos $6, 5, 5$, tomar primero la sandía más pesada deja un total de $6$, cuando lo óptimo es $5 + 5 = 10$. Elegir una sandía condiciona qué otras entran en el carro, y no hay un orden de elección que sea siempre seguro.
+La primera es la capacidad $T$: hay que elegir sandías cuyos pesos sumen lo más posible sin pasarse. Esa parte es la **suma de subconjuntos** (*subset sum*), un caso particular de la mochila 0/1 en el que el valor de cada objeto es igual a su peso. Ya por esta restricción no alcanza con una estrategia "golosa": con $T = 10$ y pesos $6, 5, 5$, tomar primero la sandía más pesada deja un total de $6$, cuando lo óptimo es $5 + 5 = 10$. Elegir una sandía condiciona qué otras entran en el carro, y no hay un orden de elección que sea siempre seguro.
 
-La distancia $D$ agrega una segunda dependencia, esta vez **entre sandías cercanas en el camino**: cosechar una sandía impide cosechar las que están a menos de $D$ metros de ella. En el ejemplo de abajo, la mejor cosecha sin la restricción usa dos sandías que están a 1 metro una de otra; con $D = 10$ esa combinación deja de ser válida y el óptimo baja.
+La segunda es la distancia $D$, que crea dependencias **entre sandías cercanas en el camino**: cosechar una sandía impide cosechar las que están a menos de $D$ metros de ella. Por eso importa dónde está cada sandía, y no solo cuánto pesa: una combinación que llena bien el carro puede ser inválida. En el ejemplo de abajo, las sandías que más se acercan a $T$ incluyen dos que están a 1 metro una de otra, y hay que resignar una de ellas.
 
 Como cada sandía se cosecha o se deja, hay $2^N$ formas de armar la cosecha. Con $N$ hasta $5000$ es imposible revisarlas todas, así que hace falta aprovechar la estructura del problema.
 
@@ -121,7 +116,7 @@ Algunas cosechas posibles:
 | 1, 15, 48            |   38 | sí          | sí                | válida    |
 | 1, 16, 48            |   39 | sí          | sí                | **óptima** |
 
-Sin la restricción de distancia ($D = 0$), la respuesta sería $40$ con las ubicaciones $1, 15, 16, 48$. Con $D = 10$, las sandías en 15 y 16 no pueden ir juntas: conviene quedarse con la de 16, que pesa más, y el máximo baja a $20 + 2 + 17 = 39$ kilos.
+La combinación que más se acerca a la capacidad, $1, 15, 16, 48$ con $40$ kilos, no es válida: las sandías en 15 y 16 están a 1 metro, menos que $D = 10$. Entre esas dos conviene quedarse con la de 16, que pesa más, y el máximo es $20 + 2 + 17 = 39$ kilos.
 
 ---
 
