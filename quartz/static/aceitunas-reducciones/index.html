@@ -795,37 +795,49 @@
             <p class="quiet" id="algorithm-hint"></p>
             <p class="quiet" id="algorithm-cost-note"></p>
           </div>
+          <section
+            class="search-tools stack"
+            id="search-panel"
+            aria-label="Controles del algoritmo"
+            hidden
+          >
+            <div class="playback-toolbar">
+              <div class="row">
+                <button class="primary" id="trace-play" type="button">Reproducir</button>
+                <button class="primary" id="trace-pause" type="button" hidden>Pausar</button>
+                <button id="trace-back" type="button">Paso atrás</button>
+                <button id="trace-step" type="button">Siguiente paso</button>
+                <button id="trace-reset" type="button">Reiniciar</button>
+                <button id="trace-optimum" type="button">Ver resultado</button>
+              </div>
+              <div class="speed-control">
+                <label for="trace-speed">Velocidad</label>
+                <input id="trace-speed" type="range" min="0.5" max="4" step="0.5" value="1" />
+                <output id="trace-speed-value" for="trace-speed">1×</output>
+              </div>
+            </div>
+            <div class="playback-position">
+              <label for="playback-progress">Recorrido de la ejecución</label>
+              <output id="playback-position" for="playback-progress">Paso 0 de 0</output>
+            </div>
+            <input
+              id="playback-progress"
+              type="range"
+              class="trace-timeline"
+              value="0"
+              min="0"
+              max="1"
+              step="1"
+              aria-describedby="playback-help"
+            />
+            <p class="quiet" id="playback-help">
+              Arrastrá la barra o hacé clic para ir a cualquier paso. La reproducción se pausa al
+              moverla.
+            </p>
+            <p class="quiet keyboard-hint">Espacio: reproducir o pausar · ← / →: cambiar de paso</p>
+          </section>
           <div class="trace-layout stack">
             <div class="stack">
-              <section
-                class="search-tools stack"
-                id="search-panel"
-                aria-label="Controles del algoritmo"
-                hidden
-              >
-                <div class="row">
-                  <button class="primary" id="trace-play" type="button">Reproducir</button>
-                  <button class="primary" id="trace-pause" type="button" hidden>Pausar</button>
-                  <button id="trace-back" type="button">Paso atrás</button>
-                  <button id="trace-step" type="button">Siguiente paso</button>
-                  <button id="trace-reset" type="button">Reiniciar</button>
-                  <button id="trace-optimum" type="button">Ver resultado</button>
-                </div>
-                <div class="speed-control">
-                  <label for="trace-speed">Velocidad</label>
-                  <input id="trace-speed" type="range" min="0.5" max="4" step="0.5" value="1" />
-                  <output id="trace-speed-value" for="trace-speed">1×</output>
-                </div>
-                <progress
-                  id="playback-progress"
-                  value="0"
-                  max="1"
-                  aria-label="Progreso del algoritmo"
-                ></progress>
-                <p class="quiet keyboard-hint">
-                  Espacio: reproducir o pausar · ← / →: cambiar de paso
-                </p>
-              </section>
               <div class="trace-stats" id="trace-stats" hidden>
                 <div><span>Suma actual</span><strong id="current-score">0</strong></div>
                 <div><span>Mejor suma</span><strong id="best-score">0</strong></div>
@@ -2270,6 +2282,12 @@
           search.method === "brute" ? "Intervalos evaluados" : "Posiciones evaluadas"
         byId("playback-progress").max = Math.max(1, search.total)
         byId("playback-progress").value = steps
+        byId("playback-progress").setAttribute(
+          "aria-valuetext",
+          `Paso ${format.format(steps)} de ${format.format(search.total)}`,
+        )
+        byId("playback-position").textContent =
+          `Paso ${format.format(steps)} de ${format.format(search.total)}`
         byId("trace-play").hidden = playback !== undefined
         byId("trace-pause").hidden = playback === undefined
         byId("trace-detail").textContent = currentDetail(frame)
@@ -2435,6 +2453,13 @@
         }
       })
       speed.addEventListener("input", updateSpeed)
+      byId("playback-progress").addEventListener("input", (event) => {
+        const target = event.target.valueAsNumber
+        if (!search || !Number.isFinite(target)) return
+        stopPlayback()
+        seekSearch(search, Math.max(0, Math.min(search.total, Math.round(target))))
+        showStep()
+      })
       byId("trace-optimum").addEventListener("click", () => {
         stopPlayback()
         seekSearch(search, search.total)
@@ -2514,6 +2539,10 @@
         coordinates.focus()
       })
       new ResizeObserver(draw).observe(scroll)
+      new ResizeObserver(() => {
+        const height = byId("search-panel").getBoundingClientRect().height
+        main.style.setProperty("--playback-offset", `${height + 24}px`)
+      }).observe(byId("search-panel"))
       showTheme()
       updateSpeed()
       coordinates.value = example

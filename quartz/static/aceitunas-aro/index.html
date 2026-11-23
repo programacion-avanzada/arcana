@@ -4,6 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lanzamiento de aceitunas · Explorar el aro</title>
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem("aceitunas-theme") || "light"
+      } catch {}
+    </script>
     <style>
       :root {
         color-scheme: light;
@@ -21,9 +26,41 @@
         --outer: #75539e;
         --ring: #dceee4;
         --focus: #305b9c;
+        --error: #a33223;
+        --negative-fill: #f9e9e0;
+        --primary-text: #fff;
+        --primary-hover: #0e4f41;
         font:
           16px/1.45 system-ui,
           sans-serif;
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --background: #101725;
+        --surface: #192235;
+        --plot: #141d2d;
+        --ink: #e6ecf8;
+        --muted: #a8b6cf;
+        --line: #34415a;
+        --grid: #2b3950;
+        --axis: #7789a9;
+        --olive: #6fd2ac;
+        --rival: #f3a17e;
+        --inner: #9cb8ff;
+        --outer: #d2afff;
+        --ring: #203e38;
+        --focus: #9cadff;
+        --error: #ffb4a8;
+        --negative-fill: #4b2d2b;
+        --primary-text: #132a23;
+        --primary-hover: #92e2c3;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
       }
       * {
         box-sizing: border-box;
@@ -203,10 +240,10 @@
       .primary {
         border-color: var(--olive);
         background: var(--olive);
-        color: #fff;
+        color: var(--primary-text);
       }
       .primary:hover:not(:disabled) {
-        background: #0e4f41;
+        background: var(--primary-hover);
       }
       .actions {
         display: flex;
@@ -225,7 +262,7 @@
         outline-offset: 3px;
       }
       .error {
-        color: #a33223;
+        color: var(--error);
         overflow-wrap: anywhere;
         font-size: 0.84rem;
       }
@@ -358,7 +395,7 @@
         font-variant-numeric: tabular-nums;
       }
       .net[data-negative] {
-        background: #f9e9e0;
+        background: var(--negative-fill);
       }
       hr {
         border: 0;
@@ -420,12 +457,15 @@
   </head>
   <body>
     <main>
-      <a
-        class="back"
-        id="article-link"
-        href="../../bestiario/oia/soluciones/lanzamiento-de-aceitunas-fuerza-bruta#visualizacion-aro"
-        >← Volver a la resolución</a
-      >
+      <nav class="topbar" aria-label="Navegación y apariencia">
+        <a
+          class="back"
+          id="article-link"
+          href="../../bestiario/oia/soluciones/lanzamiento-de-aceitunas-fuerza-bruta#visualizacion-aro"
+          >← Volver a la resolución</a
+        >
+        <button id="theme-toggle" type="button" aria-pressed="false">Modo oscuro</button>
+      </nav>
       <header>
         <div>
           <h1>Lanzamiento de aceitunas</h1>
@@ -1479,10 +1519,29 @@
         }
       })
 
+      function showTheme() {
+        const dark = document.documentElement.dataset.theme === "dark"
+        byId("theme-toggle").textContent = dark ? "Modo claro" : "Modo oscuro"
+        byId("theme-toggle").setAttribute("aria-pressed", String(dark))
+        const themeStyles = getComputedStyle(document.documentElement)
+        for (const name of Object.keys(colors)) {
+          colors[name] = themeStyles.getPropertyValue(`--${name}`).trim()
+        }
+        if (model) scheduleDrawing()
+      }
+      byId("theme-toggle").addEventListener("click", () => {
+        const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"
+        document.documentElement.dataset.theme = theme
+        try {
+          localStorage.setItem("aceitunas-theme", theme)
+        } catch {}
+        showTheme()
+      })
       new ResizeObserver(scheduleDrawing).observe(canvas)
       showPlotMode()
       coordinates.value = example
       processInput()
+      showTheme()
     </script>
   </body>
 </html>
