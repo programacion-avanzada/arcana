@@ -551,12 +551,13 @@
                   type="range"
                   id="inner-square-slider"
                   min="0"
+                  step="1"
                   aria-label="Mover el cuadrado del radio interior"
                 />
                 <input
                   type="text"
                   id="inner-square-input"
-                  inputmode="decimal"
+                  inputmode="numeric"
                   maxlength="128"
                   spellcheck="false"
                 />
@@ -606,12 +607,13 @@
                   type="range"
                   id="outer-square-slider"
                   min="0"
+                  step="1"
                   aria-label="Mover el cuadrado del radio exterior"
                 />
                 <input
                   type="text"
                   id="outer-square-input"
-                  inputmode="decimal"
+                  inputmode="numeric"
                   maxlength="128"
                   spellcheck="false"
                 />
@@ -619,9 +621,10 @@
             </fieldset>
           </div>
           <p class="quiet">
-            Al arrastrar un borde cerca del radio de un tiro, se ajusta a ese radio. Podés escribir
-            un radio o su cuadrado y confirmarlo con Enter. Los botones − y + saltan entre radios de
-            tiros. Si los bordes se cruzan, ambos quedan en el radio elegido.
+            Podés escribir un radio decimal o un cuadrado entero y confirmarlo con Enter. Los
+            deslizadores de los cuadrados se mueven de a uno. Al arrastrar un borde cerca de un
+            tiro, se ajusta a su radio. Los botones − y + saltan entre radios de tiros. Si los
+            bordes se cruzan, ambos quedan en el radio elegido.
           </p>
           <p class="error" id="radius-error" role="alert"></p>
         </div>
@@ -675,7 +678,8 @@
 -1 -10`
       const coordinateLimit = 2_000_000_000n
       const maxSquare = 2n * coordinateLimit ** 2n
-      const squareSliderSteps = 1_000n
+      const squareSliderWindow = 1_000n
+      const largestNativeSliderValue = BigInt(Number.MAX_SAFE_INTEGER)
       const drawingLimit = 5_000
       const intFormat = new Intl.NumberFormat("es-AR")
       const radiusFormat = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 3 })
@@ -697,6 +701,7 @@
         radius: byId(`${name}-radius`),
         squareSlider: byId(`${name}-square-slider`),
         squareInput: byId(`${name}-square-input`),
+        squareMin: 0n,
         steps: [...document.querySelectorAll(`[data-border="${name}"] [data-step]`)],
       }))
       const styles = getComputedStyle(document.documentElement)
@@ -783,12 +788,12 @@
         })
       }
 
-      function parseDecimal(text, maxExponent = 400) {
+      function parseDecimal(text) {
         const value = text.trim().replace(",", ".")
         const match = /^\+?(\d*)(?:\.(\d*))?(?:e([+-]?\d+))?$/i.exec(value)
         if (!match || !(match[1] || match[2])) return null
         const exponent = Number(match[3] ?? 0)
-        if (Math.abs(exponent) > maxExponent) return null
+        if (Math.abs(exponent) > 400) return null
         const fraction = match[2] ?? ""
         const power = exponent - fraction.length
         const digits = BigInt(match[1] + fraction)
@@ -812,10 +817,10 @@
         }
       }
 
-      function squareBorder(numerator, denominator = 1n) {
+      function squareBorder(square) {
         // Normaliza el cuadrado antes de tomar la raíz para que solo la raíz use punto flotante.
-        const digits = String(numerator)
-        const exponent = digits.length - String(denominator).length
+        const digits = String(square)
+        const exponent = digits.length - 1
         const rootExponent = Math.floor(exponent / 2)
         const scaled = Number(`${digits[0]}.${digits.slice(1, 17)}e${exponent - 2 * rootExponent}`)
         const radius = Number(`${Math.sqrt(scaled)}e${rootExponent}`)
@@ -823,10 +828,10 @@
         const shown = decimalBorder(String(radius))
         return {
           radius,
-          numerator,
-          denominator,
+          numerator: square,
+          denominator: 1n,
           text: shown.text,
-          approximate: shown.numerator * denominator !== numerator * shown.denominator,
+          approximate: shown.numerator !== square * shown.denominator,
         }
       }
 
@@ -988,13 +993,12 @@
           }
           return
         }
-        const square = squared ? parseDecimal(text, 1_000) : null
         const value = squared
-          ? square && squareBorder(square.numerator, square.denominator)
+          ? /^\+?\d+$/.test(text) && squareBorder(BigInt(text))
           : decimalBorder(text)
         if (!value) {
           radiusError.textContent = squared
-            ? "Ingresá un cuadrado no negativo, por ejemplo 6,25."
+            ? "Ingresá un cuadrado entero no negativo, por ejemplo 6."
             : "Ingresá un radio no negativo, por ejemplo 2,5."
           input.setAttribute("aria-invalid", "true")
           return
@@ -1004,6 +1008,28 @@
 
       function signed(value) {
         return value > 0 ? `+${intFormat.format(value)}` : intFormat.format(value)
+      }
+
+      function refreshSquareControl(control, border, recenter) {
+        control.squareInput.value = formatSquare(border)
+        control.squareInput.removeAttribute("aria-invalid")
+        const whole = (border.numerator + border.denominator / 2n) / border.denominator
+        let span = squareLimit
+        let minimum = 0n
+        if (squareLimit > largestNativeSliderValue) {
+          // Un deslizador nativo usa Number. El desplazamiento exacto mantiene pasos de 1.
+          span = squareSliderWindow
+          minimum = control.squareMin
+          if (recenter || whole < minimum || whole > minimum + span) {
+            const half = span / 2n
+            minimum = whole > half ? whole - half : 0n
+            if (minimum + span > squareLimit) minimum = squareLimit - span
+          }
+        }
+        control.squareMin = minimum
+        control.squareSlider.max = String(span)
+        control.squareSlider.value = String(whole - minimum)
+        control.squareSlider.setAttribute("aria-valuetext", `Radio al cuadrado ${whole}`)
       }
 
       function refresh(rescaleSquares = true) {
@@ -1044,14 +1070,7 @@
           control.slider.max = String(Math.max(5, (model.radii.at(-1) ?? 0) * 1.2, ring[1].radius))
           control.slider.value = String(border.radius)
           control.slider.setAttribute("aria-valuetext", `Radio ${border.text}`)
-          const square = formatSquare(border)
-          control.squareInput.value = square
-          control.squareInput.removeAttribute("aria-invalid")
-          const divisor = border.denominator * squareLimit
-          control.squareSlider.value = String(
-            (border.numerator * squareSliderSteps + divisor / 2n) / divisor,
-          )
-          control.squareSlider.setAttribute("aria-valuetext", `Radio al cuadrado ${square}`)
+          refreshSquareControl(control, border, rescaleSquares)
           control.steps[0].disabled = firstBound(model.distances, ceilSquare(border)) === 0
           control.steps[1].disabled =
             firstBound(model.distances, floorSquare(border), true) === model.distances.length
@@ -1371,10 +1390,19 @@
         control.slider.addEventListener("input", () =>
           setBorder(index, decimalBorder(control.slider.value)),
         )
-        control.squareSlider.max = String(squareSliderSteps)
         control.squareSlider.addEventListener("input", () => {
-          const numerator = squareLimit * BigInt(control.squareSlider.value)
-          const value = squareBorder(numerator, squareSliderSteps)
+          const square = control.squareMin + BigInt(control.squareSlider.valueAsNumber)
+          const value = squareBorder(square)
+          if (value) setBorder(index, value, false)
+        })
+        control.squareSlider.addEventListener("keydown", (event) => {
+          const increasing = event.key === "ArrowUp" || event.key === "ArrowRight"
+          const decreasing = event.key === "ArrowDown" || event.key === "ArrowLeft"
+          if (!increasing && !decreasing) return
+          event.preventDefault()
+          const square = increasing ? floorSquare(ring[index]) + 1n : ceilSquare(ring[index]) - 1n
+          if (square < 0n || square > squareLimit) return
+          const value = squareBorder(square)
           if (value) setBorder(index, value, false)
         })
         for (const [input, squared] of [

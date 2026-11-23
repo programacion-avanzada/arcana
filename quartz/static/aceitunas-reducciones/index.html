@@ -23,6 +23,9 @@
         --focus: #305b9c;
         --current: #305b9c;
         --current-fill: #e5edf9;
+        --code-executed: #faf3dc;
+        --code-active: #f6e7b3;
+        --code-accent: #795016;
         font:
           16px / 1.45 system-ui,
           sans-serif;
@@ -51,6 +54,8 @@
       select:focus-visible,
       input:focus-visible,
       textarea:focus-visible,
+      summary:focus-visible,
+      .pseudo-code:focus-visible,
       .scene-scroll:focus-visible {
         outline: 2px solid var(--focus);
         outline-offset: 3px;
@@ -382,6 +387,77 @@
         padding: 0.72rem 0.8rem;
         background: var(--surface);
       }
+      .trace-layout {
+        align-items: start;
+      }
+      .trace-reference {
+        gap: 0.6rem;
+      }
+      .trace-card {
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+      }
+      .trace-card h3,
+      .trace-card summary {
+        margin: 0;
+        padding: 0.55rem 0.7rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+        background: var(--plot);
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+      .trace-card summary {
+        cursor: pointer;
+      }
+      .pseudo-code {
+        overflow-x: auto;
+        padding: 0.45rem 0;
+        white-space: pre;
+        font:
+          0.79rem / 1.5 ui-monospace,
+          Consolas,
+          monospace;
+      }
+      .pseudo-line {
+        width: max-content;
+        min-width: 100%;
+        padding: 0.08rem 0.55rem;
+        border-left: 3px solid transparent;
+      }
+      .pseudo-line[data-executed] {
+        background: var(--code-executed);
+      }
+      .pseudo-line[aria-current="step"] {
+        border-color: var(--code-accent);
+        background: var(--code-active);
+        font-weight: 750;
+      }
+      .trace-explanation,
+      .complexity-body {
+        padding: 0.58rem 0.7rem;
+        overflow-wrap: anywhere;
+      }
+      .trace-explanation {
+        display: grid;
+        gap: 0.32rem;
+      }
+      #trace-progress {
+        font-variant-numeric: tabular-nums;
+        font-weight: 650;
+      }
+      .complexity-table {
+        width: 100%;
+        margin: 0.45rem 0;
+        border-collapse: collapse;
+        font-size: 0.79rem;
+      }
+      .complexity-table th,
+      .complexity-table td {
+        padding: 0.32rem 0.25rem;
+        border-bottom: 1px solid var(--grid);
+        text-align: left;
+      }
       .speed-control {
         display: grid;
         grid-template-columns: auto minmax(0, 1fr) 3.5ch;
@@ -531,6 +607,21 @@
       [hidden] {
         display: none;
       }
+      @media (min-width: 1040px) {
+        main[data-tracing] {
+          width: min(1480px, 100% - 2.5rem);
+        }
+        [data-tracing] .layout {
+          grid-template-columns: minmax(210px, 236px) minmax(0, 1fr);
+        }
+        [data-tracing] .trace-layout {
+          grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        }
+        .trace-reference {
+          position: sticky;
+          top: 1rem;
+        }
+      }
       @media (max-width: 720px) {
         main {
           width: calc(100% - 1.25rem);
@@ -625,90 +716,134 @@
             <span class="oli"><b aria-hidden="true">×</b>Oli (+1)</span>
             <span class="rival"><b aria-hidden="true">○</b>Rival (−1)</span>
           </div>
-          <section
-            class="search-tools stack"
-            id="search-panel"
-            aria-label="Controles del algoritmo"
-            hidden
-          >
-            <div class="row">
-              <label for="algorithm">Algoritmo</label>
-              <select id="algorithm">
-                <option value="brute">Fuerza bruta</option>
-                <option value="kadane">Kadane</option>
-              </select>
-              <button class="primary" id="trace-optimum" type="button">
-                Mostrar resultado final
-              </button>
-            </div>
-            <div class="row">
-              <button id="trace-play" type="button">▶ Reproducir</button>
-              <button id="trace-pause" type="button">Pausa</button>
-              <button id="trace-back" type="button">Paso atrás</button>
-              <button id="trace-step" type="button">Paso adelante</button>
-              <button id="trace-reset" type="button">Reiniciar</button>
-            </div>
-            <div class="speed-control">
-              <label for="trace-speed">Velocidad</label>
-              <input id="trace-speed" type="range" min="0.5" max="4" step="0.5" value="1" />
-              <output id="trace-speed-value" for="trace-speed">1×</output>
-            </div>
-            <div role="status">
-              <p class="quiet" id="trace-progress"></p>
-              <p class="quiet" id="trace-detail"></p>
-            </div>
-          </section>
-          <div
-            class="scene-scroll"
-            id="scene-scroll"
-            role="region"
-            aria-label="Plano y grupos por radio"
-          >
-            <div class="scene" id="scene">
-              <canvas id="plot" role="img" aria-describedby="stage-description"></canvas>
-              <div class="groups" id="groups" hidden></div>
-              <div class="table-area" id="table-area" hidden>
-                <div class="trace-grid" id="trace-pointer" aria-hidden="true" hidden></div>
-                <table id="map-table" aria-label="Mapa ordenado por distancia"></table>
-                <div id="trace-ranges" hidden></div>
+          <div class="row" id="algorithm-choice" hidden>
+            <label for="algorithm">Algoritmo</label>
+            <select id="algorithm">
+              <option value="brute">Fuerza bruta</option>
+              <option value="kadane">Kadane</option>
+            </select>
+          </div>
+          <div class="trace-layout stack">
+            <div class="stack">
+              <section
+                class="search-tools stack"
+                id="search-panel"
+                aria-label="Controles del algoritmo"
+                hidden
+              >
+                <div class="row">
+                  <button class="primary" id="trace-optimum" type="button">
+                    Mostrar resultado final
+                  </button>
+                  <button id="trace-play" type="button">▶ Reproducir</button>
+                  <button id="trace-pause" type="button">Pausa</button>
+                  <button id="trace-back" type="button">Paso atrás</button>
+                  <button id="trace-step" type="button">Paso adelante</button>
+                  <button id="trace-reset" type="button">Reiniciar</button>
+                </div>
+                <div class="speed-control">
+                  <label for="trace-speed">Velocidad</label>
+                  <input id="trace-speed" type="range" min="0.5" max="4" step="0.5" value="1" />
+                  <output id="trace-speed-value" for="trace-speed">1×</output>
+                </div>
+              </section>
+              <div
+                class="scene-scroll"
+                id="scene-scroll"
+                role="region"
+                aria-label="Plano y grupos por radio"
+              >
+                <div class="scene" id="scene">
+                  <canvas id="plot" role="img" aria-describedby="stage-description"></canvas>
+                  <div class="groups" id="groups" hidden></div>
+                  <div class="table-area" id="table-area" hidden>
+                    <div class="trace-grid" id="trace-pointer" aria-hidden="true" hidden></div>
+                    <table id="map-table" aria-label="Mapa ordenado por distancia"></table>
+                    <div id="trace-ranges" hidden></div>
+                  </div>
+                </div>
               </div>
+              <p class="summary" id="trace-result" role="status" hidden></p>
+              <div class="row group-nav" id="group-nav" hidden>
+                <button id="prev-group-page" type="button" aria-label="Grupos anteriores">←</button>
+                <span class="quiet" id="group-page"></span>
+                <button id="next-group-page" type="button" aria-label="Grupos siguientes">→</button>
+              </div>
+              <section
+                class="stack"
+                id="matrix-panel"
+                aria-label="Intervalos probados por fuerza bruta"
+                hidden
+              >
+                <div>
+                  <h2>Intervalos probados</h2>
+                  <p class="quiet" id="matrix-caption">
+                    Cada fila fija un inicio. La suma crece o disminuye al avanzar por sus finales.
+                  </p>
+                </div>
+                <div class="row" id="matrix-pages" hidden>
+                  <label for="matrix-row-page">Página de inicios</label>
+                  <input id="matrix-row-page" type="number" min="1" step="1" />
+                  <label for="matrix-column-page">Página de finales</label>
+                  <input id="matrix-column-page" type="number" min="1" step="1" />
+                  <p class="quiet" id="matrix-page-count"></p>
+                </div>
+                <div
+                  class="matrix-scroll"
+                  id="matrix-scroll"
+                  role="region"
+                  aria-label="Matriz de intervalos"
+                  tabindex="0"
+                >
+                  <table id="matrix" aria-label="Sumas por inicio y final"></table>
+                </div>
+              </section>
             </div>
-          </div>
-          <p class="summary" id="trace-result" role="status" hidden></p>
-          <div class="row group-nav" id="group-nav" hidden>
-            <button id="prev-group-page" type="button" aria-label="Grupos anteriores">←</button>
-            <span class="quiet" id="group-page"></span>
-            <button id="next-group-page" type="button" aria-label="Grupos siguientes">→</button>
-          </div>
-          <section
-            class="stack"
-            id="matrix-panel"
-            aria-label="Intervalos probados por fuerza bruta"
-            hidden
-          >
-            <div>
-              <h2>Intervalos probados</h2>
-              <p class="quiet" id="matrix-caption">
-                Cada fila fija un inicio. La suma crece o disminuye al avanzar por sus finales.
-              </p>
-            </div>
-            <div class="row" id="matrix-pages" hidden>
-              <label for="matrix-row-page">Página de inicios</label>
-              <input id="matrix-row-page" type="number" min="1" step="1" />
-              <label for="matrix-column-page">Página de finales</label>
-              <input id="matrix-column-page" type="number" min="1" step="1" />
-              <p class="quiet" id="matrix-page-count"></p>
-            </div>
-            <div
-              class="matrix-scroll"
-              id="matrix-scroll"
-              role="region"
-              aria-label="Matriz de intervalos"
-              tabindex="0"
+            <aside
+              class="trace-reference stack"
+              id="trace-reference"
+              aria-label="Seguimiento del algoritmo"
+              hidden
             >
-              <table id="matrix" aria-label="Sumas por inicio y final"></table>
-            </div>
-          </section>
+              <section class="trace-card">
+                <h3 id="trace-code-title">Pseudocódigo</h3>
+                <div
+                  class="pseudo-code"
+                  id="trace-code"
+                  role="region"
+                  aria-labelledby="trace-code-title"
+                  tabindex="0"
+                ></div>
+              </section>
+              <section class="trace-card">
+                <h3>Explicación</h3>
+                <div class="trace-explanation" role="status">
+                  <p class="quiet" id="trace-progress"></p>
+                  <p class="quiet" id="trace-detail"></p>
+                </div>
+              </section>
+              <details class="trace-card">
+                <summary>Complejidad · <span id="trace-cost"></span></summary>
+                <div class="complexity-body">
+                  <p class="quiet">M es la cantidad de radios distintos.</p>
+                  <table class="complexity-table" aria-label="Costo por bloque del pseudocódigo">
+                    <thead>
+                      <tr>
+                        <th scope="col">Bloque</th>
+                        <th scope="col">Veces</th>
+                        <th scope="col">Costo total</th>
+                      </tr>
+                    </thead>
+                    <tbody id="trace-cost-rows"></tbody>
+                  </table>
+                  <p class="quiet">
+                    Espacio auxiliar de la búsqueda O(1). El agrupamiento y el ordenamiento previos
+                    cuestan O(N + M log M) esperado.
+                  </p>
+                </div>
+              </details>
+            </aside>
+          </div>
           <p class="quiet" id="sample-note"></p>
           <figcaption class="stack">
             <p class="quiet" id="stage-caption"></p>
@@ -775,7 +910,59 @@
           action: "Volver al plano",
         },
       ]
+      const traceAlgorithms = {
+        brute: {
+          lines: [
+            ["algorithm", "ALGORITMO FuerzaBruta(aportes[0..M−1])"],
+            ["initScore", "  mejorSuma ← 0"],
+            ["initBest", "  mejor ← vacío"],
+            ["start", "  PARA inicio DESDE 0 HASTA M−1 HACER"],
+            ["reset", "    suma ← 0"],
+            ["end", "    PARA fin DESDE inicio HASTA M−1 HACER"],
+            ["add", "      suma ← suma + aportes[fin]"],
+            ["compare", "      SI suma > mejorSuma ENTONCES"],
+            ["saveScore", "        mejorSuma ← suma"],
+            ["saveRange", "        mejor ← [inicio, fin]"],
+            ["return", "  RETORNAR mejor"],
+          ],
+          time: "O(M²)",
+          costs: [
+            ["Inicializar", "1", "O(1)"],
+            ["Reiniciar la suma", "M", "O(M)"],
+            ["Sumar y comparar", "M(M + 1)/2", "O(M²)"],
+            ["Guardar una mejora", "Hasta M(M + 1)/2", "O(M²)"],
+            ["Retornar", "1", "O(1)"],
+          ],
+        },
+        kadane: {
+          lines: [
+            ["algorithm", "ALGORITMO Kadane(aportes[0..M−1])"],
+            ["initStart", "  inicio ← 0"],
+            ["initSum", "  suma ← 0"],
+            ["initScore", "  mejorSuma ← 0"],
+            ["initBest", "  mejor ← vacío"],
+            ["end", "  PARA fin DESDE 0 HASTA M−1 HACER"],
+            ["checkReset", "    SI suma < 0 ENTONCES"],
+            ["restart", "      inicio ← fin"],
+            ["reset", "      suma ← 0"],
+            ["add", "    suma ← suma + aportes[fin]"],
+            ["compare", "    SI suma > mejorSuma ENTONCES"],
+            ["saveScore", "      mejorSuma ← suma"],
+            ["saveRange", "      mejor ← [inicio, fin]"],
+            ["return", "  RETORNAR mejor"],
+          ],
+          time: "O(M)",
+          costs: [
+            ["Inicializar", "1", "O(1)"],
+            ["Comprobar si hay que reiniciar", "M", "O(M)"],
+            ["Sumar y comparar", "M", "O(M)"],
+            ["Guardar una mejora", "Hasta M", "O(M)"],
+            ["Retornar", "1", "O(1)"],
+          ],
+        },
+      }
       const byId = (id) => document.getElementById(id)
+      const main = document.querySelector("main")
       const canvas = byId("plot")
       const context = canvas.getContext("2d")
       const scroll = byId("scene-scroll")
@@ -787,6 +974,7 @@
       const inputError = byId("input-error")
       const plotMode = byId("plot-mode")
       const algorithm = byId("algorithm")
+      const traceCode = byId("trace-code")
       const speed = byId("trace-speed")
       const next = byId("next")
       const previous = byId("previous")
@@ -1157,18 +1345,22 @@
 
       function showStage() {
         const current = stageText[stage]
+        const tracing = stage === 4
+        main.toggleAttribute("data-tracing", tracing)
         byId("stage-title").textContent = current.title
         byId("stage-description").textContent = current.description
         next.textContent = current.action
         next.disabled = model.shots.length === 0
         previous.disabled = stage === 0
-        byId("plan-tools").hidden = stage === 4
+        byId("plan-tools").hidden = tracing
         byId("legend").hidden = stage >= 2
-        byId("search-panel").hidden = stage !== 4
-        byId("trace-result").hidden = stage !== 4
-        byId("matrix-panel").hidden = stage !== 4 || algorithm.value !== "brute"
+        byId("algorithm-choice").hidden = !tracing
+        byId("search-panel").hidden = !tracing
+        byId("trace-reference").hidden = !tracing
+        byId("trace-result").hidden = !tracing
+        byId("matrix-panel").hidden = !tracing || algorithm.value !== "brute"
         byId("trace-pointer").hidden = true
-        byId("trace-ranges").hidden = stage !== 4
+        byId("trace-ranges").hidden = !tracing
         if (stage !== 0) plotMode.value = "move"
         showPlotMode()
         canvas.setAttribute("aria-label", current.title)
@@ -1494,8 +1686,9 @@
           state.end++
         }
         const sum = base + state.weights[end]
-        const improved = sum > state.best.sum
-        state.current = { start, end, sum, base, restarted, improved }
+        const bestBefore = state.best.sum
+        const improved = sum > bestBefore
+        state.current = { start, end, sum, base, restarted, bestBefore, improved }
         if (improved) state.best = state.current
         state.steps++
       }
@@ -1595,6 +1788,7 @@
         scroll.scrollLeft = 0
         fillGroups()
         draw()
+        renderPseudocode()
         renderSearch()
       }
 
@@ -1654,22 +1848,83 @@
         )
       }
 
-      function currentDetail(current) {
-        if (!current)
-          return search.method === "brute"
-            ? "Fijá un inicio y extendé el final sumando un aporte por paso."
-            : "Kadane conserva la mejor suma de un intervalo que termina en cada índice."
-        const { start, end, sum, base, restarted, improved } = current
-        const addition = `${base} + (${search.weights[end]}) = ${sum}.`
-        const update = improved ? "Este intervalo pasa a ser el mejor." : ""
-        if (search.method === "brute") {
-          const reset = start === end ? "La suma arranca en cero. " : ""
-          return `Inicio ${start} · final ${end} · ${reset}${addition} ${update}`.trimEnd()
+      function renderPseudocode() {
+        const { lines, time, costs } = traceAlgorithms[search.method]
+        traceCode.replaceChildren(
+          ...lines.map(([name, text]) => {
+            const line = document.createElement("div")
+            line.className = "pseudo-line"
+            line.dataset.line = name
+            line.textContent = text
+            return line
+          }),
+        )
+        traceCode.scrollLeft = 0
+        byId("trace-cost").textContent = time
+        byId("trace-cost-rows").innerHTML = costs
+          .map((row) => "<tr>" + row.map((cell) => "<td>" + cell + "</td>").join("") + "</tr>")
+          .join("")
+      }
+
+      function highlightPseudocode(current, finished) {
+        const executed = []
+        const primary = finished ? "return" : current ? "add" : "initScore"
+        if (!current) {
+          executed.push("initScore", "initBest")
+          if (search.method === "kadane") executed.push("initStart", "initSum")
+        } else {
+          executed.push("end", "add", "compare")
+          if (search.method === "brute" && current.start === current.end)
+            executed.push("start", "reset")
+          if (search.method === "kadane") {
+            executed.push("checkReset")
+            if (current.restarted) executed.push("restart", "reset")
+          }
+          if (current.improved) executed.push("saveScore", "saveRange")
         }
-        const lines = [`i = ${end}`, `Rango actual [${start}, ${end}]`]
-        if (restarted) lines.push("Se descarta la suma anterior por ser negativa.")
-        lines.push(addition)
-        if (update) lines.push(update)
+        if (finished) executed.push("return")
+        for (const line of traceCode.children) {
+          line.toggleAttribute("data-executed", executed.includes(line.dataset.line))
+          if (line.dataset.line === primary) line.setAttribute("aria-current", "step")
+          else line.removeAttribute("aria-current")
+        }
+      }
+
+      function currentDetail(current, finished) {
+        if (!current) {
+          const initialization = "mejorSuma = 0\nmejor = vacío\nEl rango vacío suma cero."
+          return search.method === "brute"
+            ? initialization
+            : "inicio = 0\nsuma = 0\n" + initialization
+        }
+        const { start, end, sum, base, restarted, bestBefore, improved } = current
+        const lines = [`inicio = ${start}, fin = ${end}`, `Rango actual [${start}, ${end}]`]
+        if (search.method === "brute" && start === end)
+          lines.push("La suma arranca en cero para este inicio.")
+        if (search.method === "kadane") {
+          if (restarted) {
+            const previousSum = search.history.at(-1).current.sum
+            lines.push(
+              `La suma anterior era ${previousSum}. Como es negativa, se inicia un rango en ${end}.`,
+            )
+          } else if (end > 0) {
+            lines.push(`La suma anterior era ${base}. Se conserva el inicio ${start}.`)
+          }
+        }
+        const weight = search.weights[end]
+        lines.push(`aportes[${end}] = ${weight}`, `suma = ${base} + (${weight}) = ${sum}.`)
+        if (improved) lines.push(`${sum} supera a ${bestBefore}. Se actualiza mejorSuma = ${sum}.`)
+        else if (sum === bestBefore)
+          lines.push(`${sum} empata con mejorSuma. Se conserva el rango guardado.`)
+        else
+          lines.push(
+            `${sum} es menor que mejorSuma = ${bestBefore}. Se conserva el rango guardado.`,
+          )
+        if (finished) {
+          const best = search.best
+          const range = best.start < 0 ? "vacío" : `[${best.start}, ${best.end}]`
+          lines.push(`Se devuelve el rango ${range}.`)
+        }
         return lines.join("\n")
       }
 
@@ -1789,7 +2044,8 @@
         byId("trace-result").textContent = resultText(best, finished)
         byId("trace-progress").textContent =
           "Paso " + format.format(search.steps) + " de " + format.format(search.total)
-        byId("trace-detail").textContent = currentDetail(current)
+        byId("trace-detail").textContent = currentDetail(current, finished)
+        highlightPseudocode(current, finished)
         byId("trace-play").disabled = finished || playback !== undefined
         byId("trace-pause").disabled = playback === undefined
         byId("trace-back").disabled = search.steps === 0

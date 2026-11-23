@@ -11,7 +11,7 @@ En un partido de lanzamiento de aceitunas, dos jugadores tiran desde lados opues
 
 Con el partido terminado, podemos elegir qué franja de la cancha se usa para calcular el resultado. La región válida es un **aro** centrado en el origen, delimitado por una circunferencia interior de radio $R_1$ y otra exterior de radio $R_2$. Una aceituna cuenta cuando su distancia al centro queda entre los dos radios. Los tiros que caen exactamente sobre cualquiera de las circunferencias también cuentan.
 
-El objetivo es elegir $R_1$ y $R_2$ para maximizar la diferencia entre los tiros válidos del Oli y los tiros válidos del rival. El enunciado adapta el problema de cancha circular del Jurisdiccional OIA 2018.
+El objetivo es elegir $R_1$ y $R_2$ para maximizar la diferencia entre los tiros válidos del Oli y los tiros válidos del rival. Esta variante adapta el problema de cancha circular del [enunciado original del Jurisdiccional OIA 2018](https://www.oia.unsam.edu.ar/wp-content/uploads/2020/04/olivares2.pdf).
 
 ## Intuición
 
