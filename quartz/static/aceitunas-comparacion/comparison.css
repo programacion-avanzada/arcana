@@ -784,6 +784,20 @@ footer {
   display: grid;
   gap: 0.35rem;
 }
+.site-credit {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.875rem;
+  text-align: center;
+}
+.site-credit a {
+  color: #245ba2;
+  font-weight: 650;
+}
+:root[data-theme="dark"] .site-credit a {
+  color: #9cb8ff;
+}
 [hidden] {
   display: none !important;
 }

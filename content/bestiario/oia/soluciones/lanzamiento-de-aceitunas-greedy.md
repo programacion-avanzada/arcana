@@ -15,21 +15,18 @@ Aplicamos el **algoritmo de Kadane**. En cada posición elegimos entre empezar u
 
 Con el ejemplo cargado, dejá fijo el borde exterior y aumentá el radio interior hasta excluir el tiro más cercano al centro. Observá cómo descartar ese aporte negativo mejora el puntaje. <a id="visualizacion-aro" href="static/aceitunas-aro/#kadane" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 
-### Construir y consultar sumas de prefijos
+### Extender el rango o empezar de nuevo
 
-Para un vector `a`, `sum[fin]` es la suma del prefijo `a[0..fin]`. El prefijo de una posición contiene solo `a[0]`, así que `sum[0] = a[0]`. Para extenderlo una posición agregamos el elemento siguiente. Por eso `sum[fin] = sum[fin - 1] + a[fin]` para `fin > 0`. Con `a = [-1, 1, 0, 1]`, empezamos en `-1` y obtenemos `0` al sumar `1`, otro `0` al sumar `0` y `1` al sumar el último aporte. Así se construye `sum = [-1, 0, 0, 1]` en una pasada.
+Armamos el [[array|vector]] `aportes` con los valores de `difs` en el orden de `radiosCuad`. Lo recorremos del radio más chico al más grande. Antes de procesar cada nuevo radio, `suma` guarda el puntaje del mejor rango que termina en el radio anterior e `inicio` guarda dónde empieza.
 
-Para obtener la suma de `[inicio, fin]`, usamos `sum[fin] - sum[inicio - 1]`. El segundo término quita la parte anterior al rango. Para `inicio = 0`, usamos directamente `sum[fin]`. Por ejemplo, `[1, 3]` suma `1 - (-1) = 2`. Construir `sum` cuesta $O(M)$ para $M$ elementos y consultar un rango cuesta $O(1)$.
+Para encontrar el mejor rango que termina en `fin`, comparamos dos opciones.
 
-### Elegir el inicio sobre la marcha
+- **Extender el rango anterior.** Conservamos `inicio` y el puntaje pasa a ser `suma + aporte`. Todos los rangos que terminaban en el radio anterior reciben el mismo aporte al extenderse. Por eso basta con extender el que ya tenía la mejor suma.
+- **Empezar en el radio actual.** El rango contiene un solo radio, así que el puntaje es `aporte`. Si gana esta opción, hacemos `inicio = fin` y `suma = aporte`.
 
-Acá `a` es el [[array|vector]] `aportes`, construido a partir de los aportes netos de `difs` en el orden de `radiosCuad`. Para un `fin` fijo, la consulta de prefijos muestra que conviene quitar el menor prefijo posible. El término `sum[fin]` es común a todos los candidatos. Entre los prefijos que podemos quitar está el prefijo vacío, que vale cero y corresponde a empezar en el índice cero.
+En el primer radio, el código arranca con `suma = 0` e `inicio = 0`, así que ambas opciones dan el mismo rango de un radio. Después, usamos `aporte > suma + aporte` para decidir si conviene empezar de nuevo. Si ambas opciones empatan, extendemos con `suma += aporte` para conservar el inicio más chico.
 
-Kadane conserva `suma` e `inicio` para el mejor rango que terminaba en `fin - 1`. Al leer `aporte = aportes[fin]`, todo rango que ya existía recibe ese mismo aporte al extenderse. La mejor extensión vale `suma + aporte`. La otra posibilidad es empezar en `fin`, con valor `aporte`. Si `aporte > suma + aporte`, guardamos `inicio = fin` y `suma = aporte`. En los demás casos extendemos el rango con `suma += aporte`. Si ambas opciones empatan, extender conserva el inicio más chico.
-
-La comparación equivale a decidir qué prefijo conviene quitar. Empezar en `fin` quita todo lo anterior a esa posición. Extender conserva el prefijo que ya habíamos elegido. Como solo comparamos las dos sumas al leer cada aporte, basta con mantener una suma y un inicio sobre la marcha.
-
-Comparamos el mejor rango de cada `fin` con el mejor guardado, que empieza como el aro vacío de puntaje cero. Nuestro criterio entre óptimos positivos es el **menor inicio** y, si coinciden, el menor final. En este problema ambos mínimos se alcanzan en el mismo intervalo. Por eso, al recorrer los finales de menor a mayor y guardar solo mejoras estrictas, Kadane y fuerza bruta eligen el mismo rango. [[lanzamiento-de-aceitunas#Desempate opcional|Justificación del desempate]]
+Tras decidir, comparamos el puntaje del rango actual con el mejor guardado. Empezamos con el aro vacío de puntaje cero y guardamos los índices del rango actual solo cuando mejora ese puntaje.
 
 ## Código
 
@@ -108,7 +105,7 @@ En `fin = 1`, empezar con el aporte 1 da más que extender el rango anterior, qu
 
 ## Cuándo usar esta técnica
 
-Kadane es adecuado cuando hay que maximizar una suma aditiva en un intervalo consecutivo sin restricciones adicionales de ancho, como en este problema. El paso lineal permite trabajar con los $100\,000$ tiros de la consigna incluso cuando todas las distancias difieren. La [[lanzamiento-de-aceitunas-fuerza-bruta|fuerza bruta]] da una comprobación directa en casos chicos y es más fácil de adaptar si se agregan condiciones que invalidan la decisión de descartar un tramo negativo.
+Kadane es adecuado cuando hay que maximizar una suma aditiva en un intervalo consecutivo sin restricciones adicionales de ancho, como en este problema. El paso lineal permite trabajar con los $100\,000$ tiros de la consigna incluso cuando todas las distancias difieren. La [[lanzamiento-de-aceitunas-fuerza-bruta|fuerza bruta]] da una comprobación directa en casos chicos y es más fácil de adaptar si hay cambios.
 
 ## Visualizaciones
 

@@ -9,9 +9,11 @@ tags:
 
 En un partido de lanzamiento de aceitunas, dos jugadores tiran desde lados opuestos de una red. La red coincide con el eje $y$ y cada jugador apunta a la mitad de enfrente. Por enunciado, ningún tiro puede caer sobre la red ($x=0$). El club Olivares Intergalácticos Asociados, conocido como el Oli, registró la posición $(x,y)$ donde cayó cada aceituna. Los tiros que cayeron a la derecha de la red ($x>0$) son del Oli y los que cayeron a la izquierda ($x<0$) son de su rival.
 
-Con el partido terminado, podemos elegir qué franja de la cancha se usa para calcular el resultado. La región válida es un **aro** centrado en el origen, delimitado por una circunferencia interior de radio $R_1$ y otra exterior de radio $R_2$. Una aceituna cuenta cuando su distancia al centro queda entre los dos radios. Los tiros que caen exactamente sobre cualquiera de las circunferencias también cuentan.
+Con el partido terminado, podemos elegir qué franja de la cancha se usa para calcular el resultado. La región válida es un **aro** centrado en el origen, delimitado por una circunferencia interior de radio $R_1$ y otra exterior de radio $R_2$. Una aceituna cuenta si cae dentro del aro delimitado por los dos radios, incluidos ambos bordes.
 
 El objetivo es elegir $R_1$ y $R_2$ para maximizar la diferencia entre los tiros válidos del Oli y los tiros válidos del rival. Esta variante adapta el problema de cancha circular del [enunciado original del Jurisdiccional OIA 2018](https://www.oia.unsam.edu.ar/wp-content/uploads/2020/04/olivares2.pdf).
+
+Para entender mejor cómo se cuentan los tiros, mové los bordes y observá cómo cambia el resultado. <a href="static/aceitunas-aro/#enunciado" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 
 ## Intuición
 
@@ -103,7 +105,7 @@ Llamamos `distCuad` a $x^2+y^2$ y lo usamos como clave de un [[map|mapa]] `difs`
 
 ### Del mapa a un vector de aportes
 
-Ordenamos las claves del mapa de menor a mayor en el [[array|vector]] `radiosCuad`. Ese orden importa porque, si el aro incluye dos radios, también incluye todos los que están entre ellos. Una vez ordenados, todos los grupos que entran al aro ocupan un bloque consecutivo. Las claves con aporte neto cero se conservan porque corresponden a tiros y pueden determinar dónde queda un borde.
+Ordenamos las claves del mapa de menor a mayor en el [[array|vector]] `radiosCuad`. Ese orden importa porque, si el aro incluye dos radios, también incluye todos los que están entre ellos. Una vez ordenados, todos los grupos que entran al aro ocupan un bloque consecutivo.
 
 Hay $M$ claves distintas entre $N$ tiros, con $1 \le M \le N$. El `dict` de Python implementa el mapa con una [[hash table|tabla hash]]. Agrupar cuesta $O(N)$ esperado y ordenar las claves cuesta $O(M\log M)$. Leer los valores en ese orden cuesta $O(M)$, con $O(M)$ de espacio auxiliar para el mapa y los vectores.
 
@@ -123,10 +125,6 @@ El menor cuadrado exterior es `radiosCuad[fin]`, porque el último grupo tiene q
 
 Entre los rangos de puntaje máximo positivo, elegimos el que tenga **el menor índice de inicio**. Si hay empate también en el inicio, elegimos el menor final. La consigna admite cualquier respuesta óptima.
 
-Con un óptimo positivo, consideramos el primer `fin` que alcanza el máximo y, para ese `fin`, el primer `ini` que lo alcanza. Así obtenemos el menor borde exterior. Si otro intervalo óptimo empezara antes de `ini`, su final tendría que ser posterior a `fin`. Un final anterior o igual contradiría cómo elegimos los índices. Entonces contendría a `[ini, fin]` y agregaría un tramo a cada lado. Esos tramos sumarían cero juntos. Cada tramo tiene suma a lo sumo cero, porque agregar por separado uno de suma positiva mejoraría el óptimo. Por lo tanto, ambos suman cero. Podríamos agregar el tramo izquierdo al intervalo que termina en `fin`, lo que contradice que `ini` era el primer inicio posible.
-
-Por lo tanto, el mismo intervalo tiene a la vez el menor inicio y el menor final entre los óptimos. Fuerza bruta lo encuentra al recorrer primero los inicios. Kadane lo encuentra al recorrer primero los finales. Esta elección minimiza también $R_1+R_2$ entre las respuestas con cuadrados enteros, porque cada radio es mínimo.
-
 ## Soluciones disponibles
 
 - [[lanzamiento-de-aceitunas-fuerza-bruta|Fuerza bruta con suma acumulada]]
@@ -137,6 +135,15 @@ Por lo tanto, el mismo intervalo tiene a la vez el menor inicio y el menor final
 - <a href="static/aceitunas-aro/#enunciado" data-router-ignore="true" data-no-popover="true">Explorar el aro y calcular su puntaje</a>
 - <a href="static/aceitunas-reducciones/#enunciado" data-router-ignore="true" data-no-popover="true">Ver el agrupamiento y simular ambos algoritmos</a>
 - <a href="static/aceitunas-comparacion/#enunciado" data-router-ignore="true" data-no-popover="true">Comparar Kadane y fuerza bruta en simultáneo</a>
+
+## Probá tu solución en Codeforces
+
+El problema está disponible en el juez Codeforces. Para enviar tu solución, seguí estos pasos.
+
+1. Entrá al [grupo de Codeforces](https://codeforces.com/group/x4ir9VBYqC/contests) y unite al grupo.
+2. Buscá el concurso **PruebaLanzamientoAceitunas** y hacé clic en **Enter**.
+3. Abrí **Lanzamiento de Aceitunas LP**. Si ya estás en el grupo, podés usar el [enlace directo al problema](https://codeforces.com/group/x4ir9VBYqC/contest/735070/problem/A).
+4. Hacé clic en **Submit code**, elegí el lenguaje y subí o pegá tu solución para que el juez la evalúe.
 
 ## Referencias
 

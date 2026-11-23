@@ -453,6 +453,21 @@
           min-height: 2.75rem;
         }
       }
+      .site-credit {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.875rem;
+        text-align: center;
+      }
+      .site-credit a {
+        color: #245ba2;
+        font-weight: 650;
+      }
+      :root[data-theme="dark"] .site-credit a {
+        color: #9cb8ff;
+      }
     </style>
   </head>
   <body>
@@ -704,6 +719,10 @@
           </p>
         </section>
       </div>
+      <footer class="site-credit">
+        Hecho con amor por <a href="https://github.com/LinuxPreachers">Los Predicadores de Linux</a>
+        y Codex ❤️
+      </footer>
     </main>
 
     <script>

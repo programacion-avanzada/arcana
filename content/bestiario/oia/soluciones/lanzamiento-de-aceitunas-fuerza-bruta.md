@@ -17,17 +17,13 @@ Mové un borde del aro y observá cómo entran o salen juntos todos los tiros qu
 
 Registramos el aporte neto de cada radio en el [[map|mapa]] `difs`, con `distCuad` como clave. En Python usamos un `dict`, implementado con una [[hash table|tabla hash]]. Ordenamos las claves en el [[array|vector]] `radiosCuad` para que cada aro que cuenta tiros corresponda a un intervalo de índices consecutivos.
 
-### Construir y consultar sumas de prefijos
+### Recorrer los rangos por inicio
 
-Para un vector `a`, `sum[fin]` guarda la suma del prefijo `a[0..fin]`, desde el índice cero hasta `fin` inclusive. Empezamos con `sum[0] = a[0]`. Avanzamos de izquierda a derecha y, para cada `fin > 0`, construimos `sum[fin] = sum[fin - 1] + a[fin]`. Con `a = [-1, 1, 0, 1]`, los prefijos se construyen como `-1`, `-1 + 1 = 0`, `0 + 0 = 0` y `0 + 1 = 1`. El vector `sum` queda `[-1, 0, 0, 1]`.
+El bucle externo recorre los inicios `ini` de menor a mayor. Para cada uno, fijamos `suma = 0` y el bucle interno recorre los finales `fin` desde `ini` hasta el último índice. En cada paso, `suma += difs[radiosCuad[fin]]` agrega el aporte del radio que acaba de entrar al rango.
 
-Para consultar `[ini, fin]`, tomamos `sum[fin]` y restamos `sum[ini - 1]`, que contiene los elementos anteriores a `ini`. Si `ini = 0`, el resultado es directamente `sum[fin]`. Por ejemplo, `[1, 3]` suma `sum[3] - sum[0] = 1 - (-1) = 2`. Construir los prefijos toma $O(M)$ para un vector de $M$ elementos y cada consulta toma $O(1)$.
+Cuando `fin = ini`, la suma contiene solo el aporte inicial. Al avanzar `fin`, la suma que ya teníamos cubre `[ini, fin - 1]`. Con el nuevo aporte obtenemos el puntaje de `[ini, fin]` y lo comparamos con el máximo guardado. Al pasar a otro inicio, volvemos a cero porque empezamos otro rango.
 
-### Aplicar la suma sobre la marcha
-
-En este problema, `a` son los aportes netos del mapa leídos en el orden de `radiosCuad`. Para cada `ini` recorremos los finales en orden, así que podemos acumular en el momento el mismo valor que daría la consulta de prefijos. Empezamos esa fila con `suma = 0`. Al extender el rango hasta `fin`, agregamos `difs[radiosCuad[fin]]`. La nueva `suma` vale lo mismo que `sum[fin] - sum[ini - 1]` si `ini > 0`, o que `sum[fin]` si `ini = 0`. Al pasar a otro `ini`, la suma vuelve a cero. Esto calcula cada candidato en tiempo constante esperado con una consulta al mapa y mantiene solo la suma corriente.
-
-Al recorrer todos los inicios y todos sus finales, probamos cada intervalo válido exactamente una vez. Como criterio de desempate, elegimos el rango de **menor inicio** y, si comparten inicio, el de menor final. Los bucles visitan los rangos en ese orden y guardamos uno nuevo solo si supera el mejor puntaje. Si el mejor puntaje es cero, devolvemos `0 0`. Para un puntaje positivo, reconstruimos los dos cuadrados enteros con los índices guardados. [[lanzamiento-de-aceitunas#Desempate opcional|Justificación del desempate]]
+Así probamos cada intervalo válido exactamente una vez. Como criterio de desempate, elegimos el rango de **menor inicio** y, si comparten inicio, el de menor final. Los bucles visitan los rangos en ese orden y guardamos uno nuevo solo si supera el mejor puntaje. Si el mejor puntaje es cero, devolvemos `0 0`. Para un puntaje positivo, reconstruimos los dos cuadrados enteros con los índices guardados.
 
 ## Código
 
@@ -99,7 +95,7 @@ Con `ini = 1`, arrancamos con cero y sumamos los aportes 1, 0 y 1 para `fin = 1`
 
 ## Cuándo usar esta técnica
 
-La enumeración permite inspeccionar todos los candidatos y sirve para validar otra implementación con instancias chicas. También resulta viable con muchos tiros si caen en pocas circunferencias. Cuando cada tiro tiene una distancia distinta, $100\,000$ grupos generan más de cinco mil millones de intervalos. [[lanzamiento-de-aceitunas-greedy|Kadane]] evita esa enumeración y resuelve la búsqueda con una sola pasada y espacio constante adicional.
+La enumeración permite inspeccionar todos los candidatos y sirve para validar otra implementación con instancias chicas. También resulta viable con muchos tiros si caen en pocas circunferencias. Cuando cada tiro tiene una distancia distinta, $100\,000$ grupos generan más de cinco mil millones de intervalos. Si la fuerza bruta excede el límite de tiempo, podemos usar [[lanzamiento-de-aceitunas-greedy|Kadane]], cuya solución completa toma $O(N\log N)$ en tiempo esperado, incluido el ordenamiento.
 
 ## Visualizaciones
 
