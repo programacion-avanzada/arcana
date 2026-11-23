@@ -3,7 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lanzamiento de aceitunas · De los tiros al mapa</title>
+    <title>Lanzamiento de aceitunas · Laboratorio de algoritmos</title>
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem("aceitunas-theme") || "light"
+      } catch {}
+    </script>
     <style>
       :root {
         color-scheme: light;
@@ -648,52 +653,110 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="experience.css" />
   </head>
   <body>
-    <main>
-      <a
-        id="article-link"
-        href="../../bestiario/oia/soluciones/lanzamiento-de-aceitunas-fuerza-bruta#visualizacion-reducciones"
-        >← Volver a la resolución</a
-      >
-      <header>
-        <h1>De los tiros al mapa</h1>
-        <p class="intro">Agrupá los tiros por radio y reuní sus aportes en una tabla ordenada.</p>
+    <nav class="app-bar" aria-label="Navegación principal">
+      <a class="brand" href="#enunciado" aria-label="Lanzamiento de aceitunas, inicio">
+        <span class="brand-icon" aria-hidden="true">◉</span>
+        <span
+          >Lanzamiento de aceitunas<small
+            >PROGRAMACIÓN AVANZADA · LABORATORIO INTERACTIVO</small
+          ></span
+        >
+      </a>
+      <button id="theme-toggle" type="button" aria-pressed="false">Modo oscuro</button>
+    </nav>
+    <main id="workspace">
+      <div class="page-context">
+        <a
+          id="article-link"
+          href="../../bestiario/oia/soluciones/lanzamiento-de-aceitunas-fuerza-bruta#visualizacion-reducciones"
+          >Volver a la resolución</a
+        >
+        <span class="context-label">Geometría · Reducciones · Máxima suma</span>
+      </div>
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">EXPLORÁ, TRANSFORMÁ, COMPARÁ</p>
+          <h1>De los tiros al <span>rango óptimo.</span></h1>
+          <p class="intro">
+            Descubrí cómo un problema en el plano se convierte en una búsqueda sobre un arreglo.
+          </p>
+        </div>
+        <button id="jump-simulation" type="button" class="primary">Simular algoritmos</button>
       </header>
       <div class="layout">
-        <section class="panel stack" aria-labelledby="input-heading">
-          <h2 id="input-heading">Coordenadas</h2>
-          <form class="stack" id="input-form">
-            <div>
-              <label for="coordinates">Entrada de tiros</label>
-              <textarea
-                id="coordinates"
-                rows="10"
-                spellcheck="false"
-                aria-describedby="input-help"
-              ></textarea>
+        <aside class="input-sidebar stack">
+          <details class="panel input-panel" id="input-panel" open>
+            <summary id="input-heading">
+              <span>Datos de entrada</span><span class="detail-hint">Editar tiros</span>
+            </summary>
+            <div class="stack input-body">
+              <form class="stack" id="input-form">
+                <div>
+                  <label for="coordinates">Entrada de tiros</label>
+                  <textarea
+                    id="coordinates"
+                    rows="10"
+                    spellcheck="false"
+                    aria-describedby="input-help"
+                  ></textarea>
+                </div>
+                <p class="quiet" id="input-help">
+                  Un par <code>x y</code> por renglón. x &gt; 0: Olivares; x &lt; 0: rival.
+                </p>
+                <button class="primary" type="submit">Aplicar coordenadas</button>
+                <div class="row">
+                  <button id="load-example" type="button">Ejemplo OIA</button>
+                  <button id="clear-input" type="button">Limpiar</button>
+                </div>
+                <p class="error" id="input-error" role="alert"></p>
+                <p class="quiet" id="input-count" role="status"></p>
+              </form>
+              <p class="selection" id="selection" aria-live="polite" hidden></p>
             </div>
-            <p class="quiet" id="input-help">Un par x y por renglón.</p>
-            <button class="primary" type="submit">Procesar coordenadas</button>
-            <div class="row">
-              <button id="load-example" type="button">Restablecer ejemplo de la OIA</button>
-              <button id="clear-input" type="button">Limpiar</button>
+          </details>
+          <section class="panel guide-card" aria-label="Guía de exploración">
+            <p class="eyebrow">LA IDEA CLAVE</p>
+            <h2>Distinto lugar.<br />El mismo radio.</h2>
+            <p>
+              Los tiros a igual distancia del origen se agrupan. Cada radio aporta los puntos de
+              Olivares menos los del rival.
+            </p>
+            <div class="team-key">
+              <span class="oli">× Olivares <b>+1</b></span
+              ><span class="rival">○ Rival <b>−1</b></span>
             </div>
-            <p class="error" id="input-error" role="alert"></p>
-            <p class="quiet" id="input-count" role="status"></p>
-          </form>
-          <p class="selection" id="selection" aria-live="polite" hidden></p>
-        </section>
+            <p class="guide-footer">Buscamos el tramo de radios con la mayor suma.</p>
+          </section>
+          <p class="sidebar-note">
+            Usá el ejemplo o probá tus propias coordenadas. Podés volver a cualquier etapa.
+          </p>
+        </aside>
         <figure class="panel stack" aria-labelledby="stage-title">
           <ol class="stages" id="stages" aria-label="Pasos de la reducción">
-            <li><button type="button">Plano</button></li>
-            <li><button type="button">Recta y = 0</button></li>
-            <li><button type="button">Aportes</button></li>
-            <li><button type="button">Tabla</button></li>
-            <li><button type="button">Rango</button></li>
+            <li>
+              <button type="button"><span>Plano</span><small>Ubicá los tiros</small></button>
+            </li>
+            <li>
+              <button type="button">
+                <span>Recta y = 0</span><small>Conservá el radio</small>
+              </button>
+            </li>
+            <li>
+              <button type="button"><span>Aportes</span><small>Agrupá los puntos</small></button>
+            </li>
+            <li>
+              <button type="button"><span>Tabla</span><small>Ordená los radios</small></button>
+            </li>
+            <li>
+              <button type="button"><span>Simulación</span><small>Encontrá el rango</small></button>
+            </li>
           </ol>
           <div class="row between">
             <div>
+              <p class="eyebrow" id="stage-position">ETAPA 1 DE 5</p>
               <h2 id="stage-title" aria-live="polite"></h2>
               <p class="quiet" id="stage-description"></p>
             </div>
@@ -716,12 +779,22 @@
             <span class="oli"><b aria-hidden="true">×</b>Oli (+1)</span>
             <span class="rival"><b aria-hidden="true">○</b>Rival (−1)</span>
           </div>
-          <div class="row" id="algorithm-choice" hidden>
-            <label for="algorithm">Algoritmo</label>
-            <select id="algorithm">
+          <div class="algorithm-section stack" id="algorithm-choice" hidden>
+            <div class="algorithm-tabs" role="group" aria-label="Algoritmo a simular">
+              <button type="button" data-algorithm="brute" aria-pressed="true">
+                <span>Fuerza bruta <b>O(M²)</b></span
+                ><small>Explorá todos los intervalos</small>
+              </button>
+              <button type="button" data-algorithm="kadane" aria-pressed="false">
+                <span>Kadane <b>O(M)</b></span
+                ><small>Resolvé en un solo recorrido</small>
+              </button>
+            </div>
+            <select id="algorithm" aria-label="Algoritmo" hidden>
               <option value="brute">Fuerza bruta</option>
               <option value="kadane">Kadane</option>
             </select>
+            <p class="quiet" id="algorithm-hint"></p>
           </div>
           <div class="trace-layout stack">
             <div class="stack">
@@ -732,21 +805,36 @@
                 hidden
               >
                 <div class="row">
-                  <button class="primary" id="trace-optimum" type="button">
-                    Mostrar resultado final
-                  </button>
-                  <button id="trace-play" type="button">▶ Reproducir</button>
-                  <button id="trace-pause" type="button">Pausa</button>
+                  <button class="primary" id="trace-play" type="button">Reproducir</button>
+                  <button class="primary" id="trace-pause" type="button" hidden>Pausar</button>
                   <button id="trace-back" type="button">Paso atrás</button>
-                  <button id="trace-step" type="button">Paso adelante</button>
+                  <button id="trace-step" type="button">Siguiente paso</button>
                   <button id="trace-reset" type="button">Reiniciar</button>
+                  <button id="trace-optimum" type="button">Ver resultado</button>
                 </div>
                 <div class="speed-control">
                   <label for="trace-speed">Velocidad</label>
                   <input id="trace-speed" type="range" min="0.5" max="4" step="0.5" value="1" />
                   <output id="trace-speed-value" for="trace-speed">1×</output>
                 </div>
+                <progress
+                  id="playback-progress"
+                  value="0"
+                  max="1"
+                  aria-label="Progreso del algoritmo"
+                ></progress>
+                <p class="quiet keyboard-hint">
+                  Espacio: reproducir o pausar · ← / →: cambiar de paso
+                </p>
               </section>
+              <div class="trace-stats" id="trace-stats" hidden>
+                <div><span>Suma actual</span><strong id="current-score">0</strong></div>
+                <div><span>Mejor suma</span><strong id="best-score">0</strong></div>
+                <div>
+                  <span id="evaluated-label">Intervalos evaluados</span
+                  ><strong id="evaluated-count">0 / 0</strong>
+                </div>
+              </div>
               <div
                 class="scene-scroll"
                 id="scene-scroll"
@@ -816,7 +904,7 @@
                 ></div>
               </section>
               <section class="trace-card">
-                <h3>Explicación</h3>
+                <h3>Qué está pasando</h3>
                 <div class="trace-explanation" role="status">
                   <p class="quiet" id="trace-progress"></p>
                   <p class="quiet" id="trace-detail"></p>
@@ -1034,8 +1122,9 @@
         location.protocol === "file:"
           ? "../../../content/" + articlePath + ".md"
           : "../../" + articlePath + "#" + section
-      if (fromProblem) back.textContent = "← Volver al enunciado"
+      if (fromProblem) back.textContent = "Volver al enunciado"
       if (fromKadane) algorithm.value = "kadane"
+      if (matchMedia("(max-width: 850px)").matches) byId("input-panel").open = false
 
       function inputLines(text) {
         return text
@@ -1103,6 +1192,7 @@
           scroll.scrollLeft = 0
         }
         inputError.textContent = ""
+        coordinates.removeAttribute("aria-invalid")
         byId("input-count").textContent =
           "N = " +
           format.format(shots.length) +
@@ -1138,6 +1228,7 @@
           setShots(parseShots(coordinates.value))
         } catch (error) {
           inputError.textContent = error.message
+          coordinates.setAttribute("aria-invalid", "true")
         }
       }
 
@@ -1347,6 +1438,9 @@
         const current = stageText[stage]
         const tracing = stage === 4
         main.toggleAttribute("data-tracing", tracing)
+        byId("stage-position").textContent = `ETAPA ${stage + 1} DE ${stageText.length}`
+        byId("jump-simulation").disabled = model.shots.length === 0
+        byId("jump-simulation").hidden = tracing
         byId("stage-title").textContent = current.title
         byId("stage-description").textContent = current.description
         next.textContent = current.action
@@ -1358,6 +1452,7 @@
         byId("search-panel").hidden = !tracing
         byId("trace-reference").hidden = !tracing
         byId("trace-result").hidden = !tracing
+        byId("trace-stats").hidden = !tracing
         byId("matrix-panel").hidden = !tracing || algorithm.value !== "brute"
         byId("trace-pointer").hidden = true
         byId("trace-ranges").hidden = !tracing
@@ -1420,7 +1515,12 @@
         scene.toggleAttribute("data-search", tracing)
         canvas.hidden = tracing
         if (tracing) {
-          const width = Math.max(normalWidth, Math.ceil(108 + visibleGroups.length * 57.6))
+          const cellWidth = table.querySelector(".tile")?.getBoundingClientRect().width ?? 57.6
+          const labelWidth = table.querySelector("th")?.getBoundingClientRect().width ?? 89.6
+          const width = Math.max(
+            normalWidth,
+            Math.ceil(24 + labelWidth + visibleGroups.length * cellWidth),
+          )
           scene.style.width = width + "px"
           groupGrid.hidden = true
           byId("group-nav").hidden = model.groups.length <= pageSize
@@ -1774,6 +1874,15 @@
 
       function resetSearch() {
         stopPlayback()
+        for (const button of document.querySelectorAll("[data-algorithm]")) {
+          button.setAttribute("aria-pressed", String(button.dataset.algorithm === algorithm.value))
+        }
+        const count = model.groups.length
+        const bruteCount = format.format((count * (count + 1)) / 2)
+        byId("algorithm-hint").textContent =
+          algorithm.value === "brute"
+            ? `Fuerza bruta evalúa ${bruteCount} intervalos para ${format.format(count)} radios. Cambiá a Kadane para comparar el recorrido.`
+            : `Kadane evalúa ${format.format(count)} posiciones, frente a ${bruteCount} intervalos de fuerza bruta. Al cambiar de algoritmo, la simulación empieza de nuevo.`
         search = createSearch(
           algorithm.value,
           model.groups.map((group) => group.oli - group.rival),
@@ -2044,6 +2153,16 @@
         byId("trace-result").textContent = resultText(best, finished)
         byId("trace-progress").textContent =
           "Paso " + format.format(search.steps) + " de " + format.format(search.total)
+        byId("current-score").textContent = format.format(current?.sum ?? 0)
+        byId("best-score").textContent = format.format(best.sum)
+        byId("evaluated-count").textContent =
+          `${format.format(search.steps)} / ${format.format(search.total)}`
+        byId("evaluated-label").textContent =
+          search.method === "brute" ? "Intervalos evaluados" : "Posiciones evaluadas"
+        byId("playback-progress").max = Math.max(1, search.total)
+        byId("playback-progress").value = search.steps
+        byId("trace-play").hidden = playback !== undefined
+        byId("trace-pause").hidden = playback === undefined
         byId("trace-detail").textContent = currentDetail(current, finished)
         highlightPseudocode(current, finished)
         byId("trace-play").disabled = finished || playback !== undefined
@@ -2142,6 +2261,65 @@
       })
 
       algorithm.addEventListener("change", resetSearch)
+      for (const button of document.querySelectorAll("[data-algorithm]")) {
+        button.addEventListener("click", () => {
+          if (algorithm.value === button.dataset.algorithm) return
+          algorithm.value = button.dataset.algorithm
+          resetSearch()
+        })
+      }
+      byId("jump-simulation").addEventListener("click", () => {
+        goTo(4, true)
+        byId("stages").scrollIntoView({
+          block: "start",
+          behavior: motion.matches ? "instant" : "smooth",
+        })
+      })
+      document.querySelector(".brand").addEventListener("click", (event) => {
+        event.preventDefault()
+        goTo(0, true)
+      })
+      function showTheme() {
+        const dark = document.documentElement.dataset.theme === "dark"
+        byId("theme-toggle").textContent = dark ? "Modo claro" : "Modo oscuro"
+        byId("theme-toggle").setAttribute("aria-pressed", String(dark))
+        for (const name of Object.keys(colors)) {
+          colors[name] = styles.getPropertyValue("--" + name).trim()
+        }
+        if (model) draw()
+      }
+      byId("theme-toggle").addEventListener("click", () => {
+        const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"
+        document.documentElement.dataset.theme = theme
+        try {
+          localStorage.setItem("aceitunas-theme", theme)
+        } catch {}
+        showTheme()
+      })
+      document.addEventListener("keydown", (event) => {
+        if (stage !== 4 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
+        if (
+          event.target.closest(
+            "input, textarea, select, summary, a, [contenteditable], [role='region']",
+          )
+        )
+          return
+        if (event.code === "Space" && event.target.closest("button")) return
+        const action =
+          event.code === "Space"
+            ? playback === undefined
+              ? "trace-play"
+              : "trace-pause"
+            : event.key === "ArrowRight"
+              ? "trace-step"
+              : event.key === "ArrowLeft"
+                ? "trace-back"
+                : null
+        if (action) {
+          event.preventDefault()
+          byId(action).click()
+        }
+      })
       speed.addEventListener("input", updateSpeed)
       byId("trace-optimum").addEventListener("click", () => {
         stopPlayback()
@@ -2209,7 +2387,8 @@
       })
       coordinates.addEventListener("input", () => {
         byId("input-count").textContent =
-          "N = " + format.format(inputLines(coordinates.value).length)
+          format.format(inputLines(coordinates.value).length) +
+          " tiros editados · Aplicá para actualizar."
       })
       byId("load-example").addEventListener("click", () => {
         coordinates.value = example
@@ -2221,6 +2400,7 @@
         coordinates.focus()
       })
       new ResizeObserver(draw).observe(scroll)
+      showTheme()
       updateSpeed()
       coordinates.value = example
       loadText()
