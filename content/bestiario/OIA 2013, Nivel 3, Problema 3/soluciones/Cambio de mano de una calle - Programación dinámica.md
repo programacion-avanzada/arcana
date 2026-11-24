@@ -1,127 +1,102 @@
+---
+title: 'OIA 2013 N3P3 - Cambio de mano de una calle - Programación Dinámica'
+tags:
+  - oia
+  - solucion
+---
+
+Solución optimizada para [[Cambio de mano de una calle (OIA 2013, Nivel 3, Problema 3)]].
+
 ## Técnicas utilizadas
-- **Grafo dirigido y ponderado**: con listas de adyacencia.
-- **Algoritmo de Dijkstra**: con cola de prioridad, válido porque todas las distancias son positivas.
-- **Grafo transpuesto**: $G^T$ que es el mismo grafo con todas las calles invertidas, que permite calcular distancias *hacia* un nodo.
-- **Precálculo de distancias**: desde los dos extremos ($S$ y $T$) para evaluar cada calle en tiempo constante.
+- **Programación dinámica (tabulación):** se resuelven y guardan en dos [[array|tablas]] ($d_S$ y $d_T$) los subproblemas de camino mínimo desde $S$ y hacia $T$, para reutilizarlos sin recalcular y evaluar cada calle invertida en $O(1)$.
+- **Algoritmo de Dijkstra:** aporta el orden de evaluación por distancia creciente para llenar las tablas de PD aun en presencia de ciclos (válido porque todos los pesos son positivos).
+- **Grafo dirigido y ponderado:** representado con listas de adyacencia.
+- **Grafo transpuesto ($G^T$):** el mismo grafo con todas las calles invertidas, que permite calcular distancias *hacia* $T$ saliendo desde $T$.
 
 ## Idea de la solución
-Probar cada calle invertida y rehacer Dijkstra cuesta demasiado, sería una solución por fuerza bruta que fue desarrollada en [[Cambio de mano de una calle - Fuerza bruta]]. La clave es que un camino mejorado encontrado **tiene que usar la operación de invertir la calle**, así que tiene la forma:
+Probar cada calle invertida y rehacer Dijkstra desde cero cuesta demasiado (esa es la solución de [[Cambio de mano de una calle - Fuerza bruta]], que repite los mismos subproblemas $C$ veces). La clave es que cualquier camino mejorado **tiene que usar la calle invertida**, así que tiene la forma:
 
-$$S \rightsquigarrow v \|\to\ |u \rightsquigarrow T$$
+$$S \rightsquigarrow v \to u \rightsquigarrow T$$
 
-donde la calle original era $u \to v$ con costo $w$. Entonces alcanza con conocer dos tablas:
+donde la calle original era $u \to v$ con costo $w$. Para no recalcular esos tramos, definimos dos **tablas de programación dinámica**:
 
-1. $d_S(x)$: distancia mínima **desde $S$ hasta $x$** en $G$. Se calcula con Dijkstra desde $S$ sobre $G$.
-2. $d_T(x)$: distancia mínima **desde $T$ hasta $x$** en $G^T$ _(grafo con las calles invertidas)_. Se calcula con Dijkstra desde $T$ sobre $G^T$.
+1. **$d_S(y)$:** distancia mínima desde $S$ hasta $y$ en $G$.
+   $$d_S(S) = 0, \qquad d_S(y) = \min_{(x \to y) \in G} \big(d_S(x) + w(x, y)\big)$$
+2. **$d_T(x)$:** distancia mínima desde $x$ hasta $T$ en $G$ (equivalente a salir desde $T$ en $G^T$).
+   $$d_T(T) = 0, \qquad d_T(x) = \min_{(x \to y) \in G} \big(w(x, y) + d_T(y)\big)$$
 
-Con esas tablas, el costo de usar la calle $i$ invertida es:
-$$d_S(v_i) + w_i + d_T(u_i)$$
+- **Subestructura óptima y subproblemas solapados:** en el ejemplo de la consigna, $d_T(7) = 0$ (caso base) y $d_T(8) = 6$. Al calcular $d_T(6) = \min(1 + d_T(8),\, 8 + d_T(7)) = 7$, se reutiliza $d_T(8)$ sin recalcular $8 \to 7$; luego ese mismo resultado se reutiliza para $d_T(1) = 14$, $d_T(3) = 17$ y $d_T(2) = 19$.
+- **Por qué el orden lo da Dijkstra:** como el grafo tiene ciclos (por ejemplo, $6 \to 8 \to 4 \to 1 \to 6$), una recursión con memoización directa se trabaría en un ciclo. Al ser todos los pesos positivos, Dijkstra procesa los nodos de menor a mayor distancia y garantiza que al extraer un nodo del heap su valor en la tabla ya es definitivo.
+- **Combinación en $O(1)$ por calle:** con ambas tablas llenas, invertir la calle $i$ ($u_i \to v_i$) se evalúa en $O(1)$ reutilizando los dos subproblemas:
+  $$\text{candidato}(i) = d_S(v_i) + w_i + d_T(u_i)$$
+  Aunque $d_S(v_i)$ o $d_T(u_i)$ usen la arista original $u_i \to v_i$ guardada en la tabla, eso formaría un ciclo de peso positivo y nunca resultaría menor que el camino original, por lo que no genera falsas mejoras.
 
-Con el ejemplo del caso de prueba de la consigna, cada cuenta significa lo siguiente, teniendo en cuenta que se parte de 2 y se recorre hasta 7:
+En el ejemplo de la consigna (partida en 2, escuela en 7), para la calle 6 (`7 5 3`) cada término es:
 
-- **$$d_S(5)$$** **= 8** $\to$ es la distancia desde el inicio hasta el vertice v, que es la esquina 5, en la cual una arista de ese vertice se invertirá.
-- **w = 3** $\to$ es la calle invertida, que iba de 5 a 7 originalmente, ahora va de 7 a 5.
-- **$$d_T(7)$$ = 0** $\to$ ya estoy en la escuela, porque de 7 a 7, tengo distancia 0
+- **$d_S(5) = 8$** $\to$ distancia mínima desde el inicio (2) hasta la esquina 5.
+- **$w = 3$** $\to$ costo de la calle invertida, que iba de 7 a 5 originalmente y ahora va de 5 a 7.
+- **$d_T(7) = 0$** $\to$ ya estamos en la escuela (caso base).
 
-Así que la distancia resultante es 11, como en la consigna original.
+Así que la distancia resultante es $8 + 3 + 0 = 11$, como en la consigna original.
 
-## Código
-```java
-import java.io.*;
-import java.util.*;
+## Código (Python)
+```python
+import heapq, sys
 
-public class CambioManoCalle {
-    static final int INF = Integer.MIN_VALUE;
+INF = float('inf')
 
-    static int[] dijkstra(int origen, int n, List<List<int[]>> ady) {
-        int[] dist = new int[n + 1];
-        Arrays.fill(dist, INF);
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        dist[origen] = 0;
-        pq.add(new int[]{0, origen});
-        while (!pq.isEmpty()) {
-            int[] top = pq.poll();
-            int d = top[0];
-            int x = top[1];
-            if (d > dist[x]) continue;
-            for (int[] calle : ady.get(x)) {
-                int y = calle[0];
-                int nuevo = d + calle[1];
-                if (dist[y] == INF || nuevo < dist[y]) {
-                    dist[y] = nuevo;
-                    pq.add(new int[]{nuevo, y});
-                }
-            }
-        }
-        return dist;
-    }
+# Calcula las distancias mínimas desde origen hacia todas las esquinas (Dijkstra)
+def dijkstra(n, adj, origen):
+    dist = [INF] * (n + 1)
+    dist[origen] = 0
+    pq = [(0, origen)]                  # cola de prioridad (min-heap): (distancia, esquina)
+    while pq:
+        d, x = heapq.heappop(pq)
+        if d > dist[x]:                 # ignorar entradas viejas que ya fueron mejoradas
+            continue
+        for y, w in adj[x]:             # relajar las aristas salientes de x
+            if d + w < dist[y]:
+                dist[y] = d + w
+                heapq.heappush(pq, (dist[y], y))
+    return dist
 
-    static int[] resolver(int E, int S, int T, int C, int[] U, int[] V, int[] W) {
-        List<List<int[]>> G = new ArrayList<>();
-        List<List<int[]>> GT = new ArrayList<>();
-        for (int i = 0; i <= E; i++) {
-            G.add(new ArrayList<>());
-            GT.add(new ArrayList<>());
-        }
-        for (int i = 1; i <= C; i++) {
-            G.get(U[i]).add(new int[]{V[i], W[i]});
-            GT.get(V[i]).add(new int[]{U[i], W[i]});
-        }
+def resolver(n, s, t, calles):
+    # 1. Construir el grafo original G y el transpuesto GT (todas las calles invertidas)
+    G = [[] for _ in range(n + 1)]
+    GT = [[] for _ in range(n + 1)]
+    for u, v, w in calles:
+        G[u].append((v, w))             # arista original: u -> v
+        GT[v].append((u, w))            # arista invertida: v -> u
 
-        int[] dS = dijkstra(S, E, G);
-        int[] dT = dijkstra(T, E, GT);
+    # 2. Llenar las tablas de PD con distancias desde S (en G) y hacia T (desde T en GT)
+    dS = dijkstra(n, G, s)
+    dT = dijkstra(n, GT, t)
 
-        int D0 = dS[T];
-        int mejor = D0;
-        int calle = -1;
+    # 3. Combinar ambas tablas de PD en O(1) para evaluar cada calle invertida
+    d0 = dS[t]
+    mejor, calle = d0, -1
+    for i, (u, v, w) in enumerate(calles, 1):
+        costo = dS[v] + w + dT[u]       # S ~> v -> u ~> T
+        if costo < mejor:
+            mejor, calle = costo, i
 
-        for (int i = 1; i <= C; i++) {
-            if (dS[V[i]] == INF || dT[U[i]] == INF) {
-                continue;
-            }
-            int costo = dS[V[i]] + W[i] + dT[U[i]];
-            if (costo < mejor) {
-                mejor = costo;
-                calle = i;
-            }
-        }
-        return new int[]{D0, mejor, calle};
-    }
+    # 4. Armar la salida según haya mejora o no
+    if calle == -1:
+        return [d0, "NO ES POSIBLE MEJORAR"]
+    return [d0, mejor, calle]
 
-    public static void main(String[] args) throws IOException {
-        StreamTokenizer in = new StreamTokenizer(new BufferedReader(new FileReader("invertir.in")));
-        in.nextToken();
-        int E = (int) in.nval;
-        in.nextToken();
-        int S = (int) in.nval;
-        in.nextToken();
-        int T = (int) in.nval;
-        in.nextToken();
-        int C = (int) in.nval;
+# Lee la entrada (E, S, T, C y las C calles), ejecuta resolver e imprime cada línea de salida
+def main():
+    data = sys.stdin.read().split()
+    n, s, t, c = int(data[0]), int(data[1]), int(data[2]), int(data[3])
+    calles = [(int(data[4 + 3*i]), int(data[5 + 3*i]), int(data[6 + 3*i]))
+              for i in range(c)]        # agrupa cada terna (salida, llegada, distancia)
+    print("\n".join(map(str, resolver(n, s, t, calles))))
 
-        int[] U = new int[C + 1];
-        int[] V = new int[C + 1];
-        int[] W = new int[C + 1];
-        for (int i = 1; i <= C; i++) {
-            in.nextToken(); U[i] = (int) in.nval;
-            in.nextToken(); V[i] = (int) in.nval;
-            in.nextToken(); W[i] = (int) in.nval;
-        }
-
-        int[] res = resolver(E, S, T, C, U, V, W);
-
-        PrintWriter out = new PrintWriter(new FileWriter("invertir.out"));
-        out.println(res[0]);
-        if (res[2] == -1) {
-            out.println("NO ES POSIBLE MEJORAR");
-        } else {
-            out.println(res[1]);
-            out.println(res[2]);
-        }
-        out.close();
-    }
-}
+main()
 ```
+
+> Lee de la entrada estándar para no depender del nombre del archivo (`cambio.in` / `invertir.in`). Se asume que $T$ es alcanzable desde $S$ originalmente (como garantiza la consigna) y se reutiliza Dijkstra sin poda temprana en `t`, ya que se necesitan llenar las tablas para todas las esquinas.
 
 ## Traza de ejemplo
 Teniendo en cuenta los siguientes parámetros de entrada: 
@@ -130,7 +105,7 @@ Teniendo en cuenta los siguientes parámetros de entrada:
 - $T = 9$
 - Las 16 calles del ejemplo que se detallarán más adelante.
 
-Acá se visualiza como ingresan los datos en el programa
+Acá se visualiza cómo ingresan los datos en el programa:
 ```
 9 1 9
 16
@@ -152,7 +127,7 @@ Acá se visualiza como ingresan los datos en el programa
 7 6 2
 ```
 
-Pero, en el formato de tabla, se puede entender mejor como se conectan los datos brindados:
+Pero, en el formato de tabla, se puede entender mejor cómo se conectan los datos brindados:
 
 | Calle | $u \to v$ | $w$ |
 |---|---|---|
@@ -243,12 +218,12 @@ El camino resultante es $1 \to 6 \to 7 \to 9$. La calle 3 queda segunda con cost
 - El algoritmo de Dijkstra utiliza la cola de prioridad, ejecutado dos veces, para tener en cuenta los tramos con los caminos normales e invertidos _(desde $S$ en $G$ y desde $T$ en $G^T$)_: **$O((E + C) \log E)$**, esta complejidad se corresponde a cada una.
 - Recorrer las $C$ calles evaluando $d_S(v_i) + w_i + d_T(u_i)$: $O(C)$, ya que cada evaluación es una suma de valores precalculados, es decir, **$O(1)$** por calle.
 
-Por lo tanto, teniendo en cuenta esto, el total de la complejidad temporal, sería sumando las sub-complejidades por cada uno de los 3 renglones, como el $O(E + C)$ y $O(1)$ son constantes, solo se tiene en cuenta la complejdad implicada en el algoritmo de Dijkstra, resulta en → **Total: $O((E + C) \log E)$.**.
+Sumando los tres pasos, tanto $O(E + C)$ como $O(C)$ quedan dominados por la complejidad de Dijkstra. **Total: $O((E + C) \log E)$.**
 
 ### Espacial
 $O(E + C)$:
 - Las listas de adyacencia de $G$ y $G^T$ guardan $C$ aristas cada una.
-- Los arrays $U$, $V$ y $W$ tienen tamaño $C + 1$.
+- La lista de entrada `calles` tiene tamaño $C$.
 - Las tablas $d_S$ y $d_T$ tienen tamaño $E + 1$.
 - La cola de prioridad guarda, como máximo, una entrada por cada arista relajada, es decir, $O(C)$.
 
@@ -257,13 +232,25 @@ $O(E + C)$:
 - Cuando las distancias son **no negativas**, para poder usar Dijkstra.
 - Cuando el grafo es **grande**, donde una matriz de adyacencia no entra en memoria y conviene optar por usar listas de adyacencia.
 
-Viendolo de un punto de vista mas pesimista...
-
-## Cuándo NO usar esta técnica
-- Si hay pesos negativos _(habría que usar otro algoritmo que los acepte, como Bellman-Ford)_
-- Cuando el grafo no tiene pesos _(alcanzaría con BFS)_
+### Limitaciones (cuándo NO usarla)
+- Si hay pesos negativos _(habría que usar otro algoritmo que los acepte, como Bellman-Ford)_.
+- Cuando el grafo no tiene pesos _(la idea del grafo transpuesto sigue sirviendo, pero no hace falta Dijkstra: alcanza con BFS)_.
 - En el caso que se permita modificar **más de una arista a la vez**, porque los tramos dejan de ser independientes entre sí.
 
+### Comparación con Fuerza bruta
+Respecto a [[Cambio de mano de una calle - Fuerza bruta]]:
+
+| Aspecto | Fuerza bruta | Esta solución (PD + grafo transpuesto) |
+|---|---|---|
+| **Ejecuciones de Dijkstra** | $C + 1$ (una por cada calle invertida) | **2** (desde $S$ a todos en $G$, y desde $T$ a todos en $G^T$) |
+| **Evaluar cada calle** | $O((E + C) \log E)$ | **$O(1)$** (reutilizando `dS` y `dT`) |
+| **Tiempo total** | $O(C \cdot (E + C) \log E)$ | **$O((E + C) \log E)$** |
+| **Memoria** | $O(E + C)$ (un solo grafo) | $O(E + C)$ (duplica el grafo: $G$ y $G^T$) |
+
+- **Cuándo conviene Fuerza bruta:** solo en instancias muy chicas, donde el tiempo no es un problema y se prioriza la implementación más directa.
+- **Cuándo conviene esta solución:** sirve para cualquier tamaño de entrada y es la única viable cuando el grafo crece (como en los límites del enunciado, $E \le 80\,000$ y $C \le 250\,000$), porque evita multiplicar Dijkstra por $C$.
+
 ## Referencias
+- [[Cambio de mano de una calle (OIA 2013, Nivel 3, Problema 3)]]
 - [[Cambio de mano de una calle - Fuerza bruta]]
 - [Problema original, Certamen Nacional OIA 2013](https://www.oia.unsam.edu.ar/_media/prob/c3a13n3p3.pdf)
