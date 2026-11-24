@@ -1,0 +1,106 @@
+<svg width="680" height="432" viewBox="0 0 680 432" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Árbol de llamadas y podas de backtracking para k = 3</title>
+  <desc id="desc">Árbol de backtracking de abajo hacia arriba para k = 3: base v3=(3,2) con colgantes 4 y 6 (W3=10); en v2=(2,5) la orientación (2,5) consume 4 (W2=14); en v1=(4,2) la orientación (4,2) se poda porque p=28 no está disponible y la orientación (2,4) consume 7 retornando W1=21 con 4 colgantes.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .query { fill: #f5f7fa; stroke: #c0742a; stroke-width: 2; }
+    .ghost { fill: #f5f7fa; fill-opacity: 0.5; stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; }
+    .cell-null { fill: #fff4e6; stroke: #c0742a; stroke-width: 1.6; stroke-dasharray: 5,3; }
+    .link { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .link-fill { fill: #9baec8; }
+    .ghost-link { stroke: #777777; stroke-width: 1.4; stroke-dasharray: 4,3; fill: none; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    .val-sm { font-size: 14px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .ghost-val { font-size: 14px; font-weight: 700; fill: #555555; text-anchor: middle; }
+    .char-null { font-size: 14px; font-weight: 700; fill: #a0522d; text-anchor: middle; }
+    .accent-label { font-size: 14px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .idx-start { font-size: 12px; fill: #777777; text-anchor: start; }
+    .idx-end { font-size: 12px; fill: #777777; text-anchor: end; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .arm-end { font-size: 12px; font-weight: 700; fill: #4a6fa5; text-anchor: end; }
+    .arm-start { font-size: 12px; font-weight: 700; fill: #4a6fa5; text-anchor: start; }
+    @media (prefers-color-scheme: dark) {
+      .frame { fill: #1e2330; stroke: #4a6fa5; }
+      .query { fill: #1e2330; stroke: #d4884a; }
+      .ghost { fill: #1e2330; stroke: #8899aa; }
+      .cell-null { fill: #2a1f10; stroke: #d4884a; }
+      .link { stroke: #4a6fa5; }
+      .link-fill { fill: #4a6fa5; }
+      .ghost-link { stroke: #8899aa; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+      .val-sm { fill: #e2e8f0; }
+      .ghost-val { fill: #aab4c0; }
+      .char-null { fill: #d4884a; }
+      .accent-label { fill: #d4884a; }
+      .idx, .idx-start, .idx-end, .op { fill: #8899aa; }
+      .arm-end, .arm-start { fill: #6a9fd8; }
+    }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" class="link-fill"/>
+    </marker>
+    <marker id="arrow-accent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" class="accent-arrow-fill"/>
+    </marker>
+  </defs>
+
+  <!-- Título -->
+  <text x="340" y="24" class="op">árbol de llamadas para k = 3 (v3 -&gt; v2 -&gt; v1)</text>
+
+  <!-- Nivel 0: base v3 -->
+  <rect x="205" y="40" width="270" height="50" rx="8" class="frame"/>
+  <text x="340" y="61" class="val-sm">base v3 = (3, 2)</text>
+  <text x="340" y="79" class="idx">pa = 4, pb = 6  -&gt;  W3 = 10</text>
+
+  <!-- Flecha Nivel 0 -> Nivel 1 -->
+  <line x1="340" y1="90" x2="340" y2="124" class="link" marker-end="url(#arrow)"/>
+  <text x="352" y="111" class="idx-start">rest: {4, 7, 7, 9}</text>
+
+  <!-- Nivel 1: subir(v2, W=10) -->
+  <rect x="215" y="128" width="250" height="48" rx="8" class="frame"/>
+  <text x="340" y="149" class="val-sm">subir(v2, W = 10)</text>
+  <text x="340" y="167" class="idx">v2 = (2, 5)</text>
+
+  <!-- Ramas desde Nivel 1 -->
+  <line x1="290" y1="176" x2="215" y2="230" class="link" marker-end="url(#arrow)"/>
+  <text x="232" y="206" class="arm-end">(2, 5): p = 4 ✓</text>
+
+  <line x1="390" y1="176" x2="518" y2="230" class="ghost-link"/>
+  <text x="476" y="206" class="idx-start">(5, 2): no explorada</text>
+
+  <!-- Nivel 2 Izquierda: subir(v1, W=14) -->
+  <rect x="85" y="234" width="250" height="48" rx="8" class="frame"/>
+  <text x="210" y="255" class="val-sm">subir(v1, W = 14)</text>
+  <text x="210" y="273" class="idx">v1 = (4, 2) · rest: {7, 7, 9}</text>
+
+  <!-- Nivel 2 Derecha: corte temprano -->
+  <rect x="415" y="234" width="220" height="48" rx="8" class="ghost"/>
+  <text x="525" y="255" class="ghost-val">corte temprano</text>
+  <text x="525" y="273" class="idx">rama izq. ya halló solución</text>
+
+  <!-- Ramas desde Nivel 2 Izquierda -->
+  <line x1="165" y1="282" x2="132" y2="334" class="link" marker-end="url(#arrow)"/>
+  <text x="136" y="313" class="idx-end">(4, 2): p = 28</text>
+
+  <line x1="255" y1="282" x2="372" y2="334" class="accent-arrow" marker-end="url(#arrow-accent)"/>
+  <text x="334" y="313" class="arm-start">(2, 4): p = 7 ✓</text>
+
+  <!-- Nivel 3 Izquierda: Poda -->
+  <rect x="22" y="338" width="216" height="50" rx="8" class="cell-null"/>
+  <text x="130" y="359" class="char-null">PODA (p = 28)</text>
+  <text x="130" y="377" class="idx">28 no está disponible</text>
+
+  <!-- Nivel 3 Derecha: Solución -->
+  <rect x="275" y="338" width="240" height="50" rx="8" class="query"/>
+  <text x="395" y="359" class="accent-label">SOLUCIÓN: W1 = 21</text>
+  <text x="395" y="377" class="idx">4 colgantes · retorna (4, 21)</text>
+
+  <!-- Pie -->
+  <text x="340" y="416" class="op">al podar (4, 2) retrocede a v1 y prueba (2, 4) -&gt; éxito inmediato</text>
+</svg>
