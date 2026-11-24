@@ -13,7 +13,7 @@ Con el objetivo de reducir el tiempo de viaje matutino, el intendente ofrece cam
 [Problema original](https://www.oia.unsam.edu.ar/_media/prob/c3a13n3p3.pdf)
 
 ## Intuición
-El problema se puede interpretar a partir del caso de prueba dibujandolo para entender los caminos que se tienen en cuenta. Se considera que al invertir una calle, solo se puede reducir la distnacia si el camino más corto luego de esa operación, pasa por esa calle invertida. Cualquier camino que no la use ya existía antes del cambio, así que no puede ser más corto que el recorrido original. Entonces, si la calle original es $u \to v$ y la invertimos a $v \to u$, el camino mejorado tiene 3 tramos:
+El problema se puede interpretar a partir del caso de prueba dibujándolo para entender los caminos que se tienen en cuenta. Se considera que al invertir una calle, solo se puede reducir la distancia si el camino más corto luego de esa operación, pasa por esa calle invertida. Cualquier camino que no la use ya existía antes del cambio, así que no puede ser más corto que el recorrido original. Entonces, si la calle original es $u \to v$ y la invertimos a $v \to u$, el camino mejorado tiene 3 tramos:
 
 - El tramo $S \rightsquigarrow v$ se puede calcular en el grafo **original**.
 - El tramo $u \rightsquigarrow T$ también se puede calcular en el grafo **original**.
@@ -24,7 +24,7 @@ Además, el camino nuevo nunca necesita usar la calle original $u \to v$ en esos
 Por eso alcanza con conocer, para **toda** esquina $x$:
 
 - $d_S(x)$: distancia mínima de $S$ a $x$ *(Dijkstra desde S en G)*.
-- $d_T(x)$: distancia mínima de $x$ a $T$ *(Dijkstra desde T en el grafo con todas las calles invertidas G^T)*.
+- $d_T(x)$: distancia mínima de $x$ a $T$ *(Dijkstra desde T en el grafo con todas las calles invertidas $G^T$)*.
 
 Con esas dos tablas, probar una calle cuesta $O(1)$. En el caso de prueba, para la calle 6 (`7 5 3`) el camino nuevo es $2 \to 3 \to 1 \to 5 \to 7$ y su costo es $d_S(5) + 3 + d_T(7) = 8 + 3 + 0 = 11$.
 
@@ -39,7 +39,7 @@ Sea $G = (V, A)$ un grafo dirigido y ponderado, con $V = \{1, \dots, E\}$ las es
 
 **Entrada:** 
 - Se recibe el número de esquinas, el número de esquina donde parte el colectivo, y con el número de la esquina donde se ubica la escuela.
-- Hay C lineas _(correspondientes a la cantidad de calles)_ que describen el número de esquina de salida de la calle, la correspondiente a la llegada y la asignación de distancia entre ambas.
+- Hay C líneas _(correspondientes a la cantidad de calles)_ que describen el número de esquina de salida de la calle, la correspondiente a la llegada y la asignación de distancia entre ambas.
 
 **Salida:**
 
