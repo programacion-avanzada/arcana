@@ -89,7 +89,7 @@ Con `ini = 1`, arrancamos con cero y sumamos los aportes 1, 0 y 1 para `fin = 1`
 
 ## Complejidad
 
-**Temporal.** Hay $M$ distancias distintas entre los $N$ tiros, con $1\le M\le N$. Con las claves ordenadas, se evalúan $M(M+1)/2$ intervalos. Cada uno agrega un aporte con una consulta al mapa en $O(1)$ esperado, de modo que buscar el mejor rango cuesta $O(M^2)$ esperado. Ordenar cuesta $O(M\log M)$ y queda dominado por la búsqueda cuadrática. Al sumar también el agrupamiento, el tiempo total esperado es $O(N+M\log M+M^2)=O(N+M^2)$, que puede ser cuadrático en $N$.
+**Temporal.** Hay $M$ distancias distintas entre los $N$ tiros, con $1\le M\le N$. Con las claves ordenadas, se evalúan $M(M+1)/2$ intervalos. Cada uno agrega un aporte con una consulta al mapa en $O(1)$ esperado, de modo que buscar el mejor rango cuesta $O(M^2)$ esperado. Ordenar cuesta $O(M\log M)$ y queda dominado por la búsqueda cuadrática. Al sumar también el agrupamiento, el tiempo total esperado es $O(N+M\log M+M^2)=O(N+M^2)$. Si $M=N$ este resulta en $O(N^2)$.
 
 **Espacial.** El mapa y el vector de claves ordenadas usan $O(M)$ espacio auxiliar. La búsqueda mantiene una suma, el puntaje máximo y los índices del intervalo elegido, por lo que emplea $O(1)$ espacio adicional.
 
