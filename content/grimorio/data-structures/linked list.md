@@ -217,7 +217,7 @@ Construir $n$ elementos con `insertar_final` en un bucle cuesta $O(n^2)$ sin `ta
 - Cuando el problema requiere acceso aleatorio frecuente
 
 ### Comparaciones
-- **vs Array.** el array usa memoria contigua, tiene tamaño fijo y permite acceso directo $O(1)$, pero insertar o eliminar en el medio exige desplazar elementos. La lista simple crece dinámicamente y solo reubica punteros, pero su acceso es secuencial $O(n)$. Usá lista cuando haya constante alta y baja de elementos, sin recorridos frecuentes.
+- **vs Array.** el array usa memoria contigua, tiene tamaño fijo y permite acceso directo $O(1)$. Insertar o eliminar en el medio exige desplazar elementos. La lista simple crece dinámicamente. Con una referencia al nodo anterior, insertar o eliminar en el medio requiere actualizar enlaces en $O(1)$. Si hay que recorrer la lista para llegar al nodo anterior, ese recorrido cuesta $O(n)$ en el peor caso. Usá una lista simple cuando haya inserciones y eliminaciones frecuentes y ya tengas la referencia al nodo anterior.
 - **vs Lista Doble.** la lista doble permite recorrer en ambas direcciones, pero consume más memoria. La lista simple es más económica en memoria pero restringe el recorrido a un solo sentido. Elegí lista simple si la memoria es crítica y el recorrido es siempre hacia adelante.
 - **vs Pila / Cola.** la pila y la cola restringen por diseño dónde podés insertar y eliminar para garantizar su comportamiento. La lista simple no tiene estas restricciones. Usá lista simple cuando necesitás operar o buscar en posiciones intermedias.
 
