@@ -9,56 +9,58 @@ Solución por programación dinámica para [[2025_cosechando_sandias]].
 
 ## Técnicas utilizadas
 
-**Programación dinámica bottom-up.** Cada subproblema se resuelve una sola vez y se guarda en una tabla que se llena de forma iterativa, desde el caso sin sandías hasta el problema completo. Además se usan dos técnicas auxiliares.
-
-- **Dos punteros**, para calcular en tiempo lineal qué sandías anteriores son compatibles con cada una.
-- **Reconstrucción hacia atrás**, para recuperar de la tabla qué sandías forman la cosecha óptima.
+**Programación dinámica bottom-up (tabulación).** Se puede aplicar porque el problema tiene subestructura óptima (la mejor cosecha se arma con la mejor cosecha de un prefijo del camino) y subproblemas superpuestos (muchas ramas de decisiones terminan haciendo la misma pregunta). Cada subproblema se resuelve una sola vez y se guarda en una tabla que se llena de forma iterativa, desde el caso sin sandías hasta el problema completo. La tabla se recorre después hacia atrás para recuperar qué sandías forman la cosecha óptima.
 
 ## Idea de la solución
 
-### El subproblema
+La solución sigue los pasos de la receta de diseño de programación dinámica.
+
+### 1. Subproblema
 
 Es una mochila 0/1 en la que el valor de cada sandía es su propio peso. Se define
 
 $$M[i][t] = \text{mayor peso que se puede cosechar con las sandías } 1, \dots, i \text{ sin pasar de } t \text{ kilos, respetando la distancia } D$$
 
-para $0 \le i \le N$ y $0 \le t \le T$. La respuesta es $M[N][T]$.
+para $0 \le i \le N$ y $0 \le t \le T$.
 
-### Sandías compatibles con la $i$
-
-Si se cosecha la sandía $i$, la cosechada anterior tiene que estar en una ubicación $\le x_i - D$. Como las ubicaciones están ordenadas, esas sandías forman un prefijo del camino. Se define
-
-$$\text{prev}(i) = \max \{\, j < i : x_j \le x_i - D \,\} \qquad (0 \text{ si no hay ninguna})$$
-
-Las sandías $1, \dots, \text{prev}(i)$ están a $D$ metros o más de la $i$, y las que van de $\text{prev}(i) + 1$ a $i - 1$ están demasiado cerca.
-
-Como $x_i - D$ crece con $i$, $\text{prev}(i)$ nunca retrocede, así que se puede calcular con un solo puntero $j$ que avanza. El costo total es $O(N)$.
-
-### La recurrencia
+### 2. Decisión y recurrencia
 
 Para la sandía $i$ hay dos opciones.
 
 - **Dejarla.** Queda el mismo problema con las sandías $1, \dots, i - 1$, o sea $M[i-1][t]$.
-- **Cosecharla.** Si entra en el carro ($p_i \le t$), suma $p_i$ kilos y el resto de la capacidad se llena con sandías compatibles con ella, es decir del prefijo $1, \dots, \text{prev}(i)$. Eso es $p_i + M[\text{prev}(i)][t - p_i]$.
+- **Cosecharla.** Solo si entra en el carro ($p_i \le t$). Suma $p_i$ kilos y el resto de la capacidad se llena con sandías que estén a $D$ metros o más de la $i$.
+
+Como las ubicaciones están ordenadas, las sandías compatibles con la $i$ forman un prefijo del camino. Se define
+
+$$\text{prev}(i) = \max \{\, j < i : x_j \le x_i - D \,\} \qquad (0 \text{ si no hay ninguna})$$
+
+Las sandías $1, \dots, \text{prev}(i)$ están a $D$ metros o más de la $i$, y las que van de $\text{prev}(i) + 1$ a $i - 1$ están demasiado cerca. Cosechar la sandía $i$ vale entonces $p_i + M[\text{prev}(i)][t - p_i]$, y queda
 
 $$
 M[i][t] =
 \begin{cases}
-0 & \text{si } i = 0 \\
-M[i-1][t] & \text{si } i \ge 1 \text{ y } p_i > t \\
-\max\big(M[i-1][t],\ p_i + M[\text{prev}(i)][t - p_i]\big) & \text{si } i \ge 1 \text{ y } p_i \le t
+M[i-1][t] & \text{si } p_i > t \\
+\max\big(M[i-1][t],\ p_i + M[\text{prev}(i)][t - p_i]\big) & \text{si } p_i \le t
 \end{cases}
 $$
 
 Es la recurrencia de la mochila 0/1 con un solo cambio. Al cosechar, en lugar de pasar a la fila $i - 1$ se salta a la fila $\text{prev}(i)$. Con $D = 0$ vale $\text{prev}(i) = i - 1$ y queda la mochila 0/1 de siempre.
 
+Como $x_i - D$ crece con $i$, $\text{prev}(i)$ nunca retrocede. Se calcula para todas las sandías con un índice $j$ que solo avanza, con costo total $O(N)$.
+
+### 3. Caso base
+
+Sin sandías no se cosecha nada, así que $M[0][t] = 0$ para todo $t$.
+
+### 4. Orden de llenado
+
 Las dos opciones miran filas anteriores ($i - 1$ y $\text{prev}(i) < i$), así que llenando la tabla de arriba hacia abajo cada celda se calcula con sus dependencias ya resueltas.
 
 ![Dependencias de una celda de la tabla y punteros prev del ejemplo](2025-cosechando-sandias-pd-dependencias.svg)
 
-### Reconstrucción
+### 5. Respuesta y reconstrucción
 
-La tabla da el peso máximo, pero no qué sandías lo logran. Para recuperarlas se recorre hacia atrás desde $(N, T)$, igual que en la mochila 0/1.
+El peso máximo es $W = M[N][T]$. Para saber qué sandías lo logran se recorre la tabla hacia atrás desde $(N, T)$, igual que en la mochila 0/1.
 
 - Si $M[i][t] = M[i-1][t]$, la sandía $i$ no hace falta. Se la deja y se pasa a $i - 1$.
 - Si no, la sandía $i$ está en la cosecha. Se la agrega, se resta $p_i$ de $t$ y se salta a $\text{prev}(i)$.
@@ -101,7 +103,7 @@ ALGORITMO Sandias(T, D, x, p, ubicaciones)
     RETORNAR M[N][T]
 ```
 
-Primero se calcula `prev` con dos punteros, después se llena la tabla `M` y al final se reconstruye la cosecha. `x` y `p` se indexan desde 1. `prev` es un [[array|arreglo]] de enteros, `M` una matriz de enteros y `elegidas` un [[dynamic array|arreglo dinámico]] que se recorre al revés para dejar `ubicaciones` en orden creciente. Si no se puede cosechar nada, $M[N][T] = 0$ y `ubicaciones` queda vacío.
+Primero se calcula `prev` con un índice que solo avanza, después se llena la tabla `M` y al final se reconstruye la cosecha. `x` y `p` se indexan desde 1. `prev` es un [[array|arreglo]] de enteros, `M` una matriz de enteros y `elegidas` un [[dynamic array|arreglo dinámico]] que se recorre al revés para dejar `ubicaciones` en orden creciente. Si no se puede cosechar nada, $M[N][T] = 0$ y `ubicaciones` queda vacío.
 
 ## Traza de ejemplo
 
@@ -138,7 +140,7 @@ En la fila 3 se ve el efecto de la distancia. Para $t = 22$, dejar la sandía en
 
 ### Paso 3. Reconstrucción
 
-$M[6][41] = 39$, así que el peso máximo es 39.
+$W = M[6][41] = 39$.
 
 | Paso | $i$ | $t$ | $M[i][t]$ | $M[i-1][t]$ | Acción |
 |-----:|----:|----:|----------:|------------:|--------|
@@ -148,7 +150,7 @@ $M[6][41] = 39$, así que el peso máximo es 39.
 |    4 |   3 |  24 |        22 |          21 | se cosecha la sandía en 16; $t = 24 - 2 = 22$; $i = \text{prev}(3) = 1$ |
 |    5 |   1 |  22 |        20 |           0 | se cosecha la sandía en 1; $t = 22 - 20 = 2$; $i = \text{prev}(1) = 0$ |
 
-Con $i = 0$ termina el ciclo con `elegidas = [48, 16, 1]`. Invertido queda `ubicaciones = [1, 16, 48]` y la función retorna $39$. Los 2 kilos que sobran en $t$ son la capacidad que queda libre en el carro. En el paso 4 se salta de la fila 3 directo a la fila 1, así que la sandía en 15 nunca se considera porque está a menos de $D$ metros de la de 16.
+Con $i = 0$ termina el ciclo con `elegidas = [48, 16, 1]`. Invertido queda `ubicaciones = [1, 16, 48]` y la función retorna $W = 39$. Los 2 kilos que sobran en $t$ son la capacidad que queda libre en el carro. En el paso 4 se salta de la fila 3 directo a la fila 1, así que la sandía en 15 nunca se considera porque está a menos de $D$ metros de la de 16.
 
 ## Complejidad
 
