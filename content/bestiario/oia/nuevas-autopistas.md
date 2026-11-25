@@ -1,7 +1,6 @@
 ﻿---
-title: 'Nuevas Autopistas - OIA 2018'
-tags:
-  - oia
+title: "Nuevas Autopistas - OIA 2018"
+tags: [oia]
 ---
 
 ## Enunciado
