@@ -109,16 +109,16 @@ $O(N + M)$: la lista de adyacencia ocupa $O(N + M)$, los arreglos `dist`, `padre
 - Los caminos mínimos son únicos (por ejemplo, costos "en general" distintos): en ese caso el SPT está determinado y la respuesta es exacta.
 ### Limitaciones
 
-* Empates. Si un destino tiene varios caminos mínimos, el desempate por "última arista más barata" es una heurística: decide mirando un solo nodo, sin saber qué caminos van a necesitar los otros destinos. 
-	* La estructura que resuelve este problema es el **Árbol de Steiner mínimo** restringido a los caminos mínimos, pero encontrarlo es NP-duro, por lo que aún no se conoce ningún algoritmo eficiente que garantice encontrar la solución exacta en un tiempo razonable.
-		* El algoritmo de **Dreyfus-Wagner** es un método de programación dinámica exacto que encuentra este árbol. Su complejidad temporal es $O(3^k n + 2^k n^2 + n(m + nlogn))$.
-		* El algoritmo de aproximación **KMB (Kou-Markowsky-Berman)** garantiza en el peor caso $2 * OPT$, siendo $OPT$ el resultado óptimo.
-* Requiere costos no negativos (el enunciado lo garantiza: $0 \le c$). Con costos negativos tampoco serviría Bellman-Ford: en un grafo no dirigido, una arista negativa ya forma un ciclo negativo (ir y volver por ella).
+- Empates. Si un destino tiene varios caminos mínimos, el desempate por "última arista más barata" es una heurística: decide mirando un solo nodo, sin saber qué caminos van a necesitar los otros destinos.
+	- La estructura que resuelve este problema es el **Árbol de Steiner mínimo** restringido a los caminos mínimos, pero encontrarlo es NP-duro, por lo que aún no se conoce ningún algoritmo eficiente que garantice encontrar la solución exacta en un tiempo razonable.
+		- El algoritmo de **Dreyfus-Wagner** es un método de programación dinámica exacto que encuentra este árbol. Su complejidad temporal es $O(3^k n + 2^k n^2 + n(m + nlogn))$.
+		- El algoritmo de aproximación **KMB (Kou-Markowsky-Berman)** garantiza en el peor caso $2 * OPT$, siendo $OPT$ el resultado óptimo.
+- Requiere costos no negativos (el enunciado lo garantiza: $0 \le c$). Con costos negativos tampoco serviría Bellman-Ford: en un grafo no dirigido, una arista negativa ya forma un ciclo negativo (ir y volver por ella).
 
 >[!note] ¿Por qué no buscamos el óptimo exacto?
 >Con caminos mínimos empatados, el óptimo es un Árbol de Steiner (NP-duro): los algoritmos exactos, como Dreyfus-Wagner, son exponenciales en la cantidad de destinos y casi no se usan en la práctica. El enunciado pide «el menor costo **que logre determinar**», no el óptimo garantizado, así que elegimos Greedy: escala a las restricciones y es exacto cuando los caminos mínimos son únicos.
 
---- 
+---
 ## Comparación con la solución por fuerza bruta
 
 |                                     | Fuerza bruta         | Greedy           |
@@ -131,9 +131,9 @@ $O(N + M)$: la lista de adyacencia ocupa $O(N + M)$, los arreglos `dist`, `padre
 
 La fuerza bruta solo supera a esta solución en redes muy chicas con caminos mínimos empatados. Para el tamaño del problema, Dijkstra + SPT es la única opción viable, y en la instancia del enunciado da el resultado correcto (9).
 
---- 
+---
 ## Referencias
 
-* [[https://www.oia.unsam.edu.ar/_media/prob/c3a02n3p3.pdf|Enunciado original: OIA 2002, Nivel 3, Problema 3]]
-* [[https://en.wikipedia.org/wiki/Steiner_tree_problem|Árbol de Steiner]]
+- [[https://www.oia.unsam.edu.ar/_media/prob/c3a02n3p3.pdf|Enunciado original: OIA 2002, Nivel 3, Problema 3]]
+- [[https://en.wikipedia.org/wiki/Steiner_tree_problem|Árbol de Steiner]]
 - [[https://codeforces.com/blog/entry/91601|Algoritmo de Dreyfus-Wagner]]
