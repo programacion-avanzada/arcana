@@ -1,0 +1,67 @@
+<svg width="680" height="310" viewBox="0 0 680 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Cableando por la ruta: N = 4, C = 2, total 10 km</title>
+  <desc id="desc">Pueblitos en los km 2, 5, 15 y 22. Tramos entre vecinos de 3, 10 y 7 km. El tramo de 10 km queda sin cable y se forman dos componentes conexos, cada uno con su central: total 3 + 7 = 10 km.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .central { fill: #f5f7fa; stroke: #c0742a; stroke-width: 2.4; }
+    .val { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .sum { font-size: 16px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .road { stroke: #9baec8; stroke-width: 1.5; }
+    .cable { stroke: #c0742a; stroke-width: 5; stroke-linecap: round; }
+    .cut { stroke: #777777; stroke-width: 2; stroke-dasharray: 6,5; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .ghost-label { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .bracket { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .frame { fill: #1e2330; stroke: #4a6fa5; }
+      .central { fill: #1e2330; stroke: #d4884a; }
+      .val { fill: #e2e8f0; }
+      .op { fill: #8899aa; }
+      .sum { fill: #e2e8f0; }
+      .road { stroke: #4a6fa5; }
+      .cable { stroke: #d4884a; }
+      .cut { stroke: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .ghost-label { fill: #8899aa; }
+      .bracket { stroke: #4a6fa5; }
+    }
+  </style>
+
+  <text x="340" y="30" class="op">N = 4 pueblitos (número = km de la ruta), C = 2 centrales</text>
+
+  <!-- ruta -->
+  <line x1="16" y1="150" x2="664" y2="150" class="road"/>
+
+  <!-- tramos: x(km) = 60 + (km - 2) * 28 -->
+  <line x1="86" y1="150" x2="118" y2="150" class="cable"/>
+  <line x1="170" y1="150" x2="398" y2="150" class="cut"/>
+  <line x1="450" y1="150" x2="594" y2="150" class="cable"/>
+
+  <text x="102" y="116" class="accent-label">3 km</text>
+  <text x="284" y="98" class="ghost-label">✂ sin cable</text>
+  <text x="284" y="116" class="ghost-label">10 km</text>
+  <text x="522" y="116" class="accent-label">7 km</text>
+
+  <!-- pueblitos -->
+  <rect x="34" y="128" width="52" height="44" rx="8" class="central"/>
+  <text x="60" y="157" class="val">2</text>
+  <rect x="118" y="128" width="52" height="44" rx="8" class="frame"/>
+  <text x="144" y="157" class="val">5</text>
+  <rect x="398" y="128" width="52" height="44" rx="8" class="central"/>
+  <text x="424" y="157" class="val">15</text>
+  <rect x="594" y="128" width="52" height="44" rx="8" class="frame"/>
+  <text x="620" y="157" class="val">22</text>
+
+  <text x="60" y="192" class="accent-label">central</text>
+  <text x="424" y="192" class="accent-label">central</text>
+
+  <!-- componentes -->
+  <path d="M34,208 L34,218 L170,218 L170,208" class="bracket"/>
+  <text x="102" y="240" class="op">componente 1: 3 km</text>
+  <path d="M398,208 L398,218 L646,218 L646,208" class="bracket"/>
+  <text x="522" y="240" class="op">componente 2: 7 km</text>
+
+  <text x="340" y="285" class="sum">Total = 3 + 7 = 10 km</text>
+</svg>
