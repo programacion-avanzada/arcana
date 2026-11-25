@@ -5,10 +5,10 @@ tags:
 ---
 ## Técnicas utilizadas
 
-* **Greedy**: el algoritmo de Dijkstra es greedy. En cada paso fija definitivamente el nodo no visitado más cercano al origen y nunca revisa esa decisión. Funciona porque los costos son no negativos.
-* **Árbol de caminos mínimos (SPT, Shortest Path Tree)**: guardando para cada nodo desde qué nodo lo alcanzamos (su predecesor), los caminos mínimos de Dijkstra forman un árbol con raíz en el origen.
+- **Greedy**: el algoritmo de Dijkstra es greedy. En cada paso fija definitivamente el nodo no visitado más cercano al origen y nunca revisa esa decisión. Funciona porque los costos son no negativos.
+- **Árbol de caminos mínimos (SPT, Shortest Path Tree)**: guardando para cada nodo desde qué nodo lo alcanzamos (su predecesor), los caminos mínimos de Dijkstra forman un árbol con raíz en el origen.
 
---- 
+---
 ## Idea de la solución
 
 Como el ruteo del enunciado manda cada mensaje por el camino de menor costo, el mensaje multicast recorre el SPT: viaja junto mientras los caminos coinciden y se divide donde se separan. El costo es la suma de las aristas del SPT que llevan a algún destino, cada una contada una sola vez.
@@ -87,14 +87,14 @@ SPT resultante: `padre = {2: 3, 3: 1, 4: 2, 6: 2}`.
 
 Sin el desempate del paso 2, el nodo 2 se quedaba con padre 1 y el resultado era 6 + 7 + 1 + 1 = 15.
 
---- 
+---
 ## Complejidad
 ### Temporal
 
 $O((N + M)\log N)$.
 
-* Dijkstra con heap: cada arista se analiza lo sumo dos veces (una por extremo) y cada inserción o extracción del heap cuesta $O(\log N)$. Como solo insertamos ante una mejora estricta, hay a lo sumo $O(M)$ entradas en el heap.
-* La reconstrucción es $O(N)$ en total: cada nodo se marca una sola vez y el bucle corta en cuanto encuentra un nodo marcado, así que ningún tramo se recorre dos veces.
+- Dijkstra con heap: cada arista se analiza lo sumo dos veces (una por extremo) y cada inserción o extracción del heap cuesta $O(\log N)$. Como solo insertamos ante una mejora estricta, hay a lo sumo $O(M)$ entradas en el heap.
+- La reconstrucción es $O(N)$ en total: cada nodo se marca una sola vez y el bucle corta en cuanto encuentra un nodo marcado, así que ningún tramo se recorre dos veces.
 
 Con $N, M \le 10000$, son unos cientos de miles de operaciones.
 ### Espacial
@@ -105,8 +105,8 @@ $O(N + M)$: la lista de adyacencia ocupa $O(N + M)$, los arreglos `dist`, `padre
 ## Cuándo usar esta técnica
 ### Favorable cuando
 
-* La red es grande: es la única de nuestras dos soluciones que escala a las restricciones del enunciado.
-* Los caminos mínimos son únicos (por ejemplo, costos "en general" distintos): en ese caso el SPT está determinado y la respuesta es exacta.
+- La red es grande: es la única de nuestras dos soluciones que escala a las restricciones del enunciado.
+- Los caminos mínimos son únicos (por ejemplo, costos "en general" distintos): en ese caso el SPT está determinado y la respuesta es exacta.
 ### Limitaciones
 
 * Empates. Si un destino tiene varios caminos mínimos, el desempate por "última arista más barata" es una heurística: decide mirando un solo nodo, sin saber qué caminos van a necesitar los otros destinos. 

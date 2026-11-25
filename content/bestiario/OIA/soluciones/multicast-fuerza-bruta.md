@@ -98,7 +98,7 @@ $O(N + M)$: la lista de enlaces activos, la lista de adyacencia y los arreglos d
 - Crece como $2^M$. Con las restricciones del enunciado ($M \le 10000$) es inutilizable.
 - Repite trabajo: corre un Dijkstra completo por cada subconjunto, aunque dos subconjuntos difieran en un solo enlace.
 
---- 
+---
 ## Comparación con la solución greedy
 
 |                                     | Fuerza Bruta         | Greedy           |
@@ -111,7 +111,7 @@ $O(N + M)$: la lista de enlaces activos, la lista de adyacencia y los arreglos d
 
 La solución greedy la supera en cualquier entrada realista. La fuerza bruta solo gana cuando hay varios caminos mínimos empatados y conviene elegir los que comparten más tramos.
 
---- 
+---
 ## Referencias
 
 - [[https://www.oia.unsam.edu.ar/_media/prob/c3a02n3p3.pdf|Enunciado original: OIA 2002, Nivel 3, Problema 3]]
