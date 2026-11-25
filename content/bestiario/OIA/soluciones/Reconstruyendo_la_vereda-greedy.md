@@ -40,7 +40,7 @@ def vereda(B, G, N, baldosas):
         elif turno_izq: prohibidos, opuesto = {izq}, der
         else:           prohibidos, opuesto = {der}, izq
         cand = [c for c in resto if resto[c] > 0 and c not in prohibidos]
-        # más restantes; luego, el color del vecino opuesto; luego, orden B, G, N
+        # más restantes; el color del vecino opuesto; orden B, G, N
         c = max(cand, key=lambda c: (resto[c], c == opuesto))
         resto[c] -= 1
         if i == j or turno_izq: res[i] = c; izq = c; i += 1
@@ -56,10 +56,10 @@ Entrada: `2 2 2` y `BGRRRRRRBNGB`. El hueco ocupa las posiciones 0 a 5 (relativa
 | Paso | Extremo | Vecino | Restantes (B,G,N) | Candidatos | Elegido | Motivo |
 |------|---------|--------|-------------------|------------|---------|--------|
 | 1 | izq (pos 0) | G | 2,2,2 | B, N | **B** | empate. `B` es el vecino del extremo opuesto |
-| 2 | der (pos 5) | B | 1,2,2 | G, N | **G** | empate. ninguno es el opuesto (`B`), se toma el primero |
+| 2 | der (pos 5) | B | 1,2,2 | G, N | **G** | empate. ninguno es el opuesto (`B`), se toma el primero disponible|
 | 3 | izq (pos 1) | B | 1,1,2 | G, N | **N** | `N` tiene más restantes |
 | 4 | der (pos 4) | G | 1,1,1 | B, N | **N** | empate. `N` es el vecino del extremo opuesto |
-| 5 | izq (pos 2) | N | 1,1,0 | B, G | **B** | empate. ninguno es el opuesto (`N`), se toma el primero |
+| 5 | izq (pos 2) | N | 1,1,0 | B, G | **B** | empate. ninguno es el opuesto (`N`), se toma el primero disponible|
 | 6 | centro (pos 3) | B y N | 0,1,0 | G | **G** | único color posible |
 
 Relleno: `BNBGNG`. Resultado: `BG` + `BNBGNG` + `BNGB` = `BGBNBGNGBNGB`. No hay repetidos contiguos, los bordes `G|B` y `G|B` son correctos y usa 2 `B`, 2 `G` y 2 `N`. Es una de las 14 salidas válidas.
