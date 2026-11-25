@@ -47,6 +47,8 @@ Para lograr accesos y actualizaciones inmediatas, la caché LRU orquesta dos est
 	- Si es un dato nuevo, crea el nodo y lo inserta en el frente.
 - **Desalojo:** → Si la caché ya alcanzó su capacidad máxima y se inserta una nueva clave, elimina el último nodo de la lista (el menos recientemente utilizado) y borra su clave del diccionario.
 
+![Operaciones de una caché LRU: acceso get(C) y desalojo al insertar con la caché llena](cache-lru-operaciones.svg)
+
 ### Complejidad
 #### Complejidad temporal
 
