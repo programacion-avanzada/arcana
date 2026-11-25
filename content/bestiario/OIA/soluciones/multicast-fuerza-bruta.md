@@ -8,7 +8,7 @@ tags:
 - **Fuerza bruta**: generamos todas las configuraciones posibles (todos los subconjuntos de enlaces) y nos quedamos con la mejor que cumpla las condiciones del problema. No aprovecha ninguna estructura del problema; por eso es exacta, pero exponencial.
 - **Algoritmo de Dijkstra (como herramienta auxiliar)**: lo usamos solo para verificar cada candidato, calculando distancias mínimas desde el origen.
 
---- 
+---
 ## Idea de la solución
 
 El enunciado dice que los mensajes siempre viajan por el camino de menor costo. Entonces no alcanza con que un conjunto de enlaces "conecte" el origen con los destinos: tiene que permitir llegar a cada destino con su distancia mínima real.
@@ -19,9 +19,9 @@ Modelamos la red como un [[grimorio/data-structures/graph|grafo]] no dirigido co
 3. Para cada subconjunto calculamos `dist_S`, las distancias usando solo los enlaces activos. El subconjunto es válido si `dist_S[d] == dist_G[d]` para todo destino `d`.
 4. El costo de un subconjunto válido es la suma de sus enlaces (cada enlace se paga una vez, aunque lo usen varios mensajes). La respuesta es el mínimo entre los válidos.
 
-#### ¿Por qué no alcanza con BFS/DFS? 
+#### ¿Por qué no alcanza con BFS/DFS?
 
-Podemos utilizar los recorridos BFS o DFS a fin de verificar que, para cada subconjunto de aristas, los destinos fueran **alcanzables**. Sin embargo, no verifican que se llegue por el **camino mínimo**. 
+Podemos utilizar los recorridos BFS o DFS a fin de verificar que, para cada subconjunto de aristas, los destinos fueran **alcanzables**. Sin embargo, no verifican que se llegue por el **camino mínimo**.
 
 ---
 ## Código
@@ -71,15 +71,15 @@ Usamos la instancia de [[multicast]]: origen `1` y destinos `{3, 4, 6}`.
 
 De las 32 máscaras, solo 3 son válidas. La mínima cuesta **9**: el mensaje viaja junto por 1→3→2 y recién ahí se separa hacia 4 y 6. La fila `e0, e3, e4` muestra por qué no basta con mirar el costo: también suma 9, pero no es una solución.
 
---- 
+---
 ## Complejidad
 ### Temporal
 
 $O(2^M \cdot (N + M)\log N)$
 
-* Hay $2^M$ subconjuntos.
-* Para cada uno, armar la lista de enlaces activos cuesta $O(M)$ y correr Dijkstra cuesta $O((N + M)\log N)$.
-* El Dijkstra inicial con todos los enlaces se hace una sola vez y no cambia el orden.
+- Hay $2^M$ subconjuntos.
+- Para cada uno, armar la lista de enlaces activos cuesta $O(M)$ y correr Dijkstra cuesta $O((N + M)\log N)$.
+- El Dijkstra inicial con todos los enlaces se hace una sola vez y no cambia el orden.
 
 Con $M = 30$ ya son más de mil millones de subconjuntos: solo es viable para $M \lesssim 20$.
 ### Espacial

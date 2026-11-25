@@ -81,5 +81,5 @@ El siguiente paso es usar el algoritmo de Dijkstra desde el origen, guardando no
 ---
 ## Soluciones disponibles
 
-* [[multicast-fuerza-bruta]]
-* [[multicast-greedy]]
+- [[multicast-fuerza-bruta]]
+- [[multicast-greedy]]
