@@ -1,10 +1,14 @@
+# Reconstruyendo la vereda (único tramo)
+
 ## Nombre y enunciado
 
-**Reconstruyendo la vereda (único tramo)**
+Una ciudad turística tiene las veredas de sus bulevares armadas con baldosas cuadradas de tres colores: blanco (B), gris (G) y negro (N). Para que se vean más vistosas, se cuidó que no haya baldosas contiguas del mismo color.
 
-Una ciudad tiene veredas armadas con baldosas de tres colores: blanco (`B`), gris (`G`) y negro (`N`). Por diseño, **no hay dos baldosas contiguas del mismo color**. Para tender cables se removieron algunas baldosas y se las amontonó por color, sin registrar de dónde salieron. Hay que volver a colocarlas **todas** de modo que la vereda siga cumpliendo la regla.
+Para tender cables subterráneos hubo que remover varias baldosas, que se amontonaron por color sin registrar de dónde salieron. Ahora hay que volver a colocarlas todas, de modo que la vereda siga cumpliendo la regla.
 
-**Modificación:** Se garantiza que todas las baldosas perdidas son consecutivas, es decir, forman un único tramo de la vereda.
+**Modificación**: Se garantiza que todas las baldosas perdidas son consecutivas, es decir, forman un único tramo de la vereda. El resto del enunciado no cambia.
+
+[Enunciado original](https://www.oia.unsam.edu.ar/wp-content/uploads/2017/03/vereda.pdf) (Certamen Nacional de la Olimpíada Argentina de Informática 2017, Nivel 3, Problema 3 ("Reconstruyendo la vereda")).
 ## Intuición
 
 A primera vista parece un problema de acomodar letras como se pueda, pero hay dos fuentes de dificultad:
@@ -64,4 +68,4 @@ Se puede chequear a mano: ninguna pareja contigua es igual, `G|B` y `N|B` en los
 
 - [Solución por fuerza bruta](./soluciones/Reconstruyendo_la_vereda-fuerza-bruta.md)
 - [Solución con backtracking](./soluciones/Reconstruyendo_la_vereda-backtracking.md)
-- [Solución greedy](./soluciones/Reconstruyendo_la_vereda-greedy.md)
+- [Solución greedy (óptima)](./soluciones/Reconstruyendo_la_vereda-greedy.md)
