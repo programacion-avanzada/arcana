@@ -1,6 +1,6 @@
 # Reconstruyendo la vereda - Fuerza bruta
 
-<- Volver a la [descripción del problema](Reconstruyendo_la_vereda.md)
+<- Volver a la [descripción del problema](../Reconstruyendo_la_vereda.md)
 
 ## Técnicas utilizadas
 
