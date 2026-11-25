@@ -19,7 +19,7 @@ El problema pide maximizar la cantidad de colgantes ($k + 1$) usando las primera
 4. **Subir con backtracking y podas (`subir(i, peso_subcadena)`):** al llegar a una varilla superior $i$ con peso acumulado $W_{i+1}$, se prueban sus hasta dos orientaciones $(a_i, b_i) \in \{(l1_i, l2_i), (l2_i, l1_i)\}$ (una sola si $l1_i = l2_i$). El peso del colgante necesario en el brazo $b_i$ queda fijado de forma única: $$p_{c_i} = \frac{W_{i+1} \cdot a_i}{b_i}$$
 
 - Si $(W_{i+1} \cdot a_i) \bmod b_i \ne 0$ o `freq[p] == 0`, se **poda** la rama sin hacer llamadas recursivas.
-- Si está disponible, se descuenta de `freq`, se llama a `subir(i - 1, W_{i+1} + p)` y al regresar se restaura `freq[p]` (retroceso).
+- Si está disponible, se descuenta de `freq`, se llama a `backtracking(i - 1, W_{i+1} + p, freq, varillas)` y al regresar se restaura `freq[p]` (retroceso).
 - El caso base $i < 0$ indica que todas las varillas quedaron equilibradas y devuelve el peso total $W_1$.
 
 > Los colgantes de peso $0$ ($0 \le p_c \le 100$) quedan contemplados naturalmente por las mismas ecuaciones sin casos especiales.
@@ -29,52 +29,43 @@ El problema pide maximizar la cantidad de colgantes ($k + 1$) usando las primera
 ```python
 from collections import Counter
 
+def k_maximo(v, varillas):
+    k = 1
+    while k < v and max(varillas[k]) < sum(varillas[k - 1]):
+        k += 1
+    return k
 
-def armar_movil(varillas, colgantes):
-    V = len(varillas)
-    C = len(colgantes)
-    if V == 0 or C < 2:
+def backtracking(i, peso_subcadena, freq, varillas):
+    if i < 0:
+        return peso_subcadena
+
+    l1, l2 = varillas[i]
+    orientaciones = [(l1, l2)] if l1 == l2 else [(l1, l2), (l2, l1)]
+
+    for a, b in orientaciones:
+        if (peso_subcadena * a) % b != 0:
+            continue
+
+        p = (peso_subcadena * a) // b
+
+        if freq[p] > 0:
+            freq[p] -= 1
+            total = backtracking(i - 1, peso_subcadena + p, freq, varillas)
+
+            if total is not None:
+                return total
+
+            freq[p] += 1
+    return None
+                                                            
+def armar_movil(v, c, varillas, colgantes):
+    if v == 0 or c < 2:
         return None
 
-    # 1. Prefijo máximo de varillas que no chocan
-    k_max = 1
-    for i in range(1, V):
-        l1_ant, l2_ant = varillas[i - 1]
-        l1_act, l2_act = varillas[i]
-
-        if max(l1_act, l2_act) < l1_ant + l2_ant:
-            k_max += 1
-        else:
-            break
-
-    k_max = min(k_max, C - 1)
+    k_max = min(k_maximo(v, varillas), c - 1)
     freq = Counter(colgantes)
     pesos_distintos = sorted(freq.keys())
 
-    def subir(i, peso_subcadena):
-        if i < 0:
-            return peso_subcadena
-
-        l1, l2 = varillas[i]
-        orientaciones = [(l1, l2)] if l1 == l2 else [(l1, l2), (l2, l1)]
-
-        for a, b in orientaciones:
-            if (peso_subcadena * a) % b != 0:
-                continue
-
-            p = (peso_subcadena * a) // b
-
-            if freq[p] > 0:
-                freq[p] -= 1
-                total = subir(i - 1, peso_subcadena + p)
-                freq[p] += 1
-
-                if total is not None:
-                    return total
-
-        return None
-
-    # 2. Probar k de mayor a menor para detenernos en la primera solución
     for k in range(k_max, 0, -1):
         l1, l2 = varillas[k - 1]
         for pa in pesos_distintos:
@@ -87,13 +78,13 @@ def armar_movil(varillas, colgantes):
             if freq[pb] >= necesarios:
                 freq[pa] -= 1
                 freq[pb] -= 1
-                total = subir(k - 2, pa + pb)
-                freq[pa] += 1
-                freq[pb] += 1
+                total = backtracking(k - 2, pa + pb, freq, varillas)
 
                 if total is not None:
                     return (k + 1, total)
 
+                freq[pa] += 1
+                freq[pb] += 1
     return None
 ```
 
