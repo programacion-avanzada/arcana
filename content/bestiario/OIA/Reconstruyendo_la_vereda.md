@@ -62,6 +62,6 @@ Se puede chequear a mano: ninguna pareja contigua es igual, `G|B` y `N|B` en los
 
 ## Soluciones disponibles
 
-- [Solución por fuerza bruta](reconstruyendo-la-vereda-fuerza-bruta.md)
-- [Solución con backtracking](reconstruyendo-la-vereda-backtracking.md)
-- [Solución greedy](reconstruyendo-la-vereda-greedy.md)
+- [Solución por fuerza bruta](./soluciones/Reconstruyendo_la_vereda-fuerza-bruta.md)
+- [Solución con backtracking](./soluciones/Reconstruyendo_la_vereda-backtracking.md)
+- [Solución greedy](./soluciones/Reconstruyendo_la_vereda-greedy.md)
