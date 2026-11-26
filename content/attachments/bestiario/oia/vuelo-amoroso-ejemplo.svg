@@ -1,0 +1,136 @@
+<svg width="740" height="448" viewBox="0 0 740 448" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vuelo amoroso: vuelo de la pájara y vuelo óptimo del pajarito en el ejemplo</title>
+  <desc id="desc">Gráfico de altura en función del tiempo para t de 0 a 13. La pájara vuela 0, 3, 3, 3, 6, 9, 12, 9, 9, 6, 3, 3, 3, 3. El pajarito óptimo vuela 0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 4, 3. Las distancias en cada medición son 2, 1, 0, 2, 4, 6, 2, 3, 1, 1, 0, 1, 0 y suman 23.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .val-sm { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    .grid { stroke: #e3e8ef; stroke-width: 1; }
+    .axis { stroke: #9baec8; stroke-width: 1.5; }
+    .pajara { stroke: #c0742a; stroke-width: 2.5; fill: none; stroke-linejoin: round; }
+    .pajara-pt { fill: #c0742a; }
+    .pajarito { stroke: #4a6fa5; stroke-width: 2.5; fill: none; stroke-linejoin: round; }
+    .pajarito-pt { fill: #4a6fa5; }
+    .gap { stroke: #777777; stroke-width: 1.2; stroke-dasharray: 3,3; }
+    .serie-label { font-size: 13px; font-weight: 700; fill: #4a6fa5; }
+    .serie-label-acc { font-size: 13px; font-weight: 700; fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .val-sm { fill: #e2e8f0; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+      .grid { stroke: #2a3142; }
+      .axis { stroke: #4a6fa5; }
+      .pajara { stroke: #d4884a; }
+      .pajara-pt { fill: #d4884a; }
+      .pajarito { stroke: #6a9fd8; }
+      .pajarito-pt { fill: #6a9fd8; }
+      .gap { stroke: #8899aa; }
+      .serie-label { fill: #6a9fd8; }
+      .serie-label-acc { fill: #d4884a; }
+    }
+  </style>
+
+  <text x="376" y="24" class="op">ejemplo del enunciado: n = 13 mediciones</text>
+  <!-- leyenda -->
+  <path d="M206,46 L246,46" class="pajara"/>
+  <text x="254" y="51" class="serie-label-acc">pájara</text>
+  <path d="M376,46 L416,46" class="pajarito"/>
+  <text x="424" y="51" class="serie-label">pajarito (óptimo)</text>
+
+  <!-- grilla: x = 90 + 44*t, y = 340 - 22*h -->
+  <path d="M90,274 L662,274" class="grid"/>
+  <path d="M90,208 L662,208" class="grid"/>
+  <path d="M90,142 L662,142" class="grid"/>
+  <path d="M90,76 L662,76" class="grid"/>
+  <text x="66" y="344" class="idx">0</text>
+  <text x="66" y="278" class="idx">3</text>
+  <text x="66" y="212" class="idx">6</text>
+  <text x="66" y="146" class="idx">9</text>
+  <text x="66" y="80" class="idx">12</text>
+  <text x="40" y="212" class="op" transform="rotate(-90 40 208)">altura</text>
+  <path d="M90,340 L676,340" class="axis"/>
+  <path d="M90,340 L90,66" class="axis"/>
+  <text x="90" y="360" class="idx">0</text>
+  <text x="134" y="360" class="idx">1</text>
+  <text x="178" y="360" class="idx">2</text>
+  <text x="222" y="360" class="idx">3</text>
+  <text x="266" y="360" class="idx">4</text>
+  <text x="310" y="360" class="idx">5</text>
+  <text x="354" y="360" class="idx">6</text>
+  <text x="398" y="360" class="idx">7</text>
+  <text x="442" y="360" class="idx">8</text>
+  <text x="486" y="360" class="idx">9</text>
+  <text x="530" y="360" class="idx">10</text>
+  <text x="574" y="360" class="idx">11</text>
+  <text x="618" y="360" class="idx">12</text>
+  <text x="662" y="360" class="idx">13</text>
+  <text x="698" y="360" class="idx">t</text>
+
+  <!-- distancias |pajarito - pájara| en cada medición -->
+  <path d="M134,274 L134,318" class="gap"/>
+  <path d="M178,274 L178,296" class="gap"/>
+  <path d="M266,208 L266,252" class="gap"/>
+  <path d="M310,142 L310,230" class="gap"/>
+  <path d="M354,76 L354,208" class="gap"/>
+  <path d="M398,142 L398,186" class="gap"/>
+  <path d="M442,142 L442,208" class="gap"/>
+  <path d="M486,208 L486,230" class="gap"/>
+  <path d="M530,274 L530,252" class="gap"/>
+  <path d="M618,274 L618,252" class="gap"/>
+
+  <!-- vuelos -->
+  <polyline points="90,340 134,274 178,274 222,274 266,208 310,142 354,76 398,142 442,142 486,208 530,274 574,274 618,274 662,274" class="pajara"/>
+  <polyline points="90,340 134,318 178,296 222,274 266,252 310,230 354,208 398,186 442,208 486,230 530,252 574,274 618,252 662,274" class="pajarito"/>
+  <circle cx="90" cy="340" r="4" class="pajara-pt"/>
+  <circle cx="134" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="178" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="222" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="266" cy="208" r="4" class="pajara-pt"/>
+  <circle cx="310" cy="142" r="4" class="pajara-pt"/>
+  <circle cx="354" cy="76" r="4" class="pajara-pt"/>
+  <circle cx="398" cy="142" r="4" class="pajara-pt"/>
+  <circle cx="442" cy="142" r="4" class="pajara-pt"/>
+  <circle cx="486" cy="208" r="4" class="pajara-pt"/>
+  <circle cx="530" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="574" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="618" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="662" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="90" cy="340" r="4" class="pajarito-pt"/>
+  <circle cx="134" cy="318" r="4" class="pajarito-pt"/>
+  <circle cx="178" cy="296" r="4" class="pajarito-pt"/>
+  <circle cx="222" cy="274" r="4" class="pajarito-pt"/>
+  <circle cx="266" cy="252" r="4" class="pajarito-pt"/>
+  <circle cx="310" cy="230" r="4" class="pajarito-pt"/>
+  <circle cx="354" cy="208" r="4" class="pajarito-pt"/>
+  <circle cx="398" cy="186" r="4" class="pajarito-pt"/>
+  <circle cx="442" cy="208" r="4" class="pajarito-pt"/>
+  <circle cx="486" cy="230" r="4" class="pajarito-pt"/>
+  <circle cx="530" cy="252" r="4" class="pajarito-pt"/>
+  <circle cx="574" cy="274" r="4" class="pajarito-pt"/>
+  <circle cx="618" cy="252" r="4" class="pajarito-pt"/>
+  <circle cx="662" cy="274" r="4" class="pajarito-pt"/>
+
+  <!-- fila de distancias -->
+  <text x="40" y="394" class="op">|Δ|</text>
+  <text x="134" y="394" class="val-sm">2</text>
+  <text x="178" y="394" class="val-sm">1</text>
+  <text x="222" y="394" class="val-sm">0</text>
+  <text x="266" y="394" class="val-sm">2</text>
+  <text x="310" y="394" class="val-sm">4</text>
+  <text x="354" y="394" class="val-sm">6</text>
+  <text x="398" y="394" class="val-sm">2</text>
+  <text x="442" y="394" class="val-sm">3</text>
+  <text x="486" y="394" class="val-sm">1</text>
+  <text x="530" y="394" class="val-sm">1</text>
+  <text x="574" y="394" class="val-sm">0</text>
+  <text x="618" y="394" class="val-sm">1</text>
+  <text x="662" y="394" class="val-sm">0</text>
+  <text x="376" y="428" class="accent-label">distancia total = 2+1+0+2+4+6+2+3+1+1+0+1+0 = 23</text>
+</svg>

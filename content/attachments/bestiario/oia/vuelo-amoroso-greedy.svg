@@ -1,0 +1,127 @@
+<svg width="740" height="450" viewBox="0 0 740 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vuelo amoroso: la estrategia greedy pierde contra el vuelo óptimo</title>
+  <desc id="desc">Zoom de t igual a 6 a 13. La pájara baja de 12 a 3. El pajarito greedy, que siempre se acerca a la pájara, sube a 8 en t igual a 8 y después no llega a bajar a tiempo: total 25. El vuelo óptimo baja a 6 en t igual a 8, pagando 3 en ese paso, y queda mejor ubicado para la bajada: total 23.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .val-sm { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .ghost { fill: #f5f7fa; fill-opacity: 0.5; stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; }
+    .ghost-val { font-size: 15px; font-weight: 700; fill: #555555; text-anchor: middle; }
+    .ghost-link { stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; fill: none; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    .grid { stroke: #e3e8ef; stroke-width: 1; }
+    .axis { stroke: #9baec8; stroke-width: 1.5; }
+    .pajara { stroke: #c0742a; stroke-width: 2.5; fill: none; stroke-linejoin: round; }
+    .pajara-pt { fill: #c0742a; }
+    .pajarito { stroke: #4a6fa5; stroke-width: 2.5; fill: none; stroke-linejoin: round; }
+    .pajarito-pt { fill: #4a6fa5; }
+    .gap { stroke: #777777; stroke-width: 1.2; stroke-dasharray: 3,3; }
+    .serie-label { font-size: 13px; font-weight: 700; fill: #4a6fa5; }
+    .serie-label-acc { font-size: 13px; font-weight: 700; fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .val-sm { fill: #e2e8f0; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .ghost { fill: #1e2330; stroke: #8899aa; }
+      .ghost-val { fill: #aab4c0; }
+      .ghost-link { stroke: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+      .grid { stroke: #2a3142; }
+      .axis { stroke: #4a6fa5; }
+      .pajara { stroke: #d4884a; }
+      .pajara-pt { fill: #d4884a; }
+      .pajarito { stroke: #6a9fd8; }
+      .pajarito-pt { fill: #6a9fd8; }
+      .gap { stroke: #8899aa; }
+      .serie-label { fill: #6a9fd8; }
+      .serie-label-acc { fill: #d4884a; }
+    }
+  </style>
+
+  <text x="370" y="24" class="op">acercarse siempre a la pájara no es óptimo (zoom t = 6..13)</text>
+  <path d="M150,48 L190,48" class="pajara"/>
+  <text x="198" y="53" class="serie-label-acc">pájara</text>
+  <path d="M290,48 L330,48" class="ghost-link"/>
+  <text x="338" y="53" class="op" text-anchor="start" style="text-anchor: start">greedy</text>
+  <path d="M430,48 L470,48" class="pajarito"/>
+  <text x="478" y="53" class="serie-label">óptimo</text>
+
+  <!-- grilla: x = 110 + 70*(t-6), y = 320 - 20*(h-2) -->
+  <path d="M110,280 L600,280" class="grid"/>
+  <path d="M110,220 L600,220" class="grid"/>
+  <path d="M110,160 L600,160" class="grid"/>
+  <path d="M110,100 L600,100" class="grid"/>
+  <text x="86" y="284" class="idx">3</text>
+  <text x="86" y="224" class="idx">6</text>
+  <text x="86" y="164" class="idx">9</text>
+  <text x="86" y="104" class="idx">12</text>
+  <path d="M110,300 L614,300" class="axis"/>
+  <text x="110" y="320" class="idx">6</text>
+  <text x="180" y="320" class="idx">7</text>
+  <text x="250" y="320" class="idx">8</text>
+  <text x="320" y="320" class="idx">9</text>
+  <text x="390" y="320" class="idx">10</text>
+  <text x="460" y="320" class="idx">11</text>
+  <text x="530" y="320" class="idx">12</text>
+  <text x="600" y="320" class="idx">13</text>
+  <text x="636" y="320" class="idx">t</text>
+
+  <!-- vuelos -->
+  <polyline points="110,100 180,160 250,160 320,220 390,280 460,280 530,280 600,280" class="pajara"/>
+  <polyline points="110,220 180,200 250,180 320,200 390,220 460,240 530,260 600,280" class="ghost-link"/>
+  <polyline points="110,220 180,200 250,220 320,240 390,260 460,280 530,260 600,280" class="pajarito"/>
+  <circle cx="110" cy="100" r="4" class="pajara-pt"/>
+  <circle cx="180" cy="160" r="4" class="pajara-pt"/>
+  <circle cx="250" cy="160" r="4" class="pajara-pt"/>
+  <circle cx="320" cy="220" r="4" class="pajara-pt"/>
+  <circle cx="390" cy="280" r="4" class="pajara-pt"/>
+  <circle cx="460" cy="280" r="4" class="pajara-pt"/>
+  <circle cx="530" cy="280" r="4" class="pajara-pt"/>
+  <circle cx="600" cy="280" r="4" class="pajara-pt"/>
+  <circle cx="250" cy="180" r="4" class="ghost"/>
+  <circle cx="320" cy="200" r="4" class="ghost"/>
+  <circle cx="390" cy="220" r="4" class="ghost"/>
+  <circle cx="460" cy="240" r="4" class="ghost"/>
+  <circle cx="110" cy="220" r="4" class="pajarito-pt"/>
+  <circle cx="180" cy="200" r="4" class="pajarito-pt"/>
+  <circle cx="250" cy="220" r="4" class="pajarito-pt"/>
+  <circle cx="320" cy="240" r="4" class="pajarito-pt"/>
+  <circle cx="390" cy="260" r="4" class="pajarito-pt"/>
+  <circle cx="460" cy="280" r="4" class="pajarito-pt"/>
+  <circle cx="530" cy="260" r="4" class="pajarito-pt"/>
+  <circle cx="600" cy="280" r="4" class="pajarito-pt"/>
+
+  <!-- decisión clave en t = 8 -->
+  <text x="274" y="118" class="accent-label" style="text-anchor: start">t = 8: el óptimo baja a 6 (|Δ| = 3)</text>
+  <text x="274" y="136" class="accent-label" style="text-anchor: start">aunque subir a 8 costaba solo 1</text>
+  <path d="M290,144 L260,203" class="accent-arrow"/>
+  <path d="M255,200 L255,213 L265,206 Z" class="accent-arrow-fill"/>
+
+  <!-- distancias por medición -->
+  <text x="58" y="354" class="op">greedy</text>
+  <text x="58" y="380" class="op">óptimo</text>
+  <text x="110" y="354" class="val-sm">6</text>
+  <text x="110" y="380" class="val-sm">6</text>
+  <text x="180" y="354" class="val-sm">2</text>
+  <text x="180" y="380" class="val-sm">2</text>
+  <text x="250" y="354" class="val-sm">1</text>
+  <text x="250" y="380" class="val-sm">3</text>
+  <text x="320" y="354" class="val-sm">1</text>
+  <text x="320" y="380" class="val-sm">1</text>
+  <text x="390" y="354" class="val-sm">3</text>
+  <text x="390" y="380" class="val-sm">1</text>
+  <text x="460" y="354" class="val-sm">2</text>
+  <text x="460" y="380" class="val-sm">0</text>
+  <text x="530" y="354" class="val-sm">1</text>
+  <text x="530" y="380" class="val-sm">1</text>
+  <text x="600" y="354" class="val-sm">0</text>
+  <text x="600" y="380" class="val-sm">0</text>
+  <text x="656" y="354" class="op">= 25</text>
+  <text x="656" y="380" class="accent-label">= 23</text>
+  <text x="370" y="414" class="idx">hasta t = 5 ambos vuelos coinciden (9); |Δ| es la distancia en cada medición</text>
+</svg>

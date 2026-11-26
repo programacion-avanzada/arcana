@@ -79,6 +79,6 @@ Para mejorarla hay que preguntarse qué información del pasado importa realment
 
 ## Soluciones disponibles
 
-- [[vuelo_amoroso-greedy|Greedy]]
 - [[vuelo_amoroso-fuerza-bruta|Fuerza bruta]]
 - [[vuelo_amoroso-programacion-dinamica|Programación dinámica]]
+- [[vuelo_amoroso-greedy|Greedy]]

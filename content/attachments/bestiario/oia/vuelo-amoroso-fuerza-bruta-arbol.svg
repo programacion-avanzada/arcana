@@ -1,0 +1,111 @@
+<svg width="760" height="480" viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vuelo amoroso: árbol de decisiones de la fuerza bruta en las primeras 4 mediciones</title>
+  <desc id="desc">Árbol binario desde la altura 0. En cada nivel el pajarito sube o baja un metro. Las ramas no factibles, que quedan bajo tierra, se descartan. El estado tiempo 3 altura 1 aparece dos veces con costos 5 y 7, y el estado tiempo 4 altura 2 aparece tres veces con costos 7, 9 y 11: la fuerza bruta los sigue expandiendo a todos.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .cell { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .link { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .ghost { fill: #f5f7fa; fill-opacity: 0.5; stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; }
+    .ghost-val { font-size: 15px; font-weight: 700; fill: #555555; text-anchor: middle; }
+    .ghost-link { stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; fill: none; }
+    .query { fill: #f5f7fa; stroke: #c0742a; stroke-width: 2; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .cell { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm { fill: #e2e8f0; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .link { stroke: #4a6fa5; }
+      .ghost { fill: #1e2330; stroke: #8899aa; }
+      .ghost-val { fill: #aab4c0; }
+      .ghost-link { stroke: #8899aa; }
+      .query { fill: #1e2330; stroke: #d4884a; }
+      .accent-label { fill: #d4884a; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+    }
+  </style>
+
+  <text x="380" y="26" class="op">primeras 4 mediciones: cada nodo es (altura h, distancia acumulada Σ)</text>
+
+  <!-- etiquetas de nivel -->
+  <text x="20" y="85" class="op" style="text-anchor: start">t = 0</text>
+  <text x="20" y="159" class="op" style="text-anchor: start">t = 1  a = 3</text>
+  <text x="20" y="233" class="op" style="text-anchor: start">t = 2  a = 3</text>
+  <text x="20" y="307" class="op" style="text-anchor: start">t = 3  a = 3</text>
+  <text x="20" y="381" class="op" style="text-anchor: start">t = 4  a = 6</text>
+
+  <!-- aristas: +1 a la izquierda, -1 a la derecha -->
+  <path d="M545,102 L465,132" class="link"/>
+  <path d="M545,102 L625,132" class="ghost-link"/>
+  <path d="M465,176 L310,206" class="link"/>
+  <path d="M465,176 L620,206" class="link"/>
+  <path d="M310,250 L225,280" class="link"/>
+  <path d="M310,250 L395,280" class="link"/>
+  <path d="M620,250 L565,280" class="link"/>
+  <path d="M620,250 L675,280" class="ghost-link"/>
+  <path d="M225,324 L190,354" class="link"/>
+  <path d="M225,324 L260,354" class="link"/>
+  <path d="M395,324 L360,354" class="link"/>
+  <path d="M395,324 L430,354" class="link"/>
+  <path d="M565,324 L530,354" class="link"/>
+  <path d="M565,324 L600,354" class="link"/>
+
+  <!-- nodos -->
+  <rect x="514" y="58" width="62" height="44" rx="8" class="cell"/>
+  <text x="545" y="81" class="val-sm">h=0</text>
+  <text x="545" y="96" class="idx">Σ=0</text>
+  <rect x="434" y="132" width="62" height="44" rx="8" class="cell"/>
+  <text x="465" y="155" class="val-sm">h=1</text>
+  <text x="465" y="170" class="idx">Σ=2</text>
+  <rect x="594" y="132" width="62" height="44" rx="8" class="ghost"/>
+  <text x="625" y="155" class="ghost-val">h=-1</text>
+  <text x="625" y="170" class="idx">✗</text>
+  <rect x="279" y="206" width="62" height="44" rx="8" class="cell"/>
+  <text x="310" y="229" class="val-sm">h=2</text>
+  <text x="310" y="244" class="idx">Σ=3</text>
+  <rect x="589" y="206" width="62" height="44" rx="8" class="cell"/>
+  <text x="620" y="229" class="val-sm">h=0</text>
+  <text x="620" y="244" class="idx">Σ=5</text>
+  <rect x="194" y="280" width="62" height="44" rx="8" class="cell"/>
+  <text x="225" y="303" class="val-sm">h=3</text>
+  <text x="225" y="318" class="idx">Σ=3</text>
+  <rect x="364" y="280" width="62" height="44" rx="8" class="query"/>
+  <text x="395" y="303" class="val-sm">h=1</text>
+  <text x="395" y="318" class="idx">Σ=5</text>
+  <rect x="534" y="280" width="62" height="44" rx="8" class="query"/>
+  <text x="565" y="303" class="val-sm">h=1</text>
+  <text x="565" y="318" class="idx">Σ=7</text>
+  <rect x="644" y="280" width="62" height="44" rx="8" class="ghost"/>
+  <text x="675" y="303" class="ghost-val">h=-1</text>
+  <text x="675" y="318" class="idx">✗</text>
+  <rect x="159" y="354" width="62" height="44" rx="8" class="cell"/>
+  <text x="190" y="377" class="val-sm">h=4</text>
+  <text x="190" y="392" class="idx">Σ=5</text>
+  <rect x="229" y="354" width="62" height="44" rx="8" class="query"/>
+  <text x="260" y="377" class="val-sm">h=2</text>
+  <text x="260" y="392" class="idx">Σ=7</text>
+  <rect x="329" y="354" width="62" height="44" rx="8" class="query"/>
+  <text x="360" y="377" class="val-sm">h=2</text>
+  <text x="360" y="392" class="idx">Σ=9</text>
+  <rect x="399" y="354" width="62" height="44" rx="8" class="cell"/>
+  <text x="430" y="377" class="val-sm">h=0</text>
+  <text x="430" y="392" class="idx">Σ=11</text>
+  <rect x="499" y="354" width="62" height="44" rx="8" class="query"/>
+  <text x="530" y="377" class="val-sm">h=2</text>
+  <text x="530" y="392" class="idx">Σ=11</text>
+  <rect x="569" y="354" width="62" height="44" rx="8" class="cell"/>
+  <text x="600" y="377" class="val-sm">h=0</text>
+  <text x="600" y="392" class="idx">Σ=13</text>
+
+  <!-- leyenda -->
+  <rect x="40" y="420" width="22" height="16" rx="4" class="query"/>
+  <text x="72" y="433" class="accent-label" style="text-anchor: start">mismo estado (t, h) por caminos distintos: (3, 1) dos veces, (4, 2) tres veces</text>
+  <rect x="40" y="446" width="22" height="16" rx="4" class="ghost"/>
+  <text x="72" y="459" class="op" style="text-anchor: start">no factible (altura &lt; 0): se descarta</text>
+</svg>

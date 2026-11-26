@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 235" width="540" height="235"
+     role="img" aria-labelledby="title description">
+  <title id="title">Alturas posibles en las primeras tres mediciones</title>
+  <desc id="description">Desde el piso se llega a un metro. En la segunda medición se puede bajar a cero o subir a dos metros. En la tercera, ambos caminos llegan a un metro, con costos acumulados de siete y cinco, respectivamente. Desde dos metros también se puede subir a tres.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; text-anchor: middle; }
+    .cell { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .query { stroke: #c0742a; stroke-width: 1.8; }
+    .height { font-size: 18px; font-weight: 700; fill: #1a1a2e; }
+    .label { font-size: 15px; font-weight: 700; fill: #555555; }
+    .link { fill: none; stroke: #9baec8; stroke-width: 1.8; }
+    .link-fill { fill: #9baec8; }
+    .accent-arrow { stroke: #c0742a; }
+    .accent-arrow-fill { fill: #c0742a; }
+    .accent-label { fill: #a0522d; }
+
+    @media (prefers-color-scheme: dark) {
+      .cell { fill: #1e2330; stroke: #4a6fa5; }
+      .link { stroke: #4a6fa5; }
+      .query, .accent-arrow { stroke: #d4884a; }
+      .height { fill: #e2e8f0; }
+      .label { fill: #aab4c0; }
+      .link-fill { fill: #4a6fa5; }
+      .accent-arrow-fill, .accent-label { fill: #d4884a; }
+    }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" class="link-fill"/>
+    </marker>
+    <marker id="accent-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" class="accent-arrow-fill"/>
+    </marker>
+  </defs>
+
+  <g class="label">
+    <text x="62" y="30">Inicio</text>
+    <text x="202" y="30">Medición 1</text>
+    <text x="342" y="30">Medición 2</text>
+    <text x="492" y="30">Medición 3</text>
+  </g>
+
+  <path class="link" marker-end="url(#arrow)" d="M94 205 L169 161"/>
+  <path class="link" marker-end="url(#arrow)" d="M234 161 L309 205"/>
+  <path class="link" marker-end="url(#arrow)" d="M234 161 L309 117"/>
+  <path class="link" marker-end="url(#arrow)" d="M374 117 L459 73"/>
+  <path class="link" marker-end="url(#arrow)" d="M374 205 L459 165"/>
+  <path class="link accent-arrow" marker-end="url(#accent-arrow)" d="M374 117 L459 157"/>
+
+  <text x="435" y="122" class="label accent-label">costo 5</text>
+  <text x="435" y="212" class="label">costo 7</text>
+
+  <rect class="cell" x="30" y="189" width="64" height="32" rx="5"/>
+  <text class="height" x="62" y="211">0 m</text>
+  <rect class="cell" x="170" y="145" width="64" height="32" rx="5"/>
+  <text class="height" x="202" y="167">1 m</text>
+  <rect class="cell" x="310" y="189" width="64" height="32" rx="5"/>
+  <text class="height" x="342" y="211">0 m</text>
+  <rect class="cell" x="310" y="101" width="64" height="32" rx="5"/>
+  <text class="height" x="342" y="123">2 m</text>
+  <rect class="cell query" x="460" y="145" width="64" height="32" rx="5"/>
+  <text class="height" x="492" y="167">1 m</text>
+  <rect class="cell" x="460" y="57" width="64" height="32" rx="5"/>
+  <text class="height" x="492" y="79">3 m</text>
+</svg>
