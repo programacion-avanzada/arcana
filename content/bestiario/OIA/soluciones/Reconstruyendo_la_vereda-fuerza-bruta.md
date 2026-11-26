@@ -15,6 +15,8 @@ Si el hueco tiene largo `k`, cada candidato es una cadena de `k` letras sobre `{
 
 La primera que pase ambos chequeos es la respuesta.
 
+![Ejemplo](../../../attachments/reconstruyendo-vereda-fuerza-bruta.svg)
+
 ## Código
 
 ```python

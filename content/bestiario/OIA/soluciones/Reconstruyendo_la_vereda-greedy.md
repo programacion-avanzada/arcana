@@ -25,6 +25,8 @@ Cuando queda una sola posición, tiene dos vecinos y el color no debe coincidir 
 
 > Aunque el hueco se achica en cada paso, no es división y conquista en sentido estricto: hay un único subproblema y no hay paso de combinación. Por eso se clasifica como greedy.
 
+![Ejemplo](../../../attachments/reconstruyendo-vereda-greedy.svg)
+
 ## Código
 
 ```python
