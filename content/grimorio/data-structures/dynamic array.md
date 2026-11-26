@@ -162,19 +162,22 @@ for i in range(arr.size):
 ### Cuándo NO usarlo
 
 - Tamaño conocido de antemano → usar array estático (sin costo de redimensión).
-- Inserciones/eliminaciones frecuentes en el medio → es preferible lista enlazada.
+- Inserciones o eliminaciones frecuentes en el medio → es preferible una lista simplemente enlazada si ya se dispone de la referencia al nodo anterior. Por ejemplo, durante un recorrido se puede insertar después del nodo actual.
 - Memoria muy fragmentada → es preferible lista enlazada (no requiere bloque contiguo).
 
 ### Comparaciones
 
-|                            | Array dinámico  | array estático | lista enlazada |
-| -------------------------- | --------------- | -------------- | -------------- |
-| Acceso por índice          | $O(1)$            | $O(1)$           | $O(n)$           |
-| Inserción al final         | $O(1)$ amortizado | -              | $O(1)$           |
-| Inserción en medio         | $O(n)$            | -              | $O(1)$           |
-| Localidad de caché         | ✓ excelente     | ✓ excelente    | ✗ fragmentada  |
-| Tamaño flexible            | ✓               | ✗              | ✓              |
-| Memoria contigua requerida | ✓               | ✓              | ✗              |
+|                                                    | Array dinámico    | Array estático | Lista simplemente enlazada             |
+| -------------------------------------------------- | ----------------- | -------------- | -------------------------------------- |
+| Acceso por índice                                  | $O(1)$            | $O(1)$         | $O(n)$                                 |
+| Inserción al final                                 | $O(1)$ amortizado | N/A            | $O(1)$ con `tail`, $O(n)$ sin `tail`   |
+| Inserción en medio por índice                      | $O(n)$            | N/A            | $O(n)$                                 |
+| Inserción en medio con la posición ya localizada   | $O(n)$            | N/A            | $O(1)$ con referencia al nodo anterior |
+| Eliminación en medio por índice                    | $O(n)$            | N/A            | $O(n)$                                 |
+| Eliminación en medio con la posición ya localizada | $O(n)$            | N/A            | $O(1)$ con referencia al nodo anterior |
+| Localidad de caché                                 | ✓ excelente       | ✓ excelente    | ✗ fragmentada                          |
+| Tamaño flexible                                    | ✓                 | ✗              | ✓                                      |
+| Memoria contigua requerida                         | ✓                 | ✓              | ✗                                      |
 
 ### Ventajas / desventajas
 
