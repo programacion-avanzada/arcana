@@ -17,7 +17,7 @@ Si al llegar al final del hueco la última baldosa coincide con el vecino derech
 
 La diferencia con la [fuerza bruta](Reconstruyendo_la_vereda-fuerza-bruta.md) es que nunca se generan cadenas completas que ya tenían un error en el prefijo.
 
-![Ejemplo](../../attachments/reconstruyendo-vereda-backtracking.svg)
+![Ejemplo](../../../attachments/reconstruyendo-vereda-backtracking.svg)
 
 ## Código
 
