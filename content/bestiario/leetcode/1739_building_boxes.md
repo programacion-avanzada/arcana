@@ -33,7 +33,7 @@ Para tener 1 caja en el nivel 2, la caja base (nivel 1, la que está justo en el
 Para tener 1 caja en el nivel 3, necesitás un triángulo de 3 cajas en el nivel 2. Y para sostener esas 3 cajas del nivel 2, necesitás un triángulo más grande en el piso (nivel 1) compuesto por 6 cajas.
 Las bases de cada nivel terminan siendo números triangulares (la sucesión de cantidades que pueden representarse geométricamente como puntos ordenados en forma de triángulo equilátero).
 
-![Piso triangular](piso_triangular.svg)
+![Piso triangular](1739-piso-triangular.svg)
 
 ### Total de cajas
 
@@ -76,7 +76,7 @@ Nivel 3: Sobre esas 3 cajas, hay soporte central para colocar exactamente 1 caja
 Suma de cajas apiladas = 6 (piso) + 3 + 1 = 10 cajas.
 Respuesta final: 6 cajas tocan el suelo.
 
-![Representación de n10](boxes_n10.svg)
+![Representación de n10](1739-n10.svg)
 
 ---
 
@@ -87,7 +87,7 @@ apilar la mayor cantidad de cajas por cada caja de piso. Conviene analizar cómo
 estructura cuando la construimos por niveles apoyada en el rincón, y qué relación hay entre el
 tamaño de la base y la cantidad total de cajas que puede sostener.
 
-![Regla Esquina](regla_esquina.svg)
+![Regla Esquina](1739-regla-esquina.svg)
 
 A partir de ahí aparece una decisión natural: dado `n`, ¿cuál es la base más chica que alcanza?
 Las soluciones del grupo atacan esa pregunta desde ángulos distintos: una construye la

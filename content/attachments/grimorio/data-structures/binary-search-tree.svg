@@ -1,0 +1,40 @@
+<svg width="330" height="280" viewBox="0 0 330 280" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+    }
+  </style>
+
+  <line x1="147.9" y1="42.2" x2="98.1" y2="77.8" class="link"/>
+  <line x1="182" y1="42.3" x2="231" y2="77.7" class="link"/>
+  <line x1="69.4" y1="107.5" x2="39.6" y2="152.5" class="link"/>
+  <line x1="92.9" y1="107.3" x2="124.1" y2="152.7" class="link"/>
+  <line x1="126.2" y1="188.6" x2="103.8" y2="231.4" class="link"/>
+  <line x1="146.1" y1="188.4" x2="169.9" y2="231.6" class="link"/>
+  <line x1="259.7" y1="107.4" x2="290.3" y2="152.6" class="link"/>
+  <line x1="290.1" y1="187.3" x2="258.9" y2="232.7" class="link"/>
+  <circle cx="165" cy="30" r="21" class="frame"/>
+  <text x="165" y="37" class="val">8</text>
+  <circle cx="81" cy="90" r="21" class="frame"/>
+  <text x="81" y="97" class="val">3</text>
+  <circle cx="248" cy="90" r="21" class="frame"/>
+  <text x="248" y="97" class="val">10</text>
+  <circle cx="28" cy="170" r="21" class="frame"/>
+  <text x="28" y="177" class="val">1</text>
+  <circle cx="136" cy="170" r="21" class="frame"/>
+  <text x="136" y="177" class="val">6</text>
+  <circle cx="302" cy="170" r="21" class="frame"/>
+  <text x="302" y="177" class="val">14</text>
+  <circle cx="94" cy="250" r="21" class="frame"/>
+  <text x="94" y="257" class="val">4</text>
+  <circle cx="180" cy="250" r="21" class="frame"/>
+  <text x="180" y="257" class="val">7</text>
+  <circle cx="247" cy="250" r="21" class="frame"/>
+  <text x="247" y="257" class="val">13</text>
+</svg>

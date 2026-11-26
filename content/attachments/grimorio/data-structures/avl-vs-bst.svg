@@ -1,0 +1,66 @@
+<svg width="600" height="330" viewBox="0 0 600 330" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .idx          { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .idx          { fill: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+    }
+  </style>
+
+  <!-- niveles -->
+  <text x="32" y="54" class="idx">h = 0</text>
+  <text x="32" y="99" class="idx">h = 1</text>
+  <text x="32" y="144" class="idx">h = 2</text>
+  <text x="32" y="189" class="idx">h = 3</text>
+  <text x="32" y="234" class="idx">h = 4</text>
+
+  <!-- BST degenerado: claves 10 a 50 insertadas en orden -->
+  <line x1="122" y1="63.5" x2="138" y2="81.5" class="link"/>
+  <line x1="162" y1="108.5" x2="178" y2="126.5" class="link"/>
+  <line x1="202" y1="153.5" x2="218" y2="171.5" class="link"/>
+  <line x1="242" y1="198.5" x2="258" y2="216.5" class="link"/>
+  <circle cx="110" cy="50" r="18" class="query"/>
+  <text x="110" y="55" class="val-sm">10</text>
+  <circle cx="150" cy="95" r="18" class="frame"/>
+  <text x="150" y="100" class="val-sm">20</text>
+  <circle cx="190" cy="140" r="18" class="frame"/>
+  <text x="190" y="145" class="val-sm">30</text>
+  <circle cx="230" cy="185" r="18" class="frame"/>
+  <text x="230" y="190" class="val-sm">40</text>
+  <circle cx="270" cy="230" r="18" class="frame"/>
+  <text x="270" y="235" class="val-sm">50</text>
+
+  <!-- AVL con las mismas claves -->
+  <line x1="435.6" y1="60.8" x2="404.4" y2="84.2" class="link"/>
+  <line x1="464.4" y1="60.8" x2="495.6" y2="84.2" class="link"/>
+  <line x1="378" y1="108.5" x2="362" y2="126.5" class="link"/>
+  <line x1="522" y1="108.5" x2="538" y2="126.5" class="link"/>
+  <circle cx="450" cy="50" r="18" class="query"/>
+  <text x="450" y="55" class="val-sm">30</text>
+  <circle cx="390" cy="95" r="18" class="frame"/>
+  <text x="390" y="100" class="val-sm">20</text>
+  <circle cx="510" cy="95" r="18" class="frame"/>
+  <text x="510" y="100" class="val-sm">40</text>
+  <circle cx="350" cy="140" r="18" class="frame"/>
+  <text x="350" y="145" class="val-sm">10</text>
+  <circle cx="550" cy="140" r="18" class="frame"/>
+  <text x="550" y="145" class="val-sm">50</text>
+
+  <!-- resumen -->
+  <rect x="70" y="262" width="240" height="52" rx="6" class="frame"/>
+  <text x="190" y="282" class="val-sm">BST: h = n - 1 = 4</text>
+  <text x="190" y="302" class="accent-label">búsqueda O(n)</text>
+  <rect x="330" y="262" width="240" height="52" rx="6" class="frame"/>
+  <text x="450" y="282" class="val-sm">AVL: h = ⌊log₂ n⌋ = 2</text>
+  <text x="450" y="302" class="accent-label">búsqueda O(log n)</text>
+</svg>

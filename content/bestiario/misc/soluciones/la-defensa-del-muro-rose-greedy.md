@@ -2,6 +2,7 @@
 title: 'La defensa del Muro Rose - Greedy'
 tags:
   - solucion
+  - misc
 ---
 
 ## Técnicas utilizadas

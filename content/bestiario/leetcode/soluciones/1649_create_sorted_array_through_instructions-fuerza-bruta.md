@@ -3,8 +3,6 @@ title: 'LeetCode1649 - Create Sorted Array through Instructions - Fuerza Bruta'
 tags:
   - leetcode
   - solucion
-  - fuerza-bruta
-  - bisect
 ---
 
 ## Técnicas utilizadas

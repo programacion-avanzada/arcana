@@ -1,0 +1,144 @@
+<svg width="850" height="220" viewBox="0 0 850 220" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .divider      { stroke: #9baec8; stroke-width: 1; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .link-fill    { fill: #9baec8; }
+    .idx          { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .cell-null    { fill: #fff4e6; stroke: #c0742a; stroke-width: 1.5; stroke-dasharray: 5,3; }
+    .char-null    { font-size: 16px; font-weight: 700; fill: #a0522d; text-anchor: middle; }
+    .top-label    { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .divider      { stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .link-fill    { fill: #4a6fa5; }
+      .idx          { fill: #8899aa; }
+      .op           { fill: #8899aa; }
+      .cell-null    { fill: #2a1f10; stroke: #d4884a; }
+      .char-null    { fill: #d4884a; }
+      .top-label    { fill: #d4884a; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+    }
+  </style>
+
+  <!-- niveles -->
+  <text x="30" y="174" class="idx">Nivel 0</text>
+  <text x="30" y="134" class="idx">Nivel 1</text>
+  <text x="30" y="94" class="idx">Nivel 2</text>
+  <text x="30" y="54" class="idx">Nivel 3</text>
+
+  <!-- punteros de cada nivel al siguiente nodo con esa altura -->
+  <line x1="81" y1="170" x2="140" y2="170" class="link"/>
+  <path d="M140,175 L150,170 L140,165 Z" class="link-fill"/>
+  <line x1="81" y1="130" x2="230" y2="130" class="link"/>
+  <path d="M230,135 L240,130 L230,125 Z" class="link-fill"/>
+  <line x1="81" y1="90" x2="230" y2="90" class="link"/>
+  <path d="M230,95 L240,90 L230,85 Z" class="link-fill"/>
+  <line x1="81" y1="50" x2="230" y2="50" class="accent-arrow"/>
+  <path d="M230,55 L240,50 L230,45 Z" class="accent-arrow-fill"/>
+  <line x1="195" y1="170" x2="230" y2="170" class="link"/>
+  <path d="M230,175 L240,170 L230,165 Z" class="link-fill"/>
+  <line x1="285" y1="170" x2="320" y2="170" class="link"/>
+  <path d="M320,175 L330,170 L320,165 Z" class="link-fill"/>
+  <line x1="285" y1="130" x2="320" y2="130" class="accent-arrow"/>
+  <path d="M320,135 L330,130 L320,125 Z" class="accent-arrow-fill"/>
+  <line x1="285" y1="90" x2="680" y2="90" class="link"/>
+  <path d="M680,95 L690,90 L680,85 Z" class="link-fill"/>
+  <line x1="285" y1="50" x2="770" y2="50" class="link"/>
+  <path d="M770,55 L780,50 L770,45 Z" class="link-fill"/>
+  <line x1="375" y1="170" x2="410" y2="170" class="accent-arrow"/>
+  <path d="M410,175 L420,170 L410,165 Z" class="accent-arrow-fill"/>
+  <line x1="375" y1="130" x2="500" y2="130" class="link"/>
+  <path d="M500,135 L510,130 L500,125 Z" class="link-fill"/>
+  <line x1="465" y1="170" x2="500" y2="170" class="link"/>
+  <path d="M500,175 L510,170 L500,165 Z" class="link-fill"/>
+  <line x1="555" y1="170" x2="590" y2="170" class="link"/>
+  <path d="M590,175 L600,170 L590,165 Z" class="link-fill"/>
+  <line x1="555" y1="130" x2="680" y2="130" class="link"/>
+  <path d="M680,135 L690,130 L680,125 Z" class="link-fill"/>
+  <line x1="645" y1="170" x2="680" y2="170" class="link"/>
+  <path d="M680,175 L690,170 L680,165 Z" class="link-fill"/>
+  <line x1="735" y1="170" x2="770" y2="170" class="link"/>
+  <path d="M770,175 L780,170 L770,165 Z" class="link-fill"/>
+  <line x1="735" y1="130" x2="770" y2="130" class="link"/>
+  <path d="M770,135 L780,130 L770,125 Z" class="link-fill"/>
+  <line x1="735" y1="90" x2="770" y2="90" class="link"/>
+  <path d="M770,95 L780,90 L770,85 Z" class="link-fill"/>
+
+  <!-- header -->
+  <rect x="70" y="30" width="22" height="160" rx="6" class="frame"/>
+  <line x1="70" y1="70" x2="92" y2="70" class="divider"/>
+  <line x1="70" y1="110" x2="92" y2="110" class="divider"/>
+  <line x1="70" y1="150" x2="92" y2="150" class="divider"/>
+  <circle cx="81" cy="170" r="3" class="link-fill"/>
+  <circle cx="81" cy="130" r="3" class="link-fill"/>
+  <circle cx="81" cy="90" r="3" class="link-fill"/>
+  <circle cx="81" cy="50" r="3" class="link-fill"/>
+  <text x="81" y="208" class="op">header</text>
+
+  <!-- nodos: valor + columna de punteros -->
+  <rect x="150" y="150" width="56" height="40" rx="6" class="frame"/>
+  <line x1="184" y1="150" x2="184" y2="190" class="divider"/>
+  <circle cx="195" cy="170" r="3" class="link-fill"/>
+  <text x="167" y="175" class="val-sm">3</text>
+  <rect x="240" y="30" width="56" height="160" rx="6" class="frame"/>
+  <line x1="274" y1="30" x2="274" y2="190" class="divider"/>
+  <line x1="274" y1="70" x2="296" y2="70" class="divider"/>
+  <line x1="274" y1="110" x2="296" y2="110" class="divider"/>
+  <line x1="274" y1="150" x2="296" y2="150" class="divider"/>
+  <circle cx="285" cy="170" r="3" class="link-fill"/>
+  <circle cx="285" cy="130" r="3" class="link-fill"/>
+  <circle cx="285" cy="90" r="3" class="link-fill"/>
+  <circle cx="285" cy="50" r="3" class="link-fill"/>
+  <text x="257" y="115" class="val-sm">6</text>
+  <rect x="330" y="110" width="56" height="80" rx="6" class="frame"/>
+  <line x1="364" y1="110" x2="364" y2="190" class="divider"/>
+  <line x1="364" y1="150" x2="386" y2="150" class="divider"/>
+  <circle cx="375" cy="170" r="3" class="link-fill"/>
+  <circle cx="375" cy="130" r="3" class="link-fill"/>
+  <text x="347" y="155" class="val-sm">7</text>
+  <rect x="420" y="150" width="56" height="40" rx="6" class="query"/>
+  <line x1="454" y1="150" x2="454" y2="190" class="divider"/>
+  <circle cx="465" cy="170" r="3" class="link-fill"/>
+  <text x="437" y="175" class="val-sm">9</text>
+  <rect x="510" y="110" width="56" height="80" rx="6" class="frame"/>
+  <line x1="544" y1="110" x2="544" y2="190" class="divider"/>
+  <line x1="544" y1="150" x2="566" y2="150" class="divider"/>
+  <circle cx="555" cy="170" r="3" class="link-fill"/>
+  <circle cx="555" cy="130" r="3" class="link-fill"/>
+  <text x="527" y="155" class="val-sm">12</text>
+  <rect x="600" y="150" width="56" height="40" rx="6" class="frame"/>
+  <line x1="634" y1="150" x2="634" y2="190" class="divider"/>
+  <circle cx="645" cy="170" r="3" class="link-fill"/>
+  <text x="617" y="175" class="val-sm">18</text>
+  <rect x="690" y="70" width="56" height="120" rx="6" class="frame"/>
+  <line x1="724" y1="70" x2="724" y2="190" class="divider"/>
+  <line x1="724" y1="110" x2="746" y2="110" class="divider"/>
+  <line x1="724" y1="150" x2="746" y2="150" class="divider"/>
+  <circle cx="735" cy="170" r="3" class="link-fill"/>
+  <circle cx="735" cy="130" r="3" class="link-fill"/>
+  <circle cx="735" cy="90" r="3" class="link-fill"/>
+  <text x="707" y="135" class="val-sm">31</text>
+
+  <!-- NIL: fin de todos los niveles -->
+  <rect x="780" y="30" width="50" height="160" rx="6" class="cell-null"/>
+  <text x="805" y="116" class="char-null">NIL</text>
+
+  <!-- bajadas de nivel durante la búsqueda (sobre la columna de punteros) -->
+  <line x1="285" y1="50" x2="285" y2="120" class="accent-arrow"/>
+  <path d="M280,118 L285,128 L290,118 Z" class="accent-arrow-fill"/>
+  <line x1="375" y1="130" x2="375" y2="160" class="accent-arrow"/>
+  <path d="M370,158 L375,168 L380,158 Z" class="accent-arrow-fill"/>
+
+  <text x="81" y="16" class="top-label">buscar(9)</text>
+</svg>

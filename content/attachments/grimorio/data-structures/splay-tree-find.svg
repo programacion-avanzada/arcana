@@ -1,0 +1,62 @@
+<svg width="680" height="210" viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .op-arrow     { stroke: #777777; stroke-width: 1.5; fill: none; }
+    .op-arrow-fill { fill: #777777; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .op-arrow     { stroke: #8899aa; }
+      .op-arrow-fill { fill: #8899aa; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+    }
+  </style>
+
+  <!-- paso 0 -->
+  <text x="90" y="22" class="op">antes</text>
+  <line x1="127.2" y1="65.4" x2="102.8" y2="94.6" class="link"/>
+  <line x1="77.2" y1="125.4" x2="52.8" y2="154.6" class="link"/>
+  <circle cx="140" cy="50" r="20" class="frame"/>
+  <text x="140" y="55" class="val-sm">30</text>
+  <circle cx="90" cy="110" r="20" class="frame"/>
+  <text x="90" y="115" class="val-sm">20</text>
+  <circle cx="40" cy="170" r="20" class="query"/>
+  <text x="40" y="175" class="val-sm">10</text>
+  <line x1="175" y1="90" x2="245" y2="90" class="op-arrow"/>
+  <path d="M245,95 L255,90 L245,85 Z" class="op-arrow-fill"/>
+  <text x="215" y="62" class="op">buscar 10</text>
+  <text x="215" y="78" class="op">zig-zig: rota 30</text>
+
+  <!-- paso 1 -->
+  <text x="340" y="22" class="op"></text>
+  <line x1="327.2" y1="65.4" x2="302.8" y2="94.6" class="link"/>
+  <line x1="352.8" y1="65.4" x2="377.2" y2="94.6" class="link"/>
+  <circle cx="340" cy="50" r="20" class="frame"/>
+  <text x="340" y="55" class="val-sm">20</text>
+  <circle cx="290" cy="110" r="20" class="query"/>
+  <text x="290" y="115" class="val-sm">10</text>
+  <circle cx="390" cy="110" r="20" class="frame"/>
+  <text x="390" y="115" class="val-sm">30</text>
+  <line x1="425" y1="90" x2="495" y2="90" class="op-arrow"/>
+  <path d="M495,95 L505,90 L495,85 Z" class="op-arrow-fill"/>
+  <text x="465" y="62" class="op">rota 20</text>
+  <text x="465" y="78" class="op">a derecha</text>
+
+  <!-- paso 2 -->
+  <text x="590" y="22" class="op">10 en la raíz</text>
+  <line x1="552.8" y1="65.4" x2="577.2" y2="94.6" class="link"/>
+  <line x1="602.8" y1="125.4" x2="627.2" y2="154.6" class="link"/>
+  <circle cx="540" cy="50" r="20" class="query"/>
+  <text x="540" y="55" class="val-sm">10</text>
+  <circle cx="590" cy="110" r="20" class="frame"/>
+  <text x="590" y="115" class="val-sm">20</text>
+  <circle cx="640" cy="170" r="20" class="frame"/>
+  <text x="640" y="175" class="val-sm">30</text>
+</svg>

@@ -78,7 +78,7 @@ Buscamos la solución para
 
 
 ### Gráfico
-![Gráfico de traza en excalidraw](../../../attachments/bestiario/leetcode/árbol_de_llamadas-backtracking.svg)
+![Gráfico de traza en excalidraw](0010-arbol-de-llamadas-backtracking.svg)
 
 ## Complejidad
 

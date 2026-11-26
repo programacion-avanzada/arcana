@@ -3,7 +3,7 @@ title: Arcana · Programación Avanzada
 
 ---
 
-![](attachments/arcana-cover.png)
+![Portada de Arcana](arcana-cover.png)
 
 Cuentan los antiguos que el mundo del cómputo fue caos hasta que alguien descubrió que los problemas obedecen a quienes conocen su forma. Un algoritmo es un conjuro: una secuencia precisa de pasos que doblega una entrada y devuelve una salida. Una estructura de datos es el artefacto que lo contiene: la forma en que organizás la información determina qué conjuros son posibles y a qué costo. No son independientes: elegir mal el artefacto hace que el conjuro más elegante se disipe en el aire.
 

@@ -23,7 +23,7 @@ Resuelve problemas donde el orden de llegada debe preservarse (FIFO). Es una est
 
 ### Representación
 
-![Arreglo de 6 posiciones con los índices front y rear, y una flecha que une la última posición con la primera](/attachments/grimorio/data-structures/queue-circular.svg)
+![Arreglo de 6 posiciones con los índices front y rear, y una flecha que une la última posición con la primera](queue-circular.svg)
 
 _Una cola de 5 elementos sobre un arreglo circular de capacidad 6: `front` marca el próximo elemento en salir y `rear` la próxima posición libre; la flecha inferior es el salto del final al principio, que hace que `G` quede guardado antes que `C`._
 
@@ -167,7 +167,7 @@ El grafo tiene forma de rombo con una cola colgando de `D`, y BFS lo recorre en 
 - **Nivel 2** (`D`): se saca `B`; su vecino `D` todavía no está visitado, así que se marca y se encola. Se saca `C`; también tiene a `D` como vecino, pero ya está en `visitados`, así que no se vuelve a encolar. `D` llegó a la cola por el camino `A → B → D`.
 - **Nivel 3** (`E`): se saca `D`; su único vecino nuevo es `E`, que se encola y se visita al final.
 
-En ningún momento se visita un nodo de un nivel antes de terminar con todos los del nivel anterior — esa es la garantía que da usar una cola (FIFO) en vez de, por ejemplo, una pila.
+En ningún momento se visita un nodo de un nivel antes de terminar con todos los del nivel anterior: esa es la garantía que da usar una cola (FIFO) en vez de, por ejemplo, una pila.
 
 ## 4. Uso y criterio
 
@@ -225,8 +225,8 @@ Cuando varios hilos o procesos producen y consumen simultáneamente, hace falta 
 
 ## 6. Referencias y recursos
 - [Queue Data Structure - Devopedia](https://devopedia.org/queue-data-structure)
-- [[COR2011]] - Chapter 10.1 Stacks and queues
-- [[DRO1995]] - Chapter 3 Stacks and queues
+- [[COR2011]] - Chapter 10.1.
+- [[DRO1995]] - Chapter 3.
 - Geek for Geeks. Queue Data Structure. Recuperado de: [Queue Data Structure - GeeksforGeeks](https://www.geeksforgeeks.org/dsa/queue-data-structure/)
 - Geek for Geeks. Queue in Python. Recuperado de: [Queue in Python - GeeksforGeeks](https://www.geeksforgeeks.org/python/queue-in-python/)
 - [VisuAlgo - Queue](https://visualgo.net/en/queue) _(visualización interactiva de enqueue/dequeue y del buffer circular)_

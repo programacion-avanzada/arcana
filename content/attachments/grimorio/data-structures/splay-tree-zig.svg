@@ -1,0 +1,39 @@
+<svg width="330" height="130" viewBox="0 0 330 130" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .op-arrow     { stroke: #777777; stroke-width: 1.5; fill: none; }
+    .op-arrow-fill { fill: #777777; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .op-arrow     { stroke: #8899aa; }
+      .op-arrow-fill { fill: #8899aa; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+    }
+  </style>
+
+  <!-- paso 0 -->
+  <line x1="77.2" y1="45.4" x2="52.8" y2="74.6" class="link"/>
+  <circle cx="90" cy="30" r="20" class="frame"/>
+  <text x="90" y="35" class="val-sm">y</text>
+  <circle cx="40" cy="90" r="20" class="query"/>
+  <text x="40" y="95" class="val-sm">x</text>
+  <line x1="125" y1="70" x2="195" y2="70" class="op-arrow"/>
+  <path d="M195,75 L205,70 L195,65 Z" class="op-arrow-fill"/>
+  <text x="165" y="42" class="op">rota y</text>
+  <text x="165" y="58" class="op">a derecha</text>
+
+  <!-- paso 1 -->
+  <line x1="252.8" y1="45.4" x2="277.2" y2="74.6" class="link"/>
+  <circle cx="240" cy="30" r="20" class="query"/>
+  <text x="240" y="35" class="val-sm">x</text>
+  <circle cx="290" cy="90" r="20" class="frame"/>
+  <text x="290" y="95" class="val-sm">y</text>
+</svg>

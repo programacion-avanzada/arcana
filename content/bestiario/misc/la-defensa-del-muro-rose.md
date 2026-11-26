@@ -2,6 +2,7 @@
 title: La defensa del Muro Rose
 tags:
   - bestia
+  - misc
 ---
 
 ## Nombre y enunciado
@@ -67,6 +68,8 @@ Cañones seleccionados: C1, C2 y C4
 Número mínimo: 3 cañones activados
 ```
 
+![Cobertura del muro con C1, C2 y C4](la-defensa-del-muro-rose-ejemplo.svg)
+
 ---
 
 ## Por dónde empezar
@@ -77,4 +80,4 @@ La tarea consiste en diseñar un algoritmo de defensa **ávido** que determine q
 
 ## Soluciones disponibles
 
-- [[la defensa del muro rose-greedy]]
+- [[la-defensa-del-muro-rose-greedy]]

@@ -1,0 +1,73 @@
+<svg width="680" height="320" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Street Numbers: h=6, N=8, equilibrio 15 = 15</title>
+  <desc id="desc">Calle con casas 1 a 8. La casa 6 es la de la programadora y se excluye. Izquierda 1+2+3+4+5=15, derecha 7+8=15.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .val { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .sum { font-size: 16px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .query { fill: #f5f7fa; stroke: #c0742a; stroke-width: 2; }
+    .query-val { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    .bracket { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .frame { fill: #1e2330; stroke: #4a6fa5; }
+      .val { fill: #e2e8f0; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .sum { fill: #e2e8f0; }
+      .query { fill: #1e2330; stroke: #d4884a; }
+      .query-val { fill: #e2e8f0; }
+      .accent-label { fill: #d4884a; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+      .bracket { stroke: #4a6fa5; }
+    }
+  </style>
+
+  <text x="340" y="28" class="op">calle 1..8, casa propia h = 6 (excluida)</text>
+
+  <!-- marcador h=6 -->
+  <text x="407" y="52" class="accent-label">h = 6</text>
+  <path d="M407,58 L407,76" class="accent-arrow"/>
+  <path d="M400,73 L407,85 L414,73 Z" class="accent-arrow-fill"/>
+
+  <!-- casas 1..8: x = 79 + i*66, w = 60, y = 88, h = 56 -->
+  <g>
+    <rect x="79" y="88" width="60" height="56" rx="8" class="frame"/>
+    <text x="109" y="123" class="val">1</text>
+    <rect x="145" y="88" width="60" height="56" rx="8" class="frame"/>
+    <text x="175" y="123" class="val">2</text>
+    <rect x="211" y="88" width="60" height="56" rx="8" class="frame"/>
+    <text x="241" y="123" class="val">3</text>
+    <rect x="277" y="88" width="60" height="56" rx="8" class="frame"/>
+    <text x="307" y="123" class="val">4</text>
+    <rect x="343" y="88" width="60" height="56" rx="8" class="frame"/>
+    <text x="373" y="123" class="val">5</text>
+    <rect x="409" y="88" width="60" height="56" rx="8" class="query"/>
+    <text x="439" y="123" class="query-val">6</text>
+    <rect x="475" y="88" width="60" height="56" rx="8" class="frame"/>
+    <text x="505" y="123" class="val">7</text>
+    <rect x="541" y="88" width="60" height="56" rx="8" class="frame"/>
+    <text x="571" y="123" class="val">8</text>
+  </g>
+  <text x="241" y="160" class="idx">izquierda</text>
+  <text x="439" y="160" class="idx">propia</text>
+  <text x="538" y="160" class="idx">derecha</text>
+
+  <!-- corchetes de suma -->
+  <path d="M79,178 L79,188 L241,188 L241,178" class="bracket"/>
+  <path d="M475,178 L475,188 L601,188 L601,178" class="bracket"/>
+
+  <text x="160" y="214" class="sum">1+2+3+4+5 = 15</text>
+  <text x="538" y="214" class="sum">7+8 = 15</text>
+  <text x="349" y="214" class="accent-label">=</text>
+
+  <!-- balance -->
+  <text x="340" y="258" class="accent-label">equilibrio: 15 = 15</text>
+  <text x="340" y="284" class="op">2 x 6 al cuadrado = 72 y 8 x 9 = 72</text>
+</svg>

@@ -14,7 +14,7 @@ Antes de tomar la fotografía, el fotógrafo puede pedir que dos personas interc
 
 > Visualización del problema:
 
-![Visualización del problema](765_couples_holding_hands-ejemplo.svg)
+![Visualización del problema](0765-ejemplo.svg)
 
 [Problema original](https://leetcode.com/problems/couples-holding-hands/description/)
 

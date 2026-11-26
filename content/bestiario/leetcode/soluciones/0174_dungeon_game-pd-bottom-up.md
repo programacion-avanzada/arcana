@@ -19,7 +19,7 @@ La vida mínima necesaria en una celda depende de la vida requerida en las celda
 
 Como cada fila solo depende de la fila inmediatamente inferior, alcanza con mantener un único [[dynamic array]] `dp` de tamaño `n` que se va sobrescribiendo fila por fila, en lugar de guardar la matriz completa.
 
-![](/attachments/bestiario/leetcode/0174-grafo-dependencias.svg)
+![Grafo de dependencias: cada celda depende de la de abajo y la de la derecha](0174-grafo-dependencias.svg)
 
 ## Recurrencia
 
@@ -99,7 +99,7 @@ Fila 0:
   dp[0] = max(1, min(dp[0],dp[1])-(-2))  = max(1, 5+2) = 7          → dp = [7, 5, 2]
 ```
 
-![](/attachments/bestiario/leetcode/0174-bottom-up-celda-cualquiera.svg)
+![Dos celdas resueltas en bottom-up, cada una a partir de sus vecinas de abajo y de la derecha](0174-bottom-up-celda-cualquiera.svg)
 
 Evolución del [[dynamic array]] `dp`:
 

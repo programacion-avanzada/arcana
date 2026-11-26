@@ -5,7 +5,7 @@ tags:
   - desafio
 ---
 El Senado Imperial lleva un registro de `n` lealtades, cada una un entero. Dos lealtades `(i, j)` forman una **inversión** si `i < j` pero `lealtad[i] > lealtad[j]`: un superior en la lista tiene menos lealtad que un subordinado, señal de corrupción. El Senado necesita contar cuántas inversiones hay para detectar el nivel de traición… pero `n` puede ser enorme.
-## Enunciado: Contar Inversiones
+### Enunciado: Contar Inversiones
 Implementar una función `contar_inversiones(arr)` que devuelva el número de pares `(i, j)` con `i < j` y `arr[i] > arr[j]`.
 
 **Restricción:** debe hacerse en $O(n \log{n})$, no en $O(n^2)$.

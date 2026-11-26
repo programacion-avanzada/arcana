@@ -136,7 +136,7 @@ Eso nos permite buscar la mínima respuesta dividiendo el rango en mitades:
 3. Si alcanza, intentamos buscar una respuesta más chica en la mitad izquierda.
 4. Si no alcanza, buscamos en la mitad derecha.
 
-![Division y Conquista](dyc_busqueda_binaria.svg)
+![Division y Conquista](1739-busqueda-binaria.svg)
 
 ## Código
 

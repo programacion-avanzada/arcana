@@ -20,7 +20,7 @@ Como tras `t` pasos un recolector en la fila `r` está forzosamente en la column
 
 En cada paso, cada recolector elige entre **abajo** o **derecha**: `2 × 2 = 4` combinaciones. La fuerza bruta consiste en **probar las cuatro** en cada nivel de la recursión y conservar la que maximiza las cerezas, sin ninguna poda ni reaprovechamiento de cálculos. Se suma `grid[r1][c1]`, y `grid[r2][c2]` sólo si los recolectores están en celdas distintas (para no contar dos veces la misma cereza).
 
-![Las 4 transiciones posibles en cada paso](cherry_pickup_movimientos.svg)
+![Las 4 transiciones posibles en cada paso](0741-movimientos.svg)
 
 ### Código
 
@@ -60,13 +60,13 @@ def cherry_pickup(grid):
 
 Sobre la instancia de la descripción (`N = 3`, respuesta `5`). Anotamos cada estado como `(r1,c1 | r2,c2)` y mostramos sólo la rama que conduce al óptimo (la fuerza bruta explora **todas**, pero seguir las 4^pasos ramas completas sería inabarcable):
 
-| Paso | Estado `(r1,c1 | r2,c2)` | `grid` celdas | Cerezas acumuladas |
-| ---- | ---------------------- | ------------- | ------------------ |
-| 0 | `(0,0 | 0,0)` | coinciden → `0` | 0 |
-| 1 | `(0,1 | 1,0)` | `1 + 1` | 2 |
-| 2 | `(1,1 | 2,0)` | `0 + 1` | 3 |
-| 3 | `(2,1 | 2,1)` | coinciden → `1` | 4 |
-| 4 | `(2,2 | 2,2)` | coinciden → `1` | 5 ✓ |
+| Paso | Estado `(r1,c1 \| r2,c2)` | `grid` celdas | Cerezas acumuladas |
+| ---- | ------------------------- | -------------- | ------------------- |
+| 0 | `(0,0 \| 0,0)` | coinciden → `0` | 0 |
+| 1 | `(0,1 \| 1,0)` | `1 + 1` | 2 |
+| 2 | `(1,1 \| 2,0)` | `0 + 1` | 3 |
+| 3 | `(2,1 \| 2,1)` | coinciden → `1` | 4 |
+| 4 | `(2,2 \| 2,2)` | coinciden → `1` | 5 ✓ |
 
 En el paso 3 ambos recolectores convergen en `(2,1)`: la cereza se cuenta **una sola vez**. La rama llega al caso base con `5`, y como ninguna otra combinación supera ese valor, `max(0, 5) = 5`.
 
@@ -87,4 +87,4 @@ Comparada con [[0741_cherry_pickup-programacion-dinamica]], comparte **exactamen
 
 ### Referencias
 
-- [[COR2011]] - Cap. 15 (motivación de PD a partir de recursión exhaustiva).
+- [[COR2011]] - Chapter 15.

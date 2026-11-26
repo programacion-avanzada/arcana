@@ -1,0 +1,89 @@
+<svg width="680" height="420" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">La defensa del Muro Rose: cobertura de [0, 20]</title>
+  <desc id="desc">Seis intervalos de canones sobre el muro. El greedy elige C1, C2 y C4.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .chosen { fill: #f5f7fa; stroke: #c0742a; stroke-width: 2; }
+    .chosen-val { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .ghost { fill: #f5f7fa; fill-opacity: 0.5; stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; }
+    .ghost-val { font-size: 14px; font-weight: 700; fill: #555555; text-anchor: middle; }
+    .val-sm { font-size: 15px; font-weight: 700; fill: #1a1a2e; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .wall { fill: #1a1a2e; }
+    .tick { stroke: #777777; stroke-width: 1.5; }
+    .guide { stroke: #777777; stroke-width: 1; stroke-dasharray: 3,3; fill: none; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .step { font-size: 12px; font-weight: 700; fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .frame { fill: #1e2330; stroke: #4a6fa5; }
+      .chosen { fill: #1e2330; stroke: #d4884a; }
+      .chosen-val { fill: #e2e8f0; }
+      .ghost { fill: #1e2330; stroke: #8899aa; }
+      .ghost-val { fill: #aab4c0; }
+      .val-sm { fill: #e2e8f0; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .wall { fill: #e2e8f0; }
+      .tick { stroke: #8899aa; }
+      .guide { stroke: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .step { fill: #d4884a; }
+    }
+  </style>
+
+  <!-- muro [L, R] = [0, 20] -->
+  <text x="340" y="28" class="op">muro a defender [L, R] = [0, 20]</text>
+  <rect x="103" y="42" width="431" height="12" rx="3" class="wall"/>
+  <line x1="103" y1="40" x2="103" y2="62" class="tick"/>
+  <line x1="534" y1="40" x2="534" y2="62" class="tick"/>
+  <text x="103" y="78" class="accent-label">L=0</text>
+  <text x="534" y="78" class="accent-label">R=20</text>
+  <text x="211" y="78" class="idx">5</text>
+  <text x="319" y="78" class="idx">10</text>
+  <text x="426" y="78" class="idx">15</text>
+
+  <!-- lineas guia del avance greedy: 0 -> 5 -> 12 -> 20 -->
+  <line x1="211" y1="88" x2="211" y2="360" class="guide"/>
+  <line x1="362" y1="88" x2="362" y2="360" class="guide"/>
+
+  <!-- C1 [-1, 5] elegido, paso 1 -->
+  <text x="8" y="132" class="val-sm">C1</text>
+  <rect x="82" y="116" width="129" height="26" rx="6" class="chosen"/>
+  <text x="146" y="134" class="chosen-val">[-1, 5]</text>
+  <text x="648" y="134" class="step">paso 1</text>
+
+  <!-- C2 [2, 12] elegido, paso 2 -->
+  <text x="8" y="174" class="val-sm">C2</text>
+  <rect x="146" y="158" width="216" height="26" rx="6" class="chosen"/>
+  <text x="254" y="176" class="chosen-val">[2, 12]</text>
+  <text x="648" y="176" class="step">paso 2</text>
+
+  <!-- C6 [4, 6] descartado -->
+  <text x="8" y="216" class="val-sm">C6</text>
+  <rect x="189" y="200" width="43" height="26" rx="6" class="ghost"/>
+  <text x="211" y="218" class="ghost-val">[4, 6]</text>
+
+  <!-- C3 [10, 18] descartado -->
+  <text x="8" y="258" class="val-sm">C3</text>
+  <rect x="318" y="242" width="173" height="26" rx="6" class="ghost"/>
+  <text x="405" y="260" class="ghost-val">[10, 18]</text>
+
+  <!-- C4 [11, 23] elegido, paso 3 -->
+  <text x="8" y="300" class="val-sm">C4</text>
+  <rect x="340" y="284" width="258" height="26" rx="6" class="chosen"/>
+  <text x="469" y="302" class="chosen-val">[11, 23]</text>
+  <text x="648" y="302" class="step">paso 3</text>
+
+  <!-- C5 [18, 22] descartado -->
+  <text x="8" y="342" class="val-sm">C5</text>
+  <rect x="491" y="326" width="86" height="26" rx="6" class="ghost"/>
+  <text x="534" y="344" class="ghost-val">[18, 22]</text>
+
+  <!-- leyenda -->
+  <rect x="82" y="372" width="26" height="14" rx="4" class="chosen"/>
+  <text x="116" y="383" class="idx" style="text-anchor:start">elegido (C1, C2, C4)</text>
+  <rect x="300" y="372" width="26" height="14" rx="4" class="ghost"/>
+  <text x="334" y="383" class="idx" style="text-anchor:start">descartado</text>
+</svg>

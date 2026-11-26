@@ -132,7 +132,7 @@ Cada **piso** es una capa triangular. El piso $K$ tiene:
 $$
 \text{Piso}(K) \;=\; 1 + 2 + \cdots + K \;=\; \sum_{i=1}^{K} i \;=\; \frac{K(K+1)}{2}
 $$
-![Piso triangular](piso_triangular.svg)
+![Piso triangular](1739-piso-triangular.svg)
 
 Ese es el $K$-ésimo número triangular, $T(K)=\dfrac{K(K+1)}{2}$. Una **pirámide** completa es la
 suma de todos sus pisos:
@@ -140,7 +140,7 @@ suma de todos sus pisos:
 $$
 \text{Pir}(K) \;=\; \sum_{i=1}^{K} \text{Piso}(i) \;=\; \sum_{i=1}^{K} \frac{i(i+1)}{2}
 $$
-![Piramide Tetraedrica](piramide_tetraedrica.svg)
+![Piramide Tetraedrica](1739-piramide-tetraedrica.svg)
 
 Desarrollando la suma:
 
@@ -176,7 +176,7 @@ $$
 r = \left\lfloor\, \text{raíz de } \big(K^3 + 3K^2 + 2K - 6n\big) \,\right\rfloor
 $$
 
-![Paso 1 Representacion Cubica](paso1_recta_cubica.svg)
+![Paso 1 Representacion Cubica](1739-paso-1-recta-cubica.svg)
 
 > Igual que $\sqrt{\,\cdot\,}$ deshace elevar al cuadrado, la raíz de esta cúbica deshace la
 > fórmula de la pirámide: de cajas vuelve al tamaño.
@@ -197,7 +197,7 @@ $c_{\text{suelo}}$.
 Si sobran cajas, las apoyamos en una **diagonal nueva** al lado de la pirámide. La clave es que
 las cajas de esa diagonal se apilan: la $p$-ésima caja de piso aguanta una pila de altura $p$.
 
-![Fase2 Diagonal](fase2_diagonal.svg)
+![Fase2 Diagonal](1739-fase-2-diagonal.svg)
 
 Entonces con $p$ cajas de piso alojo
 
@@ -236,7 +236,7 @@ b^2 - 4ac = 1^2 - 4\cdot 1 \cdot(-2s) = 1 + 8s
 p = \frac{-1 \pm \sqrt{1 + 8s}}{2}
 $$
 
-![Paso2 Parabola](paso2_parabola.svg)
+![Paso2 Parabola](1739-paso-2-parabola.svg)
 
 **Me quedo con la raíz del $+$.** Como $s \ge 1$, entonces $\sqrt{1+8s} > 1$, y por lo tanto:
 

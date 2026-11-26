@@ -6,7 +6,7 @@ tags:
 ---
 Los mercaderes del Imperio registran el precio de la Gema Celeste día a día. Un vidente afirma que si comprás la gema en el día `i` y la vendés en el día `j` (con `i < j`), podés maximizar tu ganancia. Pero con siglos de registros, los mercaderes necesitan un algoritmo eficiente: buscar todas las parejas `(i, j)` es demasiado lento.
 
-## Enunciado: Máxima Ganancia por Subarray
+### Enunciado: Máxima Ganancia por Subarray
 Dado un arreglo `precios[0..n-1]`, encuentra el par de índices `(i, j)` con `i < j` que maximiza `precios[j] - precios[i]`.
 
 1. **Enfoque fuerza bruta:** describir el algoritmo $O(n^2)$ sin codificarlo.

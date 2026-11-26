@@ -35,9 +35,9 @@ Un **array** se representa internamente como un **bloque contiguo de memoria**, 
 
 El acceso a un elemento se realiza calculando su dirección de memoria a partir de una dirección base  y un desplazamiento fijo (stride) multiplicado por el índice. Esta organización es la que permite que el acceso por índice tenga complejidad $O(1)$.
 
-![](/attachments/grimorio/data-structures/array.svg)
+![Array de 8 enteros con índices y el cálculo de la dirección de A[3] como base + 3 x tamaño](array.svg)
 
-Se observa una estructura lineal donde cada elemento es accesible directamente mediante su índice. El cálculo de indexación es $Dirección(A[i]) = base + i × tamaño$.
+Se observa una estructura lineal donde cada elemento es accesible directamente mediante su índice. El cálculo de indexación es $\text{Dirección}(A[i]) = \text{base} + i \times \text{tamaño}$.
 
 ## 2. Operaciones y complejidad
 
@@ -190,6 +190,6 @@ En arquitecturas modernas, el array se beneficia enormemente del caché de la CP
 
 ## 6. Referencias y recursos
 
-- [[COR2011]] - Chapter 10: Elementary Data Structures.
-- [[LAF2002]] - Chapter 2: Arrays.
+- [[COR2011]] - Chapter 10.
+- [[LAF2002]] - Chapter 2.
 

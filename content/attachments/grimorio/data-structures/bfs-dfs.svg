@@ -1,0 +1,113 @@
+<svg width="600" height="330" viewBox="0 0 600 330" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .accent-arrow { stroke: #c0742a; stroke-width: 1.8; fill: none; }
+    .accent-arrow-fill { fill: #c0742a; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .accent-arrow { stroke: #d4884a; }
+      .accent-arrow-fill { fill: #d4884a; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+    }
+  </style>
+
+  <!-- BFS (anchura) -->
+  <text x="150" y="28" class="op">BFS (anchura)</text>
+  <!-- aristas del grafo -->
+  <line x1="140" y1="230" x2="195" y2="230" class="link"/>
+  <!-- arbol de descubrimiento -->
+  <line x1="136.9" y1="90.1" x2="106" y2="125.8" class="accent-arrow"/>
+  <path d="M102.2,122.5 L99.4,133.4 L109.7,129.1 Z" class="accent-arrow-fill"/>
+  <line x1="163.1" y1="90.1" x2="194" y2="125.8" class="accent-arrow"/>
+  <path d="M190.3,129.1 L200.6,133.4 L197.8,122.5 Z" class="accent-arrow-fill"/>
+  <line x1="77" y1="168.3" x2="62.8" y2="200.7" class="accent-arrow"/>
+  <path d="M58.2,198.7 L58.8,209.8 L67.4,202.7 Z" class="accent-arrow-fill"/>
+  <line x1="93" y1="168.3" x2="107.2" y2="200.7" class="accent-arrow"/>
+  <path d="M102.6,202.7 L111.2,209.8 L111.8,198.7 Z" class="accent-arrow-fill"/>
+  <line x1="215" y1="170" x2="215" y2="198" class="accent-arrow"/>
+  <path d="M210,198 L215,208 L220,198 Z" class="accent-arrow-fill"/>
+  <!-- vertices -->
+  <circle cx="150" cy="75" r="20" class="frame"/>
+  <text x="150" y="82" class="val">A</text>
+  <circle cx="85" cy="150" r="20" class="frame"/>
+  <text x="85" y="157" class="val">B</text>
+  <circle cx="215" cy="150" r="20" class="frame"/>
+  <text x="215" y="157" class="val">C</text>
+  <circle cx="50" cy="230" r="20" class="frame"/>
+  <text x="50" y="237" class="val">D</text>
+  <circle cx="120" cy="230" r="20" class="frame"/>
+  <text x="120" y="237" class="val">E</text>
+  <circle cx="215" cy="230" r="20" class="frame"/>
+  <text x="215" y="237" class="val">F</text>
+  <!-- orden de visita -->
+  <circle cx="172" cy="53" r="10" class="query"/>
+  <text x="172" y="57" class="accent-label">1</text>
+  <circle cx="107" cy="128" r="10" class="query"/>
+  <text x="107" y="132" class="accent-label">2</text>
+  <circle cx="237" cy="128" r="10" class="query"/>
+  <text x="237" y="132" class="accent-label">3</text>
+  <circle cx="72" cy="208" r="10" class="query"/>
+  <text x="72" y="212" class="accent-label">4</text>
+  <circle cx="142" cy="208" r="10" class="query"/>
+  <text x="142" y="212" class="accent-label">5</text>
+  <circle cx="237" cy="208" r="10" class="query"/>
+  <text x="237" y="212" class="accent-label">6</text>
+  <text x="150" y="278" class="op">Orden: A, B, C, D, E, F</text>
+  <text x="150" y="296" class="op">Cola FIFO: agota el nivel de A</text>
+  <text x="150" y="314" class="op">(B y C) antes de bajar al siguiente.</text>
+
+  <!-- DFS (profundidad) -->
+  <text x="450" y="28" class="op">DFS (profundidad)</text>
+  <!-- aristas del grafo -->
+  <line x1="463.1" y1="90.1" x2="501.9" y2="134.9" class="link"/>
+  <!-- arbol de descubrimiento -->
+  <line x1="436.9" y1="90.1" x2="406" y2="125.8" class="accent-arrow"/>
+  <path d="M402.2,122.5 L399.4,133.4 L409.7,129.1 Z" class="accent-arrow-fill"/>
+  <line x1="377" y1="168.3" x2="362.8" y2="200.7" class="accent-arrow"/>
+  <path d="M358.2,198.7 L358.8,209.8 L367.4,202.7 Z" class="accent-arrow-fill"/>
+  <line x1="393" y1="168.3" x2="407.2" y2="200.7" class="accent-arrow"/>
+  <path d="M402.6,202.7 L411.2,209.8 L411.8,198.7 Z" class="accent-arrow-fill"/>
+  <line x1="440" y1="230" x2="483" y2="230" class="accent-arrow"/>
+  <path d="M483,235 L493,230 L483,225 Z" class="accent-arrow-fill"/>
+  <line x1="515" y1="210" x2="515" y2="182" class="accent-arrow"/>
+  <path d="M520,182 L515,172 L510,182 Z" class="accent-arrow-fill"/>
+  <!-- vertices -->
+  <circle cx="450" cy="75" r="20" class="frame"/>
+  <text x="450" y="82" class="val">A</text>
+  <circle cx="385" cy="150" r="20" class="frame"/>
+  <text x="385" y="157" class="val">B</text>
+  <circle cx="515" cy="150" r="20" class="frame"/>
+  <text x="515" y="157" class="val">C</text>
+  <circle cx="350" cy="230" r="20" class="frame"/>
+  <text x="350" y="237" class="val">D</text>
+  <circle cx="420" cy="230" r="20" class="frame"/>
+  <text x="420" y="237" class="val">E</text>
+  <circle cx="515" cy="230" r="20" class="frame"/>
+  <text x="515" y="237" class="val">F</text>
+  <!-- orden de visita -->
+  <circle cx="472" cy="53" r="10" class="query"/>
+  <text x="472" y="57" class="accent-label">1</text>
+  <circle cx="407" cy="128" r="10" class="query"/>
+  <text x="407" y="132" class="accent-label">2</text>
+  <circle cx="372" cy="208" r="10" class="query"/>
+  <text x="372" y="212" class="accent-label">3</text>
+  <circle cx="442" cy="208" r="10" class="query"/>
+  <text x="442" y="212" class="accent-label">4</text>
+  <circle cx="537" cy="208" r="10" class="query"/>
+  <text x="537" y="212" class="accent-label">5</text>
+  <circle cx="537" cy="128" r="10" class="query"/>
+  <text x="537" y="132" class="accent-label">6</text>
+  <text x="450" y="278" class="op">Orden: A, B, D, E, F, C</text>
+  <text x="450" y="296" class="op">Pila LIFO: se hunde por B-D-E-F</text>
+  <text x="450" y="314" class="op">y recién al final llega a C.</text>
+</svg>

@@ -1,0 +1,103 @@
+<svg width="880" height="410" viewBox="0 0 880 410" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame       { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.8; }
+    .val         { font-size: 18px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx         { font-size: 13px; fill: #777777; text-anchor: middle; }
+    .idx-val     { font-size: 14px; font-weight: 700; fill: #4a6fa5; }
+    .link        { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .top-label   { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .top-arrow-fill { fill: #c0742a; }
+    .op          { font-size: 14px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .frame       { fill: #1e2330; stroke: #4a6fa5; }
+      .val         { fill: #e2e8f0; }
+      .idx         { fill: #8899aa; }
+      .idx-val     { fill: #6a9fd8; }
+      .link        { stroke: #4a6fa5; }
+      .top-label   { fill: #d4884a; }
+      .top-arrow-fill { fill: #d4884a; }
+      .op          { fill: #8899aa; }
+    }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="top-arrow-fill" />
+    </marker>
+  </defs>
+
+  <!-- Arreglo A de ejemplo -->
+  <text x="440" y="20" class="op">A = [ 5, 4, 1, -1, 0, 8 ]  (índices 1 a 6)</text>
+
+  <!-- Aristas / Conexiones (de hijos a padres según Parent(i) = i - lowbit(i)) -->
+  <!-- Nivel 1 -> Dummy (0) -->
+  <line x1="184" y1="185" x2="412" y2="91" class="link" marker-end="url(#arrow)" />
+  <line x1="440" y1="169" x2="440" y2="110" class="link" marker-end="url(#arrow)" />
+  <line x1="696" y1="185" x2="468" y2="91" class="link" marker-end="url(#arrow)" />
+
+  <!-- Nivel 2 -> Nivel 1 -->
+  <!-- Nodo 3 -> Nodo 2 -->
+  <line x1="337" y1="311" x2="420" y2="217" class="link" marker-end="url(#arrow)" />
+  <!-- Nodo 5 -> Nodo 4 -->
+  <line x1="635" y1="309" x2="702" y2="219" class="link" marker-end="url(#arrow)" />
+  <!-- Nodo 6 -> Nodo 4 -->
+  <line x1="787" y1="308" x2="735" y2="221" class="link" marker-end="url(#arrow)" />
+
+  <!-- Nodos -->
+
+  <!-- Dummy 0 -->
+  <text x="440" y="44" class="idx">dummy (0)</text>
+  <circle cx="440" cy="80" r="26" class="frame" />
+  <text x="440" y="80" dominant-baseline="central" class="val">∅</text>
+
+  <!-- Nivel 1 -->
+  <!-- Nodo 1 -->
+  <g transform="translate(160, 195)">
+    <circle cx="0" cy="0" r="26" class="frame" />
+    <text x="0" y="0" dominant-baseline="central" class="val">5</text>
+    <text x="-35" y="-12" class="idx-val" text-anchor="end">i=1</text>
+    <text x="0" y="42" class="top-label">[1,1]</text>
+  </g>
+
+  <!-- Nodo 2 -->
+  <g transform="translate(440, 195)">
+    <circle cx="0" cy="0" r="26" class="frame" />
+    <text x="0" y="0" dominant-baseline="central" class="val">9</text>
+    <text x="-35" y="-12" class="idx-val" text-anchor="end">i=2</text>
+    <text x="0" y="42" class="top-label">[1,2]</text>
+  </g>
+
+  <!-- Nodo 4 -->
+  <g transform="translate(720, 195)">
+    <circle cx="0" cy="0" r="26" class="frame" />
+    <text x="0" y="0" dominant-baseline="central" class="val">9</text>
+    <text x="35" y="-12" class="idx-val" text-anchor="start">i=4</text>
+    <text x="0" y="42" class="top-label">[1,4]</text>
+  </g>
+
+  <!-- Nivel 2 -->
+  <!-- Nodo 3 -->
+  <g transform="translate(320, 330)">
+    <circle cx="0" cy="0" r="26" class="frame" />
+    <text x="0" y="0" dominant-baseline="central" class="val">1</text>
+    <text x="-35" y="-12" class="idx-val" text-anchor="end">i=3</text>
+    <text x="0" y="42" class="top-label">[3,3]</text>
+  </g>
+
+  <!-- Nodo 5 -->
+  <g transform="translate(620, 330)">
+    <circle cx="0" cy="0" r="26" class="frame" />
+    <text x="0" y="0" dominant-baseline="central" class="val">0</text>
+    <text x="-35" y="-12" class="idx-val" text-anchor="end">i=5</text>
+    <text x="0" y="42" class="top-label">[5,5]</text>
+  </g>
+
+  <!-- Nodo 6 -->
+  <g transform="translate(800, 330)">
+    <circle cx="0" cy="0" r="26" class="frame" />
+    <text x="0" y="0" dominant-baseline="central" class="val">8</text>
+    <text x="35" y="-12" class="idx-val" text-anchor="start">i=6</text>
+    <text x="0" y="42" class="top-label">[5,6]</text>
+  </g>
+</svg>

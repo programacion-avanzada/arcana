@@ -15,7 +15,7 @@ Un sótano olvidado de la Torre entregó un cofre con cientos de presagios nunca
 1. **Método ingenuo:** insertar los `n` presagios uno por uno en un montículo inicialmente vacío, como en el Ejercicio 1. ¿Cuál es la complejidad total en el peor caso? Justificar.
 2. **Método "desde abajo":** en lugar de insertar de a uno, aplicar `sift-down` empezando por el último nodo interno del arreglo (el último nodo que tiene al menos un hijo) y retrocediendo hasta la raíz. Describir el algoritmo en palabras. ¿Por qué alcanza con arrancar en el último nodo interno, sin procesar las hojas?
 3. Trazar a mano el método "desde abajo" sobre el arreglo `[4, 18, 9, 25, 1, 30, 12, 7, 22, 15]`, mostrando el arreglo completo después de aplicar `sift-down` sobre cada nodo interno procesado.
-4. Formalizar el argumento de complejidad del método "desde abajo": plantear la suma que acota el costo total, pensando en cuántos nodos hay a cada altura del árbol y cuánto cuesta el `sift-down` de un nodo según su altura. Mostrar que esa suma converge a `O(n)`. (No hace falta una demostración completamente rigurosa, pero sí identificar la serie involucrada y explicar por qué converge a una constante.)
+4. Formalizar el argumento de complejidad del método "desde abajo": plantear la suma que acota el costo total, pensando en cuántos nodos hay a cada altura del árbol y cuánto cuesta el `sift-down` de un nodo según su altura. Mostrar que esa suma converge a $O(n)$. (No hace falta una demostración completamente rigurosa, pero sí identificar la serie involucrada y explicar por qué converge a una constante.)
 
 > **Susurro del Archivista Insomne.** Un montículo de `n` elementos tiene aproximadamente `n/2` hojas (altura 0, costo de `sift-down` nulo), `n/4` nodos de altura 1, `n/8` de altura 2, y así sucesivamente. El costo de `sift-down` sobre un nodo depende de **la altura de ese nodo**, no de la altura total del árbol. Sumá, para cada altura, la cantidad de nodos que hay multiplicada por el costo de esa altura.
 
@@ -25,7 +25,7 @@ Un sótano olvidado de la Torre entregó un cofre con cientos de presagios nunca
 <details>
     <summary>Ver solución</summary>
 
-## 1. Método ingenuo
+### 1. Método ingenuo
 
 Insertar el $k$-ésimo elemento en un montículo que ya tiene $k-1$ elementos cuesta, en el peor caso, un `sift-up` que recorre la altura del árbol: $O(\log k)$.
 
@@ -35,7 +35,7 @@ $$
 
 (por la aproximación de Stirling, o simplemente porque cada una de las $n$ inserciones cuesta a lo sumo $O(\log n)$). **Cota ajustada**, porque las últimas $n/2$ inserciones ocurren efectivamente sobre montículos de tamaño $\Theta(n)$, con altura real $\Theta(\log n)$.
 
-## 2. Método "desde abajo"
+### 2. Método "desde abajo"
 
 **Idea:** en vez de construir el montículo agregando hojas y arreglando hacia arriba, se parte del arreglo tal cual y se "arregla hacia abajo" cada subárbol, de atrás para adelante.
 
@@ -45,7 +45,7 @@ $$
 
 **Por qué no hace falta procesar las hojas:** un `sift-down` compara un nodo contra sus hijos y hunde el valor si corresponde. Una hoja no tiene hijos, así que `sift-down` sobre una hoja es una operación vacía: cada hoja ya es, trivialmente, un montículo válido de un solo elemento. Además, el invariante clave es que cuando se procesa el nodo $i$, **sus dos subárboles hijos ya son montículos válidos** (porque se procesaron antes, al ir de atrás hacia adelante); eso es justamente lo que garantiza la corrección de `sift-down(i)`.
 
-## 3. Traza
+### 3. Traza
 
 Sobre `[4, 18, 9, 25, 1, 30, 12, 7, 22, 15]`:
 
@@ -62,7 +62,7 @@ $n=10$, índices $0$–$9$. Último nodo interno: $\lfloor 10/2\rfloor -1 = 4$.
 
 Resultado final: **`[30, 25, 12, 22, 15, 9, 4, 7, 18, 1]`** (se verifica la propiedad de montículo en cada nodo).
 
-## 4. Complejidad del método "desde abajo"
+### 4. Complejidad del método "desde abajo"
 
 El costo de `sift-down` en un nodo depende de la **altura de ese nodo** (distancia hasta su hoja más lejana), no de la altura del árbol completo. Como sugiere el Archivista:
 
@@ -88,7 +88,7 @@ $$
 
 Por lo tanto $T(n) = O(n)\cdot 2 = O(n)$. La clave es que **la cantidad de nodos decrece exponencialmente a medida que crece su costo**, así que el producto (nodos × costo) decrece también exponencialmente y la suma total queda acotada por una constante multiplicando $n$.
 
-## Respuesta a la reflexión trampa
+### Respuesta a la reflexión trampa
 
 El error de "$n$ operaciones × $O(\log n)$ cada una = $O(n\log n)$" es **multiplicar por la cota superior *global*** ($O(\log n)$, que solo corresponde al nodo raíz) **en vez de usar el costo real de cada nodo según su altura**.
 
