@@ -21,7 +21,7 @@ Conocido el vuelo de la pájara, hay que encontrar la distancia total mínima y 
 
 A primera vista parece que alcanza con elegir, en cada medición, el movimiento que deja al pajarito más cerca de la pájara. La dificultad aparece cuando ella cambia de dirección. Puede bajar tres metros en un solo paso y el pajarito puede tardar varias mediciones en volver a acercarse. La altura que elige antes del descenso condiciona todo ese tramo.
 
-En la medición 8 del ejemplo oficial, la pájara está a 9 metros y el pajarito viene de estar a 7. Subir a 8 cuesta 1 en ese paso y lleva a un costo total de 25 si el pajarito sigue eligiendo el movimiento que lo deja más cerca. Bajar a 6 cuesta 3 en ese paso y le permite anticipar el descenso de la pájara. Ese recorrido suma 23.
+En la medición 8 del ejemplo oficial, la pájara está a 9 metros y el pajarito viene de estar a 7. Subir a 8 cuesta 1 en ese paso y lleva a un costo total de 25 si el pajarito sigue la estrategia [[vuelo_amoroso-greedy|greedy]], que elige el movimiento que lo deja más cerca. Bajar a 6 cuesta 3 en ese paso y le permite anticipar el descenso de la pájara. Ese recorrido suma 23.
 
 ![Comparación del recorrido greedy y el óptimo entre las mediciones 6 y 13](vuelo-amoroso-greedy.svg)
 
@@ -71,11 +71,11 @@ También podemos bajar a 2 en la medición 12 y volver a 3 en la 13. La distanci
 
 ## Por dónde empezar
 
-Podemos empezar dibujando las opciones de subir y bajar en las primeras tres mediciones del ejemplo. Si seguimos todas las ramas hasta el final y elegimos el recorrido válido de menor costo, estamos aplicando fuerza bruta.
+Podemos empezar dibujando las opciones de subir y bajar en las primeras tres mediciones del ejemplo. Si seguimos todas las ramas hasta el final y elegimos el recorrido válido de menor costo, estamos aplicando [[vuelo_amoroso-fuerza-bruta|fuerza bruta]].
 
 ![El pajarito llega a 1 metro en la tercera medición por dos recorridos, con costos acumulados de 7 y 5](vuelo-amoroso-primeras-mediciones.svg)
 
-Para mejorarla hay que preguntarse qué información del pasado importa realmente para decidir el futuro. Lo único que condiciona lo que puede pasar a partir de la medición $t$ es **a qué altura está el pajarito en ese momento**. Muchos vuelos distintos llegan a la misma altura en la misma medición, y de todos ellos solo interesa el que llegó con menor distancia acumulada. Esa observación lleva directo a **programación dinámica**.
+Para mejorarla hay que preguntarse qué información del pasado importa realmente para decidir el futuro. Lo único que condiciona lo que puede pasar a partir de la medición $t$ es **a qué altura está el pajarito en ese momento**. Muchos vuelos distintos llegan a la misma altura en la misma medición, y de todos ellos solo interesa el que llegó con menor distancia acumulada. Esa observación lleva directo a **[[vuelo_amoroso-programacion-dinamica|programación dinámica]]**.
 
 ## Soluciones disponibles
 

@@ -26,7 +26,7 @@ Para cada medición:
 
 El desempate no es arbitrario: hay que elegir bajar para que el vuelo sea siempre **factible**. Si se desempatara subiendo, con la pájara y el pajarito a 300 metros el pajarito pasaría a 301, que es no factible. Bajando, en cambio, nunca se sale del rango: si empata con la pájara está a 1 metro o más, y en los otros dos casos se mueve hacia la pájara, que siempre está entre 1 y 300.
 
-Greedy solo usa lo que ya vio: la altura actual del pajarito y la medición que acaba de llegar. Por eso es la única de las tres soluciones que se puede usar **si los datos llegan de a uno (tiempo real)**, algo que la fuerza bruta y la programación dinámica no pueden hacer, porque necesitan conocer todo el vuelo.
+Greedy solo usa lo que ya vio: la altura actual del pajarito y la medición que acaba de llegar. Por eso es la única de las tres soluciones que se puede usar **si los datos llegan de a uno (tiempo real)**, algo que la [[vuelo_amoroso-fuerza-bruta|fuerza bruta]] y la [[vuelo_amoroso-programacion-dinamica|programación dinámica]] no pueden hacer, porque necesitan conocer todo el vuelo.
 
 ## Código
 

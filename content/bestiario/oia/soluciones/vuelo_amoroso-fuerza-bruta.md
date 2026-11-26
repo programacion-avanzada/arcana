@@ -78,7 +78,7 @@ Estos son los candidatos que van mejorando `mejor_total`, en el orden en que se 
 | #32       | `1 2 3 4 5 6 7 8 7 6 5 4 3`     | 25     |
 | #62       | `1 2 3 4 5 6 7 6 5 4 3 4 3`     | **23** |
 
-(Se omiten algunas mejoras intermedias de a 2.) El candidato #32 es justamente el vuelo greedy que se acerca siempre a la pájara. El #62 ya es óptimo, pero el algoritmo no tiene forma de saberlo, así que sigue evaluando los 8130 candidatos restantes sin encontrar nada mejor.
+(Se omiten algunas mejoras intermedias de a 2.) El candidato #32 es justamente el vuelo [[vuelo_amoroso-greedy|greedy]] que se acerca siempre a la pájara. El #62 ya es óptimo, pero el algoritmo no tiene forma de saberlo, así que sigue evaluando los 8130 candidatos restantes sin encontrar nada mejor.
 
 Resumen de la ejecución:
 
@@ -121,15 +121,15 @@ $O(n)$: en cada momento se guardan solo la secuencia actual, el recorrido del ca
 - Repite trabajo: el mismo estado (medición, altura) se expande muchas veces por caminos distintos, aunque desde ahí el futuro sea idéntico.
 - No puede detenerse antes aunque ya tenga el óptimo, porque no tiene una cota que le permita saber que no hay nada mejor.
 
-## Comparación con programación dinámica
+## Comparación con [[vuelo_amoroso-programacion-dinamica|programación dinámica]]
 
-La fuerza bruta trata cada vuelo como una solución independiente. La [[vuelo_amoroso-programacion-dinamica]] parte de la observación que deja ver el árbol: lo único que importa del pasado es la altura actual, así que de todos los vuelos que llegan al mismo estado alcanza con conservar el de menor distancia acumulada. Eso reduce el trabajo de $O(2^n \cdot n)$ a $O(n \cdot H)$, con $H = 301$ alturas factibles: para el límite del problema, unos 12 millones de pasos contra un número astronómico.
+La fuerza bruta trata cada vuelo como una solución independiente. La programación dinámica parte de la observación que deja ver el árbol: lo único que importa del pasado es la altura actual, así que de todos los vuelos que llegan al mismo estado alcanza con conservar el de menor distancia acumulada. Eso reduce el trabajo de $O(2^n \cdot n)$ a $O(n \cdot H)$, con $H = 301$ alturas factibles: para el límite del problema, unos 12 millones de pasos contra un número astronómico.
 
 La fuerza bruta solo gana en simplicidad: no requiere identificar estados ni plantear una recurrencia, y por eso es útil como oráculo para probar la versión de programación dinámica en instancias chicas.
 
 ## Comparación con greedy
 
-La solución [[vuelo_amoroso-greedy|greedy]] está en el extremo opuesto: construye un único vuelo en $O(n)$ en lugar de revisar los $2^n$. Pero decide mirando solo la medición actual y no garantiza el óptimo. En el ejemplo devuelve 25 (el candidato #32 de la traza), mientras que la fuerza bruta encuentra el 23.
+La solución greedy está en el extremo opuesto: construye un único vuelo en $O(n)$ en lugar de revisar los $2^n$. Pero decide mirando solo la medición actual y no garantiza el óptimo. En el ejemplo devuelve 25 (el candidato #32 de la traza), mientras que la fuerza bruta encuentra el 23.
 
 ## Referencias
 
