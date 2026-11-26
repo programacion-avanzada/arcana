@@ -1,13 +1,138 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" width="640" height="330" font-family="sans-serif" xmlns:c2pa="http://c2pa.org/manifest">
-<title>Recorrido de Greedy contra la pájara y el óptimo (n = 13)</title>
-<line x1="50" y1="285" x2="588" y2="285" stroke="#888" stroke-opacity="0.25"/><text x="42" y="289" text-anchor="end" font-size="11" fill="#888">0</text><line x1="50" y1="228" x2="588" y2="228" stroke="#888" stroke-opacity="0.25"/><text x="42" y="232" text-anchor="end" font-size="11" fill="#888">3</text><line x1="50" y1="171" x2="588" y2="171" stroke="#888" stroke-opacity="0.25"/><text x="42" y="175" text-anchor="end" font-size="11" fill="#888">6</text><line x1="50" y1="114" x2="588" y2="114" stroke="#888" stroke-opacity="0.25"/><text x="42" y="118" text-anchor="end" font-size="11" fill="#888">9</text><line x1="50" y1="57" x2="588" y2="57" stroke="#888" stroke-opacity="0.25"/><text x="42" y="61" text-anchor="end" font-size="11" fill="#888">12</text><text x="50" y="301" text-anchor="middle" font-size="11" fill="#888">1</text><text x="94" y="301" text-anchor="middle" font-size="11" fill="#888">2</text><text x="138" y="301" text-anchor="middle" font-size="11" fill="#888">3</text><text x="182" y="301" text-anchor="middle" font-size="11" fill="#888">4</text><text x="226" y="301" text-anchor="middle" font-size="11" fill="#888">5</text><text x="270" y="301" text-anchor="middle" font-size="11" fill="#888">6</text><text x="314" y="301" text-anchor="middle" font-size="11" fill="#888">7</text><text x="358" y="301" text-anchor="middle" font-size="11" fill="#888">8</text><text x="402" y="301" text-anchor="middle" font-size="11" fill="#888">9</text><text x="446" y="301" text-anchor="middle" font-size="11" fill="#888">10</text><text x="490" y="301" text-anchor="middle" font-size="11" fill="#888">11</text><text x="534" y="301" text-anchor="middle" font-size="11" fill="#888">12</text><text x="578" y="301" text-anchor="middle" font-size="11" fill="#888">13</text>
-<text x="314.0" y="321" text-anchor="middle" font-size="12" fill="#888">medición</text>
-<text x="14" y="161.5" font-size="12" fill="#888" transform="rotate(-90 14 161.5)" text-anchor="middle">altura</text>
-<polyline points="50,228 94,228 138,228 182,171 226,114 270,57 314,114 358,114 402,171 446,228 490,228 534,228 578,228" fill="none" stroke="#7F77DD" stroke-width="2.2" /><circle cx="50" cy="228" r="3.2" fill="#7F77DD"/><circle cx="94" cy="228" r="3.2" fill="#7F77DD"/><circle cx="138" cy="228" r="3.2" fill="#7F77DD"/><circle cx="182" cy="171" r="3.2" fill="#7F77DD"/><circle cx="226" cy="114" r="3.2" fill="#7F77DD"/><circle cx="270" cy="57" r="3.2" fill="#7F77DD"/><circle cx="314" cy="114" r="3.2" fill="#7F77DD"/><circle cx="358" cy="114" r="3.2" fill="#7F77DD"/><circle cx="402" cy="171" r="3.2" fill="#7F77DD"/><circle cx="446" cy="228" r="3.2" fill="#7F77DD"/><circle cx="490" cy="228" r="3.2" fill="#7F77DD"/><circle cx="534" cy="228" r="3.2" fill="#7F77DD"/><circle cx="578" cy="228" r="3.2" fill="#7F77DD"/>
-<polyline points="50,266 94,247 138,228 182,209 226,190 270,171 314,152 358,171 402,190 446,209 490,228 534,209 578,228" fill="none" stroke="#1D9E75" stroke-width="2.2" stroke-dasharray="6 4"/><circle cx="50" cy="266" r="3.2" fill="#1D9E75"/><circle cx="94" cy="247" r="3.2" fill="#1D9E75"/><circle cx="138" cy="228" r="3.2" fill="#1D9E75"/><circle cx="182" cy="209" r="3.2" fill="#1D9E75"/><circle cx="226" cy="190" r="3.2" fill="#1D9E75"/><circle cx="270" cy="171" r="3.2" fill="#1D9E75"/><circle cx="314" cy="152" r="3.2" fill="#1D9E75"/><circle cx="358" cy="171" r="3.2" fill="#1D9E75"/><circle cx="402" cy="190" r="3.2" fill="#1D9E75"/><circle cx="446" cy="209" r="3.2" fill="#1D9E75"/><circle cx="490" cy="228" r="3.2" fill="#1D9E75"/><circle cx="534" cy="209" r="3.2" fill="#1D9E75"/><circle cx="578" cy="228" r="3.2" fill="#1D9E75"/>
-<polyline points="50,266 94,247 138,228 182,209 226,190 270,171 314,152 358,133 402,152 446,171 490,190 534,209 578,228" fill="none" stroke="#D85A30" stroke-width="2.2" /><circle cx="50" cy="266" r="3.2" fill="#D85A30"/><circle cx="94" cy="247" r="3.2" fill="#D85A30"/><circle cx="138" cy="228" r="3.2" fill="#D85A30"/><circle cx="182" cy="209" r="3.2" fill="#D85A30"/><circle cx="226" cy="190" r="3.2" fill="#D85A30"/><circle cx="270" cy="171" r="3.2" fill="#D85A30"/><circle cx="314" cy="152" r="3.2" fill="#D85A30"/><circle cx="358" cy="133" r="3.2" fill="#D85A30"/><circle cx="402" cy="152" r="3.2" fill="#D85A30"/><circle cx="446" cy="171" r="3.2" fill="#D85A30"/><circle cx="490" cy="190" r="3.2" fill="#D85A30"/><circle cx="534" cy="209" r="3.2" fill="#D85A30"/><circle cx="578" cy="228" r="3.2" fill="#D85A30"/>
-<g font-size="12">
-<line x1="50" y1="18" x2="72" y2="18" stroke="#7F77DD" stroke-width="2.2"/><text x="78" y="22" fill="#888">pájara</text>
-<line x1="150" y1="18" x2="172" y2="18" stroke="#D85A30" stroke-width="2.2"/><text x="178" y="22" fill="#888">greedy</text>
-<line x1="250" y1="18" x2="272" y2="18" stroke="#1D9E75" stroke-width="2.2" stroke-dasharray="6 4"/><text x="278" y="22" fill="#888">óptimo</text>
-</g><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToxYzM3YTY1Yy1iZjQxLTQ5ZmEtOTMxNi0yOWJiNTI1YThiY2YAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaKOPZ/5ZkXn/9BQhO0+a2LcAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo3NDRjYWY5MS1lMDQ5LTQ2MjItYmM1NC0zZjQ1NzYyMDcxMjNscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNo90G/evn9zh/37OcP0XhlPQAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFgg5ehNjNjmKGrhg63jn1qQ5iC8Q8LWKX2x7DA7EusXxgqkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaG2TVi10IJaDnKJlQh08CtQAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIAQungy+5i0vD31IOMUwRa3Hym8u0aXW/Iaxka7d7gbTZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GRQgZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjFjMzdhNjVjLWJmNDEtNDlmYS05MzE2LTI5YmI1MjVhOGJjZi9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjBmNWZjMTJhLWU5MDItNGEwOC1iNzhhLTYwOGI2Yjc5Mjg2YXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDl6E2M2OYoauGDreOfWpDmILxDwtYpfbHsMDsS6xfGCqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggPXvohH5nUz0I8KiebBqIpK6gWfYfXbi8xY+TYR+GKDGiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggoHwUIIS6N3Y2ShpkvB13ecT07Hji2Ewl52dYJZ0vWMt0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQH1hoyhYXoI938YCODfm7CQNy+3XVLcq6BfrZrqLYbNU8NPLvXIZ5Fw5dB/bF7aGBkW0Ex4xcMRkPFgPk8GyxAM=</c2pa:manifest></metadata></svg>
+<svg width="740" height="448" viewBox="0 0 740 448" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vuelo amoroso: recorrido greedy en el ejemplo</title>
+  <desc id="desc">Gráfico de altura en función del tiempo para t de 0 a 13. La pájara vuela 0, 3, 3, 3, 6, 9, 12, 9, 9, 6, 3, 3, 3, 3. El pajarito greedy, que siempre se acerca a la pájara, vuela 0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3. Las distancias en cada medición son 2, 1, 0, 2, 4, 6, 2, 1, 1, 3, 2, 1, 0 y suman 25. En línea punteada, el vuelo óptimo, que suma 23.</desc>
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .val-sm { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .ghost-link { stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; fill: none; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .grid { stroke: #e3e8ef; stroke-width: 1; }
+    .axis { stroke: #9baec8; stroke-width: 1.5; }
+    .pajara { stroke: #c0742a; stroke-width: 2.5; fill: none; stroke-linejoin: round; }
+    .pajara-pt { fill: #c0742a; }
+    .pajarito { stroke: #4a6fa5; stroke-width: 2.5; fill: none; stroke-linejoin: round; }
+    .pajarito-pt { fill: #4a6fa5; }
+    .gap { stroke: #777777; stroke-width: 1.2; stroke-dasharray: 3,3; }
+    .serie-label { font-size: 13px; font-weight: 700; fill: #4a6fa5; }
+    .serie-label-acc { font-size: 13px; font-weight: 700; fill: #c0742a; }
+    @media (prefers-color-scheme: dark) {
+      .val-sm { fill: #e2e8f0; }
+      .idx { fill: #8899aa; }
+      .op { fill: #8899aa; }
+      .ghost-link { stroke: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .grid { stroke: #2a3142; }
+      .axis { stroke: #4a6fa5; }
+      .pajara { stroke: #d4884a; }
+      .pajara-pt { fill: #d4884a; }
+      .pajarito { stroke: #6a9fd8; }
+      .pajarito-pt { fill: #6a9fd8; }
+      .gap { stroke: #8899aa; }
+      .serie-label { fill: #6a9fd8; }
+      .serie-label-acc { fill: #d4884a; }
+    }
+  </style>
+
+  <text x="376" y="24" class="op">vuelo greedy del ejemplo: siempre se acerca a la pájara</text>
+  <!-- leyenda -->
+  <path d="M150,46 L190,46" class="pajara"/>
+  <text x="198" y="51" class="serie-label-acc">pájara</text>
+  <path d="M300,46 L340,46" class="pajarito"/>
+  <text x="348" y="51" class="serie-label">greedy</text>
+  <path d="M450,46 L490,46" class="ghost-link"/>
+  <text x="498" y="51" class="op" style="text-anchor: start">óptimo</text>
+
+  <!-- grilla: x = 90 + 44*t, y = 340 - 22*h -->
+  <path d="M90,274 L662,274" class="grid"/>
+  <path d="M90,208 L662,208" class="grid"/>
+  <path d="M90,142 L662,142" class="grid"/>
+  <path d="M90,76 L662,76" class="grid"/>
+  <text x="66" y="344" class="idx">0</text>
+  <text x="66" y="278" class="idx">3</text>
+  <text x="66" y="212" class="idx">6</text>
+  <text x="66" y="146" class="idx">9</text>
+  <text x="66" y="80" class="idx">12</text>
+  <text x="40" y="212" class="op" transform="rotate(-90 40 208)">altura</text>
+  <path d="M90,340 L676,340" class="axis"/>
+  <path d="M90,340 L90,66" class="axis"/>
+  <text x="90" y="360" class="idx">0</text>
+  <text x="134" y="360" class="idx">1</text>
+  <text x="178" y="360" class="idx">2</text>
+  <text x="222" y="360" class="idx">3</text>
+  <text x="266" y="360" class="idx">4</text>
+  <text x="310" y="360" class="idx">5</text>
+  <text x="354" y="360" class="idx">6</text>
+  <text x="398" y="360" class="idx">7</text>
+  <text x="442" y="360" class="idx">8</text>
+  <text x="486" y="360" class="idx">9</text>
+  <text x="530" y="360" class="idx">10</text>
+  <text x="574" y="360" class="idx">11</text>
+  <text x="618" y="360" class="idx">12</text>
+  <text x="662" y="360" class="idx">13</text>
+  <text x="698" y="360" class="idx">t</text>
+
+  <!-- distancias |greedy - pájara| -->
+  <path d="M134,274 L134,318" class="gap"/>
+  <path d="M178,274 L178,296" class="gap"/>
+  <path d="M266,208 L266,252" class="gap"/>
+  <path d="M310,142 L310,230" class="gap"/>
+  <path d="M354,76 L354,208" class="gap"/>
+  <path d="M398,142 L398,186" class="gap"/>
+  <path d="M442,142 L442,164" class="gap"/>
+  <path d="M486,208 L486,186" class="gap"/>
+  <path d="M530,274 L530,208" class="gap"/>
+  <path d="M574,274 L574,230" class="gap"/>
+  <path d="M618,274 L618,252" class="gap"/>
+
+  <!-- vuelos (el óptimo solo difiere entre t = 8 y t = 12) -->
+  <polyline points="90,340 134,318 178,296 222,274 266,252 310,230 354,208 398,186 442,208 486,230 530,252 574,274 618,252 662,274" class="ghost-link"/>
+  <polyline points="90,340 134,274 178,274 222,274 266,208 310,142 354,76 398,142 442,142 486,208 530,274 574,274 618,274 662,274" class="pajara"/>
+  <polyline points="90,340 134,318 178,296 222,274 266,252 310,230 354,208 398,186 442,164 486,186 530,208 574,230 618,252 662,274" class="pajarito"/>
+  <circle cx="90" cy="340" r="4" class="pajara-pt"/>
+  <circle cx="134" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="178" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="222" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="266" cy="208" r="4" class="pajara-pt"/>
+  <circle cx="310" cy="142" r="4" class="pajara-pt"/>
+  <circle cx="354" cy="76" r="4" class="pajara-pt"/>
+  <circle cx="398" cy="142" r="4" class="pajara-pt"/>
+  <circle cx="442" cy="142" r="4" class="pajara-pt"/>
+  <circle cx="486" cy="208" r="4" class="pajara-pt"/>
+  <circle cx="530" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="574" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="618" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="662" cy="274" r="4" class="pajara-pt"/>
+  <circle cx="90" cy="340" r="4" class="pajarito-pt"/>
+  <circle cx="134" cy="318" r="4" class="pajarito-pt"/>
+  <circle cx="178" cy="296" r="4" class="pajarito-pt"/>
+  <circle cx="222" cy="274" r="4" class="pajarito-pt"/>
+  <circle cx="266" cy="252" r="4" class="pajarito-pt"/>
+  <circle cx="310" cy="230" r="4" class="pajarito-pt"/>
+  <circle cx="354" cy="208" r="4" class="pajarito-pt"/>
+  <circle cx="398" cy="186" r="4" class="pajarito-pt"/>
+  <circle cx="442" cy="164" r="4" class="pajarito-pt"/>
+  <circle cx="486" cy="186" r="4" class="pajarito-pt"/>
+  <circle cx="530" cy="208" r="4" class="pajarito-pt"/>
+  <circle cx="574" cy="230" r="4" class="pajarito-pt"/>
+  <circle cx="618" cy="252" r="4" class="pajarito-pt"/>
+  <circle cx="662" cy="274" r="4" class="pajarito-pt"/>
+
+  <!-- fila de distancias de greedy -->
+  <text x="40" y="394" class="op">|Δ|</text>
+  <text x="134" y="394" class="val-sm">2</text>
+  <text x="178" y="394" class="val-sm">1</text>
+  <text x="222" y="394" class="val-sm">0</text>
+  <text x="266" y="394" class="val-sm">2</text>
+  <text x="310" y="394" class="val-sm">4</text>
+  <text x="354" y="394" class="val-sm">6</text>
+  <text x="398" y="394" class="val-sm">2</text>
+  <text x="442" y="394" class="val-sm">1</text>
+  <text x="486" y="394" class="val-sm">1</text>
+  <text x="530" y="394" class="val-sm">3</text>
+  <text x="574" y="394" class="val-sm">2</text>
+  <text x="618" y="394" class="val-sm">1</text>
+  <text x="662" y="394" class="val-sm">0</text>
+  <text x="376" y="428" class="accent-label">greedy: 2+1+0+2+4+6+2+1+1+3+2+1+0 = 25   (óptimo: 23)</text>
+</svg>
