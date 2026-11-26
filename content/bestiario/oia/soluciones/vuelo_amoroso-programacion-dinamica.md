@@ -193,6 +193,10 @@ $O(n \cdot H)$ para la tabla completa, que hace falta para reconstruir el recorr
 
 La fuerza bruta solo gana en memoria cuando se pide el recorrido: $O(n)$ contra $O(n \cdot H)$. Pero esa ventaja no sirve de nada, porque su tiempo exponencial la deja fuera de juego mucho antes de que la memoria de la PD sea un problema. La PD gana en cualquier instancia que no sea trivial, porque convierte un problema exponencial en uno lineal en $n$. La fuerza bruta queda como herramienta de verificación: en instancias chicas, ambas soluciones tienen que dar la misma distancia.
 
+## Comparación con greedy
+
+La solución [[vuelo_amoroso-greedy|greedy]] también es lineal en $n$ y usa menos memoria ($O(1)$ si no guarda el recorrido), pero decide mirando solo la medición actual y no garantiza el óptimo: en el ejemplo da 25 en lugar de 23. La programación dinámica, en cambio, considera para cada estado las dos formas de llegar y se queda con la mejor, sin decidir antes de tiempo. Como en este problema todo el vuelo de la pájara se conoce de antemano y la PD entra holgada en tiempo, es la técnica adecuada. Greedy solo tendría sentido si las mediciones llegaran de a una.
+
 ## Referencias
 
 - [Enunciado original (OIA, Nivel 3, Problema 2)](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf)

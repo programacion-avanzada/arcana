@@ -127,6 +127,10 @@ La fuerza bruta trata cada vuelo como una solución independiente. La [[vuelo_am
 
 La fuerza bruta solo gana en simplicidad: no requiere identificar estados ni plantear una recurrencia, y por eso es útil como oráculo para probar la versión de programación dinámica en instancias chicas.
 
+## Comparación con greedy
+
+La solución [[vuelo_amoroso-greedy|greedy]] está en el extremo opuesto: construye un único vuelo en $O(n)$ en lugar de revisar los $2^n$. Pero decide mirando solo la medición actual y no garantiza el óptimo. En el ejemplo devuelve 25 (el candidato #32 de la traza), mientras que la fuerza bruta encuentra el 23.
+
 ## Referencias
 
 - [Enunciado original (OIA, Nivel 3, Problema 2)](https://www.oia.unsam.edu.ar/_media/prob/c3a09n3p2.pdf)
