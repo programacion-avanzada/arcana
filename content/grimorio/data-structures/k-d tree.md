@@ -38,7 +38,7 @@ Distribución de los puntos en el plano X-Y. Cada punto corta su región por el 
 
 - `build`: Construye el árbol desde cero, buscando la mediana en cada nivel para asegurar que quede balanceado.
 - `insert / find`: Agrega o busca un punto bajando por el árbol, alternando el eje de comparación en cada nivel.
-- `nearest`: Encuentra el punto más próximo a una coordenada. Dibuja una esfera virtual para podar (descartar) ramas enteras del árbol que están demasiado lejos.
+- `nearest`: Busca el punto del árbol más próximo a una coordenada dada. Baja por el lado donde cae la consulta y, al volver, usa una esfera virtual (centrada en la consulta, con radio igual a la mejor distancia encontrada) para decidir si el otro subárbol puede contener algo más cercano. Si no puede, se poda: no se recorre. Ver [Búsqueda del vecino más cercano](#búsqueda-del-vecino-más-cercano).
 - `range_search`: Devuelve todos los puntos que caen dentro de un rectángulo o área específica.
 - `remove`: Elimina o pone en desuso el nodo buscado
 - `clear`: Elimina todos los nodos del árbol
@@ -59,6 +59,25 @@ Distribución de los puntos en el plano X-Y. Cada punto corta su región por el 
 - Maldición de la dimensionalidad: Si la cantidad de dimensiones (k) es muy alta (generalmente > 20), el volumen espacial crece tanto que la poda de ramas deja de ser eficiente. El árbol se ve forzado a visitar casi todos los nodos, volviéndose más lento que una búsqueda lineal simple.
 - Desbalanceo: Si se insertan datos ya ordenados, el árbol degenera en una lista enlazada, empujando todas las operaciones al peor caso $O(n)$.
 - Eliminaciones complejas: Borrar un nodo interno exige encontrar un reemplazo exacto evaluando el eje de ese nivel específico, lo que suele requerir reorganizar subárboles. Por ello, en la práctica se prefiere usar "*borrado perezoso*" (marcar el nodo como inactivo).
+
+### Búsqueda del vecino más cercano
+
+`nearest` es una búsqueda recursiva. En cada nodo:
+
+1. Compara el punto del nodo con el mejor candidato hasta ahora y se queda con el más cercano.
+2. Calcula `diff = consulta[eje] - nodo[eje]`. Su signo indica de qué lado del corte cae la consulta; ese lado se explora primero.
+3. Al volver, decide si explorar también el otro lado. Solo vale la pena si el corte está más cerca de la consulta que el mejor candidato actual, es decir, si el círculo de búsqueda lo cruza: `diff² < mejor_distancia²`.
+
+El paso 3 es la **poda**. Es importante entender qué es y qué no:
+
+- **No modifica el árbol**: ningún nodo se elimina. Los subárboles podados solo se saltean *en esa búsqueda*; en otra consulta pueden visitarse.
+- **No cambia el resultado**: sin poda se obtiene el mismo punto, pero recorriendo todos los nodos (O(n)). Con poda, en promedio solo se visita una pequeña parte (O(log n)).
+
+![Poda en la búsqueda del vecino más cercano](ruta/kdtree-nearest-poda.svg)
+
+En el caso A el círculo no cruza ningún corte, así que se descartan 4 de los 7 puntos. En el caso B cruza el corte `x = 11`, por lo que hay que mirar el otro lado, y ahí está el vecino más cercano, `(9, 4)`.
+
+Se trabaja con distancias **al cuadrado** para evitar calcular raíces: comparar `d²` da el mismo orden que comparar `d`.
 
 ## 3. Implementación
 
@@ -101,7 +120,29 @@ class KdTree:
         tree.right_child = KdTree.build(sorted_points[median + 1:], depth + 1)
         
         return tree
-    
+
+    @staticmethod
+    def _dist2(a, b):
+        return sum((x - y) ** 2 for x, y in zip(a, b))
+
+    def nearest(self, target, depth: int = 0, best=None):
+        """Devuelve (punto, distancia_al_cuadrado) del punto más cercano a target."""
+        axis = depth % len(target)
+        d2 = KdTree._dist2(self.point, target)
+        if best is None or d2 < best[1]:
+            best = (self.point, d2)
+
+        diff = target[axis] - self.point[axis]
+        if diff < 0:
+            near, far = self.left_child, self.right_child
+        else:
+            near, far = self.right_child, self.left_child
+
+        if near:
+            best = near.nearest(target, depth + 1, best)
+        if far and diff ** 2 < best[1]:   # poda: solo se mira el otro lado si puede mejorar
+            best = far.nearest(target, depth + 1, best)
+        return best 
     
     def liberar_arbol(self) -> None:
         if self.left_child:
@@ -118,6 +159,10 @@ Uso típico: Creacion del arbol, busqueda del "vecino mas cercano" y destruccion
 ```python
 
 kdtree = KdTree.build([(4,7), (7,13), (9,4), (11,10), (14,11), (15,3), (16,10)])
+
+punto, dist2 = kdtree.nearest((10, 8))
+print(punto, dist2)   # (11, 10) 5
+
 kdtree.liberar_arbol()
 ```
 ## 4. Uso y criterio
