@@ -70,126 +70,137 @@ Se implementa un árbol de búsqueda binaria común y se agrega información de 
 ### Ejemplo de código
 ```python
 class NodoRB:
-    def __init__(self, valor, color='rojo'):
-        self.valor = valor
-        self.color = color
-        self.izquierdo = None
-        self.derecho = None
-        self.padre = None
-        
-    def abuelo(self):
-        if self.padre is None:
-            return None
-        return self.padre.padre
-  
-    def hermano(self):
-        if self.padre is None:
-            return None
-        if self == self.padre.izquierdo:
-            return self.padre.derecho
-        return self.padre.izquierdo
+    def __init__(self, valor, color='rojo'):
+        self.valor = valor
+        self.color = color
+        self.izquierdo = None
+        self.derecho = None
+        self.padre = None
 
-    def tio(self):
-        if self.padre is None:
-            return None
-        return self.padre.hermano()
+    def abuelo(self):
+        if self.padre is None:
+            return None
+        return self.padre.padre
+
+    def hermano(self):
+        if self.padre is None:
+            return None
+        if self == self.padre.izquierdo:
+            return self.padre.derecho
+        return self.padre.izquierdo
+
+    def tio(self):
+        if self.padre is None:
+            return None
+        return self.padre.hermano()
 
 class ArbolRojoNegro:
-    def __init__(self):
-        self.raiz = None
+    def __init__(self):
+        self.raiz = None
 
-    def reparar_insercion(self, nuevo_nodo):
-        while nuevo_nodo.padre and nuevo_nodo.padre.color == 'rojo':
-            if nuevo_nodo.padre == nuevo_nodo.abuelo().izquierdo:
-                tio = nuevo_nodo.tio()
-                if tio and tio.color == 'rojo':
-                    nuevo_nodo.padre.color = 'negro'
-                    tio.color = 'negro'
-                    nuevo_nodo.abuelo().color = 'rojo'
-                    nuevo_nodo = nuevo_nodo.abuelo()
-                else:
-                    if nuevo_nodo == nuevo_nodo.padre.derecho:
-                        nuevo_nodo = nuevo_nodo.padre
-                        self.rotar_izquierda(nuevo_nodo)
-                    nuevo_nodo.padre.color = 'negro'
-                    nuevo_nodo.abuelo().color = 'rojo'
-                    self.rotar_derecha(nuevo_nodo.abuelo())
-            else:
-                tio = nuevo_nodo.tio()
-                if tio and tio.color == 'rojo':
-                    nuevo_nodo.padre.color = 'negro'
-                    tio.color = 'negro'
-                    nuevo_nodo.abuelo().color = 'rojo'
-                    nuevo_nodo = nuevo_nodo.abuelo()
-                else:
-                    if nuevo_nodo == nuevo_nodo.padre.izquierdo:
-                        nuevo_nodo = nuevo_nodo.padre
-                        self.rotar_derecha(nuevo_nodo)
-                    nuevo_nodo.padre.color = 'negro'
-                    nuevo_nodo.abuelo().color = 'rojo'
-                    self.rotar_izquierda(nuevo_nodo.abuelo())
-        self.raiz.color = 'negro'
+    def reparar_insercion(self, nuevo_nodo):
+        while nuevo_nodo.padre and nuevo_nodo.padre.color == 'rojo':
+            if nuevo_nodo.padre == nuevo_nodo.abuelo().izquierdo:
+                tio = nuevo_nodo.tio()
+                if tio and tio.color == 'rojo':
+                    nuevo_nodo.padre.color = 'negro'
+                    tio.color = 'negro'
+                    nuevo_nodo.abuelo().color = 'rojo'
+                    nuevo_nodo = nuevo_nodo.abuelo()
+                else:
+                    if nuevo_nodo == nuevo_nodo.padre.derecho:
+                        nuevo_nodo = nuevo_nodo.padre
+                        self.rotar_izquierda(nuevo_nodo)
+                    nuevo_nodo.padre.color = 'negro'
+                    nuevo_nodo.abuelo().color = 'rojo'
+                    self.rotar_derecha(nuevo_nodo.abuelo())
+            else:
+                tio = nuevo_nodo.tio()
+                if tio and tio.color == 'rojo':
+                    nuevo_nodo.padre.color = 'negro'
+                    tio.color = 'negro'
+                    nuevo_nodo.abuelo().color = 'rojo'
+                    nuevo_nodo = nuevo_nodo.abuelo()
+                else:
+                    if nuevo_nodo == nuevo_nodo.padre.izquierdo:
+                        nuevo_nodo = nuevo_nodo.padre
+                        self.rotar_derecha(nuevo_nodo)
+                    nuevo_nodo.padre.color = 'negro'
+                    nuevo_nodo.abuelo().color = 'rojo'
+                    self.rotar_izquierda(nuevo_nodo.abuelo())
+        self.raiz.color = 'negro'
 
-    def insertar(self, valor):
-        nuevo_nodo = NodoRB(valor)
-        if self.raiz is None:
-            self.raiz = nuevo_nodo
-        else:
-            nodo_actual = self.raiz
-            while True:
-                if valor < nodo_actual.valor:
-                    if nodo_actual.izquierdo is None:
-                        nodo_actual.izquierdo = nuevo_nodo
-                        nuevo_nodo.padre = nodo_actual
-                        break
-                    else:
-                        nodo_actual = nodo_actual.izquierdo
-                elif valor > nodo_actual.valor:
-                    if nodo_actual.derecho is None:
-                        nodo_actual.derecho = nuevo_nodo
-                        nuevo_nodo.padre = nodo_actual
-                        break
-                    else:
-                        nodo_actual = nodo_actual.derecho
-                else:
-	                return
-        self.reparar_insercion(nuevo_nodo)
-  
-    def rotar_izquierda(self, nodo):
-        hijo_derecho = nodo.derecho
-        nodo.derecho = hijo_derecho.izquierdo
+    def buscar(self, valor):
+        nodo = self.raiz
+        while nodo is not None:
+            if valor < nodo.valor:
+                nodo = nodo.izquierdo
+            elif valor > nodo.valor:
+                nodo = nodo.derecho
+            else:
+                return nodo
+        return None
 
-        if hijo_derecho.izquierdo is not None:
-            hijo_derecho.izquierdo.padre = nodo
+    def insertar(self, valor):
+        nuevo_nodo = NodoRB(valor)
+        if self.raiz is None:
+            self.raiz = nuevo_nodo
+        else:
+            nodo_actual = self.raiz
+            while True:
+                if valor < nodo_actual.valor:
+                    if nodo_actual.izquierdo is None:
+                        nodo_actual.izquierdo = nuevo_nodo
+                        nuevo_nodo.padre = nodo_actual
+                        break
+                    else:
+                        nodo_actual = nodo_actual.izquierdo
+                elif valor > nodo_actual.valor:
+                    if nodo_actual.derecho is None:
+                        nodo_actual.derecho = nuevo_nodo
+                        nuevo_nodo.padre = nodo_actual
+                        break
+                    else:
+                        nodo_actual = nodo_actual.derecho
+                else:
+                    return
+        self.reparar_insercion(nuevo_nodo)
 
-        hijo_derecho.padre = nodo.padre
-  
-        if nodo.padre is None:
-            self.raiz = hijo_derecho
-        elif nodo == nodo.padre.izquierdo:
-            nodo.padre.izquierdo = hijo_derecho
-        else:
-            nodo.padre.derecho = hijo_derecho
+    def rotar_izquierda(self, nodo):
+        hijo_derecho = nodo.derecho
+        nodo.derecho = hijo_derecho.izquierdo
 
-        hijo_derecho.izquierdo = nodo
-        nodo.padre = hijo_derecho
+        if hijo_derecho.izquierdo is not None:
+            hijo_derecho.izquierdo.padre = nodo
 
-    def rotar_derecha(self, nodo):
-        hijo_izquierdo = nodo.izquierdo
-        nodo.izquierdo = hijo_izquierdo.derecho
-  
-        if hijo_izquierdo.derecho is not None:
-            hijo_izquierdo.derecho.padre = nodo
-        hijo_izquierdo.padre = nodo.padre
+        hijo_derecho.padre = nodo.padre
 
-        if nodo.padre is None:
-            self.raiz = hijo_izquierdo
-        elif nodo == nodo.padre.derecho:
-            nodo.padre.derecho = hijo_izquierdo
-        else:
-            nodo.padre.izquierdo = hijo_izquierdo
-        hijo_izquierdo.derecho = nodo
-        nodo.padre = hijo_izquierdo
+        if nodo.padre is None:
+            self.raiz = hijo_derecho
+        elif nodo == nodo.padre.izquierdo:
+            nodo.padre.izquierdo = hijo_derecho
+        else:
+            nodo.padre.derecho = hijo_derecho
+
+        hijo_derecho.izquierdo = nodo
+        nodo.padre = hijo_derecho
+
+    def rotar_derecha(self, nodo):
+        hijo_izquierdo = nodo.izquierdo
+        nodo.izquierdo = hijo_izquierdo.derecho
+
+        if hijo_izquierdo.derecho is not None:
+            hijo_izquierdo.derecho.padre = nodo
+        hijo_izquierdo.padre = nodo.padre
+
+        if nodo.padre is None:
+            self.raiz = hijo_izquierdo
+        elif nodo == nodo.padre.derecho:
+            nodo.padre.derecho = hijo_izquierdo
+        else:
+            nodo.padre.izquierdo = hijo_izquierdo
+        hijo_izquierdo.derecho = nodo
+        nodo.padre = hijo_izquierdo
   ```
 
 ### Ejemplo de uso típico
@@ -197,17 +208,20 @@ class ArbolRojoNegro:
 arbol = ArbolRojoNegro()
 
 for x in [10, 20, 30, 15, 25, 5]:
-    arbol.insertar(x)
+    arbol.insertar(x)
 
 print(f"Raiz: {arbol.raiz.valor} (Color: {arbol.raiz.color})")
-  
+
 def imprimir(nodo):
-    if nodo:
-        imprimir(nodo.izquierdo)
-        print(f"Valor: {nodo.valor} | Color: {nodo.color}")
-        imprimir(nodo.derecho)
+    if nodo:
+        imprimir(nodo.izquierdo)
+        print(f"Valor: {nodo.valor} | Color: {nodo.color}")
+        imprimir(nodo.derecho)
 
 imprimir(arbol.raiz)
+
+print(arbol.buscar(15).color)  # rojo
+print(arbol.buscar(99))        # None
 
 """
 Salida
