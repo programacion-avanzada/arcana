@@ -162,12 +162,14 @@ print(bfs(grafo, "A"))
 
 El grafo tiene forma de rombo con una cola colgando de `D`, y BFS lo recorre en capas, alejándose de a un paso por vez desde `A`:
 
-- **Nivel 0** (`A`): arranca la cola con `[A]`. Se saca `A`, se marca como visitado y es el primero en `orden`.
-- **Nivel 1** (`B`, `C`): al procesar `A` se descubren sus vecinos `B` y `C`, y se encolan en ese orden: `[B, C]`.
+- **Nivel 0** (`A`): antes de entrar al ciclo, `A` ya queda marcado como visitado (`visitados = {inicio}`) y la cola arranca con `[A]`. Se saca `A` y es el primero en `orden`.
+- **Nivel 1** (`B`, `C`): al procesar `A` se descubren sus vecinos `B` y `C`; cada uno se marca como visitado y se encola, en ese orden: `[B, C]`.
 - **Nivel 2** (`D`): se saca `B`; su vecino `D` todavía no está visitado, así que se marca y se encola. Se saca `C`; también tiene a `D` como vecino, pero ya está en `visitados`, así que no se vuelve a encolar. `D` llegó a la cola por el camino `A → B → D`.
-- **Nivel 3** (`E`): se saca `D`; su único vecino nuevo es `E`, que se encola y se visita al final.
+- **Nivel 3** (`E`): se saca `D`; su único vecino nuevo es `E`, que se marca y se encola. Al sacarlo, es el último en `orden`.
 
 En ningún momento se visita un nodo de un nivel antes de terminar con todos los del nivel anterior: esa es la garantía que da usar una cola (FIFO) en vez de, por ejemplo, una pila.
+
+> **Nota:** cada nodo se marca como visitado **al encolarlo**, no al sacarlo de la cola. Si la marca se pusiera recién al sacarlo, `D` entraría dos veces a la cola: una al procesar `B` y otra al procesar `C`, porque en ese momento todavía no estaría marcado. Marcar al encolar garantiza que cada nodo entre a la cola una sola vez.
 
 ## 4. Uso y criterio
 
