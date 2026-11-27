@@ -24,12 +24,12 @@ Es la evolución natural del [[binary-search-tree]]
 
 ### Representación
 
-![Esquema de un k-d tree con K = 2 y el eje de corte de cada nivel](kd-tree.svg)
+![Esquema de un k-d tree con K = 2 y el eje de corte de cada nivel](../../attachments/grimorio/data-structures/kd-tree.svg)
 
 Estructura resultante después de realizar las divisiones. Los puntos quedan organizados en distintos niveles (Nivel 0, Nivel 1, Nivel 2) según las particiones realizadas, usando K=2.
 
 ---
-![Puntos de ejemplo en el plano X-Y con sus cortes y el árbol resultante](kd-tree-plano.svg)
+![Puntos de ejemplo en el plano X-Y con sus cortes y el árbol resultante](../../attachments/grimorio/data-structures/kd-tree-plano.svg)
 Distribución de los puntos en el plano X-Y. Cada punto corta su región por el eje de su nivel: X en los niveles pares, Y en los impares.
 
 ## 2. Operaciones y complejidad
