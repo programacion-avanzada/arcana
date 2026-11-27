@@ -6,7 +6,7 @@ tags:
 ---
 En la Torre sin Sueño, ningún habitante osa ordenar por completo el Registro de las Profundidades: hacerlo, dicen, revela un patrón que ninguna mente debería contemplar entero. Y sin embargo, la Orden del Ojo que Vela necesita, en todo momento, saber cuál es la amenaza más urgente entre miles. El Archivista Insomne, que no duerme desde que aceptó el cargo, resolvió ese dilema hace siglos: no hace falta conocer el orden completo de los horrores. Alcanza con poder llegar siempre, al instante, al peor de ellos.
 
-Este sendero te va a enseñar a sostener ese orden parcial (ni caos, ni orden total) usando [[heap]] y [[priority queue]]. Hay ejercicios de diseño, otros de seguimiento a mano, y uno que pone a prueba tu intuición sobre la complejidad: la cuenta "obvia" no siempre es la que corresponde.
+Este sendero te va a enseñar a sostener ese orden parcial (ni caos, ni orden total) usando heap y [[queue#Variantes|priority queue]]. Hay ejercicios de diseño, otros de seguimiento a mano, y uno que pone a prueba tu intuición sobre la complejidad: la cuenta "obvia" no siempre es la que corresponde.
 
 ---
 
