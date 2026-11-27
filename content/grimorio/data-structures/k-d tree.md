@@ -73,7 +73,7 @@ El paso 3 es la **poda**. Es importante entender qué es y qué no:
 - **No modifica el árbol**: ningún nodo se elimina. Los subárboles podados solo se saltean *en esa búsqueda*; en otra consulta pueden visitarse.
 - **No cambia el resultado**: sin poda se obtiene el mismo punto, pero recorriendo todos los nodos (O(n)). Con poda, en promedio solo se visita una pequeña parte (O(log n)).
 
-![Poda en la búsqueda del vecino más cercano](../../attachments/grimorio/data-structures/kdtree-nearest-poda.svg)
+![Poda en la búsqueda del vecino más cercano](../../attachments/grimorio/data-structures/kd-tree-nearest.svg)
 
 En el caso A el círculo no cruza ningún corte, así que se descartan 4 de los 7 puntos. En el caso B cruza el corte `x = 11`, por lo que hay que mirar el otro lado, y ahí está el vecino más cercano, `(9, 4)`.
 
