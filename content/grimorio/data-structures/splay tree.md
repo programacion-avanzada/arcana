@@ -77,7 +77,11 @@ El espacio requerido es $O(n)$ porque se almacena un nodo por elemento. Además,
 
 ### Idea de implementación
 
-Una implementación puede basarse en dos operaciones de rotación: rotación a la derecha o rotación a la izquierda. A partir de estas rotaciones, combinándolas podríamos cubrir los casos estrella de este algoritmo: Zig, Zig-Zig y Zig-Zag (cuyas 3 definiciones se explicaron más arriba).
+`Node` solo guarda la clave y sus hijos; `SplayTree` mantiene la raíz y toda la lógica, en tres niveles:
+
+- **Rotaciones** (`_rotate_right`, `_rotate_left`): suben un hijo sin romper el orden del [[binary-search-tree]].
+- **Casos del splay** (`_zig`, `_zig_zig`, `_zig_zag`): combinan rotaciones según la posición del nodo, su padre y su abuelo.
+- **Operaciones** (`splay`, `find`, `insert`, `delete`): `splay` guarda el camino recorrido, porque los nodos no conocen a su padre, y sube el nodo de a dos niveles. Las demás operaciones lo usan.
 
 ### Invariantes
 
@@ -87,61 +91,146 @@ Una implementación puede basarse en dos operaciones de rotación: rotación a l
 ### Ejemplo de código
 
 ```python
-# Nodo individual de un Splay Tree.
+from __future__ import annotations
+
+# Nodo individual: solo guarda la clave y sus dos hijos.
 class Node:
   def __init__(self, key: int):
     self.key = key
     self.left: Node | None = None
     self.right: Node | None = None
 
-  # Rotación a la derecha.
-  def rotate_right(self) -> Node:
-    y = self.left
-    self.left = y.right
-    y.right = self
+class SplayTree:
+  def __init__(self):
+    self.root: Node | None = None
+
+  # ---------- Rotaciones ----------
+  # Cada rotación sube un hijo y devuelve la nueva raíz del subárbol.
+
+  # Rotación a la derecha: sube el hijo izquierdo.
+  def _rotate_right(self, node: Node) -> Node:
+    y = node.left
+    node.left = y.right
+    y.right = node
     return y
 
-  # Rotación a la izquierda.
-  def rotate_left(self) -> Node:
-    y = self.right
-    self.right = y.left
-    y.left = self
+  # Rotación a la izquierda: sube el hijo derecho.
+  def _rotate_left(self, node: Node) -> Node:
+    y = node.right
+    node.right = y.left
+    y.left = node
     return y
 
-  # Caso Zig: El nodo a subir es hijo directo de la raíz 'parent'.
+  # ---------- Casos del splay ----------
+
+  # Caso Zig: el nodo a subir es hijo directo de la raíz 'parent'.
   # Realiza una sola rotación.
-  @staticmethod
-  def zig(parent: Node, is_left: bool) -> Node:
-   if is_left:
-      return parent.rotate_right()
-   else:
-      return parent.rotate_left()
+  def _zig(self, parent: Node, is_left: bool) -> Node:
+    if is_left:
+      return self._rotate_right(parent)
+    return self._rotate_left(parent)
 
-  # Caso Zig-Zig: El nodo y su padre están alineados en la misma dirección.
+  # Caso Zig-Zig: el nodo y su padre están alineados en la misma dirección.
   # Primero se rota el abuelo y luego el padre.
-  @staticmethod
-  def zig_zig(grandparent: Node, is_left: bool) -> Node:
-   if is_left:
+  def _zig_zig(self, grandparent: Node, is_left: bool) -> Node:
+    if is_left:
       # Alineados a la izquierda (Izq-Izq)
-      new_root = grandparent.rotate_right()
-      return new_root.rotate_right()
-   else:
-      # Alineados a la derecha (Der-Der)
-      new_root = grandparent.rotate_left()
-      return new_root.rotate_left()
+      return self._rotate_right(self._rotate_right(grandparent))
+    # Alineados a la derecha (Der-Der)
+    return self._rotate_left(self._rotate_left(grandparent))
 
-  # Caso Zig-Zag: El nodo y su padre están en direcciones opuestas.
+  # Caso Zig-Zag: el nodo y su padre están en direcciones opuestas.
   # Se rota el padre y luego el abuelo.
-  @staticmethod
-  def zig_zag(grandparent: Node, is_left_right: bool) -> Node:
-   if is_left_right:
+  def _zig_zag(self, grandparent: Node, is_left_right: bool) -> Node:
+    if is_left_right:
       # Izquierda-Derecha
-       grandparent.left = grandparent.left.rotate_left()
-       return grandparent.rotate_right()
-   else:
-       # Derecha-Izquierda
-       grandparent.right = grandparent.right.rotate_right()
-       return grandparent.rotate_left()
+      grandparent.left = self._rotate_left(grandparent.left)
+      return self._rotate_right(grandparent)
+    # Derecha-Izquierda
+    grandparent.right = self._rotate_right(grandparent.right)
+    return self._rotate_left(grandparent)
+
+  # ---------- Operaciones ----------
+
+  # Lleva a la raíz el nodo con 'key' o, si no existe, el último nodo visitado.
+  def splay(self, key: int) -> None:
+    if self.root is None:
+      return
+
+    # 1. Bajar como en un BST guardando el camino (los nodos no conocen a su padre).
+    path = [self.root]
+    while path[-1].key != key:
+      next_node = path[-1].left if key < path[-1].key else path[-1].right
+      if next_node is None:
+        break
+      path.append(next_node)
+
+    # 2. Subir el nodo de a dos niveles hasta la raíz.
+    x = path[-1]
+    while len(path) > 1:
+      if len(path) == 2:
+        # Zig: el padre de x es la raíz.
+        parent = path[0]
+        path = [self._zig(parent, parent.left is x)]
+      else:
+        grandparent, parent = path[-3], path[-2]
+        parent_is_left = grandparent.left is parent
+        x_is_left = parent.left is x
+        if parent_is_left == x_is_left:
+          subtree = self._zig_zig(grandparent, parent_is_left)
+        else:
+          subtree = self._zig_zag(grandparent, parent_is_left)
+        # Enganchar el subárbol rotado donde estaba el abuelo.
+        if len(path) > 3:
+          if path[-4].left is grandparent:
+            path[-4].left = subtree
+          else:
+            path[-4].right = subtree
+        path = path[:-3] + [subtree]
+
+    self.root = path[0]
+
+  def find(self, key: int) -> Node | None:
+    self.splay(key)
+    if self.root is not None and self.root.key == key:
+      return self.root
+    return None
+
+  def insert(self, key: int) -> None:
+    if self.root is None:
+      self.root = Node(key)
+      return
+
+    # 1. Insertar como en un BST (si la clave ya existe, no se duplica).
+    node = self.root
+    while node.key != key:
+      if key < node.key:
+        if node.left is None:
+          node.left = Node(key)
+        node = node.left
+      else:
+        if node.right is None:
+          node.right = Node(key)
+        node = node.right
+
+    # 2. Subir el nodo a la raíz.
+    self.splay(key)
+
+  def delete(self, key: int) -> None:
+    self.splay(key)
+    if self.root is None or self.root.key != key:
+      return
+
+    left, right = self.root.left, self.root.right
+    if left is None:
+      self.root = right
+      return
+
+    # 'key' es mayor que todo el subárbol izquierdo: el splay sube su máximo,
+    # que queda sin hijo derecho, y ahí se engancha el subárbol derecho.
+    self.root = left
+    self.splay(key)
+    self.root.right = right
 ```
 
 Vistas gráficamente (en todos los casos se hace `splay(x)`):
@@ -159,29 +248,46 @@ Zig-Zag:
 ![Caso zig-zag: se rota primero el padre y y después el abuelo z](splay-tree-zig-zag.svg)
 
 ### Ejemplo de uso
-
-Inserción y búsqueda (ambas usan splay en su implementación):
-
 ```python
 sp = SplayTree()
 
-for x in [10, 20, 30]
-  sp.insert(x)
+for x in [10, 20, 30]:
+  sp.insert(x)        # cada nuevo nodo sube a la raíz
+print(sp.root.key)    # 30
 
-found = sp.find(10)
+found = sp.find(10)   # zig-zig
+print(found.key)      # 10
+print(sp.root.key)    # 10
 
-# En ambos casos, la salida es 10, ya que una vez hecha la búsqueda se lleva al 10 a la raíz.
-print(found.key) # 10
-print(sp.root.key) # 10
+sp.insert(25)         # zig-zag y luego zig
+print(sp.root.key)    # 25
+
+sp.delete(20)         # sube 20, se quita y se unen sus subárboles
+print(sp.root.key)    # 10
+
+print(sp.find(28))    # None: 28 no existe...
+print(sp.root.key)    # 30 pero el último nodo visitado sube igual
 ```
 
-Para inserción, se inserta el elemento y luego se le realiza splay hacía la raíz. Ejemplo insertando 20:
+**Inserción.** Se inserta como en un [[binary-search-tree]] y luego se hace splay. Insertando 20, alcanza con un zig:
 
 ![Inserción de 20 seguida de splay hasta la raíz](splay-tree-insert.svg)
 
-Para búsqueda, se busca el elemento y al encontrarlo se le realiza splay. Ejemplo buscando 10:
+**Búsqueda.** Tras los tres `insert` queda la cadena 30, 20, 10. Buscar 10 aplica un zig-zig:
 
 ![Búsqueda de 10 seguida de splay hasta la raíz](splay-tree-find.svg)
+
+**Inserción con zig-zag.** 25 queda como hijo izquierdo de 30, que es hijo derecho de 20: zig-zag y luego zig.
+
+![Inserción de 25: zig-zag y luego zig hasta la raíz](splay-tree-insert-zig-zag.svg)
+
+**Eliminación.** Se hace splay de 20 y se lo quita. Luego se hace splay del máximo del subárbol izquierdo, que queda sin hijo derecho, y ahí se engancha el derecho:
+
+![Eliminación de 20: splay, se quita y se unen los subárboles](splay-tree-delete.svg)
+
+**Búsqueda fallida.** Sube el último nodo visitado: buscando 28, sube el 30.
+
+![Búsqueda fallida de 28: el último nodo visitado, 30, sube a la raíz](splay-tree-find-fallida.svg)
 
 
 ## 4. Uso y criterio
@@ -263,3 +369,4 @@ La concurrencia puede ser más compleja porque incluso una búsqueda modifica en
 - Sleator, Daniel D. y Tarjan, Robert E. **Self-Adjusting Binary Search Trees**. Journal of the ACM, Vol. 32, N.º 3, 1985, pp. 652-686.
 - Cormen, Thomas H.; Leiserson, Charles E.; Rivest, Ronald L.; Stein, Clifford. **Introduction to Algorithms**. MIT Press.
 - Visualizador de Splay Trees: https://cmps-people.ok.ubc.ca/ylucet/DS/SplayTree.html
+- Franco, Francesco. **Splay Trees**. Medium, 16 de agosto de 2023. https://medium.com/@francescofranco_39234/splay-trees-eabd93e8085a
