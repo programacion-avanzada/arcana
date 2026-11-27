@@ -15,7 +15,7 @@ Esta estructura resuelve el problema de que, cuando hay muchos datos, un árbol 
 ### Definición / propiedades
 Un B-Tree de grado M $\ge$ 3 cumple:
 - Cada nodo tiene como máximo M hijos y M−1 claves.
-- Cada nodo interno, ni hoja ni raíz, tiene como mínimo M/2 hijos y (M/2)-1 claves.
+- Cada nodo interno (ni hoja ni raíz) tiene como mínimo $\lceil M/2 \rceil$ hijos y $\lceil M/2 \rceil - 1$ claves (por ejemplo, para $M = 5$, el mínimo es $3$ hijos y $2$ claves).
 - La raíz es una excepción al mínimo. Puede tener una sola clave y dos hijos, o incluso ser una hoja.
 - Un nodo interno con k claves tiene exactamente k+1 hijos.
 - Las claves de un nodo están ordenadas y separan los rangos de los subárboles. El hijo i contiene solo claves entre `keys[i-1]` y `keys[i]`.
@@ -29,17 +29,21 @@ Cada nodo guarda un arreglo de claves ordenadas, un arreglo de punteros a hijos 
 
 ### Operaciones principales
 - `find`: Compara la clave buscada con las claves del nodo actual. Si hay coincidencia, retorna el valor. Si no, desciende al hijo cuyo rango contenga la clave buscada.
-- `insert`: Añade una nueva clave en el nivel de las hojas. A medida que desciende por el árbol, divide cualquier nodo que esté lleno.
+- `insert`: Añade una nueva clave en el nivel de las hojas. Existen dos variantes para manejar nodos llenos: *split* preventivo (*top-down*, dividiendo nodos llenos al descender) y *split* posterior (*bottom-up*, insertando en la hoja y propagando las divisiones hacia arriba cuando un nodo supera $M - 1$ claves, que es la variante desarrollada en este apunte).
 - `delete`: Remueve una clave. Si la clave está en un nodo interno, se reemplaza por la clave inmediatamente anterior o posterior en el orden del árbol. Si la eliminación deja a un nodo con menos claves del mínimo permitido, se rebalancea pidiendo una clave prestada a un hermano adyacente o se fusionan.
 - `traverse`: Recorre el árbol in-order.
 
 ### Complejidad
-| Operación | Tiempo Promedio | Tiempo Peor Caso | Espacio Adicional |
+| Operación | Accesos a nodos / disco | Tiempo de CPU (Peor Caso) | Espacio Adicional |
 | :--- | :--- | :--- | :--- |
-| `find` | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ (o iterativo $O(1)$) |
-| `insert` | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ (o iterativo $O(1)$) |
-| `delete` | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ (o iterativo $O(1)$) |
-| `traverse` | $O(n)$ | $O(n)$ | $O(\log n)$ (por la pila de llamadas) |
+| `find` | $O(\log_M n)$ | $O(\log_2 n)$ | $O(\log_M n)$ (o iterativo $O(1)$) |
+| `insert` | $O(\log_M n)$ | $O(M \log_M n)$ | $O(\log_M n)$ (o iterativo $O(1)$*) |
+| `delete` | $O(\log_M n)$ | $O(M \log_M n)$ | $O(\log_M n)$ (o iterativo $O(1)$*) |
+| `traverse` | $O(n)$ | $O(n)$ | $O(\log_M n)$ (por la pila de llamadas) |
+
+> **Nota sobre el orden $M$ y el trabajo intra-nodo:** La altura del árbol está acotada por $O(\log_M n)$, lo que determina la cantidad de nodos visitados (y lecturas a disco). Dentro de cada nodo, `find` ubica la clave mediante búsqueda binaria en $O(\log_2 M)$, dando $O(\log_M n \cdot \log_2 M) = O(\log_2 n)$ en CPU. En cambio, `insert` y `delete` requieren desplazar claves y punteros en arreglos ordenados de hasta $M - 1$ elementos (o dividir/fusionar nodos), lo que cuesta $O(M)$ por nivel y resulta en $O(M \log_M n)$ en CPU.
+>
+> *\*El espacio adicional iterativo en `insert` y `delete` es $O(1)$ únicamente si los nodos mantienen puntero al padre o se utiliza división/fusión preventiva al descender.*
 
 ### Costos ocultos
 -   **Operaciones de E/S:** El rendimiento de un árbol B no se basa solo en el uso de CPU, sino cuántos bloques de disco debe leer. Si los nodos no coinciden con el tamaño de una página de disco, se aumentan los accesos físicos.
