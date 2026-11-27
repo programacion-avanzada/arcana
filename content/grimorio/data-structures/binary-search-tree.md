@@ -112,6 +112,68 @@ arbol.insertar(10)
 
 ![Ejemplo de árbol binario de búsqueda](binary-search-tree-example.svg)
 Ejemplo de como quedaría el árbol que fue realizado en la implementación de código
+
+Para completar las operaciones descritas en la sección 2, se agregan a la clase ArbolBST los métodos de búsqueda y eliminación. La búsqueda es iterativa, ya que solo necesita descender por un camino del árbol y así evita usar la pila de llamadas. La eliminación es recursiva y cubre los tres casos: si el nodo no tiene hijo izquierdo se lo reemplaza por su hijo derecho (esto incluye el caso de una hoja, donde ambos son None), si no tiene hijo derecho se lo reemplaza por el izquierdo, y si tiene dos hijos se copia en él el valor de su sucesor in-order (el mínimo del subárbol derecho) y luego se elimina ese sucesor, que como mucho tiene un hijo derecho.
+
+```python
+class ArbolBST:
+    # ... __init__, insertar y _insertar como arriba ...
+
+    def buscar(self, valor):
+        nodo = self.raiz
+        while nodo is not None:
+            if valor == nodo.valor:
+                return True
+            if valor < nodo.valor:
+                nodo = nodo.izquierdo
+            else:
+                nodo = nodo.derecho
+        return False
+
+    def eliminar(self, valor):
+        self.raiz = self._eliminar(self.raiz, valor)
+
+    def _eliminar(self, nodo, valor):
+        if nodo is None:  # el valor no está en el árbol
+            return None
+
+        if valor < nodo.valor:
+            nodo.izquierdo = self._eliminar(nodo.izquierdo, valor)
+        elif valor > nodo.valor:
+            nodo.derecho = self._eliminar(nodo.derecho, valor)
+        else:
+            # Casos 1 y 2: hoja o un solo hijo
+            if nodo.izquierdo is None:
+                return nodo.derecho
+            if nodo.derecho is None:
+                return nodo.izquierdo
+            # Caso 3: dos hijos -> se reemplaza por el sucesor in-order
+            sucesor = self._minimo(nodo.derecho)
+            nodo.valor = sucesor.valor
+            nodo.derecho = self._eliminar(nodo.derecho, sucesor.valor)
+        return nodo
+
+    def _minimo(self, nodo):
+        while nodo.izquierdo is not None:
+            nodo = nodo.izquierdo
+        return nodo
+```
+
+```python
+arbol = ArbolBST()
+for valor in [8, 3, 10, 1, 6, 14, 4, 7]:
+    arbol.insertar(valor)
+
+arbol.buscar(6)   # True
+arbol.buscar(5)   # False
+
+arbol.eliminar(7)   # hoja: se quita directamente
+arbol.eliminar(10)  # un hijo: 14 ocupa su lugar
+arbol.eliminar(3)   # dos hijos: su sucesor in-order (4) ocupa su lugar
+# Recorrido in-order resultante: 1, 4, 6, 8, 14
+```
+Ambas operaciones recorren un único camino desde la raíz, por lo que cuestan $O(h)$: $O(\log n)$ si el árbol está razonablemente balanceado y $O(n)$ en el peor caso.
+
 ## 4. Uso y criterio
 
 ### Casos de uso
