@@ -139,7 +139,7 @@ class KdTree:
 
         if near:
             best = near.nearest(target, depth + 1, best)
-        if far and diff ** 2 < best[1]:   # poda: solo se mira el otro lado si puede mejorar
+        if far and diff ** 2 < best[1]:
             best = far.nearest(target, depth + 1, best)
         return best 
     
