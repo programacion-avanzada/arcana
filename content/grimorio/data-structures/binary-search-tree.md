@@ -113,7 +113,7 @@ arbol.insertar(10)
 ![Ejemplo de árbol binario de búsqueda](binary-search-tree-example.svg)
 Ejemplo de como quedaría el árbol que fue realizado en la implementación de código
 
-Para completar las operaciones descritas en la sección 2, se agregan a la clase ArbolBST los métodos de búsqueda y eliminación. La búsqueda es iterativa, ya que solo necesita descender por un camino del árbol y así evita usar la pila de llamadas. La eliminación es recursiva y cubre los tres casos: si el nodo no tiene hijo izquierdo se lo reemplaza por su hijo derecho (esto incluye el caso de una hoja, donde ambos son None), si no tiene hijo derecho se lo reemplaza por el izquierdo, y si tiene dos hijos se copia en él el valor de su sucesor in-order (el mínimo del subárbol derecho) y luego se elimina ese sucesor, que como mucho tiene un hijo derecho.
+Para completar las operaciones descritas en la sección 2, se agregan a la clase `ArbolBST` los métodos de búsqueda y eliminación. La búsqueda es iterativa, ya que solo necesita descender por un camino del árbol y así evita usar la pila de llamadas. La eliminación es recursiva y cubre los tres casos: si el nodo no tiene hijo izquierdo se lo reemplaza por su hijo derecho (esto incluye el caso de una hoja, donde ambos son `None`), si no tiene hijo derecho se lo reemplaza por el izquierdo, y si tiene dos hijos se copia en él el valor de su sucesor in-order (el mínimo del subárbol derecho) y luego se elimina ese sucesor, que como mucho tiene un hijo derecho.
 
 ```python
 class ArbolBST:
@@ -172,6 +172,7 @@ arbol.eliminar(10)  # un hijo: 14 ocupa su lugar
 arbol.eliminar(3)   # dos hijos: su sucesor in-order (4) ocupa su lugar
 # Recorrido in-order resultante: 1, 4, 6, 8, 14
 ```
+
 Ambas operaciones recorren un único camino desde la raíz, por lo que cuestan $O(h)$: $O(\log n)$ si el árbol está razonablemente balanceado y $O(n)$ en el peor caso.
 
 ## 4. Uso y criterio
