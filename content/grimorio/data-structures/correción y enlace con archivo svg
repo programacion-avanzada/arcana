@@ -73,7 +73,7 @@ El paso 3 es la **poda**. Es importante entender qué es y qué no:
 - **No modifica el árbol**: ningún nodo se elimina. Los subárboles podados solo se saltean *en esa búsqueda*; en otra consulta pueden visitarse.
 - **No cambia el resultado**: sin poda se obtiene el mismo punto, pero recorriendo todos los nodos (O(n)). Con poda, en promedio solo se visita una pequeña parte (O(log n)).
 
-![Poda en la búsqueda del vecino más cercano](ruta/kdtree-nearest-poda.svg)
+![Poda en la búsqueda del vecino más cercano](content/attachments/grimorio/data-structures/kdtree-nearest-poda.svg)
 
 En el caso A el círculo no cruza ningún corte, así que se descartan 4 de los 7 puntos. En el caso B cruza el corte `x = 11`, por lo que hay que mirar el otro lado, y ahí está el vecino más cercano, `(9, 4)`.
 
@@ -126,7 +126,6 @@ class KdTree:
         return sum((x - y) ** 2 for x, y in zip(a, b))
 
     def nearest(self, target, depth: int = 0, best=None):
-        """Devuelve (punto, distancia_al_cuadrado) del punto más cercano a target."""
         axis = depth % len(target)
         d2 = KdTree._dist2(self.point, target)
         if best is None or d2 < best[1]:
