@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Ronda de Seraph · Paso a paso</title>
+<meta name="description" content="Criterio de Euler y construcción de la ronda con el algoritmo de Fleury, paso a paso.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Schibsted+Grotesk:wght@500;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+<script>
+  // Mismo tema que el resto de Arcana: Quartz guarda la preferencia en localStorage("theme").
+  try {
+    var tema = localStorage.getItem("theme");
+    if (tema) document.documentElement.setAttribute("saved-theme", tema);
+  } catch (e) {}
+  // Al recargarse después de llegar desde un link, que no herede el scroll de la página anterior.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+</script>
+<style>
+  :root {
+    --light: #faf8f8;
+    --lightgray: #e5e5e5;
+    --gray: #b8b8b8;
+    --darkgray: #4e4e4e;
+    --dark: #2b2b2b;
+    --secondary: #284b63;
+    --tertiary: #84a59d;
+    --highlight: rgba(143, 159, 169, 0.15);
+    --warn: #b7860b;
+    --warn-bg: #fbefc9;
+    --alert: #b54a3f;
+    --alert-bg: #f6dcd8;
+    --active-bg: #d3e0ea;
+    --done-bg: #dce9e5;
+    --on-secondary: #ffffff;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([saved-theme="light"]) {
+      --light: #161618;
+      --lightgray: #393639;
+      --gray: #646464;
+      --darkgray: #d4d4d4;
+      --dark: #ebebec;
+      --secondary: #7b97aa;
+      --tertiary: #84a59d;
+      --warn: #e3b341;
+      --warn-bg: #3b321c;
+      --alert: #e07a6f;
+      --alert-bg: #3f2422;
+      --active-bg: #233340;
+      --done-bg: #1f2f2a;
+      --on-secondary: #161618;
+      color-scheme: dark;
+    }
+  }
+  :root[saved-theme="dark"] {
+    --light: #161618;
+    --lightgray: #393639;
+    --gray: #646464;
+    --darkgray: #d4d4d4;
+    --dark: #ebebec;
+    --secondary: #7b97aa;
+    --tertiary: #84a59d;
+    --warn: #e3b341;
+    --warn-bg: #3b321c;
+    --alert: #e07a6f;
+    --alert-bg: #3f2422;
+    --active-bg: #233340;
+    --done-bg: #1f2f2a;
+    --on-secondary: #161618;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--light);
+    color: var(--darkgray);
+    font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  h1, h2, h3 {
+    font-family: "Schibsted Grotesk", system-ui, sans-serif;
+    color: var(--dark);
+    margin: 0;
+    line-height: 1.2;
+  }
+  a { color: var(--secondary); }
+  code, .mono { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; }
+
+  .pagina { max-width: 1240px; margin: 0 auto; padding: 20px 16px 40px; }
+  .cabecera { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 6px; }
+  .cabecera h1 { font-size: clamp(1.4rem, 3.4vw, 2rem); }
+  .volver { font-size: 0.95rem; text-decoration: none; white-space: nowrap; }
+  .volver:hover { text-decoration: underline; }
+  .intro { margin: 4px 0 16px; max-width: 75ch; }
+
+  .escenarios { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .escenarios button[aria-pressed="true"] { background: var(--secondary); color: var(--on-secondary); border-color: var(--secondary); }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+  .tarjeta { border: 1px solid var(--lightgray); border-radius: 10px; background: var(--light); }
+  .lienzo { padding: 8px; }
+  .lienzo svg { display: block; width: 100%; height: auto; }
+  .deslizar { display: none; font-size: 0.8rem; color: var(--gray); padding: 0 4px 4px; }
+  @media (max-width: 600px) {
+    /* En el celular el grafo completo queda muy chico: se le da un ancho mínimo y se desliza de costado. */
+    .lienzo { overflow-x: auto; }
+    .lienzo svg { min-width: 580px; }
+    .deslizar { display: block; }
+  }
+
+  .leyenda { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 8px 12px 10px; font-size: 0.85rem; border-top: 1px solid var(--lightgray); }
+  .leyenda span { display: inline-flex; align-items: center; gap: 6px; }
+  .muestra { width: 18px; height: 12px; border-radius: 4px; border: 2px solid; display: inline-block; }
+  .muestra-linea { width: 22px; height: 0; border-top: 3px solid; display: inline-block; }
+
+  .relato { padding: 12px 14px; margin-top: 12px; min-height: 118px; }
+  .relato .fase { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--secondary); margin-bottom: 2px; }
+  .relato h2 { font-size: 1.1rem; margin-bottom: 4px; }
+  .relato p { margin: 0; }
+
+  .controles { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+  button, select {
+    font: inherit; font-size: 0.95rem; color: var(--dark); background: var(--light);
+    border: 1px solid var(--gray); border-radius: 8px; padding: 6px 12px; cursor: pointer; min-height: 38px;
+  }
+  button:hover:not(:disabled) { border-color: var(--secondary); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+  .btn-principal { background: var(--secondary); color: var(--on-secondary); border-color: var(--secondary); min-width: 118px; }
+  .contador { font-size: 0.9rem; margin-left: auto; white-space: nowrap; }
+  .barra { width: 100%; margin-top: 8px; accent-color: var(--secondary); }
+  .velocidad { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; }
+  .atajos { font-size: 0.8rem; margin-top: 4px; color: var(--gray); }
+
+  .lateral { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; }
+  .panel { padding: 10px 12px 12px; min-width: 0; overflow-x: auto; }
+  .panel h3 { font-size: 0.95rem; margin-bottom: 8px; }
+  .panel table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .panel th, .panel td { text-align: left; padding: 3px 6px; border-bottom: 1px solid var(--lightgray); }
+  .panel th { font-weight: 600; color: var(--dark); }
+  .panel tr.resaltada td { background: var(--highlight); font-weight: 600; color: var(--dark); }
+  .panel .vacio { font-style: italic; color: var(--gray); font-size: 0.9rem; }
+  .fichas { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .ficha { font-size: 0.85rem; padding: 2px 9px; border-radius: 999px; border: 1.5px solid var(--gray); background: var(--light); color: var(--dark); }
+  .ficha.f-activa { border-color: var(--secondary); background: var(--active-bg); font-weight: 600; }
+  .ficha.f-espera { border-color: var(--warn); background: var(--warn-bg); }
+  .ficha.f-ok { border-color: var(--tertiary); background: var(--done-bg); }
+  .ficha.f-alerta { border-color: var(--alert); background: var(--alert-bg); }
+  .flecha-fichas { color: var(--gray); font-size: 0.85rem; }
+  .nota { font-size: 0.85rem; margin-top: 6px; }
+  .pila { display: flex; flex-direction: column; gap: 4px; }
+  .pila .ficha { align-self: flex-start; }
+
+  .pseudo { margin: 0; padding: 0; list-style: none; font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-size: 0.8rem; overflow-x: auto; }
+  .pseudo li { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1px 6px 1px 2.6em; text-indent: -2.2em; border-radius: 4px; color: var(--darkgray); }
+  .pseudo li .num { color: var(--gray); display: inline-block; width: 2.2em; user-select: none; }
+  .pseudo li.actual { background: var(--warn-bg); color: var(--dark); font-weight: 600; box-shadow: inset 3px 0 0 var(--warn); }
+  .pseudo li.titulo { color: var(--secondary); font-weight: 600; }
+
+  /* Grafo */
+  .arista { fill: none; stroke: var(--gray); stroke-width: 2; transition: stroke 0.25s, stroke-width 0.25s, opacity 0.25s; }
+  .arista.e-arbol { stroke: var(--secondary); stroke-width: 3.5; }
+  .arista.e-actual { stroke: var(--warn); stroke-width: 4.5; }
+  .arista.e-retroceso { stroke: var(--alert); stroke-width: 3; stroke-dasharray: 7 5; }
+  .arista.e-ciclo { stroke: var(--alert); stroke-width: 5; }
+  .arista.e-usada { stroke: var(--tertiary); stroke-width: 4.5; }
+  .arista.e-tenue { opacity: 0.3; }
+  .arista-etiqueta circle { fill: var(--tertiary); }
+  .arista-etiqueta text { fill: #ffffff; font-size: 12px; font-weight: 600; text-anchor: middle; dominant-baseline: central; font-family: "Source Sans Pro", system-ui, sans-serif; }
+  .marca { fill: var(--gray); }
+  .marca-e-arbol { fill: var(--secondary); }
+  .marca-e-actual { fill: var(--warn); }
+  .marca-e-retroceso, .marca-e-ciclo { fill: var(--alert); }
+  .marca-e-usada { fill: var(--tertiary); }
+
+  .nodo rect { fill: var(--light); stroke: var(--gray); stroke-width: 2; transition: fill 0.25s, stroke 0.25s, stroke-width 0.25s; }
+  .nodo text { fill: var(--dark); font-size: 14px; text-anchor: middle; dominant-baseline: central; font-family: "Source Sans Pro", system-ui, sans-serif; }
+  .nodo.n-espera rect { fill: var(--warn-bg); stroke: var(--warn); }
+  .nodo.n-activo rect { fill: var(--active-bg); stroke: var(--secondary); stroke-width: 3.5; }
+  .nodo.n-hecho rect { fill: var(--done-bg); stroke: var(--tertiary); }
+  .nodo.n-alerta rect { fill: var(--alert-bg); stroke: var(--alert); stroke-width: 3; }
+  .nodo.n-tenue { opacity: 0.4; }
+  .nodo.aislado rect { stroke-dasharray: 5 4; }
+  .insignia circle { fill: var(--secondary); }
+  .insignia text { fill: var(--on-secondary); font-size: 12px; font-weight: 600; text-anchor: middle; dominant-baseline: central; font-family: "Source Sans Pro", system-ui, sans-serif; }
+  .zona rect { fill: none; stroke: var(--lightgray); stroke-width: 1.5; stroke-dasharray: 6 5; }
+  .zona text { fill: var(--gray); font-size: 12px; font-family: "Source Sans Pro", system-ui, sans-serif; }
+
+  .pie { margin-top: 24px; font-size: 0.85rem; color: var(--gray); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+  @media (prefers-reduced-motion: reduce) { .arista, .nodo rect { transition: none; } }
+</style>
+</head>
+<body>
+<!-- Si se llega desde un link de Arcana, el enrutador de Quartz (SPA) reemplaza el contenido sin ejecutar bien
+     los scripts de esta página. Este elemento siempre dispara onerror: si detecta el enrutador, recarga la
+     página completa en cuanto Quartz actualiza la URL. Al abrirla directamente no hace nada. -->
+<img src="data:," alt="" hidden onerror="if(window.spaNavigate){var r=function(){location.reload()};/\.htm$/.test(location.pathname)?r():document.addEventListener('nav',r,{once:true})}">
+<div class="pagina">
+  <header class="cabecera">
+    <h1 id="titulo"></h1>
+    <a class="volver" id="volver" href="#">← Volver al enunciado</a>
+  </header>
+  <p class="intro" id="intro"></p>
+  <div class="escenarios" id="escenarios" role="group" aria-label="Escenario" hidden></div>
+
+  <div class="layout">
+    <main>
+      <div class="tarjeta">
+        <div class="lienzo"><div class="deslizar">Deslizá el grafo de costado para verlo completo.</div><svg id="grafo" role="img" aria-labelledby="grafo-desc"><title id="grafo-desc"></title></svg></div>
+        <div class="leyenda" id="leyenda"></div>
+      </div>
+
+      <section class="tarjeta relato" aria-live="polite">
+        <span class="fase" id="fase"></span>
+        <h2 id="paso-titulo"></h2>
+        <p id="paso-texto"></p>
+      </section>
+
+      <div class="controles">
+        <button type="button" id="btn-inicio" aria-label="Volver al primer paso">⏮ Inicio</button>
+        <button type="button" id="btn-ant" aria-label="Paso anterior">◀ Anterior</button>
+        <button type="button" id="btn-play" class="btn-principal">▶ Reproducir</button>
+        <button type="button" id="btn-sig" aria-label="Paso siguiente">Siguiente ▶</button>
+        <label class="velocidad">Velocidad
+          <select id="velocidad">
+            <option value="2400">Lenta</option>
+            <option value="1400" selected>Normal</option>
+            <option value="700">Rápida</option>
+          </select>
+        </label>
+        <span class="contador" id="contador"></span>
+      </div>
+      <input type="range" class="barra" id="barra" min="0" value="0" aria-label="Elegir paso">
+      <div class="atajos">Atajos: ← y → para moverse, espacio para reproducir o pausar, Inicio y Fin para ir a los extremos.</div>
+    </main>
+
+    <aside class="lateral">
+      <div id="paneles" class="lateral"></div>
+      <section class="tarjeta panel">
+        <h3>Pseudocódigo</h3>
+        <ol class="pseudo" id="pseudo"></ol>
+      </section>
+    </aside>
+  </div>
+
+  <p class="pie">Arcana · Programación Avanzada (UNLaM) · Sendero <em>La Anomalía en la Matrix</em></p>
+</div>
+
+<script>
+// Utilidades compartidas por los ejercicios.
+window.Viz = {
+  id: function (a, b, dirigido) {
+    if (dirigido) return a + ">" + b;
+    return a < b ? a + "|" + b : b + "|" + a;
+  },
+  esc: function (s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  },
+  copia: function (x) { return JSON.parse(JSON.stringify(x)); },
+  // Lista de adyacencia en el orden en que aparecen las aristas en la tabla del enunciado.
+  adyacencia: function (nodos, aristas, dirigido) {
+    var ady = {};
+    nodos.forEach(function (n) { ady[n.id] = []; });
+    aristas.forEach(function (e) {
+      ady[e.a].push(e.b);
+      if (!dirigido) ady[e.b].push(e.a);
+    });
+    return ady;
+  },
+  fichas: function (ids, nombre, clase, vacio) {
+    if (!ids.length) return '<span class="vacio">' + (vacio || "vacía") + "</span>";
+    return '<div class="fichas">' + ids.map(function (id, k) {
+      var c = typeof clase === "function" ? clase(id, k) : (clase || "");
+      return '<span class="ficha ' + c + '">' + Viz.esc(nombre(id)) + "</span>";
+    }).join("") + "</div>";
+  }
+};
+</script>
+<script>
+// La Ronda de Seraph: criterio de Euler (grados) y construcción de la ronda con el algoritmo de Fleury.
+(function () {
+  var NODOS = [
+    { id: "en", nombre: "Entrada", x: 90, y: 235 },
+    { id: "ve", nombre: "Vestíbulo", x: 260, y: 95 },
+    { id: "sa", nombre: "Salón", x: 460, y: 55 },
+    { id: "bi", nombre: "Biblioteca", x: 665, y: 110 },
+    { id: "co", nombre: "Comedor", x: 665, y: 360 },
+    { id: "bo", nombre: "Bodega", x: 460, y: 415 },
+    { id: "of", nombre: "Oficina del Merovingio", lineas: ["Oficina del", "Merovingio"], x: 260, y: 375 }
+  ];
+  // En el mismo orden que la tabla del enunciado.
+  var ARISTAS = [
+    { a: "en", b: "ve" }, { a: "ve", b: "sa" }, { a: "sa", b: "bi" }, { a: "bi", b: "co" },
+    { a: "co", b: "bo" }, { a: "bo", b: "of" }, { a: "of", b: "en" }, { a: "ve", b: "co" }
+  ];
+  var NOMBRE = {};
+  NODOS.forEach(function (n) { NOMBRE[n.id] = n.nombre; });
+  var nom = function (id) { return NOMBRE[id]; };
+  var b = function (id) { return "<strong>" + Viz.esc(NOMBRE[id]) + "</strong>"; };
+  var idA = function (x, y) { return Viz.id(x, y, false); };
+  var pasillo = function (x, y) { return Viz.esc(nom(x)) + "–" + Viz.esc(nom(y)); };
+
+  function resolver() {
+    var ady = Viz.adyacencia(NODOS, ARISTAS, false);
+    var grado = {}, estado = {}, aristas = {}, etiquetas = {}, usada = {};
+    var pasos = [], ronda = [], impares = [], fase = "", u = null;
+    NODOS.forEach(function (n) { grado[n.id] = 0; estado[n.id] = ""; });
+
+    var sinUsar = function (x) { return ady[x].filter(function (y) { return !usada[idA(x, y)]; }); };
+
+    // ¿Es puente la arista x–y entre las que quedan sin usar? Lo es si, sacándola, y deja de poder llegar a x.
+    function esPuente(x, y) {
+      usada[idA(x, y)] = true;
+      var vistos = {}, porVisitar = [y];
+      vistos[y] = true;
+      while (porVisitar.length) {
+        var v = porVisitar.pop();
+        sinUsar(v).forEach(function (z) { if (!vistos[z]) { vistos[z] = true; porVisitar.push(z); } });
+      }
+      delete usada[idA(x, y)];
+      return !vistos[x];
+    }
+
+    function panelesGrados(resaltar) {
+      return [{
+        titulo: "Grado de cada habitación",
+        html: "<table><thead><tr><th>Habitación</th><th>Grado</th><th>Paridad</th></tr></thead><tbody>" + NODOS.map(function (n) {
+          var cls = resaltar && resaltar.indexOf(n.id) !== -1 ? ' class="resaltada"' : "";
+          return "<tr" + cls + "><td>" + Viz.esc(n.nombre) + "</td><td>" + grado[n.id] + "</td><td>" + (grado[n.id] % 2 ? "<strong>impar</strong>" : "par") + "</td></tr>";
+        }).join("") + "</tbody></table>"
+      }];
+    }
+
+    function panelesRonda() {
+      var usados = Object.keys(usada).length;
+      return [
+        { titulo: "Ronda de Seraph", html: ronda.length ? '<div class="fichas">' + ronda.map(function (x, k) {
+            return (k ? '<span class="flecha-fichas">→</span>' : "") + '<span class="ficha ' + (k === ronda.length - 1 ? "f-activa" : "f-ok") + '">' + Viz.esc(nom(x)) + "</span>";
+          }).join("") + "</div>" : '<span class="vacio">todavía no empezó</span>' },
+        { titulo: "Pasillos usados: " + usados + " de " + ARISTAS.length, html: "<table><thead><tr><th>Habitación</th><th>Pasillos sin usar</th></tr></thead><tbody>" + NODOS.map(function (n) {
+            var cls = n.id === u ? ' class="resaltada"' : "";
+            var resto = sinUsar(n.id);
+            return "<tr" + cls + "><td>" + Viz.esc(n.nombre) + "</td><td>" + (resto.length ? resto.map(function (y) { return Viz.esc(nom(y)); }).join(", ") : "–") + "</td></tr>";
+          }).join("") + "</tbody></table>" }
+      ];
+    }
+
+    function foto(titulo, texto, linea, extra) {
+      var insignias = {};
+      NODOS.forEach(function (n) {
+        var valor = fase === "ronda" ? sinUsar(n.id).length : grado[n.id];
+        if (fase === "ronda" || grado[n.id] > 0) insignias[n.id] = String(valor);
+      });
+      var p = {
+        fase: fase === "ronda" ? "Parte 2 · Construir la ronda (Fleury)" : "Parte 1 · Criterio de Euler",
+        titulo: titulo, texto: texto, linea: linea,
+        nodos: Viz.copia(estado), insignias: insignias, aristas: Viz.copia(aristas), etiquetas: Viz.copia(etiquetas),
+        paneles: fase === "ronda" ? panelesRonda() : panelesGrados()
+      };
+      if (extra) extra(p);
+      pasos.push(p);
+    }
+
+    // ---------- Parte 1: grados ----------
+    fase = "grados";
+    foto("Todos los grados en 0",
+      "El grado de una habitación es la cantidad de pasillos que la tocan. Para calcularlo alcanza con recorrer la lista de pasillos una vez y sumarle 1 a cada extremo.",
+      1);
+
+    ARISTAS.forEach(function (e, k) {
+      grado[e.a]++; grado[e.b]++;
+      aristas[idA(e.a, e.b)] = "actual";
+      foto("Pasillo " + (k + 1) + " de " + ARISTAS.length + ": " + nom(e.a) + "–" + nom(e.b),
+        "Cada pasillo suma 1 al grado de sus dos extremos: " + b(e.a) + " pasa a " + grado[e.a] + " y " + b(e.b) + " pasa a " + grado[e.b] + ".",
+        [2, 3], function (p) { p.paneles = panelesGrados([e.a, e.b]); });
+      aristas[idA(e.a, e.b)] = "";
+    });
+
+    impares = NODOS.filter(function (n) { return grado[n.id] % 2; }).map(function (n) { return n.id; });
+    impares.forEach(function (x) { estado[x] = "espera"; });
+    foto("Habitaciones de grado impar",
+      "Hay exactamente " + impares.length + " habitaciones de grado impar: " + impares.map(b).join(" y ") + ". Todas las demás tienen grado par.",
+      4, function (p) { p.paneles = panelesGrados(impares); });
+
+    foto("Diagnóstico: hay camino euleriano",
+      "Con exactamente 2 vértices impares (y todos los pasillos en una misma componente) existe un <strong>camino euleriano</strong>, pero no un circuito: "
+        + "la ronda tiene que empezar en una de esas dos habitaciones y terminar, necesariamente, en la otra. Contar los grados cuesta O(V + E), pero solo dice <em>que</em> la ronda existe, no cómo armarla.",
+      5, function (p) {
+        p.paneles = panelesGrados(impares).concat([{ titulo: "Criterio de Euler", html:
+          "<table><tbody><tr><td>0 impares</td><td>circuito euleriano</td></tr><tr class=\"resaltada\"><td>2 impares</td><td>camino euleriano</td></tr><tr><td>más de 2</td><td>ninguna ronda</td></tr></tbody></table>" }]);
+      });
+
+    // ---------- Parte 2: Fleury ----------
+    fase = "ronda";
+    u = impares.length ? impares[0] : NODOS[0].id;
+    var destino = impares.length ? impares[1] : u;
+    ronda.push(u);
+    estado[u] = "activo";
+    foto("Seraph empieza en " + nom(u),
+      "Para construir la ronda hace falta algo más que los grados: en cada habitación hay que elegir un pasillo sin usar que no deje aislado un tramo pendiente, es decir, que no sea un <strong>puente</strong> (salvo que sea el único que queda). "
+        + "Desde ahora, el número sobre cada habitación es la cantidad de pasillos sin usar que le quedan.",
+      6);
+
+    var paso = 0;
+    while (sinUsar(u).length) {
+      var candidatos = sinUsar(u);
+      var elegido = null;
+      for (var k = 0; k < candidatos.length && !elegido; k++) {
+        var w = candidatos[k];
+        if (candidatos.length === 1) { elegido = { w: w, motivo: "unico" }; break; }
+        if (esPuente(u, w)) {
+          var idP = idA(u, w);
+          aristas[idP] = "retroceso";
+          foto("Se descarta " + nom(u) + "–" + nom(w),
+            "El pasillo " + pasillo(u, w) + " es un puente: si Seraph lo usa ahora, quedan pasillos a los que no podría volver. Como hay otras opciones, se descarta.",
+            [8, 9]);
+          aristas[idP] = "";
+        } else {
+          elegido = { w: w, motivo: "no-puente" };
+        }
+      }
+      var v = elegido.w;
+      var id = idA(u, v);
+      var opciones = candidatos.map(function (x) { return Viz.esc(nom(x)); }).join(", ");
+      var motivo = elegido.motivo === "unico"
+        ? "Desde " + b(u) + " queda un solo pasillo sin usar, hacia " + b(v) + ": se usa ese (aunque fuera puente, no hay alternativa)."
+        : "Desde " + b(u) + " quedan " + candidatos.length + " pasillos sin usar (hacia " + opciones + "). " + pasillo(u, v) + " no es puente: si se usa, todos los pasillos que faltan siguen conectados entre sí. Seraph lo recorre.";
+      usada[id] = true;
+      paso++;
+      aristas[id] = "usada";
+      etiquetas[id] = String(paso);
+      estado[u] = sinUsar(u).length ? "" : "hecho";
+      if (u === destino && sinUsar(u).length) estado[u] = "espera";
+      u = v;
+      ronda.push(u);
+      estado[u] = "activo";
+      foto("Paso " + paso + ": " + nom(ronda[ronda.length - 2]) + " → " + nom(u),
+        motivo,
+        elegido.motivo === "unico" ? [7, 9, 10, 11] : [7, 8, 10, 11],
+        function (p) { p.aristas[id] = "actual"; });
+    }
+
+    estado[u] = "hecho";
+    foto("Ronda completa",
+      "Seraph recorrió los " + ARISTAS.length + " pasillos exactamente una vez: " + ronda.map(function (x) { return Viz.esc(nom(x)); }).join(" → ") + ". "
+        + "Empezó en " + b(ronda[0]) + " y terminó en " + b(u) + ", las dos habitaciones de grado impar. Pasó dos veces por el Vestíbulo, y eso está permitido: lo que no se puede repetir es el pasillo.",
+      7);
+
+    return { pasos: pasos, resultado: { grado: grado, impares: impares, ronda: ronda } };
+  }
+
+  window.EJERCICIO = {
+    titulo: "La Ronda de Seraph",
+    intro: "Resolución paso a paso de los puntos 2 y 3: primero se cuentan los grados para aplicar el criterio de Euler, y después se construye la ronda eligiendo en cada habitación un pasillo que no sea puente (algoritmo de Fleury).",
+    volver: "../../senderos/bestias/recorrido/la-ronda-de-seraph",
+    vista: "0 0 760 470",
+    dirigido: false,
+    nodos: NODOS,
+    aristas: ARISTAS,
+    leyenda: [
+      { texto: "Grado impar (inicio o fin)", borde: "var(--warn)", fondo: "var(--warn-bg)" },
+      { texto: "Donde está Seraph", borde: "var(--secondary)", fondo: "var(--active-bg)" },
+      { texto: "Sin pasillos pendientes", borde: "var(--tertiary)", fondo: "var(--done-bg)" },
+      { tipo: "arista", texto: "Pasillo usado (con su orden)", color: "var(--tertiary)" },
+      { tipo: "arista", texto: "Pasillo que se cuenta o se recorre", color: "var(--warn)" },
+      { tipo: "arista", texto: "Puente descartado", color: "var(--alert)", punteada: true }
+    ],
+    pseudocodigo: [
+      "para cada v: grado[v] ← 0",
+      "para cada pasillo (a, b):",
+      "    grado[a] ← grado[a] + 1; grado[b] ← grado[b] + 1",
+      "impares ← habitaciones de grado impar",
+      "0 impares: circuito · 2: camino · más: ninguno",
+      "u ← un impar (o cualquiera si no hay)",
+      "mientras u tenga pasillos sin usar:",
+      "    elegir u–w sin usar que no sea puente",
+      "        (un puente solo si es el único que queda)",
+      "    marcar u–w como usado; agregar w a la ronda",
+      "    u ← w"
+    ],
+    escenarios: [{ id: "base", nombre: "Ronda de Seraph", resolver: resolver }]
+  };
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var E = window.EJERCICIO;
+  var NS = "http://www.w3.org/2000/svg";
+  var W = 136, H = 48; // tamaño de cada nodo
+  var $ = function (id) { return document.getElementById(id); };
+
+  var nombre = {};
+  E.nodos.forEach(function (n) { nombre[n.id] = n.nombre; });
+
+  var escenario = 0, pasos = [], i = 0, temporizador = null;
+  var refNodo = {}, refInsignia = {}, refArista = {}, refEtiqueta = {};
+
+  $("titulo").textContent = E.titulo;
+  $("intro").innerHTML = E.intro;
+  $("volver").href = E.volver;
+  $("grafo-desc").textContent = "Grafo del ejercicio " + E.titulo;
+
+  // Leyenda
+  $("leyenda").innerHTML = E.leyenda.map(function (l) {
+    var estilo = l.tipo === "arista"
+      ? '<i class="muestra-linea" style="border-color:' + l.color + (l.punteada ? ";border-top-style:dashed" : "") + '"></i>'
+      : '<i class="muestra" style="border-color:' + l.borde + ";background:" + l.fondo + '"></i>';
+    return "<span>" + estilo + Viz.esc(l.texto) + "</span>";
+  }).join("");
+
+  // Pseudocódigo
+  $("pseudo").innerHTML = E.pseudocodigo.map(function (linea, k) {
+    if (linea.charAt(0) === "#") return '<li class="titulo">' + Viz.esc(linea.slice(1).trim()) + "</li>";
+    return '<li data-linea="' + (k + 1) + '"><span class="num">' + (k + 1) + "</span>" + Viz.esc(linea) + "</li>";
+  }).join("");
+
+  // Escenarios
+  if (E.escenarios.length > 1) {
+    var cont = $("escenarios");
+    cont.hidden = false;
+    E.escenarios.forEach(function (esc, k) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = esc.nombre;
+      b.setAttribute("aria-pressed", k === 0 ? "true" : "false");
+      b.addEventListener("click", function () { cargarEscenario(k); });
+      cont.appendChild(b);
+    });
+  }
+
+  function el(tag, attrs, padre) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (padre) padre.appendChild(e);
+    return e;
+  }
+
+  // Punto del borde del rectángulo del nodo en dirección (dx, dy).
+  function borde(n, dx, dy, margen) {
+    var len = Math.hypot(dx, dy) || 1;
+    var ux = dx / len, uy = dy / len;
+    var t = Math.min(ux ? (W / 2) / Math.abs(ux) : Infinity, uy ? (H / 2) / Math.abs(uy) : Infinity);
+    return { x: n.x + ux * (t + margen), y: n.y + uy * (t + margen) };
+  }
+
+  function dibujarGrafo() {
+    var svg = $("grafo");
+    while (svg.childNodes.length > 1) svg.removeChild(svg.lastChild);
+    svg.setAttribute("viewBox", E.vista);
+    refNodo = {}; refInsignia = {}; refArista = {}; refEtiqueta = {};
+    var nodoPorId = {};
+    E.nodos.forEach(function (n) { nodoPorId[n.id] = n; });
+
+    var defs = el("defs", {}, svg);
+    ["", "e-arbol", "e-actual", "e-retroceso", "e-ciclo", "e-usada"].forEach(function (c) {
+      var m = el("marker", { id: "flecha-" + (c || "base"), viewBox: "0 0 10 10", refX: "9", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse", markerUnits: "userSpaceOnUse" }, defs);
+      m.setAttribute("markerWidth", "11");
+      m.setAttribute("markerHeight", "11");
+      el("path", { d: "M0,0 L10,5 L0,10 z", "class": "marca " + (c ? "marca-" + c : "") }, m);
+    });
+
+    (E.zonas || []).forEach(function (z) {
+      var g = el("g", { "class": "zona" }, svg);
+      el("rect", { x: z.x, y: z.y, width: z.w, height: z.h, rx: 12 }, g);
+      var t = el("text", { x: z.x + 10, y: z.y + 16 }, g);
+      t.textContent = z.texto;
+    });
+
+    var capaAristas = el("g", {}, svg);
+    var capaEtiquetas = el("g", {}, svg);
+    var esc = E.escenarios[escenario];
+    E.aristas.forEach(function (a) {
+      if (a.escenario && a.escenario !== esc.id) return;
+      var A = nodoPorId[a.a], B = nodoPorId[a.b];
+      var id = Viz.id(a.a, a.b, E.dirigido);
+      var d, medio;
+      if (a.curva) {
+        var c = a.curva;
+        var p1 = borde(A, c.x - A.x, c.y - A.y, 0);
+        var p2 = borde(B, c.x - B.x, c.y - B.y, E.dirigido ? 3 : 0);
+        d = "M" + p1.x + "," + p1.y + " Q" + c.x + "," + c.y + " " + p2.x + "," + p2.y;
+        medio = { x: 0.25 * p1.x + 0.5 * c.x + 0.25 * p2.x, y: 0.25 * p1.y + 0.5 * c.y + 0.25 * p2.y };
+      } else {
+        var q1 = borde(A, B.x - A.x, B.y - A.y, 0);
+        var q2 = borde(B, A.x - B.x, A.y - B.y, E.dirigido ? 3 : 0);
+        d = "M" + q1.x + "," + q1.y + " L" + q2.x + "," + q2.y;
+        medio = { x: (q1.x + q2.x) / 2, y: (q1.y + q2.y) / 2 };
+      }
+      var p = el("path", { d: d, "class": "arista" }, capaAristas);
+      if (E.dirigido) p.setAttribute("marker-end", "url(#flecha-base)");
+      var t = el("title", {}, p);
+      t.textContent = nombre[a.a] + (E.dirigido ? " → " : " – ") + nombre[a.b];
+      refArista[id] = p;
+      var g = el("g", { "class": "arista-etiqueta", visibility: "hidden" }, capaEtiquetas);
+      el("circle", { cx: medio.x, cy: medio.y, r: 11 }, g);
+      var tx = el("text", { x: medio.x, y: medio.y }, g);
+      refEtiqueta[id] = { g: g, t: tx };
+    });
+
+    var capaNodos = el("g", {}, svg);
+    E.nodos.forEach(function (n) {
+      var g = el("g", { "class": "nodo" + (n.aislado ? " aislado" : "") }, capaNodos);
+      el("rect", { x: n.x - W / 2, y: n.y - H / 2, width: W, height: H, rx: 12 }, g);
+      var lineas = n.lineas || [n.nombre];
+      lineas.forEach(function (l, k) {
+        var t = el("text", { x: n.x, y: n.y + (k - (lineas.length - 1) / 2) * 15 }, g);
+        t.textContent = l;
+      });
+      var ins = el("g", { "class": "insignia", visibility: "hidden" }, g);
+      el("circle", { cx: n.x + W / 2 - 4, cy: n.y - H / 2 + 2, r: 12 }, ins);
+      var it = el("text", { x: n.x + W / 2 - 4, y: n.y - H / 2 + 2 }, ins);
+      refNodo[n.id] = g;
+      refInsignia[n.id] = { g: ins, t: it };
+    });
+  }
+
+  function render() {
+    var p = pasos[i];
+    E.nodos.forEach(function (n) {
+      var estado = (p.nodos && p.nodos[n.id]) || "";
+      refNodo[n.id].setAttribute("class", "nodo" + (n.aislado ? " aislado" : "") + (estado ? " n-" + estado : ""));
+      var ins = p.insignias && p.insignias[n.id];
+      var r = refInsignia[n.id];
+      if (ins !== undefined && ins !== null && ins !== "") { r.t.textContent = ins; r.g.setAttribute("visibility", "visible"); }
+      else r.g.setAttribute("visibility", "hidden");
+    });
+    Object.keys(refArista).forEach(function (id) {
+      var estado = (p.aristas && p.aristas[id]) || "";
+      var path = refArista[id];
+      path.setAttribute("class", "arista" + (estado ? " e-" + estado : ""));
+      if (E.dirigido) path.setAttribute("marker-end", "url(#flecha-" + (estado && estado !== "tenue" ? "e-" + estado : "base") + ")");
+      var et = p.etiquetas && p.etiquetas[id];
+      var r = refEtiqueta[id];
+      if (et) { r.t.textContent = et; r.g.setAttribute("visibility", "visible"); }
+      else r.g.setAttribute("visibility", "hidden");
+    });
+
+    $("fase").textContent = p.fase || "";
+    $("paso-titulo").textContent = p.titulo;
+    $("paso-texto").innerHTML = p.texto;
+    $("paneles").innerHTML = (p.paneles || []).map(function (pn) {
+      return '<section class="tarjeta panel"><h3>' + Viz.esc(pn.titulo) + "</h3>" + pn.html + "</section>";
+    }).join("");
+    var lineas = [].concat(p.linea || []);
+    Array.prototype.forEach.call($("pseudo").children, function (li) {
+      var n = Number(li.getAttribute("data-linea"));
+      li.classList.toggle("actual", lineas.indexOf(n) !== -1);
+    });
+
+    $("contador").textContent = "Paso " + (i + 1) + " de " + pasos.length;
+    $("barra").max = pasos.length - 1;
+    $("barra").value = i;
+    $("btn-inicio").disabled = $("btn-ant").disabled = i === 0;
+    $("btn-sig").disabled = i === pasos.length - 1;
+    if (i === pasos.length - 1) pausar();
+  }
+
+  function ir(k) { i = Math.max(0, Math.min(pasos.length - 1, k)); render(); }
+  function pausar() {
+    if (temporizador) clearInterval(temporizador);
+    temporizador = null;
+    $("btn-play").textContent = i === pasos.length - 1 ? "↺ Repetir" : "▶ Reproducir";
+  }
+  function reproducir() {
+    if (i === pasos.length - 1) ir(0);
+    $("btn-play").textContent = "⏸ Pausar";
+    temporizador = setInterval(function () { ir(i + 1); }, Number($("velocidad").value));
+  }
+  function alternar() { temporizador ? pausar() : reproducir(); }
+
+  function cargarEscenario(k) {
+    pausar();
+    escenario = k;
+    Array.prototype.forEach.call($("escenarios").children, function (b, j) { b.setAttribute("aria-pressed", j === k ? "true" : "false"); });
+    pasos = E.escenarios[k].resolver().pasos;
+    dibujarGrafo();
+    ir(0);
+    pausar();
+  }
+
+  $("btn-inicio").addEventListener("click", function () { pausar(); ir(0); });
+  $("btn-ant").addEventListener("click", function () { pausar(); ir(i - 1); });
+  $("btn-sig").addEventListener("click", function () { pausar(); ir(i + 1); });
+  $("btn-play").addEventListener("click", alternar);
+  $("barra").addEventListener("input", function (e) { pausar(); ir(Number(e.target.value)); });
+  $("velocidad").addEventListener("change", function () { if (temporizador) { pausar(); reproducir(); } });
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "select" || tag === "input" || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "ArrowRight") { pausar(); ir(i + 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft") { pausar(); ir(i - 1); e.preventDefault(); }
+    else if (e.key === "Home") { pausar(); ir(0); e.preventDefault(); }
+    else if (e.key === "End") { pausar(); ir(pasos.length - 1); e.preventDefault(); }
+    else if (e.key === " " && tag !== "button") { alternar(); e.preventDefault(); }
+  });
+  window.addEventListener("storage", function (e) {
+    if (e.key === "theme" && e.newValue) document.documentElement.setAttribute("saved-theme", e.newValue);
+  });
+
+  cargarEscenario(0);
+  window.addEventListener("load", function () { window.scrollTo(0, 0); });
+})();
+</script>
+</body>
+</html>

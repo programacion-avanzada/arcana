@@ -27,6 +27,8 @@ El plano de la mansión es un grafo no dirigido $G=(V,E)$, donde cada vértice e
 3. Construir a mano una ronda válida: la secuencia completa de habitaciones que recorre cada pasillo exactamente una vez.
 4. Determinar la complejidad de verificar la condición de Euler (contar los grados de todos los vértices) en función de $V$ y $E$. Explicar además por qué saber que la ronda existe no alcanza por sí solo para construirla: ¿qué información adicional hubo que usar en el punto 3 que no se necesitó en el punto 2?
 
+[[la-ronda-de-seraph.htm|Ver la resolución paso a paso]]
+
 ---
 
 <details>
