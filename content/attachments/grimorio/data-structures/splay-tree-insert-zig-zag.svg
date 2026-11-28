@@ -1,0 +1,74 @@
+<svg width="845" height="270" viewBox="0 0 845 270" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame        { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val-sm       { font-size: 15px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .link         { stroke: #9baec8; stroke-width: 1.8; fill: none; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .op-arrow     { stroke: #777777; stroke-width: 1.5; fill: none; }
+    .op-arrow-fill { fill: #777777; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    .ghost        { fill: #f5f7fa; fill-opacity: 0.5; stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; }
+    .ghost-val    { font-size: 15px; font-weight: 700; fill: #555555; text-anchor: middle; }
+    .ghost-link   { stroke: #777777; stroke-width: 1.5; stroke-dasharray: 4,3; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .frame        { fill: #1e2330; stroke: #4a6fa5; }
+      .val-sm       { fill: #e2e8f0; }
+      .link         { stroke: #4a6fa5; }
+      .op           { fill: #8899aa; }
+      .op-arrow     { stroke: #8899aa; }
+      .op-arrow-fill { fill: #8899aa; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+      .ghost        { fill: #1e2330; stroke: #8899aa; }
+      .ghost-val    { fill: #aab4c0; }
+      .ghost-link   { stroke: #8899aa; }
+    }
+  </style>
+
+  <!-- paso 0 -->
+  <text x="97.5" y="22" class="op">insertado</text>
+  <line x1="153" y1="186" x2="132" y2="214" class="link"/>
+  <line x1="91.6" y1="121.1" x2="148.4" y2="158.9" class="link"/>
+  <line x1="42" y1="66" x2="63" y2="94" class="link"/>
+  <circle cx="30" cy="50" r="20" class="frame"/>
+  <text x="30" y="55" class="val-sm">10</text>
+  <circle cx="75" cy="110" r="20" class="frame"/>
+  <text x="75" y="115" class="val-sm">20</text>
+  <circle cx="120" cy="230" r="20" class="query"/>
+  <text x="120" y="235" class="val-sm">25</text>
+  <circle cx="165" cy="170" r="20" class="frame"/>
+  <text x="165" y="175" class="val-sm">30</text>
+  <line x1="205" y1="90" x2="305" y2="90" class="op-arrow"/>
+  <path d="M305,95 L315,90 L305,85 Z" class="op-arrow-fill"/>
+  <text x="260" y="62" class="op">zig-zag:</text>
+  <text x="260" y="78" class="op">rota 30 y 20</text>
+  <!-- paso 1 -->
+  <text x="422.5" y="22" class="op"></text>
+  <line x1="433" y1="126" x2="412" y2="154" class="link"/>
+  <line x1="457" y1="126" x2="478" y2="154" class="link"/>
+  <line x1="371.6" y1="61.1" x2="428.4" y2="98.9" class="link"/>
+  <circle cx="355" cy="50" r="20" class="frame"/>
+  <text x="355" y="55" class="val-sm">10</text>
+  <circle cx="400" cy="170" r="20" class="frame"/>
+  <text x="400" y="175" class="val-sm">20</text>
+  <circle cx="445" cy="110" r="20" class="query"/>
+  <text x="445" y="115" class="val-sm">25</text>
+  <circle cx="490" cy="170" r="20" class="frame"/>
+  <text x="490" y="175" class="val-sm">30</text>
+  <line x1="530" y1="90" x2="630" y2="90" class="op-arrow"/>
+  <path d="M630,95 L640,90 L630,85 Z" class="op-arrow-fill"/>
+  <text x="585" y="78" class="op">zig: rota 10</text>
+  <!-- paso 2 -->
+  <text x="747.5" y="22" class="op">25 en la raíz</text>
+  <line x1="692" y1="126" x2="713" y2="154" class="link"/>
+  <line x1="753.4" y1="61.1" x2="696.6" y2="98.9" class="link"/>
+  <line x1="782" y1="66" x2="803" y2="94" class="link"/>
+  <circle cx="680" cy="110" r="20" class="frame"/>
+  <text x="680" y="115" class="val-sm">10</text>
+  <circle cx="725" cy="170" r="20" class="frame"/>
+  <text x="725" y="175" class="val-sm">20</text>
+  <circle cx="770" cy="50" r="20" class="query"/>
+  <text x="770" y="55" class="val-sm">25</text>
+  <circle cx="815" cy="110" r="20" class="frame"/>
+  <text x="815" y="115" class="val-sm">30</text>
+</svg>
