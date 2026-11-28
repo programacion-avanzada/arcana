@@ -52,6 +52,8 @@ La clave está en analizar el problema **desde el destino hacia el inicio**: en 
 
 **Salida:** `7`
 
+![Mazmorra 3×3 del ejemplo: el caballero en (0,0), la princesa en (2,2), el camino derecha-derecha-abajo-abajo y la vida resultante en cada paso](0174-enunciado.svg)
+
 **Camino óptimo:** Derecha → Derecha → Abajo → Abajo
 
 Simulación con vida inicial 7:

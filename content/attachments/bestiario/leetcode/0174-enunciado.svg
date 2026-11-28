@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="600" viewBox="0 0 880 600">
+  <style>
+    text { font-family: 'Courier New', Courier, monospace; }
+    .frame, .cell { fill: #f5f7fa; stroke: #9baec8; stroke-width: 1.5; }
+    .val          { font-size: 20px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .idx          { font-size: 12px; fill: #777777; text-anchor: middle; }
+    .op           { font-size: 13px; font-weight: 700; fill: #777777; text-anchor: middle; }
+    .op-arrow     { stroke: #777777; stroke-width: 1.5; fill: none; }
+    .accent-label { font-size: 13px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    .query        { fill: #f5f7fa; stroke: #c0742a; stroke-width: 1.8; }
+    .path-cell    { fill: #fdf1e3; stroke: #c0742a; stroke-width: 2.5; }
+    .path-arrow   { stroke: #c0742a; stroke-width: 3; fill: none; }
+    .answer       { font-size: 72px; font-weight: 700; fill: #c0742a; text-anchor: middle; }
+    #arrow-path path { fill: #c0742a; }
+    #arrow-op path   { fill: #777777; }
+
+    @media (prefers-color-scheme: dark) {
+      .frame, .cell { fill: #1e2330; stroke: #4a6fa5; }
+      .val          { fill: #e2e8f0; }
+      .idx          { fill: #8899aa; }
+      .op           { fill: #8899aa; }
+      .op-arrow     { stroke: #8899aa; }
+      .accent-label { fill: #d4884a; }
+      .query        { fill: #1e2330; stroke: #d4884a; }
+      .path-cell    { fill: #2b2117; stroke: #d4884a; }
+      .path-arrow   { stroke: #d4884a; }
+      .answer       { fill: #d4884a; }
+      #arrow-path path { fill: #d4884a; }
+      #arrow-op path   { fill: #8899aa; }
+    }
+  </style>
+
+  <defs>
+    <marker id="arrow-path" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+    <marker id="arrow-op" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+
+  <text x="440" y="34" class="val">La mazmorra 3×3 y el camino óptimo</text>
+  <text x="440" y="58" class="op">el caballero entra por (0,0) · solo puede ir a la derecha o hacia abajo · la princesa espera en (2,2)</text>
+
+  <!-- índices de columna -->
+  <text x="198" y="88" class="idx">0</text>
+  <text x="320" y="88" class="idx">1</text>
+  <text x="442" y="88" class="idx">2</text>
+
+  <!-- índices de fila -->
+  <text x="134" y="153" class="idx">0</text>
+  <text x="134" y="275" class="idx">1</text>
+  <text x="134" y="397" class="idx">2</text>
+
+  <!-- celdas: el recorrido óptimo va en acento -->
+  <rect x="150" y="100" width="96" height="96" rx="4" class="path-cell"/>
+  <rect x="272" y="100" width="96" height="96" rx="4" class="path-cell"/>
+  <rect x="394" y="100" width="96" height="96" rx="4" class="path-cell"/>
+  <rect x="150" y="222" width="96" height="96" rx="4" class="cell"/>
+  <rect x="272" y="222" width="96" height="96" rx="4" class="cell"/>
+  <rect x="394" y="222" width="96" height="96" rx="4" class="path-cell"/>
+  <rect x="150" y="344" width="96" height="96" rx="4" class="cell"/>
+  <rect x="272" y="344" width="96" height="96" rx="4" class="cell"/>
+  <rect x="394" y="344" width="96" height="96" rx="4" class="path-cell"/>
+
+  <!-- valores de la mazmorra -->
+  <text x="198" y="155" class="val">-2</text>
+  <text x="320" y="155" class="val">-3</text>
+  <text x="442" y="155" class="val">3</text>
+  <text x="198" y="277" class="val">-5</text>
+  <text x="320" y="277" class="val">-10</text>
+  <text x="442" y="277" class="val">1</text>
+  <text x="198" y="399" class="val">10</text>
+  <text x="320" y="399" class="val">30</text>
+  <text x="442" y="399" class="val">-5</text>
+
+  <text x="198" y="182" class="accent-label">inicio</text>
+  <text x="442" y="426" class="accent-label">princesa</text>
+
+  <!-- movimientos: derecha, derecha, abajo, abajo -->
+  <line x1="250" y1="148" x2="266" y2="148" class="path-arrow" marker-end="url(#arrow-path)"/>
+  <line x1="372" y1="148" x2="388" y2="148" class="path-arrow" marker-end="url(#arrow-path)"/>
+  <line x1="442" y1="200" x2="442" y2="216" class="path-arrow" marker-end="url(#arrow-path)"/>
+  <line x1="442" y1="322" x2="442" y2="338" class="path-arrow" marker-end="url(#arrow-path)"/>
+
+  <!-- respuesta -->
+  <rect x="536" y="176" width="300" height="196" rx="12" class="frame"/>
+  <text x="686" y="214" class="op">vida inicial mínima</text>
+  <text x="686" y="300" class="answer">7</text>
+  <text x="686" y="336" class="op">para sobrevivir los 5 pasos</text>
+  <text x="686" y="358" class="op">con 6 no alcanza</text>
+
+  <!-- simulación del camino con 7 de vida -->
+  <text x="378" y="478" class="op">vida al avanzar por el camino</text>
+  <rect x="150" y="492" width="56" height="40" rx="6" class="query"/>
+  <text x="178" y="519" class="val">7</text>
+  <rect x="230" y="492" width="56" height="40" rx="6" class="cell"/>
+  <text x="258" y="519" class="val">5</text>
+  <rect x="310" y="492" width="56" height="40" rx="6" class="cell"/>
+  <text x="338" y="519" class="val">2</text>
+  <rect x="390" y="492" width="56" height="40" rx="6" class="cell"/>
+  <text x="418" y="519" class="val">5</text>
+  <rect x="470" y="492" width="56" height="40" rx="6" class="cell"/>
+  <text x="498" y="519" class="val">6</text>
+  <rect x="550" y="492" width="56" height="40" rx="6" class="cell"/>
+  <text x="578" y="519" class="val">1</text>
+
+  <line x1="210" y1="512" x2="226" y2="512" class="op-arrow" marker-end="url(#arrow-op)"/>
+  <line x1="290" y1="512" x2="306" y2="512" class="op-arrow" marker-end="url(#arrow-op)"/>
+  <line x1="370" y1="512" x2="386" y2="512" class="op-arrow" marker-end="url(#arrow-op)"/>
+  <line x1="450" y1="512" x2="466" y2="512" class="op-arrow" marker-end="url(#arrow-op)"/>
+  <line x1="530" y1="512" x2="546" y2="512" class="op-arrow" marker-end="url(#arrow-op)"/>
+
+  <text x="218" y="556" class="op">−2</text>
+  <text x="298" y="556" class="op">−3</text>
+  <text x="378" y="556" class="op">+3</text>
+  <text x="458" y="556" class="op">+1</text>
+  <text x="538" y="556" class="op">−5</text>
+
+  <text x="440" y="588" class="op">valor negativo: resta vida · positivo: la recupera · cero: no hace nada</text>
+</svg>
