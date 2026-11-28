@@ -14,7 +14,7 @@ Un deque (pronunciado "deck", acrónimo de Double-Ended Queue) es un tipo especi
 - Generalización de Pila y Cola: Puede comportarse como LIFO o FIFO según la necesidad.
 - Acceso en ambos extremos: Permite insertar y eliminar elementos tanto en el frente (front) como en el final (back).
 - Acceso restringido: Al igual que sus variantes, no permite acceso directo eficiente a elementos intermedios.
-- Invariante clave: Los extremos siempre referencian los elementos más antiguos y más recientes disponibles para su extracción.
+- Invariante clave: Los punteros `front` y `back` señalan, respectivamente, el primer y el último elemento del deque. La estructura no impone un orden cronológico de inserción ni una política FIFO o LIFO; estas dependen de las operaciones que use el programa.
 ### Representación
 Internamente, se organiza como una secuencia de nodos o bloques. A diferencia de una Pila, que tiene un solo "techo", el Deque se visualiza como un tubo abierto en ambos sentidos.
 
@@ -179,7 +179,7 @@ print("La palabra: "+palabra+" "+ "si es un palindromo"if palindromo else "no es
 ### Comparaciones
 - **vs Pila**: El deque es una versión más flexible que permite el acceso por ambos extremos, no sólo por el tope.
 - **vs Cola**: El deque permite comportarse como una cola pero añade la posibilidad de insertar elementos al frente si es necesario.
-- **vs Lista**: El deque es más eficiente para inserciones y extracciones en ambos extremos $O(1)$, mientras que la lista es $O(n)$.
+- **vs Lista**: Para inserciones y extracciones el deque ofrece $O(1)$ en ambos extremos. La lista solo lo ofrece (amortizado) en el extremo derecho; en el izquierdo es $O(n)$. A cambio, la lista permite acceso por índice en $O(1)$.
 
 ### Ventajas / desventajas
 | Ventajas | Desventajas |
