@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caradhras o Moria · Dijkstra paso a paso</title>
+<meta name="description" content="Traza de Dijkstra desde Rivendel, iteración por iteración, con los conjuntos S y V−S y los vectores de distancias y predecesores.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Schibsted+Grotesk:wght@500;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+<script>
+  // Mismo tema que el resto de Arcana: Quartz guarda la preferencia en localStorage("theme").
+  try {
+    var tema = localStorage.getItem("theme");
+    if (tema) document.documentElement.setAttribute("saved-theme", tema);
+  } catch (e) {}
+</script>
+<style>
+  :root {
+    --light: #faf8f8;
+    --lightgray: #e5e5e5;
+    --gray: #b8b8b8;
+    --darkgray: #4e4e4e;
+    --dark: #2b2b2b;
+    --secondary: #284b63;
+    --tertiary: #84a59d;
+    --highlight: rgba(143, 159, 169, 0.15);
+    --acento: #c0742a;
+    --acento-bg: #fbe9d7;
+    --abierto-bg: #d3e0ea;
+    --cerrado-bg: #dce9e5;
+    --camino: #3f7d6e;
+    --nodo-bg: #ffffff;
+    --on-secondary: #ffffff;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([saved-theme="light"]) {
+      --light: #161618;
+      --lightgray: #393639;
+      --gray: #646464;
+      --darkgray: #d4d4d4;
+      --dark: #ebebec;
+      --secondary: #7b97aa;
+      --tertiary: #84a59d;
+      --acento: #d4884a;
+      --acento-bg: #3b2a1a;
+      --abierto-bg: #233340;
+      --cerrado-bg: #1f2f2a;
+      --camino: #8cc2b3;
+      --nodo-bg: #1e1e21;
+      --on-secondary: #161618;
+      color-scheme: dark;
+    }
+  }
+  :root[saved-theme="dark"] {
+    --light: #161618;
+    --lightgray: #393639;
+    --gray: #646464;
+    --darkgray: #d4d4d4;
+    --dark: #ebebec;
+    --secondary: #7b97aa;
+    --tertiary: #84a59d;
+    --acento: #d4884a;
+    --acento-bg: #3b2a1a;
+    --abierto-bg: #233340;
+    --cerrado-bg: #1f2f2a;
+    --camino: #8cc2b3;
+    --nodo-bg: #1e1e21;
+    --on-secondary: #161618;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--light);
+    color: var(--darkgray);
+    font-family: "Source Sans Pro", -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  h1, h2, h3 { font-family: "Schibsted Grotesk", "Segoe UI", sans-serif; color: var(--dark); margin: 0; }
+  h1 { font-size: 1.7rem; line-height: 1.2; }
+  h2 { font-size: 1.2rem; }
+  h3 { font-size: 1rem; margin-bottom: 0.6rem; }
+  code, .mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; }
+  a { color: var(--secondary); }
+  .pagina { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+  .cabecera { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .subtitulo { margin: 0.3rem 0 0; color: var(--darkgray); }
+  .volver { font-size: 0.95rem; text-decoration: none; white-space: nowrap; }
+  .volver:hover { text-decoration: underline; }
+  .aviso {
+    margin: 1rem 0 1.25rem;
+    padding: 0.6rem 0.9rem;
+    border-left: 4px solid var(--acento);
+    background: var(--acento-bg);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95rem;
+  }
+
+  .grilla { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+  .columna { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+  @media (max-width: 920px) { .grilla { grid-template-columns: minmax(0, 1fr); } }
+
+  .tarjeta {
+    background: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    min-width: 0;
+  }
+
+  /* --- grafo --- */
+  #grafo { width: 100%; height: auto; display: block; }
+  @media (max-width: 600px) {
+    .grafo-scroll { overflow-x: auto; }
+    #grafo { min-width: 600px; }
+  }
+  #grafo text { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+  .arista { fill: none; stroke: var(--gray); stroke-width: 1.8; transition: stroke 0.25s, stroke-width 0.25s; }
+  .punta { fill: var(--gray); transition: fill 0.25s; }
+  .arista.arbol { stroke: var(--secondary); stroke-width: 2.6; }
+  .punta.arbol { fill: var(--secondary); }
+  .arista.relajando { stroke: var(--acento); stroke-width: 3.6; }
+  .punta.relajando { fill: var(--acento); }
+  .arista.camino { stroke: var(--camino); stroke-width: 4.2; }
+  .punta.camino { fill: var(--camino); }
+  .arista.nueva { stroke-dasharray: 7 5; }
+  .peso-bg { fill: var(--nodo-bg); stroke: var(--gray); stroke-width: 1; }
+  .peso { font-size: 14px; font-weight: 600; fill: var(--dark); text-anchor: middle; }
+  .peso-bg.relajando { stroke: var(--acento); stroke-width: 2; }
+
+  .nodo circle { fill: var(--nodo-bg); stroke: var(--gray); stroke-width: 2; transition: fill 0.25s, stroke 0.25s; }
+  .nodo .num { font-size: 19px; font-weight: 600; fill: var(--dark); text-anchor: middle; }
+  .nodo .nombre { font-size: 13px; font-weight: 600; fill: var(--darkgray); text-anchor: middle; }
+  .nodo.abierto circle { stroke: var(--secondary); fill: var(--abierto-bg); }
+  .nodo.cerrado circle { stroke: var(--tertiary); fill: var(--cerrado-bg); stroke-width: 2.5; }
+  .nodo.foco circle { stroke: var(--secondary); stroke-width: 3.5; }
+  .nodo.elegido circle { stroke: var(--acento); fill: var(--acento-bg); stroke-width: 3.5; }
+  .nodo.encamino circle { stroke: var(--camino); stroke-width: 3.5; }
+  .ficha rect { fill: var(--lightgray); stroke: none; transition: fill 0.25s; }
+  .ficha text { font-size: 12.5px; font-weight: 600; fill: var(--dark); text-anchor: middle; }
+  .ficha.cambio rect { fill: var(--acento); }
+  .ficha.cambio text { fill: var(--on-secondary); }
+
+  .leyenda { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.85rem; margin-top: 0.5rem; }
+  .leyenda span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .muestra { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gray); display: inline-block; background: var(--nodo-bg); }
+  .muestra.abierto { border-color: var(--secondary); background: var(--abierto-bg); }
+  .muestra.cerrado { border-color: var(--tertiary); background: var(--cerrado-bg); }
+  .muestra.elegido { border-color: var(--acento); background: var(--acento-bg); }
+  .linea-muestra { width: 22px; height: 0; border-top: 3px solid var(--secondary); display: inline-block; }
+
+  /* --- relato y controles --- */
+  .relato { min-height: 11rem; }
+  .contador { font-size: 0.85rem; color: var(--darkgray); opacity: 0.85; margin-bottom: 0.25rem; }
+  .relato p { margin: 0.5rem 0 0; }
+  .nota {
+    margin-top: 0.75rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--secondary);
+    background: var(--highlight);
+    font-size: 0.95rem;
+  }
+  .nota.clave { border-left-color: var(--acento); background: var(--acento-bg); }
+  .nota strong:first-child { color: var(--dark); }
+  .controles { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  button {
+    font: inherit;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--gray);
+    background: var(--light);
+    color: var(--dark);
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { border-color: var(--secondary); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+  .btn-principal { background: var(--secondary); color: var(--on-secondary); border-color: var(--secondary); }
+  .barra { flex: 1 1 140px; accent-color: var(--secondary); }
+  .atajos { font-size: 0.8rem; opacity: 0.8; margin-top: 0.4rem; }
+  kbd {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.75rem;
+    border: 1px solid var(--gray);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0 0.3rem;
+  }
+
+  /* --- pseudocódigo --- */
+  .pseudo { margin: 0; padding: 0; list-style: none; font-family: "IBM Plex Mono", monospace; font-size: 0.82rem; line-height: 1.5; }
+  .pseudo li { padding: 0.12rem 0.4rem; border-radius: 4px; white-space: pre; overflow-x: auto; }
+  .pseudo li .n { display: inline-block; width: 1.4rem; opacity: 0.55; }
+  .pseudo li.activa { background: var(--acento-bg); color: var(--dark); box-shadow: inset 3px 0 0 var(--acento); }
+
+  /* --- estado --- */
+  .conjuntos { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 0.7rem; align-items: center; }
+  .conjuntos .rot { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--dark); }
+  .fichas { display: flex; flex-wrap: wrap; gap: 0.3rem; min-height: 1.7rem; }
+  .chip {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--gray);
+  }
+  .chip.s { border-color: var(--tertiary); background: var(--cerrado-bg); }
+  .chip.vs { border-color: var(--secondary); background: var(--abierto-bg); }
+  .chip.w { border-color: var(--acento); background: var(--acento-bg); }
+  .vacio { font-family: "IBM Plex Mono", monospace; opacity: 0.7; }
+
+  /* --- traza --- */
+  .tabla-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+  th, td { border: 1px solid var(--lightgray); padding: 0.3rem 0.4rem; text-align: center; white-space: nowrap; }
+  th { font-family: "Schibsted Grotesk", sans-serif; color: var(--dark); background: var(--highlight); }
+  td { font-family: "IBM Plex Mono", monospace; }
+  tr.actual td { background: var(--abierto-bg); }
+  td.cambio { color: var(--acento); font-weight: 700; }
+  td.pendiente { opacity: 0.35; }
+
+  /* --- punto 4 --- */
+  .traza, .extra { margin-top: 1rem; }
+  .extra-controles { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: center; margin: 0.5rem 0; }
+  .extra label { display: inline-flex; gap: 0.45rem; align-items: center; cursor: pointer; }
+  .extra input[type="range"] { accent-color: var(--acento); width: 160px; }
+  .extra input[type="checkbox"] { accent-color: var(--acento); width: 1.05rem; height: 1.05rem; }
+  #extra-resumen p { margin: 0.4rem 0 0; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="pagina">
+  <header class="cabecera">
+    <div>
+      <h1>Caradhras o Moria · Dijkstra paso a paso</h1>
+      <p class="subtitulo">Traza desde Rivendel con los conjuntos <span class="mono">S</span> y <span class="mono">V−S</span> y los vectores <span class="mono">D</span> (distancias) y <span class="mono">P</span> (predecesores).</p>
+    </div>
+    <a class="volver" href="../../senderos/bestias/camino/caradhras-o-moria">← Volver al enunciado</a>
+  </header>
+
+  <p class="aviso">Esta página <strong>muestra la resolución</strong> de los puntos 1 a 4. Si todavía no lo intentaste, conviene hacer primero la traza a mano y usar esto para comparar.</p>
+
+  <div class="grilla">
+    <div class="columna">
+      <section class="tarjeta">
+        <div class="grafo-scroll">
+        <svg id="grafo" viewBox="0 0 760 385" role="img" aria-labelledby="grafo-titulo">
+          <title id="grafo-titulo">Red de caminos entre Rivendel y Lothlórien con el estado actual de la traza</title>
+          <g id="capa-aristas"></g>
+          <g id="capa-nodos"></g>
+        </svg>
+        </div>
+        <div class="leyenda" aria-hidden="true">
+          <span><i class="muestra"></i> sin alcanzar (∞)</span>
+          <span><i class="muestra abierto"></i> en V−S con distancia tentativa</span>
+          <span><i class="muestra cerrado"></i> en S (distancia definitiva)</span>
+          <span><i class="muestra elegido"></i> w de esta iteración</span>
+          <span><i class="linea-muestra"></i> arista P[i] → i</span>
+        </div>
+      </section>
+
+      <section class="tarjeta relato" aria-live="polite">
+        <div class="contador" id="contador"></div>
+        <h2 id="paso-titulo"></h2>
+        <div id="paso-texto"></div>
+      </section>
+
+      <section class="tarjeta">
+        <div class="controles">
+          <button type="button" id="btn-inicio" aria-label="Primer paso">⏮</button>
+          <button type="button" id="btn-ant">◀ Anterior</button>
+          <button type="button" id="btn-play" class="btn-principal">▶ Reproducir</button>
+          <button type="button" id="btn-sig">Siguiente ▶</button>
+          <button type="button" id="btn-fin" aria-label="Último paso">⏭</button>
+          <label class="sr-only" for="barra">Ir al paso</label>
+          <input type="range" id="barra" class="barra" min="0" value="0">
+        </div>
+        <div class="atajos"><kbd>←</kbd> <kbd>→</kbd> avanzar o retroceder · <kbd>Espacio</kbd> reproducir o pausar · <kbd>Inicio</kbd> <kbd>Fin</kbd></div>
+      </section>
+    </div>
+
+    <div class="columna">
+      <section class="tarjeta">
+        <h3>Pseudocódigo (versión sin cola de prioridad)</h3>
+        <ol class="pseudo" id="pseudo"></ol>
+      </section>
+
+      <section class="tarjeta">
+        <h3>Estado</h3>
+        <div class="conjuntos">
+          <span class="rot">S</span><div class="fichas" id="conj-s"></div>
+          <span class="rot">V−S</span><div class="fichas" id="conj-vs"></div>
+          <span class="rot">w</span><div class="fichas" id="conj-w"></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <section class="tarjeta traza">
+    <h3>Traza</h3>
+    <div class="tabla-scroll">
+      <table>
+        <thead id="traza-cabecera"></thead>
+        <tbody id="traza-cuerpo"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tarjeta extra">
+    <h3>Punto 4 · ¿Y si existiera un sendero directo de Puertas de Moria a Lothlórien?</h3>
+    <p style="margin:0">Activá la arista <span class="mono">2 → 5</span>, elegí su peso <span class="mono">x</span> y volvé a recorrer la traza: la visualización se recalcula con la red nueva.</p>
+    <div class="extra-controles">
+      <label><input type="checkbox" id="extra-activa"> Agregar el sendero <span class="mono">2 → 5</span></label>
+      <label>Peso <span class="mono">x =</span> <input type="range" id="extra-peso" min="1" max="10" value="4"> <strong class="mono" id="extra-valor">4</strong></label>
+    </div>
+    <div id="extra-resumen"></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ------------------------------------------------------------------
+  // Datos del enunciado
+  // ------------------------------------------------------------------
+  var NODOS = [
+    { nombre: "Rivendel",         x: 90,  y: 195, arriba: true  },
+    { nombre: "Caradhras",        x: 370, y: 90,  arriba: true  },
+    { nombre: "Puertas de Moria", x: 230, y: 300, arriba: false },
+    { nombre: "Salón de Piedra",  x: 420, y: 300, arriba: false },
+    { nombre: "Puerta Este",      x: 590, y: 300, arriba: false },
+    { nombre: "Lothlórien",       x: 680, y: 180, arriba: true  }
+  ];
+  var ORIGEN = 0;
+  var DESTINO = 5;
+  // [desde, hasta, peso, curvatura]
+  var ARISTAS_BASE = [
+    [0, 1, 1, 0], [0, 2, 2, 0], [0, 3, 6, -60], [2, 3, 3, 0],
+    [3, 4, 2, 0], [4, 5, 1, 0], [1, 5, 8, 0]
+  ];
+  var R = 24;
+  var INF = Infinity;
+
+  var PSEUDO = [
+    "S ← {0};  V−S ← {1, …, n−1}",
+    "para cada i en V−S:  D[i] ← C(0,i);  P[i] ← 0",
+    "mientras V−S ≠ ∅:",
+    "    w ← nodo de V−S con D[w] mínima",
+    "    S ← S ∪ {w};  V−S ← V−S − {w}",
+    "    para cada i en V−S adyacente a w:",
+    "        si D[w] + C(w,i) < D[i]:",
+    "            D[i] ← D[w] + C(w,i);  P[i] ← w"
+  ];
+
+  var extra = { activa: false, peso: 4 };
+
+  function aristas() {
+    var lista = ARISTAS_BASE.slice();
+    if (extra.activa) lista.push([2, 5, extra.peso, -22, true]);
+    return lista;
+  }
+
+  // ------------------------------------------------------------------
+  // Utilidades de formato
+  // ------------------------------------------------------------------
+  function $(id) { return document.getElementById(id); }
+  function n(i) { return NODOS[i].nombre; }
+  function fmtD(d) { return d === INF ? "∞" : String(d); }
+  function fmtP(p) { return p === null ? "−" : String(p); }
+  function nodoTxt(i) { return "<strong>" + i + "</strong> (" + n(i) + ")"; }
+  function conj(arr) { return arr.length ? "{" + arr.join(",") + "}" : "∅"; }
+  function abiertos(enS) {
+    var r = [];
+    for (var i = 0; i < NODOS.length; i++) if (!enS[i]) r.push(i);
+    return r;
+  }
+  function cerradosLista(enS) {
+    var r = [];
+    for (var i = 0; i < NODOS.length; i++) if (enS[i]) r.push(i);
+    return r;
+  }
+
+  // ------------------------------------------------------------------
+  // Simulación: genera la lista de pasos a partir de la red
+  // ------------------------------------------------------------------
+  function simular(E) {
+    var cant = NODOS.length;
+    var D = [], P = [], enS = [];
+    for (var i = 0; i < cant; i++) { D.push(INF); P.push(null); enS.push(false); }
+    var pasos = [];
+    var filas = [];
+    var iter = 0;
+
+    function foto(extraCampos) {
+      var p = {
+        D: D.slice(), P: P.slice(), enS: enS.slice(),
+        filas: filas.map(function (f) { return Object.assign({}, f); }),
+        iter: iter, lineas: [], w: null, foco: null, arista: null,
+        estadoArista: null, cambio: null, camino: null
+      };
+      return Object.assign(p, extraCampos);
+    }
+    function agregarFila(etiqueta, w) {
+      filas.push({
+        etiqueta: etiqueta, S: cerradosLista(enS), VS: abiertos(enS), w: w,
+        D: D.slice(), P: P.slice()
+      });
+    }
+
+    // Paso 0: presentación
+    pasos.push(foto({
+      titulo: "La red",
+      texto: "<p>Cada lugar es un nodo numerado del 0 al 5 y cada arista es dirigida: solo se puede recorrer en el sentido de la flecha. " +
+        "El peso combina tiempo y peligro, así que el mejor camino es el de menor suma.</p>" +
+        "<p>Dijkstra va a calcular, desde Rivendel, el vector <span class=\"mono\">D</span> de distancias mínimas y el vector " +
+        "<span class=\"mono\">P</span> de predecesores, que después sirve para reconstruir cada camino.</p>" +
+        (extra.activa ? "<div class=\"nota clave\"><strong>Red modificada:</strong> se agregó el sendero punteado Puertas de Moria → Lothlórien con peso " + extra.peso + ".</div>" : "")
+    }));
+
+    // Paso inicial (líneas 1 y 2)
+    enS[ORIGEN] = true; D[ORIGEN] = 0;
+    var directos = [];
+    E.forEach(function (a) {
+      if (a[0] === ORIGEN) { D[a[1]] = a[2]; P[a[1]] = ORIGEN; directos.push(a); }
+    });
+    agregarFila("Inicial", ORIGEN);
+    pasos.push(foto({
+      titulo: "Paso inicial",
+      lineas: [0, 1], w: ORIGEN,
+      texto: "<p>El origen entra a <span class=\"mono\">S</span> con <span class=\"mono\">D[0] = 0</span>. " +
+        "Para el resto se toman los caminos directos desde Rivendel: " +
+        directos.map(function (a) { return "<span class=\"mono\">D[" + a[1] + "] = " + a[2] + "</span>"; }).join(", ") +
+        ", todos con <span class=\"mono\">P = 0</span>. Los nodos sin arista directa quedan en <span class=\"mono\">∞</span>.</p>" +
+        "<p>Estas distancias son <em>tentativas</em>: pueden bajar más adelante si aparece un camino mejor.</p>"
+    }));
+
+    // Iteraciones (líneas 3 a 8)
+    while (abiertos(enS).length > 0) {
+      iter++;
+      var vs = abiertos(enS);
+      var w = vs[0];
+      vs.forEach(function (i) { if (D[i] < D[w]) w = i; });
+
+      var candidatos = vs.map(function (i) {
+        return "<span class=\"mono\">D[" + i + "]=" + fmtD(D[i]) + "</span>";
+      }).join(", ");
+      var notaElegir = "";
+      if (w !== DESTINO && !enS[DESTINO] && D[DESTINO] !== INF) {
+        notaElegir = "<div class=\"nota clave\"><strong>Punto 3:</strong> Lothlórien ya tiene una distancia tentativa " +
+          "(<span class=\"mono\">D[5] = " + D[DESTINO] + "</span>), pero no se cierra: hay un nodo abierto con distancia menor " +
+          "(<span class=\"mono\">D[" + w + "] = " + D[w] + "</span>). Como los pesos son positivos, un camino que pase por " + n(w) +
+          " todavía podría llegar a Lothlórien más barato. Mientras siga en V−S, su distancia puede bajar.</div>";
+      }
+      enS[w] = true;
+      var sucesores = E.filter(function (a) { return a[0] === w && !enS[a[1]]; });
+
+      var textoCierre = "<p>Entre los nodos de V−S (" + candidatos + ") el de menor distancia es " + nodoTxt(w) +
+        ", así que <span class=\"mono\">w = " + w + "</span>. Pasa a <span class=\"mono\">S</span>: su distancia " +
+        "<span class=\"mono\">D[" + w + "] = " + D[w] + "</span> ya es definitiva, porque cualquier otro camino tendría que salir " +
+        "por un nodo abierto que ya cuesta al menos eso.</p>";
+      if (sucesores.length === 0) {
+        textoCierre += "<p>No tiene sucesores en V−S, así que no hay nada que relajar.</p>";
+        agregarFila(String(iter), w);
+      } else {
+        textoCierre += "<p>Ahora se revisan sus sucesores todavía abiertos: " +
+          sucesores.map(function (a) { return nodoTxt(a[1]); }).join(", ") + ".</p>";
+      }
+      pasos.push(foto({
+        titulo: "Iteración " + iter + " · elegir w y cerrarlo",
+        lineas: [2, 3, 4], w: w, texto: textoCierre + notaElegir
+      }));
+
+      sucesores.forEach(function (a, k) {
+        var i = a[1], c = a[2];
+        var cand = D[w] + c;
+        var antes = D[i], antesP = P[i];
+        var mejora = cand < D[i];
+        var texto = "<p>Arista " + w + " → " + i + " (peso " + c + "): pasando por " + n(w) + " se llega a " + n(i) +
+          " con <span class=\"mono\">D[" + w + "] + C(" + w + "," + i + ") = " + D[w] + " + " + c + " = " + cand + "</span>.</p>";
+        var nota = "";
+        if (mejora) {
+          D[i] = cand; P[i] = w;
+          texto += "<p>Es menor que <span class=\"mono\">D[" + i + "] = " + fmtD(antes) + "</span>, así que se actualiza: " +
+            "<span class=\"mono\">D[" + i + "] ← " + cand + "</span>, <span class=\"mono\">P[" + i + "] ← " + w + "</span>.</p>";
+          if (antes !== INF) {
+            nota = "<div class=\"nota" + (i === DESTINO ? " clave" : "") + "\"><strong>Mejora una distancia tentativa:</strong> " +
+              n(i) + " tenía " + antes + " llegando desde " + n(antesP) + ", y ahora baja a " + cand + " llegando desde " + n(w) + "." +
+              (i === DESTINO
+                ? " Si Lothlórien se hubiera cerrado apenas recibió su primer valor, el algoritmo se habría quedado con " + antes + " y nunca habría visto este camino."
+                : "") + "</div>";
+          }
+        } else {
+          texto += "<p>No es menor que <span class=\"mono\">D[" + i + "] = " + fmtD(antes) + "</span>" +
+            (cand === antes ? " (empata, y la comparación es estricta)" : "") +
+            ": no se toca nada.</p>";
+        }
+        var ultimo = k === sucesores.length - 1;
+        if (ultimo) agregarFila(String(iter), w);
+        pasos.push(foto({
+          titulo: "Iteración " + iter + " · relajar " + w + " → " + i,
+          lineas: mejora ? [5, 6, 7] : [5, 6], w: w, foco: i, arista: [w, i],
+          estadoArista: mejora ? "mejora" : "igual",
+          cambio: mejora ? i : null,
+          texto: texto + nota + (ultimo ? "<p>Con esto termina la iteración " + iter + ": se completa su fila en la traza.</p>" : "")
+        }));
+      });
+    }
+
+    // Fin
+    pasos.push(foto({
+      titulo: "V−S quedó vacío: fin",
+      lineas: [2],
+      texto: "<p>Todos los nodos están en <span class=\"mono\">S</span>, así que el ciclo termina. " +
+        "<span class=\"mono\">D</span> tiene la distancia mínima desde Rivendel a cada lugar y <span class=\"mono\">P</span>, " +
+        "de dónde se viene en ese camino mínimo.</p>"
+    }));
+
+    // Reconstrucción del camino
+    var camino = [DESTINO];
+    while (P[camino[0]] !== null) camino.unshift(P[camino[0]]);
+    var pesos = [];
+    for (var j = 0; j + 1 < camino.length; j++) {
+      var u = camino[j], v = camino[j + 1];
+      E.forEach(function (a) { if (a[0] === u && a[1] === v) pesos.push(a[2]); });
+    }
+    var cadena = camino.slice().reverse().join(" ← ");
+    pasos.push(foto({
+      titulo: "Reconstruir el camino con P",
+      camino: camino,
+      texto: "<p>Se parte de Lothlórien y se sigue el vector de predecesores hacia atrás: " +
+        "<span class=\"mono\">" + cadena + "</span>.</p>" +
+        "<p>Dado vuelta: <strong>" + camino.map(n).join(" → ") + "</strong>, con costo " +
+        "<span class=\"mono\">" + pesos.join(" + ") + " = " + D[DESTINO] + "</span>.</p>"
+    }));
+
+    var porCaradhras = camino.indexOf(1) !== -1;
+    var costoCaradhras = 1 + 8;
+    pasos.push(foto({
+      titulo: porCaradhras ? "Conclusión: conviene Caradhras" : "Conclusión: conviene Moria",
+      camino: camino,
+      texto: (porCaradhras
+        ? "<p>El camino mínimo cruza Caradhras.</p>"
+        : "<p>La ruta por Caradhras (Rivendel → Caradhras → Lothlórien) cuesta <span class=\"mono\">1 + 8 = " + costoCaradhras + "</span>, " +
+          "y el camino mínimo cuesta <span class=\"mono\">" + D[DESTINO] + "</span>. " +
+          "<strong>Conviene entrar a Moria</strong>" +
+          (costoCaradhras - D[DESTINO] === 1 ? ", aunque por apenas 1 punto." : ", con " + (costoCaradhras - D[DESTINO]) + " puntos de diferencia.") + "</p>") +
+        (extra.activa ? "" : "<p>Probá el punto 4 más abajo para ver qué pasa si aparece un sendero directo desde Moria.</p>")
+    }));
+
+    return { pasos: pasos, D: D, P: P, filas: filas, camino: camino };
+  }
+
+  // ------------------------------------------------------------------
+  // Dibujo del grafo
+  // ------------------------------------------------------------------
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, padre) {
+    var e = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (padre) padre.appendChild(e);
+    return e;
+  }
+
+  var refAristas = {};
+  var refNodos = [];
+
+  function geometria(a) {
+    var p1 = NODOS[a[0]], p2 = NODOS[a[1]], curva = a[3] || 0;
+    var dx = p2.x - p1.x, dy = p2.y - p1.y, L = Math.hypot(dx, dy);
+    var nx = -dy / L, ny = dx / L;
+    var mx = (p1.x + p2.x) / 2, my = (p1.y + p2.y) / 2;
+    var d, ux, uy, tip, base, lx, ly;
+    if (curva) {
+      var cx = mx + nx * curva * 2, cy = my + ny * curva * 2;
+      var sx = cx - p1.x, sy = cy - p1.y, sl = Math.hypot(sx, sy);
+      var ex = p2.x - cx, ey = p2.y - cy, elen = Math.hypot(ex, ey);
+      ux = ex / elen; uy = ey / elen;
+      var ini = [p1.x + sx / sl * R, p1.y + sy / sl * R];
+      tip = [p2.x - ux * R, p2.y - uy * R];
+      base = [tip[0] - ux * 10, tip[1] - uy * 10];
+      d = "M" + ini[0] + "," + ini[1] + " Q" + cx + "," + cy + " " + base[0] + "," + base[1];
+      lx = 0.25 * p1.x + 0.5 * cx + 0.25 * p2.x;
+      ly = 0.25 * p1.y + 0.5 * cy + 0.25 * p2.y;
+    } else {
+      ux = dx / L; uy = dy / L;
+      var ini2 = [p1.x + ux * R, p1.y + uy * R];
+      tip = [p2.x - ux * R, p2.y - uy * R];
+      base = [tip[0] - ux * 10, tip[1] - uy * 10];
+      d = "M" + ini2[0] + "," + ini2[1] + " L" + base[0] + "," + base[1];
+      lx = mx; ly = my;
+    }
+    var px = -uy, py = ux;
+    var punta = "M" + tip[0] + "," + tip[1] +
+      " L" + (base[0] + px * 5) + "," + (base[1] + py * 5) +
+      " L" + (base[0] - px * 5) + "," + (base[1] - py * 5) + " Z";
+    return { d: d, punta: punta, lx: lx, ly: ly };
+  }
+
+  function dibujarGrafo(E) {
+    var capaA = $("capa-aristas"), capaN = $("capa-nodos");
+    capaA.textContent = ""; capaN.textContent = "";
+    refAristas = {}; refNodos = [];
+    E.forEach(function (a) {
+      var g = geometria(a);
+      var clase = a[4] ? " nueva" : "";
+      var linea = el("path", { d: g.d, "class": "arista" + clase }, capaA);
+      var punta = el("path", { d: g.punta, "class": "punta" }, capaA);
+      var bg = el("circle", { cx: g.lx, cy: g.ly, r: 12, "class": "peso-bg" }, capaA);
+      var t = el("text", { x: g.lx, y: g.ly + 5, "class": "peso" }, capaA);
+      t.textContent = a[2];
+      refAristas[a[0] + "-" + a[1]] = { linea: linea, punta: punta, bg: bg, nueva: !!a[4] };
+    });
+    NODOS.forEach(function (nd, i) {
+      var g = el("g", { "class": "nodo" }, capaN);
+      el("circle", { cx: nd.x, cy: nd.y, r: R }, g);
+      var num = el("text", { x: nd.x, y: nd.y + 7, "class": "num" }, g);
+      num.textContent = i;
+      var nyNombre = nd.arriba ? nd.y - R - 10 : nd.y + R + 20;
+      var nyFicha = nd.arriba ? nd.y - R - 46 : nd.y + R + 30;
+      var nom = el("text", { x: nd.x, y: nyNombre, "class": "nombre" }, g);
+      nom.textContent = nd.nombre + (i === ORIGEN ? " (origen)" : "");
+      var ficha = el("g", { "class": "ficha" }, capaN);
+      el("rect", { x: nd.x - 44, y: nyFicha, width: 88, height: 21, rx: 10.5 }, ficha);
+      var ft = el("text", { x: nd.x, y: nyFicha + 15 }, ficha);
+      refNodos.push({ g: g, ficha: ficha, fichaTexto: ft });
+    });
+  }
+
+  function pintarGrafo(p) {
+    var enCamino = {};
+    var aristasCamino = {};
+    if (p.camino) {
+      p.camino.forEach(function (i) { enCamino[i] = true; });
+      for (var k = 0; k + 1 < p.camino.length; k++) aristasCamino[p.camino[k] + "-" + p.camino[k + 1]] = true;
+    }
+    Object.keys(refAristas).forEach(function (clave) {
+      var r = refAristas[clave];
+      var partes = clave.split("-").map(Number);
+      var estado = "";
+      if (p.camino) {
+        if (aristasCamino[clave]) estado = "camino";
+      } else if (p.arista && p.arista[0] === partes[0] && p.arista[1] === partes[1]) {
+        estado = "relajando";
+      } else if (p.P[partes[1]] === partes[0]) {
+        estado = "arbol";
+      }
+      r.linea.setAttribute("class", "arista" + (r.nueva ? " nueva" : "") + (estado ? " " + estado : ""));
+      r.punta.setAttribute("class", "punta" + (estado ? " " + estado : ""));
+      r.bg.setAttribute("class", "peso-bg" + (estado === "relajando" ? " relajando" : ""));
+    });
+    refNodos.forEach(function (r, i) {
+      var clases = ["nodo"];
+      if (p.camino) {
+        clases.push("cerrado");
+        if (enCamino[i]) clases.push("encamino");
+      } else {
+        if (p.enS[i]) clases.push("cerrado");
+        else if (p.D[i] !== INF) clases.push("abierto");
+        if (p.w === i && p.iter > 0) clases.push("elegido");
+        else if (p.w === i && p.lineas.length) clases.push("elegido");
+        if (p.foco === i) clases.push("foco");
+      }
+      r.g.setAttribute("class", clases.join(" "));
+      r.fichaTexto.textContent = "D " + fmtD(p.D[i]) + " · P " + fmtP(p.P[i]);
+      r.ficha.setAttribute("class", "ficha" + (p.cambio === i ? " cambio" : ""));
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // Paneles
+  // ------------------------------------------------------------------
+  function pintarPseudo(p) {
+    var ol = $("pseudo");
+    if (!ol.children.length) {
+      PSEUDO.forEach(function (linea, i) {
+        var li = document.createElement("li");
+        var num = document.createElement("span");
+        num.className = "n"; num.textContent = String(i + 1);
+        li.appendChild(num);
+        li.appendChild(document.createTextNode(linea));
+        ol.appendChild(li);
+      });
+    }
+    Array.prototype.forEach.call(ol.children, function (li, i) {
+      li.classList.toggle("activa", p.lineas.indexOf(i) !== -1);
+    });
+  }
+
+  function chips(cont, lista, clase) {
+    cont.textContent = "";
+    if (!lista.length) {
+      var v = document.createElement("span"); v.className = "vacio"; v.textContent = "∅";
+      cont.appendChild(v); return;
+    }
+    lista.forEach(function (i) {
+      var c = document.createElement("span");
+      c.className = "chip " + clase; c.textContent = i; c.title = n(i);
+      cont.appendChild(c);
+    });
+  }
+
+  function pintarEstado(p) {
+    var hayTraza = p.lineas.length > 0 || p.camino;
+    chips($("conj-s"), hayTraza ? cerradosLista(p.enS) : [], "s");
+    chips($("conj-vs"), hayTraza ? abiertos(p.enS) : [], "vs");
+    chips($("conj-w"), p.w === null || !hayTraza ? [] : [p.w], "w");
+  }
+
+  function pintarTraza(p, totalFilas) {
+    var cab = $("traza-cabecera");
+    if (!cab.children.length) {
+      var tr = document.createElement("tr");
+      var tit = ["Iter.", "S", "V−S", "w"];
+      for (var i = 0; i < NODOS.length; i++) tit.push("D[" + i + "]/P[" + i + "]");
+      tit.forEach(function (t, k) {
+        var th = document.createElement("th");
+        th.textContent = t;
+        if (k >= 4) th.title = n(k - 4);
+        tr.appendChild(th);
+      });
+      cab.appendChild(tr);
+    }
+    var cuerpo = $("traza-cuerpo");
+    cuerpo.textContent = "";
+    for (var f = 0; f < totalFilas; f++) {
+      var fila = p.filas[f];
+      var tr2 = document.createElement("tr");
+      if (!fila) {
+        for (var c = 0; c < 4 + NODOS.length; c++) {
+          var vacia = document.createElement("td");
+          vacia.className = "pendiente";
+          vacia.textContent = c === 0 ? (f === 0 ? "Inicial" : String(f)) : "·";
+          tr2.appendChild(vacia);
+        }
+        cuerpo.appendChild(tr2);
+        continue;
+      }
+      if (f === p.filas.length - 1 && !p.camino && p.lineas.indexOf(2) === -1) tr2.className = "actual";
+      var previa = f > 0 ? p.filas[f - 1] : null;
+      [fila.etiqueta, conj(fila.S), conj(fila.VS), String(fila.w)].forEach(function (txt) {
+        var td = document.createElement("td"); td.textContent = txt; tr2.appendChild(td);
+      });
+      for (var k = 0; k < NODOS.length; k++) {
+        var td2 = document.createElement("td");
+        td2.textContent = fmtD(fila.D[k]) + "/" + fmtP(fila.P[k]);
+        if (previa && (previa.D[k] !== fila.D[k] || previa.P[k] !== fila.P[k])) td2.className = "cambio";
+        tr2.appendChild(td2);
+      }
+      cuerpo.appendChild(tr2);
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Punto 4: comparación con la red original
+  // ------------------------------------------------------------------
+  var BASE = null;
+
+  function resumenExtra(sim) {
+    var caja = $("extra-resumen");
+    if (!extra.activa) {
+      caja.innerHTML = "<p>Con la red original, <span class=\"mono\">D[5] = " + BASE.D[DESTINO] +
+        "</span> por el camino <span class=\"mono\">" + BASE.camino.join(" → ") + "</span>.</p>";
+      return;
+    }
+    var x = extra.peso;
+    var primera = -1;
+    for (var f = 0; f < Math.max(sim.filas.length, BASE.filas.length); f++) {
+      var a = sim.filas[f], b = BASE.filas[f];
+      if (!a || !b || a.w !== b.w || a.D.join() !== b.D.join() || a.P.join() !== b.P.join()) { primera = f; break; }
+    }
+    var html = "<p>Con el sendero <span class=\"mono\">2 → 5</span> de peso <span class=\"mono\">" + x +
+      "</span>: <span class=\"mono\">D[5] = " + sim.D[DESTINO] + "</span> por <span class=\"mono\">" +
+      sim.camino.join(" → ") + "</span>.</p>";
+    if (primera === -1) {
+      html += "<p><strong>La traza no cambia.</strong> Al cerrar Puertas de Moria (iteración 2) el candidato es " +
+        "<span class=\"mono\">D[2] + x = 2 + " + x + " = " + (2 + x) + "</span>, que no es menor que la distancia tentativa " +
+        "que Lothlórien ya tenía por Caradhras (<span class=\"mono\">9</span>).</p>";
+    } else {
+      html += "<p><strong>La traza cambia desde la " + (primera === 0 ? "fila inicial" : "iteración " + primera) + ".</strong> " +
+        "Al cerrar Puertas de Moria, el candidato <span class=\"mono\">2 + " + x + " = " + (2 + x) + "</span> mejora el 9 que venía de Caradhras.</p>";
+      if (sim.D[DESTINO] < BASE.D[DESTINO]) {
+        html += "<p>Además mejora el resultado final (" + sim.D[DESTINO] + " &lt; " + BASE.D[DESTINO] +
+          "): el camino ya no pasa por Salón de Piedra ni por Puerta Este.</p>";
+      } else if (sim.D[DESTINO] === BASE.D[DESTINO]) {
+        html += "<div class=\"nota clave\"><strong>Empate:</strong> la distancia final sigue siendo " + sim.D[DESTINO] +
+          ", pero el camino es otro. Cuando más tarde se relaja <span class=\"mono\">4 → 5</span>, el candidato " +
+          "<span class=\"mono\">7 + 1 = 8</span> no es <em>menor</em> que 8, así que <span class=\"mono\">P[5]</span> queda en 2.</div>";
+      }
+    }
+    caja.innerHTML = html;
+  }
+
+  // ------------------------------------------------------------------
+  // Navegación
+  // ------------------------------------------------------------------
+  var sim = null, pasos = [], actual = 0, timer = null;
+
+  function mostrar(i) {
+    actual = Math.max(0, Math.min(pasos.length - 1, i));
+    var p = pasos[actual];
+    $("contador").textContent = "Paso " + (actual + 1) + " de " + pasos.length;
+    $("paso-titulo").textContent = p.titulo;
+    $("paso-texto").innerHTML = p.texto;
+    pintarGrafo(p);
+    pintarPseudo(p);
+    pintarEstado(p);
+    pintarTraza(p, sim.filas.length);
+    $("barra").value = actual;
+    $("btn-inicio").disabled = $("btn-ant").disabled = actual === 0;
+    $("btn-sig").disabled = $("btn-fin").disabled = actual === pasos.length - 1;
+    if (actual === pasos.length - 1) pausar();
+  }
+
+  function reproducir() {
+    if (actual === pasos.length - 1) mostrar(0);
+    $("btn-play").textContent = "⏸ Pausar";
+    timer = setInterval(function () { mostrar(actual + 1); }, 2600);
+  }
+  function pausar() {
+    if (timer) clearInterval(timer);
+    timer = null;
+    $("btn-play").textContent = "▶ Reproducir";
+  }
+  function alternar() { if (timer) pausar(); else reproducir(); }
+
+  function recalcular(mantenerPaso) {
+    var E = aristas();
+    sim = simular(E);
+    pasos = sim.pasos;
+    dibujarGrafo(E);
+    $("barra").max = pasos.length - 1;
+    resumenExtra(sim);
+    mostrar(mantenerPaso ? actual : 0);
+  }
+
+  $("btn-inicio").addEventListener("click", function () { pausar(); mostrar(0); });
+  $("btn-ant").addEventListener("click", function () { pausar(); mostrar(actual - 1); });
+  $("btn-sig").addEventListener("click", function () { pausar(); mostrar(actual + 1); });
+  $("btn-fin").addEventListener("click", function () { pausar(); mostrar(pasos.length - 1); });
+  $("btn-play").addEventListener("click", alternar);
+  $("barra").addEventListener("input", function (e) { pausar(); mostrar(Number(e.target.value)); });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+    if (e.key === "ArrowRight") { pausar(); mostrar(actual + 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft") { pausar(); mostrar(actual - 1); e.preventDefault(); }
+    else if (e.key === " " && tag !== "BUTTON") { alternar(); e.preventDefault(); }
+    else if (e.key === "Home") { pausar(); mostrar(0); e.preventDefault(); }
+    else if (e.key === "End") { pausar(); mostrar(pasos.length - 1); e.preventDefault(); }
+  });
+
+  $("extra-activa").addEventListener("change", function (e) {
+    pausar(); extra.activa = e.target.checked; recalcular(false);
+  });
+  $("extra-peso").addEventListener("input", function (e) {
+    extra.peso = Number(e.target.value);
+    $("extra-valor").textContent = extra.peso;
+    if (extra.activa) { pausar(); recalcular(true); }
+  });
+
+  // Si el usuario cambia el tema en otra pestaña de Arcana, acompañarlo.
+  window.addEventListener("storage", function (e) {
+    if (e.key === "theme" && e.newValue) document.documentElement.setAttribute("saved-theme", e.newValue);
+  });
+
+  BASE = simular(ARISTAS_BASE);
+  recalcular(false);
+})();
+</script>
+</body>
+</html>
