@@ -27,3 +27,7 @@ El mapa de dependencias es un grafo dirigido $G=(V,E)$, donde cada vértice es u
 | Defensa | Enlace con el Oráculo |
 
 4. Un técnico agregó, por error, una dependencia adicional: "Comunicaciones" debe confirmar el estado de "Energía" antes de que este último pueda reiniciarse. Determinar si el reinicio sigue siendo posible con esta nueva dependencia y, si no lo es, identificar exactamente el ciclo que lo impide.
+
+> **El Vaticinio del Oráculo.** No todo aquel que ha sido visitado por el DFS ha terminado su camino. Algunos vértices aún aguardan en la cadena de exploración, y regresar a uno de ellos es señal de que el sistema ha caído en un ciclo. No confundas a quienes siguen aguardando su destino con aquellos cuyo recorrido ya ha concluido: estos últimos pueden volver a aparecer sin que la Matrix se encuentre atrapada en un bucle.
+
+> **Reflexión.** Si el técnico no supiera qué dependencia fue configurada incorrectamente, sino únicamente que el reinicio es imposible, ¿Qué información podría brindarle DFS para localizar el problema? ¿Alcanza con saber que existe un ciclo, o sería útil reconstruir el camino que lo forma?
