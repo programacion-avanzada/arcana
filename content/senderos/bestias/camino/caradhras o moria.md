@@ -25,9 +25,13 @@ Se modela la ruta como un grafo dirigido $G=(V, E)$, donde cada vértice es un p
 | Puerta Este | Lothlórien | 1 |
 | Caradhras | Lothlórien | 8 |
 
+![Red de caminos con seis nodos: Rivendel (0), Caradhras (1), Puertas de Moria (2), Salón de Piedra (3), Puerta Este (4) y Lothlórien (5), con el peso de cada arista](caradhras-o-moria-red.svg)
+
 2. A partir de la traza, indicar qué conviene: cruzar Caradhras o entrar a Moria, y reconstruir el camino completo usando el vector de predecesores.
 3. Lothlórien recibe una distancia tentativa muy temprano en la traza, que varias iteraciones después termina mejorándose. Explicar, apoyándose en la propiedad vista en el Bloque 3 ($d[u] \geq d[w]$), por qué Dijkstra puede dejarlo sin cerrar durante todo ese tiempo, y qué hubiera pasado si se lo hubiera cerrado apenas recibió esa primera distancia.
 4. Si un explorador élfico les avisara de un sendero directo entre Puertas de Moria y Lothlórien, ¿en qué cambiaría la traza? (No hace falta rehacerla completa: alcanza con explicar qué pasos se verían afectados).
+
+[[caradhras-o-moria.htm|Ver la resolución paso a paso]]
 
 ---
 
@@ -97,6 +101,12 @@ Si se lo hubiera cerrado apenas llegó esa primera distancia tentativa, el algor
 
 ### 4. ¿Y si hubiera un sendero directo de Puertas de Moria a Lothlórien?
 
-Agregar una arista $2\to5$ de peso $x$ solo puede cambiar el resultado si mejora el mejor camino ya encontrado ($8$). Como el nodo 2 se cierra muy temprano (iteración 2, con $D[2]=2$), esta arista daría una candidata de $2+x$. Cambia algo únicamente si $2+x < 8$, es decir, si el nuevo sendero pesara **menos de 6**. En ese caso Lothlórien recibiría una distancia mejor bastante antes en la traza (incluso antes que la propia tentativa por Caradhras), y el camino final ya no pasaría ni por Salón de Piedra ni por Puerta Este. Si pesara $6$ o más, la traza no cambia: la cadena completa por Moria sigue siendo al menos tan buena.
+Agregar una arista $2\to5$ de peso $x$ solo afecta la traza si mejora la distancia tentativa que Lothlórien ya tiene en el momento en que se cierra el nodo 2. Caradhras se cierra en la iteración 1 y deja $D[5]=9$; recién en la iteración 2 se cierra Puertas de Moria, con $D[2]=2$, y la nueva arista ofrece el candidato $2+x$:
+
+- Si $2+x < 9$ (es decir, $x < 7$), en la iteración 2 Lothlórien pasa a $D[5]=2+x$ con $P[5]=2$, y la traza cambia a partir de esa fila. Si además $x < 3$, Lothlórien queda con menos distancia que Salón de Piedra y se cierra antes que él.
+  - Con $x < 6$ mejora el resultado final: el camino mínimo pasa a ser **Rivendel → Puertas de Moria → Lothlórien**, sin pasar por Salón de Piedra ni por Puerta Este.
+  - Con $x = 6$ la distancia final sigue siendo $8$, pero el camino cambia: cuando en la iteración 4 se relaja $4\to5$, el candidato $7+1=8$ no es *menor* que $8$, así que $P[5]$ queda en $2$ y el camino reconstruido es Rivendel → Puertas de Moria → Lothlórien (empata en costo con la ruta por Puerta Este).
+  - Con $6 < x < 7$ la mejora es solo tentativa: en la iteración 4, Puerta Este vuelve a bajar $D[5]$ a $8$ con $P[5]=4$, y el resultado final es el mismo que sin la arista.
+- Si $x \geq 7$, el candidato $2+x \geq 9$ no mejora el $9$ que Lothlórien ya tenía por Caradhras, y la traza no cambia en nada.
 
 </details>
