@@ -115,7 +115,6 @@ class BTree:
         division = self._insertar(self.raiz, clave)
         if division is not None:
             clave_media, nodo_derecho = division
-            self.raiz.hoja = False
             nueva_raiz = Nodo()
             nueva_raiz.claves = [clave_media]
             nueva_raiz.hijos = [self.raiz, nodo_derecho]
@@ -163,14 +162,16 @@ btree.insertar(20)
 # [10, 20]
 
 btree.insertar(5)
-# [5, 10, 20]
+#     [10]
+#    /    \
+# [5]     [20]
 
 btree.insertar(6)
 #       [10]
 #    /         \
 # [5, 6]       [20]
 
-print(btree.buscar(10))  # SELECT * FROM tabla WHERE clave = 10
+print(btree.buscar(10).claves)  # SELECT * FROM tabla WHERE clave = 10
 ```
 
 ## 4. Uso y criterio
