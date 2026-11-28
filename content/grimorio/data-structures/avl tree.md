@@ -70,6 +70,17 @@ Cuando una operación deja un nodo en $FB = \pm 2$, se realizan rotaciones para 
 - **LR** (el nodo a la izquierda, el hijo a la derecha): rotación izquierda sobre el hijo y después derecha sobre el nodo.
 - **RL**: (el nodo a la derecha, el hijo a la izquierda): rotación derecha sobre el hijo y después izquierda sobre el nodo.
 
+El caso se determina por el **factor de balance del hijo** del lado pesado:
+
+| $FB(\text{nodo})$ | $FB(\text{hijo})$ | Caso | Rotación |
+| :---: | :---: | :---: | :--- |
+| $+2$ | $+1$ o $0$ | LL | simple derecha |
+| $+2$ | $-1$ | LR | doble (izquierda sobre el hijo, derecha sobre el nodo) |
+| $-2$ | $-1$ o $0$ | RR | simple izquierda |
+| $-2$ | $+1$ | RL | doble (derecha sobre el hijo, izquierda sobre el nodo) |
+
+El caso $FB(\text{hijo}) = 0$ **solo aparece en la eliminación** (al insertar, el hijo del lado pesado siempre queda inclinado hacia algún lado) y se resuelve con la rotación simple: con la doble, algún nodo podría seguir desbalanceado.
+
 ![Rotación derecha sobre un nodo desbalanceado (caso LL)|665](avl-rotacion.svg)
 
 *Figura 3. Caso LL: la Z queda en $FB = +2$ y su hijo Y en $+1$; la rotación derecha sube el Y y baja la Z, que recibe el subárbol del T3.*
@@ -86,8 +97,9 @@ Cuando una operación deja un nodo en $FB = \pm 2$, se realizan rotaciones para 
 - **`delete(tree, key, compare)`:**
   1. Busca el nodo a eliminar comparando la clave.
   2. Si no lo encuentra, retorna.
-  3. Si lo encuentra, lo elimina
-  4. Actualiza las alturas y rebalancea mediante rotaciones en el camino de vuelta hacia la raíz.
+  3. Si lo encuentra y tiene cero o un hijo, lo reemplaza por ese hijo. Si tiene dos, copia la clave de su sucesor inorden (el menor del subárbol derecho) y elimina el sucesor.
+  4. Al retornar de la recursión, actualiza la altura y, si algún nodo queda desbalanceado, elige la rotación según el factor de balance del hijo (ver la tabla de arriba).
+  5. A diferencia de la inserción, donde una rotación (simple o doble) alcanza para dejar todo el árbol balanceado, al borrar **puede hacer falta rebalancear varios nodos hasta llegar a la raíz**: la rotación puede dejar el subárbol un nivel más bajo que antes, y ese cambio de altura desbalancea al ancestro. En el peor caso hay una rotación por nivel, $O(\log n)$.
 
 - **`find(tree, key, compare)`:**
   1. Compara la clave buscada con el nodo actual.
@@ -159,6 +171,37 @@ class ArbolAVL:
             return self.rotar_izquierda(raiz)               # caso RR
         return raiz
 
+    def eliminar(self, raiz, clave, comparacion):
+        # 1. Eliminación normal de un BST
+        if not raiz:
+            return None         # la clave no existe
+        if comparacion(clave, raiz.clave) < 0:
+            raiz.izq = self.eliminar(raiz.izq, clave, comparacion)
+        elif comparacion(clave, raiz.clave) > 0:
+            raiz.der = self.eliminar(raiz.der, clave, comparacion)
+        else:
+            if not raiz.izq or not raiz.der:        # cero o un hijo
+                return raiz.izq or raiz.der
+            sucesor = raiz.der                      # dos hijos: sucesor inorden
+            while sucesor.izq:
+                sucesor = sucesor.izq
+            raiz.clave = sucesor.clave
+            raiz.der = self.eliminar(raiz.der, sucesor.clave, comparacion)
+
+        # 2. Actualizar la altura y rebalancear según el FB del hijo
+        self.actualizar(raiz)
+        balance = self.balance(raiz)
+        if balance > 1:                             # pesa a la izquierda
+            if self.balance(raiz.izq) < 0:
+                raiz.izq = self.rotar_izquierda(raiz.izq)   # caso LR
+            return self.rotar_derecha(raiz)                 # caso LL (FB del hijo +1 o 0)
+
+        if balance < -1:                            # pesa a la derecha
+            if self.balance(raiz.der) > 0:
+                raiz.der = self.rotar_derecha(raiz.der)     # caso RL
+            return self.rotar_izquierda(raiz)               # caso RR (FB del hijo -1 o 0)
+        return raiz
+
     def preorden(self, raiz):
         """Imprime el árbol en recorrido preorden: [nodo, izq, der]"""
         if not raiz:
@@ -168,7 +211,9 @@ class ArbolAVL:
         self.preorden(raiz.der)
 ```
 
-La eliminación reutiliza el mismo bloque de rebalanceo. Un uso típico:
+En `insertar`, comparar con la clave recién insertada da el mismo resultado que mirar el FB del hijo, porque la clave nueva siempre está del lado que creció. En `eliminar` eso no sirve: la clave borrada está en el subárbol **opuesto** al que quedó más pesado, así que comparar contra ella elegiría siempre la rotación doble. Por ejemplo, si se insertan 20, 10, 30 y 5 y se borra el 30, el 20 queda con $FB = +2$ y su hijo 10 con $FB = +1$: corresponde LL, pero comparando con el 30 se entraría a LR y se llamaría a `rotar_izquierda(10)`, que no tiene hijo derecho. Por eso `eliminar` decide con `self.balance(...)` del hijo.
+
+Un uso típico de la inserción:
 
 ```python
 avl = ArbolAVL()
@@ -193,6 +238,23 @@ avl.preorden(raiz)
 ![Las seis claves insertadas en orden en un AVL|667](avl-traza.svg)
 
 *Figura 4. El árbol final es el que imprime el preorden de arriba con su estado tras las rotaciones.*
+
+Sobre ese mismo árbol, una eliminación:
+
+```python
+for v in [40, 50]:
+    raiz = avl.eliminar(raiz, v, compEnteros)
+
+print("Recorrido Preorden tras eliminar 40 y 50:")
+avl.preorden(raiz)
+```
+
+**Salida esperada:**
+```text
+20 (h=3) 10 (h=1) 30 (h=2) 25 (h=1)
+```
+
+Al borrar el 40, su único hijo (50) ocupa su lugar y no hace falta rotar. Al borrar el 50, el 30 queda con $FB = +2$ y su hijo 20 con $FB = 0$, el caso que solo aparece al eliminar: se resuelve con una rotación derecha simple sobre el 30, que deja al 20 como raíz.
 
 ## 4. Uso y criterio
 
