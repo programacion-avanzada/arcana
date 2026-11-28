@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" width="760" height="420" font-family="system-ui, -apple-system, &#39;Segoe UI&#39;, Roboto, sans-serif">
+  
+  <rect width="760" height="420" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5" />
+
+  
+  <text x="380" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#1E293B">
+    Ejemplo: Nuevas Autopistas (N = 6 ciudades, 7 autopistas, Costo total S = 28)
+  </text>
+
+  
+  
+  <line x1="130" y1="115" x2="310" y2="95" stroke="#059669" stroke-width="3.5" />
+  <line x1="130" y1="115" x2="130" y2="295" stroke="#059669" stroke-width="3.5" />
+  <line x1="310" y1="315" x2="130" y2="295" stroke="#059669" stroke-width="3.5" />
+
+  
+  <line x1="310" y1="315" x2="310" y2="95" stroke="#2563EB" stroke-width="3.5" />
+
+  
+  <line x1="310" y1="95" x2="470" y2="205" stroke="#7C3AED" stroke-width="3.5" />
+  <line x1="470" y1="205" x2="310" y2="315" stroke="#7C3AED" stroke-width="3.5" />
+
+  
+  <line x1="470" y1="205" x2="635" y2="205" stroke="#DC2626" stroke-width="3.5" stroke-dasharray="8,6" />
+
+  
+  
+  <g transform="translate(220, 105)">
+    <rect x="-16" y="-13" width="32" height="26" rx="7" fill="#ECFDF5" stroke="#059669" stroke-width="1.5" />
+    <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">c=1</text>
+  </g>
+
+  
+  <g transform="translate(130, 205)">
+    <rect x="-16" y="-13" width="32" height="26" rx="7" fill="#ECFDF5" stroke="#059669" stroke-width="1.5" />
+    <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">c=7</text>
+  </g>
+
+  
+  <g transform="translate(220, 305)">
+    <rect x="-16" y="-13" width="32" height="26" rx="7" fill="#ECFDF5" stroke="#059669" stroke-width="1.5" />
+    <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">c=5</text>
+  </g>
+
+  
+  <g transform="translate(310, 205)">
+    <rect x="-16" y="-13" width="32" height="26" rx="7" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5" />
+    <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" fill="#1E40AF">c=4</text>
+  </g>
+
+  
+  <g transform="translate(390, 150)">
+    <rect x="-16" y="-13" width="32" height="26" rx="7" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" />
+    <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" fill="#5B21B6">c=2</text>
+  </g>
+
+  
+  <g transform="translate(390, 260)">
+    <rect x="-16" y="-13" width="32" height="26" rx="7" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" />
+    <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" fill="#5B21B6">c=3</text>
+  </g>
+
+  
+  <g transform="translate(552, 205)">
+    <rect x="-16" y="-13" width="32" height="26" rx="7" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5" />
+    <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" fill="#991B1B">c=6</text>
+  </g>
+
+  
+  <g stroke="#0F172A" stroke-width="2.5" fill="#FFFFFF">
+    <circle cx="130" cy="115" r="23" />
+    <circle cx="310" cy="95" r="23" />
+    <circle cx="470" cy="205" r="23" />
+    <circle cx="310" cy="315" r="23" />
+    <circle cx="130" cy="295" r="23" />
+    <circle cx="635" cy="205" r="23" />
+  </g>
+
+  <g font-size="16" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <text x="130" y="121">1</text>
+    <text x="310" y="101">2</text>
+    <text x="470" y="211">3</text>
+    <text x="310" y="321">4</text>
+    <text x="130" y="301">5</text>
+    <text x="635" y="211">6</text>
+  </g>
+
+  
+  <rect x="35" y="362" width="690" height="40" rx="8" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+
+  <line x1="55" y1="382" x2="85" y2="382" stroke="#2563EB" stroke-width="3.5" />
+  <text x="93" y="386" font-size="12" fill="#334155" font-weight="600">Grupo 1 (Ciclo 1)</text>
+
+  <line x1="215" y1="382" x2="245" y2="382" stroke="#059669" stroke-width="3.5" />
+  <text x="253" y="386" font-size="12" fill="#334155" font-weight="600">Grupo 2 (Ciclo 2)</text>
+
+  <line x1="375" y1="382" x2="405" y2="382" stroke="#7C3AED" stroke-width="3.5" />
+  <text x="413" y="386" font-size="12" fill="#334155" font-weight="600">Grupo 3 (Ambos ciclos)</text>
+
+  <line x1="565" y1="382" x2="595" y2="382" stroke="#DC2626" stroke-width="3.5" stroke-dasharray="6,4" />
+  <text x="603" y="386" font-size="12" fill="#334155" font-weight="600">Puente (Fijo)</text>
+</svg>
